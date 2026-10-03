@@ -4,22 +4,22 @@ import type { ReactNode } from "react";
 
 export type Chip = { id: string; label: string; count?: number };
 
-/** Pill filters with live counts. Real buttons with aria-pressed, so keyboard and screen readers get the state. */
+/** Filters as plain text with an underline on the active one and a live count. Real buttons with aria-pressed. */
 export function FilterChips({ chips, value, onChange, label }: { chips: Chip[]; value: string; onChange: (id: string) => void; label: string }) {
   return (
-    <div role="group" aria-label={label} className="flex flex-wrap gap-2">
+    <div role="group" aria-label={label} className="flex flex-wrap gap-x-5 gap-y-1">
       {chips.map((c) => {
         const on = c.id === value;
         const empty = c.count === 0 && !on;
         return (
           <button key={c.id} type="button" aria-pressed={on} disabled={empty} onClick={() => onChange(c.id)}
             className={clsx(
-              "inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-[13.5px] font-medium transition-colors",
-              on ? "border-ink bg-ink text-white" : "border-grey-300 bg-white text-ink hover:border-ink/40 hover:bg-grey-100",
-              empty && "cursor-not-allowed opacity-40 hover:border-grey-300 hover:bg-white",
+              "inline-flex h-9 items-baseline gap-1.5 border-b-2 pb-1 pt-1.5 text-[14.5px] transition-colors",
+              on ? "border-brand font-semibold text-ink" : "border-transparent font-medium text-ink/70 hover:border-grey-300 hover:text-ink",
+              empty && "cursor-not-allowed opacity-40 hover:border-transparent hover:text-ink/70",
             )}>
             {c.label}
-            {c.count != null && <span className={clsx("tabular text-[12.5px]", on ? "text-white/75" : "text-muted")}>{c.count.toLocaleString()}</span>}
+            {c.count != null && <span className="tabular text-[12.5px] font-normal text-muted">{c.count.toLocaleString()}</span>}
           </button>
         );
       })}

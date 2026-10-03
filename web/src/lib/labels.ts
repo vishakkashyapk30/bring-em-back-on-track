@@ -16,10 +16,13 @@ export function actionLabel(a: A): string {
   }
 }
 
+const HOUR = (h: number) => (h === 12 ? "noon" : h < 12 ? `${h} am` : `${h - 12} pm`);
+
+/** "5 pm to 9 pm", or nothing for an all-day window. */
 export function windowLabel(w?: string | null): string {
   if (!w || w === "all_day") return "";
-  const [a, b] = w.split("-");
-  return `${a}:00 to ${b}:00`;
+  const [a, b] = w.split("-").map(Number);
+  return `${HOUR(a)} to ${HOUR(b)}`;
 }
 
 const PRODUCT: Record<string, string> = {

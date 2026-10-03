@@ -5,11 +5,11 @@ import { Clock } from "lucide-react";
 export function FreshnessPill({ asOf, hours, fixture }: { asOf?: string; hours?: number; fixture?: boolean }) {
   const stale = (hours ?? 0) > 26;
   return (
-    <span className={clsx("inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm", stale ? "bg-amber-50 text-amber" : "bg-grey-100 text-muted")}>
+    <span className={clsx("inline-flex items-center gap-1.5 text-[13.5px]", stale ? "font-semibold text-amber" : "text-muted")}>
       <Clock size={14} aria-hidden />
-      {asOf ? `Data as of ${new Date(asOf).toLocaleString("en-CA", { dateStyle: "medium", timeStyle: "short", timeZone: "America/Toronto" })} ET` : "Freshness unknown"}
-      {hours !== undefined && ` · ${hours} h old`}
-      {fixture && " · fixture"}
+      {asOf ? `Data from ${new Date(asOf).toLocaleString("en-CA", { dateStyle: "medium", timeStyle: "short", timeZone: "America/Toronto" })} ET` : "We don't know how fresh this is"}
+      {hours !== undefined && ` (${hours} h ago)`}
+      {fixture && " (sample data)"}
     </span>
   );
 }

@@ -6,21 +6,22 @@ export type BadgeKind =
   | "risk" | "bucket" | "consent" | "hardship" | "vulnerable" | "dispute"
   | "llm" | "sql" | "causal" | "observed" | "model-estimate" | "ok" | "danger" | "neutral";
 
+/** Text colour only: no fill, no border, no pill. Colour is reserved for things that need care or action. */
 const styles: Record<BadgeKind, string> = {
-  risk: "bg-brand-50 text-brand-700",
-  bucket: "bg-amber-50 text-amber",
-  consent: "bg-teal-50 text-teal",
-  hardship: "bg-amber-50 text-amber",
-  vulnerable: "bg-amber-50 text-amber",
-  dispute: "bg-grey-100 text-ink",
-  llm: "bg-gold text-ink",
-  sql: "bg-grey-100 text-ink",
-  causal: "bg-teal-50 text-teal",
-  observed: "bg-grey-100 text-muted",
-  "model-estimate": "bg-grey-100 text-muted",
-  ok: "bg-teal-50 text-teal",
-  danger: "bg-brand-50 text-danger",
-  neutral: "bg-grey-100 text-ink",
+  risk: "text-brand-700",
+  bucket: "text-ink",
+  consent: "text-ink",
+  hardship: "text-amber",
+  vulnerable: "text-amber",
+  dispute: "text-ink",
+  llm: "text-muted",
+  sql: "text-muted",
+  causal: "text-teal",
+  observed: "text-muted",
+  "model-estimate": "text-muted",
+  ok: "text-teal",
+  danger: "text-danger",
+  neutral: "text-ink",
 };
 const icons: Partial<Record<BadgeKind, ReactNode>> = {
   hardship: <ShieldAlert size={14} aria-hidden />,
@@ -32,10 +33,10 @@ const icons: Partial<Record<BadgeKind, ReactNode>> = {
   danger: <AlertTriangle size={14} aria-hidden />,
 };
 
-/** Fixed-meaning badges. Colour is never the only signal: hardship etc. always carry an icon + text. */
+/** Fixed-meaning labels. Colour is never the only signal: hardship etc. always carry an icon and text. */
 export function Badge({ kind, children }: { kind: BadgeKind; children: ReactNode }) {
   return (
-    <span className={clsx("inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-2 py-0.5 text-sm font-medium", styles[kind])}>
+    <span className={clsx("inline-flex items-center gap-1.5 text-[14px] font-semibold", styles[kind])}>
       {icons[kind]}
       {children}
     </span>

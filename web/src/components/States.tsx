@@ -49,7 +49,7 @@ export function QueryState({ q, children, empty, banner = true }: { q: { isLoadi
     const e = q.error as { forbidden?: boolean; reason?: string; message?: string };
     return <ErrorState forbidden={e.forbidden} title={e.forbidden ? "Not available for your role" : undefined} detail={e.reason ?? e.message} />;
   }
-  if (empty) return <EmptyState title="Nothing here yet" />;
+  if (empty) return <EmptyState title="Nothing here yet." />;
   const fixture = (q.data as { meta?: { fixture?: boolean } } | undefined)?.meta?.fixture;
   return <div className="fade-in">{fixture && banner && <SampleDataBanner />}{children}</div>;
 }
@@ -58,7 +58,7 @@ export function QueryState({ q, children, empty, banner = true }: { q: { isLoadi
 export function SampleDataBanner() {
   return (
     <p role="note" className="mb-3 mt-0 inline-flex items-center gap-2 rounded-[var(--radius-sm)] bg-gold px-3 py-1 text-sm text-ink">
-      <FlaskConical size={14} aria-hidden /> Sample data: this part is still being built (Layer 4), not the real dataset.
+      <FlaskConical size={14} aria-hidden /> This part still shows sample data. It isn't the real dataset yet.
     </p>
   );
 }
@@ -66,8 +66,8 @@ export function SampleDataBanner() {
 /** Small inline marker for a panel that still shows sample data (Layer 4), for places where a banner is too loud. */
 export function SampleBadge() {
   return (
-    <span title="This part is still being built (Layer 4) and shows sample data, not the real dataset."
-      className="inline-flex items-center gap-1 rounded-full bg-gold/70 px-2 py-0.5 text-[11.5px] font-medium text-ink">
+    <span title="This part still shows sample data, not the real dataset."
+      className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-amber">
       <FlaskConical size={11} aria-hidden /> Sample data
     </span>
   );

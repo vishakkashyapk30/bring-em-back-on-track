@@ -9,7 +9,7 @@ const fills: Record<Variant, string> = {
   plain: "bg-white text-ink border-grey-300/70",
 };
 
-/** Base card: subtle border + soft shadow. `hard` = raised (more shadow) for the one card a page leads with. */
+/** Base card: a plain border. `hard` = a darker border for the one card a page leads with. */
 export function Card({ variant = "plain", hard = false, landing = false, className, ...rest }:
   HTMLAttributes<HTMLDivElement> & { variant?: Variant; hard?: boolean; landing?: boolean }) {
   return (
@@ -19,7 +19,7 @@ export function Card({ variant = "plain", hard = false, landing = false, classNa
         fills[variant],
         landing ? "rounded-[var(--radius-xl)]" : "rounded-[var(--radius-lg)]",
         !/(^|\s)p-\d/.test(className ?? "") && (landing ? "p-8" : "p-5"),  // an explicit p-* overrides the default
-        hard ? "shadow-[var(--shadow-raised)]" : variant === "plain" ? "shadow-[var(--shadow-card)]" : "",
+        hard && variant === "plain" ? "border-ink/25" : "",
         className,
       )}
       {...rest}

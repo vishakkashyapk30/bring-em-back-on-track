@@ -70,31 +70,31 @@ export function NbaCard({ proposal, sample = false }: { proposal: NbaProposal; s
   return (
     <Card hard className="p-6">
       <div className="mb-1 flex items-center justify-between gap-3">
-        <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-brand">Next best action</span>
+        <span className="text-[14px] font-semibold text-brand">Suggested next step</span>
         {sample && <SampleBadge />}
       </div>
       <h3 className="mb-3 mt-1 text-[22px] leading-snug">{ex.recommendation}</h3>
 
       <ul className="mb-5 mt-0 flex list-none flex-wrap gap-x-5 gap-y-1 p-0 text-[13.5px] text-muted">
         {proposal.status === "deferred" && <li className="inline-flex items-center gap-1.5"><CalendarClock size={15} aria-hidden /> {proposal.deferred_reason ?? "Moved to tomorrow"}</li>}
-        {proposal.route_to === "hardship_specialist" && <li className="inline-flex items-center gap-1.5"><Users size={15} aria-hidden /> Goes to a hardship specialist</li>}
-        {proposal.review_mode === "batch" && <li className="inline-flex items-center gap-1.5"><Users size={15} aria-hidden /> Routine reminder: your team lead approves these in a batch</li>}
+        {proposal.route_to === "hardship_specialist" && <li className="inline-flex items-center gap-1.5"><Users size={15} aria-hidden /> A hardship specialist will take this one</li>}
+        {proposal.review_mode === "batch" && <li className="inline-flex items-center gap-1.5"><Users size={15} aria-hidden /> A routine reminder, so your team lead approves it in a batch</li>}
       </ul>
 
       <ExplainAccordion
         defaultOpen={1}
         items={[
-          { title: "Rules applied", body: <ReasonList items={ex.rules_applied} /> },
+          { title: "Rules we checked", body: <ReasonList items={ex.rules_applied} /> },
           {
-            title: "Model evidence",
-            meta: me.p_break != null ? <Badge kind="model-estimate">{Math.round(me.p_break * 100)}% chance this promise breaks · {me.label}</Badge> : <Badge kind="neutral">Not scored</Badge>,
+            title: "How likely a broken promise is",
+            meta: me.p_break != null ? <Badge kind="model-estimate">{Math.round(me.p_break * 100)}% chance the promise breaks (an estimate)</Badge> : <Badge kind="neutral">Not scored</Badge>,
             body: me.p_break != null
-              ? <><p className="mt-0">Break risk is {me.band?.replace("_", " ")}. What pushes it up or down:</p><ReasonList items={me.drivers} /></>
-              : <p className="m-0">{me.label}. The action above comes from the contact rules alone.</p>,
+              ? <><p className="mt-0">The risk is {me.band?.replace("_", " ")}. These things push it up or down:</p><ReasonList items={me.drivers} /></>
+              : <p className="m-0">There is no promise to score here, so the suggestion comes from the contact rules alone.</p>,
           },
-          { title: "What changed", body: ex.what_changed.length ? <ReasonList items={ex.what_changed} /> : <p className="m-0">Nothing new since the last review.</p> },
-          { title: "Data freshness", body: <p className="m-0">{ex.freshness.text}</p> },
-          { title: "Alternatives considered", body: <ul className="m-0 pl-5">{ex.alternatives.map((a, i) => <li key={i}><b>{label(a.action)}</b>: {a.why_not}</li>)}</ul> },
+          { title: "What's changed", body: ex.what_changed.length ? <ReasonList items={ex.what_changed} /> : <p className="m-0">Nothing new since the last review.</p> },
+          { title: "How fresh the data is", body: <p className="m-0">{ex.freshness.text}</p> },
+          { title: "Other options we looked at", body: <ul className="m-0 pl-5">{ex.alternatives.map((a, i) => <li key={i}><b>{label(a.action)}</b>: {a.why_not}</li>)}</ul> },
         ]}
       />
 
@@ -108,7 +108,7 @@ export function NbaCard({ proposal, sample = false }: { proposal: NbaProposal; s
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <Button variant="primary" onClick={() => decide.mutate({ decision: "approve" })} disabled={decide.isPending}>Approve (A)</Button>
           <Button onClick={() => setEditOpen(true)}>Change action</Button>
-          <Button onClick={() => setOverrideOpen(true)}>Override… (O)</Button>
+          <Button onClick={() => setOverrideOpen(true)}>Override (O)</Button>
         </div>
       )}
 

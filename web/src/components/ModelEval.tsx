@@ -28,7 +28,7 @@ export function ModelEval() {
           <h3>Head-to-head on the same test promises</h3>
           <p className="text-[13.5px] text-muted">{h.ours?.n?.toLocaleString?.() ?? "n/a"} promises due Jul to Sep 2026 that the bank's v2.1 also scored. Trained on promises made before Apr 2026; the blend was fitted on Apr to Jun.</p>
           <table className="w-full text-[14px]">
-            <thead><tr className="text-left text-[12.5px] uppercase tracking-wide text-muted">
+            <thead><tr className="text-left text-[13.5px] font-semibold text-muted">
               <th className="py-2 font-semibold">Model</th><th className="py-2 text-right font-semibold">AUC</th><th className="py-2 text-right font-semibold">Brier</th><th className="py-2 text-right font-semibold">Lift top 10%</th></tr></thead>
             <tbody>
               {ROWS.map(([k, label]) => {

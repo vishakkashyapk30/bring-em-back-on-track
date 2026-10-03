@@ -12,7 +12,7 @@ export function ExplainAccordion({ items, defaultOpen = 0 }: { items: { title: s
         const isOpen = open === i;
         const id = `${base}-${i}`;
         return (
-          <li key={it.title} className={clsx("transition-colors", isOpen ? "bg-brand-50/60" : "bg-white")}>
+          <li key={it.title} className={clsx("transition-colors", isOpen ? "bg-brand-50" : "bg-white")}>
             <button type="button" aria-expanded={isOpen} aria-controls={id} onClick={() => setOpen(isOpen ? null : i)}
               className="flex w-full items-center gap-3 bg-transparent px-4 py-3 text-left transition-colors hover:bg-grey-100/70">
               <span className="w-6 font-[family-name:var(--font-display)] text-sm font-semibold text-muted tabular">{String(i + 1).padStart(2, "0")}</span>

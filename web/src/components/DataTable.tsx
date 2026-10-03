@@ -48,21 +48,21 @@ export function DataTable({ columns, rows: allRows, render, pageSize = PAGE, bar
       right={searchable && <SearchBox label="Search this table" placeholder={searchable} value={text} onChange={(v) => { setText(v); setShown(pageSize); }} />}
     />
   );
-  if (!allRows.length) return <EmptyState title="No rows" />;
-  if (!rows.length) return <>{toolbar}<EmptyState title="Nothing matches" detail="Try a different filter or clear the search." /></>;
+  if (!allRows.length) return <EmptyState title="Nothing to show" />;
+  if (!rows.length) return <>{toolbar}<EmptyState title="No matches" detail="Try another filter, or clear the search." /></>;
   const toggle = (i: number) => setSort((s) => (s?.i === i ? (s.dir === 1 ? { i, dir: -1 } : null) : { i, dir: 1 }));
   return (
     <>
     {toolbar}
-    <div className={clsx("overflow-hidden bg-white", bare ? "rounded-[var(--radius-md)] border border-grey-300/60" : "rounded-[var(--radius-lg)] border border-grey-300/70 shadow-[var(--shadow-card)]")}>
+    <div className={clsx("overflow-hidden bg-white", bare ? "rounded-[var(--radius-md)] border border-grey-300/60" : "rounded-[var(--radius-md)] border border-grey-300")}>
       <div className="max-h-[640px] overflow-auto">
-        <table className="w-full border-collapse text-left text-[14px]">
-          <thead className="sticky top-0 z-10 bg-grey-100/95 backdrop-blur">
+        <table className="w-full border-collapse text-left text-[14.5px]">
+          <thead className="sticky top-0 z-10 bg-white shadow-[inset_0_-2px_0_var(--color-ink)]">
             <tr>{columns.map((c, i) => (
               <th key={c} scope="col" aria-sort={sort?.i === i ? (sort.dir === 1 ? "ascending" : "descending") : "none"}
-                className={clsx("whitespace-nowrap px-4 py-2.5 text-[12.5px] font-semibold uppercase tracking-wide text-muted", numericCol[i] && "text-right")}>
+                className={clsx("whitespace-nowrap px-5 py-3.5 text-[14px] font-semibold text-ink", numericCol[i] && "text-right")}>
                 {c ? (
-                  <button type="button" onClick={() => toggle(i)} className={clsx("inline-flex items-center gap-1 bg-transparent uppercase hover:text-ink", numericCol[i] && "flex-row-reverse")}>
+                  <button type="button" onClick={() => toggle(i)} className={clsx("inline-flex items-center gap-1.5 bg-transparent hover:text-brand", numericCol[i] && "flex-row-reverse")}>
                     {c}{sort?.i === i ? (sort.dir === 1 ? <ArrowUp size={13} /> : <ArrowDown size={13} />) : <ArrowUpDown size={13} className="opacity-40" />}
                   </button>
                 ) : <span className="sr-only">Actions</span>}
@@ -71,9 +71,9 @@ export function DataTable({ columns, rows: allRows, render, pageSize = PAGE, bar
           </thead>
           <tbody>
             {sorted.slice(0, shown).map((r, i) => (
-              <tr key={i} className="border-t border-grey-300/60 transition-colors hover:bg-brand-50/40">
+              <tr key={i} className="border-t border-grey-300/60 transition-colors even:bg-cream/60 hover:bg-brand-50">
                 {r.map((v, j) => (
-                  <td key={j} className={clsx("px-4 py-2.5 align-top", numericCol[j] && "text-right tabular")}>{render ? render(v, columns[j]) : String(v ?? "n/a")}</td>
+                  <td key={j} className={clsx("px-5 py-3 align-top", j === 0 && "font-medium", numericCol[j] && "text-right tabular")}>{render ? render(v, columns[j]) : String(v ?? "n/a")}</td>
                 ))}
               </tr>
             ))}
