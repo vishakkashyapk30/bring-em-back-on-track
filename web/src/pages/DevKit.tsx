@@ -18,11 +18,11 @@ export default function DevKit() {
       <div className="flex flex-wrap gap-2">{KINDS.map((k) => <Badge key={k} kind={k}>{k}</Badge>)}</div>
       <div className="grid gap-4 md:grid-cols-4">{(["grey", "brand", "dark", "plain"] as const).map((v) => <Card key={v} variant={v} hard>{v} card</Card>)}</div>
       <KpiBand items={[{ label: "Cure rate", value: "41%", delta: "+2.1 pts" }, { label: "PTP kept", value: "63%" }, { label: "At risk", value: "$12,990" }]} />
-      <ExplainAccordion items={[{ title: "Rules applied", body: "…" }, { title: "Model evidence", body: "…" }]} />
+      <ExplainAccordion items={[{ title: "Rules we checked", body: "…" }, { title: "How likely a broken promise is", body: "…" }]} />
       <ChipEditor chips={[{ key: "a", label: "open promises" }, { key: "b", label: "due 28 Sep - 4 Oct" }]} onRemove={() => {}} />
       <SqlBlock sql={"SELECT 1\nLIMIT 1000"} source="semantic" />
       <FreshnessPill asOf="2026-09-28T06:00:00-04:00" hours={3} />
-      <div className="grid gap-4 md:grid-cols-2"><Skeleton /><EmptyState title="No rows" /><ErrorState detail="Example error" /><RefusalCard reason="gender_code is a protected attribute." /></div>
+      <div className="grid gap-4 md:grid-cols-2"><Skeleton /><EmptyState title="Nothing to show" /><ErrorState detail="Example error" /><RefusalCard reason="gender_code is a protected attribute." /></div>
     </div>
   );
 }

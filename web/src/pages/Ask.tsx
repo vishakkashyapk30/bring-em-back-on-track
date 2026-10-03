@@ -38,12 +38,12 @@ export default function Ask() {
   const freshness = (r as { freshness?: string | null } | undefined)?.freshness;
   return (
     <>
-      <SectionTag as="h1" subtitle="Plain-English questions. Every answer shows its SQL, sources and caveats.">Collections Ask</SectionTag>
+      <SectionTag as="h1" subtitle="Ask in plain English. Every answer shows the SQL or sources behind it, and any caveats.">Collections Ask</SectionTag>
       <form onSubmit={(e) => { e.preventDefault(); if (q.trim()) ask.mutate(q); }}
         className="mb-4 flex gap-2 rounded-[var(--radius-lg)] border border-grey-300/70 bg-white p-2 shadow-[var(--shadow-card)] transition-shadow focus-within:shadow-[var(--shadow-raised)]">
         <label htmlFor="ask-q" className="sr-only">Question</label>
         <div className="flex flex-1 items-center gap-2 px-3"><Search aria-hidden size={18} className="text-muted" />
-          <input id="ask-q" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ask a question about collections data or policy…" className="w-full border-0 bg-transparent py-2.5 text-[15px] outline-none" />
+          <input id="ask-q" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ask about collections data or policy" className="w-full border-0 bg-transparent py-2.5 text-[15px] outline-none" />
         </div>
         <button disabled={ask.isPending || !q.trim()} className="inline-flex h-11 items-center gap-2 rounded-[var(--radius-md)] bg-brand px-6 font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60">
           {ask.isPending ? <Loader2 size={16} className="animate-spin" aria-hidden /> : null} Ask
@@ -51,11 +51,11 @@ export default function Ask() {
       </form>
       {!r && !ask.isPending && (
         <div className="fade-in mb-6">
-          <p className="mb-2 text-sm text-muted">Try one of these:</p>
-          <div className="flex flex-wrap gap-2">
+          <p className="mb-2 text-sm text-muted">Not sure where to start? Try one of these.</p>
+          <div className="flex flex-col items-start gap-1">
             {EXAMPLES.map((ex) => (
               <button key={ex} type="button" onClick={() => { setQ(ex); ask.mutate(ex); }}
-                className="rounded-full border border-grey-300 bg-white px-3.5 py-1.5 text-[14px] transition-colors hover:border-brand/40 hover:bg-brand-50">{ex}</button>
+                className="rounded-[var(--radius-sm)] px-0 py-1 text-left text-[15px] text-brand underline-offset-4 hover:underline">{ex}</button>
             ))}
           </div>
         </div>
@@ -67,7 +67,12 @@ export default function Ask() {
           <ChipEditor chips={chipsFrom(r.chips)} />
           <DataTable columns={r.columns ?? []} rows={r.rows ?? []} />
           {r.insight && <Card><Badge kind="llm">Insight · from these rows only</Badge><p className="mb-0">{r.insight}</p></Card>}
-          <div className="flex flex-wrap gap-2">{(r.followups ?? []).map((f) => <button key={f} type="button" onClick={() => { setQ(f); ask.mutate(f); }} className="rounded-full border border-grey-300 bg-white transition-colors hover:bg-grey-100 px-3 py-1 text-sm">{f}</button>)}</div>
+          {(r.followups ?? []).length > 0 && (
+            <div>
+              <p className="mb-1 text-sm text-muted">You could also ask:</p>
+              <div className="flex flex-col items-start gap-1">{(r.followups ?? []).map((f) => <button key={f} type="button" onClick={() => { setQ(f); ask.mutate(f); }} className="px-0 py-0.5 text-left text-[15px] text-brand underline-offset-4 hover:underline">{f}</button>)}</div>
+            </div>
+          )}
           <details className="rounded-[var(--radius-md)] border border-grey-300 bg-white p-4" open>
             <summary className="cursor-pointer font-medium">How I got this</summary>
             <div className="mt-3 space-y-3">

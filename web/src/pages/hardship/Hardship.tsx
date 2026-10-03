@@ -9,7 +9,7 @@ const TABS = [["board", "Review board"], ["missed", "Missed offers"], ["override
 export default function Hardship() {
   return (
     <>
-      <SectionTag as="h1" subtitle="Hardship and vulnerability: nothing falls off the radar.">Hardship workbench</SectionTag>
+      <SectionTag as="h1" subtitle="Keep track of every customer who may be in hardship or vulnerable, so no one is missed.">Hardship workbench</SectionTag>
       <RouteTabs tabs={TABS as [string, string][]} label="Hardship" />
       <Outlet />
     </>

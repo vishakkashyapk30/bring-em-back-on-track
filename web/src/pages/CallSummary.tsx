@@ -26,7 +26,7 @@ export default function CallSummary() {
   const d = s.data?.draft;
   return (
     <>
-      <SectionTag as="h1" subtitle={<>Draft for the agent to check <Badge kind="sql">rules, no LLM</Badge></>}>Post-call summary</SectionTag>
+      <SectionTag as="h1" subtitle={<>A draft for you to check, written by rules rather than an AI model</>}>Post-call summary</SectionTag>
       <div className="grid gap-6 lg:grid-cols-2">
         <QueryState q={s}>
           {d && (

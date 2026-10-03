@@ -23,7 +23,7 @@ export default function Features() {
   const p: Json = parity.data ?? {};
   return (
     <>
-      <SectionTag as="h1" subtitle="One definition per feature, used for both training and live scoring.">Feature store</SectionTag>
+      <SectionTag as="h1" subtitle="Each feature is defined once and used the same way for training and for live scoring.">Feature store</SectionTag>
       <StatTiles items={[
         { label: "Features", value: String(f.length), note: `${by("sql")} from structured data · ${by("rule")} from text` },
         { label: "Training ↔ live parity", value: p.sampled ? `${p.mismatched_rows} mismatches` : "n/a", note: p.sampled ? `${p.sampled} rows × ${p.columns_checked} columns recomputed` : "", status: p.ok ? "ok" : undefined },

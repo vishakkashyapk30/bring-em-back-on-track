@@ -151,10 +151,10 @@ export function Fairness() {
             render={(v, c) => (c === "Decision" ? <Badge kind={v === "keep" ? "ok" : "danger"}>{v === "keep" ? "Keep" : "Review"}</Badge> : String(v ?? "n/a"))} />
           <h2 className="mt-8 text-xl">Outcome test</h2>
           <p className="text-[14px] text-muted">On the {n(d.outcome?.promises)} promises due {d.outcome?.test_period}, by group: how often the promise was broken, how the score compared, and how often the group was flagged high risk (score of {d.outcome?.thresholds?.flag_at} or more). Overall the score runs {Math.abs(o.calibration_gap * 100).toFixed(1)} points {o.calibration_gap < 0 ? "below" : "above"} reality, so a group is flagged for review only when its gap differs from that by more than {d.outcome?.thresholds?.calibration_gap * 100} points, or its flag rate is outside {d.outcome?.thresholds?.flag_ratio?.[0]}x to {d.outcome?.thresholds?.flag_ratio?.[1]}x of everyone's.</p>
-          <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label="Protected attribute">
+          <div className="mb-4 flex flex-wrap gap-x-5 gap-y-1" role="group" aria-label="Protected attribute">
             {attrs.map((a) => (
               <button key={a.attribute} type="button" aria-pressed={cur?.attribute === a.attribute} onClick={() => setAttr(a.attribute)}
-                className={`h-8 rounded-full border px-3 text-[13.5px] font-medium transition-colors ${cur?.attribute === a.attribute ? "border-ink bg-ink text-white" : "border-grey-300/80 bg-white text-muted hover:text-ink"}`}>
+                className={`h-9 border-b-2 pb-1 pt-1.5 text-[14.5px] transition-colors ${cur?.attribute === a.attribute ? "border-brand font-semibold text-ink" : "border-transparent font-medium text-ink/70 hover:border-grey-300 hover:text-ink"}`}>
                 {ATTR_LABEL[a.attribute] ?? a.attribute}{a.reviews > 0 && <span className="ml-1.5 text-brand-700" aria-label={`${a.reviews} to review`}>•</span>}
               </button>
             ))}

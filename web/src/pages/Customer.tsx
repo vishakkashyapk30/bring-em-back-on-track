@@ -58,7 +58,7 @@ export default function Customer() {
           </section>
 
           <section aria-labelledby="timeline-h">
-            <SectionTitle id="timeline-h" title="Contact history" note="Newest first. Calls with a recording open their summary." />
+            <SectionTitle id="timeline-h" title="Contact history" note="Newest first. Open a call that has a recording to see its summary." />
             <Card><QueryState q={tl}><Timeline items={tl.data?.items ?? []} /></QueryState></Card>
           </section>
         </div>
@@ -83,26 +83,26 @@ function CustomerHeader({ d, pastDue }: { d: Json; pastDue: number }) {
   const initials = String(d.display_name ?? "").split(" ").map((s: string) => s[0]).join("").slice(0, 2);
   const hardship = b.hardship_flag && b.hardship_flag !== "none";
   const blocked = b.contact_block && b.contact_block !== "none";
-  const copy = () => { navigator.clipboard.writeText(d.golden_id); toast.success("Golden ID copied"); };
+  const copy = () => { navigator.clipboard.writeText(d.golden_id); toast.success("ID copied"); };
   return (
     <Card hard className="overflow-hidden p-0">
       <div className="flex flex-wrap items-start gap-5 p-6">
-        <span aria-hidden className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand font-[family-name:var(--font-display)] text-lg font-semibold text-white">{initials}</span>
+        <span aria-hidden className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--radius-md)] bg-ink font-[family-name:var(--font-display)] text-[22px] font-semibold text-white">{initials}</span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <h1 className="m-0 text-[26px] leading-tight">{d.display_name}</h1>
-            <button type="button" onClick={copy} title="Copy golden ID" className="inline-flex items-center gap-1 rounded-[var(--radius-sm)] bg-grey-100 px-2 py-0.5 font-mono text-[12.5px] text-muted transition-colors hover:bg-grey-300/60 hover:text-ink">
+            <button type="button" onClick={copy} title="Copy this ID" className="inline-flex items-center gap-1.5 font-mono text-[13px] text-muted transition-colors hover:text-ink">
               {d.golden_id} <Copy size={12} aria-hidden />
             </button>
           </div>
           <p className="mb-0 mt-1 text-[14px] text-muted">
             {[title(d.segment), [d.city, d.province_code].filter(Boolean).join(", "), d.customer_since && `customer since ${d.customer_since}`].filter(Boolean).join(" · ")}
           </p>
-          <div className="mt-3 flex flex-wrap gap-1.5">
+          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5">
             {hardship && <Badge kind="hardship">Hardship {HARDSHIP_LABEL[b.hardship_flag] ?? b.hardship_flag}</Badge>}
             {b.vulnerability_flag && <Badge kind="vulnerable">Vulnerable</Badge>}
-            {blocked && <Badge kind="danger">Contact block: {title(b.contact_block)}</Badge>}
-            {b.dispute_open_flag && <Badge kind="dispute">Dispute open</Badge>}
+            {blocked && <Badge kind="danger">Contact blocked: {title(b.contact_block)}</Badge>}
+            {b.dispute_open_flag && <Badge kind="dispute">Open dispute</Badge>}
             {b.bucket && <Badge kind="neutral">{b.bucket} days past due</Badge>}
             {b.risk?.score != null && <span title="The bank's general collections risk score. It is separate from the chance that a promise breaks, shown in the next best action below."><Badge kind="neutral">Bank risk score: {String(b.risk.band).replace("_", " ")} ({b.risk.score})</Badge></span>}
           </div>
@@ -120,12 +120,12 @@ function CustomerHeader({ d, pastDue }: { d: Json; pastDue: number }) {
         <Consent icon={<Mail size={14} />} label="Email" ok={!!b.consent?.email} />
         <Consent icon={<Smartphone size={14} />} label="App" ok={!!b.consent?.push} />
         <span className="text-muted">Language {b.consent?.language ?? "EN"}</span>
-        <span className="ml-auto inline-flex items-center gap-1 text-muted"><Clock size={13} aria-hidden /> Data as of 28 Sep 2026</span>
+        <span className="ml-auto inline-flex items-center gap-1 text-muted"><Clock size={13} aria-hidden /> Data from 28 Sep 2026</span>
       </div>
       {hardship && (
         <div role="status" className="flex items-start gap-2.5 border-t border-amber/20 bg-amber-50 px-6 py-3 text-[13.5px] text-amber">
           <ShieldAlert size={17} className="mt-px shrink-0" aria-hidden />
-          <span>Pressure actions are paused while hardship is {HARDSHIP_LABEL[b.hardship_flag]}. Offer support options first. {b.hardship_source && `Raised by ${b.hardship_source.replace("_", " ")}${b.hardship_raised ? ` on ${b.hardship_raised}` : ""}.`}</span>
+          <span>Hardship is {HARDSHIP_LABEL[b.hardship_flag]}, so we won't apply any pressure. Offer support options first.{b.hardship_source && ` The flag came from ${b.hardship_source.replace("_", " ")}${b.hardship_raised ? ` on ${b.hardship_raised}` : ""}.`}</span>
         </div>
       )}
     </Card>

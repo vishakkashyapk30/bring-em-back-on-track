@@ -9,7 +9,7 @@ const TABS = [["quality", "Data quality"], ["benchmark", "Benchmark"], ["monitor
 export default function Governance() {
   return (
     <>
-      <SectionTag as="h1" subtitle="Trusted, not just joined.">Governance</SectionTag>
+      <SectionTag as="h1" subtitle="Checks that show the data can be trusted, not just joined together.">Governance</SectionTag>
       <RouteTabs tabs={TABS as [string, string][]} label="Governance" />
       <Outlet />
     </>

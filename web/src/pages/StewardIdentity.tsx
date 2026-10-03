@@ -27,7 +27,7 @@ export default function StewardIdentity() {
   const items: Pair[] = q.data?.items ?? [];
   return (
     <>
-      <SectionTag as="h1" subtitle={`${(q.data?.total ?? 0).toLocaleString()} candidate links in the review band. Link only when you're sure: precision comes first.`}>Identity review</SectionTag>
+      <SectionTag as="h1" subtitle={`${(q.data?.total ?? 0).toLocaleString()} possible matches need a human look. Only link two records when you're sure, because a wrong link is worse than a missing one.`}>Identity review</SectionTag>
       <QueryState q={q} empty={items.length === 0}>
         {items.map((p) => {
           const rows: [string, keyof Side][] = [["Name", "name"], ["Birth year", "dob_year"], ["Postal area", "fsa"]];

@@ -18,7 +18,7 @@ export default function MapPage() {
   const top = [...items].sort((a, b) => b.value - a.value).slice(0, 15);
   return (
     <>
-      <SectionTag as="h1" subtitle="Where promises break and hardship clusters, by postal area. Areas under 10 customers are hidden.">Weather map</SectionTag>
+      <SectionTag as="h1" subtitle="See where promises break and where hardship is concentrated, by postal area. Areas with fewer than 10 customers are hidden.">Weather map</SectionTag>
       <div className="mb-4"><Segmented label="Metric" value={metric} onChange={setMetric} options={METRICS.map(([v, t]) => [v, t] as [string, string])} /></div>
       <QueryState q={q}>
         <p className="mt-0 text-sm text-muted">{items.length} areas shown · {q.data?.suppressed ?? 0} suppressed (fewer than {q.data?.min_group ?? 10} customers)</p>

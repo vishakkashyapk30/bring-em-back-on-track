@@ -20,7 +20,7 @@ export default function Team() {
   return (
     <div className="space-y-10">
       <section>
-        <SectionTag as="h1" subtitle="Cases opened at least 30 days before the snapshot. Compare strategies within a stage only.">Strategy scorecard</SectionTag>
+        <SectionTag as="h1" subtitle="Only cases opened at least 30 days before the snapshot are counted. Compare strategies within the same stage, not across stages.">Strategy scorecard</SectionTag>
         <QueryState q={sc}>
           <DataTable searchable="Search strategies" columns={["Stage", "Strategy", "Randomised cases", "30-day cure (randomised)", "All cases", "30-day cure (all)", "Cost per cure", "Complaints / 1,000"]}
             rows={(sc.data?.items ?? []).map((r: Json) => [r.stage, r.strategy_code, r.randomised_cases, p1(r.cure_rate_30d_randomised), r.all_cases, p1(r.cure_rate_30d_all), r.cost_per_cure_cad == null ? "n/a" : `$${r.cost_per_cure_cad}`, r.complaints_per_1000_cases])}
@@ -35,8 +35,8 @@ export default function Team() {
             rows={(ag.data?.items ?? []).map((a: Json) => [a.agent_id, a.name, a.site, a.team_id, a.skill_hardship, a.vulnerable_customer_certified ? "yes" : "no", `${a.current_case_load} / ${a.max_concurrent_cases}`, a.ptp_kept_rate_90d, a.cure_rate_90d])} />
         </QueryState>
       </section>
-      <section><SectionTag subtitle="Routine digital reminders go out together once you've checked a 2% sample.">Batch approvals</SectionTag><Batches /></section>
-      <section><SectionTag subtitle="What happens to today's plan if a channel goes down or agents are out.">Capacity stress test</SectionTag><StressTest /></section>
+      <section><SectionTag subtitle="Routine text and email reminders go out together, once you've looked over a 2% sample.">Batch approvals</SectionTag><Batches /></section>
+      <section><SectionTag subtitle="See what happens to today's plan if a channel goes down or some agents are out.">Capacity stress test</SectionTag><StressTest /></section>
     </div>
   );
 }
