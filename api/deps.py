@@ -35,7 +35,12 @@ def unsign(token: str) -> Session:
 def current_session(c360_session: str | None = Cookie(default=None)) -> Session:
     if not c360_session:
         raise HTTPException(401, "Not signed in")
-    return unsign(c360_session)
+    session = unsign(c360_session)
+    from api.personas import is_current
+
+    if not is_current(session):  # cookie from an older build: ask the user to pick a persona again
+        raise HTTPException(401, "Session is out of date")
+    return session
 
 
 def require(roles: Iterable[Role]) -> Callable[..., Session]:
