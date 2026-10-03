@@ -1,36 +1,68 @@
+import { lazy, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import type { Role } from "@/api/types";
 import { Layout } from "@/components/Layout";
+import { NavigationEffects, preloadPages } from "@/lib/navigation";
 import { RequireRole } from "@/lib/session";
-import Ask from "@/pages/Ask";
-import CallSummary from "@/pages/CallSummary";
-import Customer from "@/pages/Customer";
-import DevKit from "@/pages/DevKit";
-import Features from "@/pages/Features";
-import Governance from "@/pages/governance/Governance";
-import { Audit, Benchmark, Contract, Fairness, Monitoring, Quality } from "@/pages/governance/Panels";
-import Hardship from "@/pages/hardship/Hardship";
-import { Board, Missed, Overrides } from "@/pages/hardship/Lists";
-import Simulator from "@/pages/hardship/Simulator";
-import Landing from "@/pages/Landing";
-import Login from "@/pages/Login";
-import NotFound from "@/pages/NotFound";
-import Queue from "@/pages/Queue";
-import MapPage from "@/pages/MapPage";
-import StewardIdentity from "@/pages/StewardIdentity";
-import Team from "@/pages/Team";
+const Ask = lazy(() => import("@/pages/Ask"));
+const CallSummary = lazy(() => import("@/pages/CallSummary"));
+const Customer = lazy(() => import("@/pages/Customer"));
+const DevKit = lazy(() => import("@/pages/DevKit"));
+const Features = lazy(() => import("@/pages/Features"));
+const Governance = lazy(() => import("@/pages/governance/Governance"));
+const Audit = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Audit })));
+const Benchmark = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Benchmark })));
+const Contract = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Contract })));
+const Fairness = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Fairness })));
+const Monitoring = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Monitoring })));
+const Quality = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Quality })));
+const Hardship = lazy(() => import("@/pages/hardship/Hardship"));
+const Board = lazy(() => import("@/pages/hardship/Lists").then((m) => ({ default: m.Board })));
+const Missed = lazy(() => import("@/pages/hardship/Lists").then((m) => ({ default: m.Missed })));
+const Overrides = lazy(() => import("@/pages/hardship/Lists").then((m) => ({ default: m.Overrides })));
+const Simulator = lazy(() => import("@/pages/hardship/Simulator"));
+const Landing = lazy(() => import("@/pages/Landing"));
+const Login = lazy(() => import("@/pages/Login"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const Queue = lazy(() => import("@/pages/Queue"));
+const MapPage = lazy(() => import("@/pages/MapPage"));
+const StewardIdentity = lazy(() => import("@/pages/StewardIdentity"));
+const Team = lazy(() => import("@/pages/Team"));
 
 const R = (roles: Role[], el: JSX.Element) => <RequireRole roles={roles}>{el}</RequireRole>;
 
 /** App routes: one screen set per persona. */
 export default function App() {
+  useEffect(() => preloadPages([
+    () => import("@/pages/Ask"),
+    () => import("@/pages/CallSummary"),
+    () => import("@/pages/Customer"),
+    () => import("@/pages/DevKit"),
+    () => import("@/pages/Features"),
+    () => import("@/pages/governance/Governance"),
+    () => import("@/pages/governance/Panels"),
+    () => import("@/pages/hardship/Hardship"),
+    () => import("@/pages/hardship/Lists"),
+    () => import("@/pages/hardship/Simulator"),
+    () => import("@/pages/Landing"),
+    () => import("@/pages/Login"),
+    () => import("@/pages/NotFound"),
+    () => import("@/pages/Queue"),
+    () => import("@/pages/MapPage"),
+    () => import("@/pages/StewardIdentity"),
+    () => import("@/pages/Team"),
+  ]), []);
   return (
+    <>
+    <NavigationEffects />
+    <Toaster position="bottom-right" richColors closeButton toastOptions={{ duration: 3500 }} />
     <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
       <Route element={<Layout />}>
-        <Route path="/queue" element={R(["agent", "team_lead"], <Queue />)} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/queue" element={R(["agent", "team_lead", "hardship_specialist"], <Queue />)} />
         <Route path="/customers/:goldenId" element={R(["agent", "hardship_specialist", "team_lead", "steward"], <Customer />)} />
         <Route path="/calls/:contactId" element={R(["agent"], <CallSummary />)} />
         <Route path="/ask" element={R(["analyst", "team_lead", "agent"], <Ask />)} />
@@ -59,5 +91,6 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
+    </>
   );
 }

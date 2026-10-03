@@ -5,7 +5,7 @@ const cad = (v: unknown) => (typeof v === "number" ? v.toLocaleString("en-CA", {
 
 export function HoldingsTable({ holdings }: { holdings: Holding[] }) {
   return (
-    <DataTable
+    <DataTable bare
       columns={["Product", "Account", "Balance", "Overdue", "DPD", "Status"]}
       rows={holdings.map((h) => [h.product, h.account, h.balance, h.overdue, h.dpd, h.status])}
       render={(v, col) => (col === "Balance" || col === "Overdue" ? cad(v) : String(v ?? "—"))}

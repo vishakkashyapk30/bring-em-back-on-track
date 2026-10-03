@@ -16,24 +16,28 @@
 
   /* Accents / semantics */
   --color-gold: #ffd58a; /* accent on dark, LLM/AI badges */
-  --color-teal: #1e7b6d; /* success: kept, passed, cured */
+  --color-teal: #19695d; /* success: kept, passed, cured */
   --color-teal-50: #e3f2ef;
-  --color-amber: #b86e00; /* hardship / vulnerability: "care", not red */
+  --color-amber: #8f5300; /* hardship / vulnerability: "care", not red */
   --color-amber-50: #fff1d6;
   --color-danger: #a71f3e; /* always with an icon + text */
 
   /* Type */
-  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* Shape */
-  --radius-xl: 45px; /* landing cards, hero panels (Figma) */
-  --radius-lg: 24px; /* app cards, NBA card */
-  --radius-md: 14px; /* inputs, buttons, chips */
-  --radius-sm: 8px; /* badges, cells */
+  --radius-xl: 24px; /* hero panels */
+  --radius-lg: 16px; /* cards */
+  --radius-md: 10px; /* inputs, buttons */
+  --radius-sm: 6px; /* badges, chips */
 
   /* Elevation: Positivus hard offset shadow, hero cards + primary CTAs only */
   --shadow-hard: 0 5px 0 0 #191a23;
+  --shadow-card: 0 1px 2px rgb(25 26 35 / 0.05), 0 2px 8px rgb(25 26 35 / 0.04);
+  --shadow-raised: 0 1px 2px rgb(25 26 35 / 0.06), 0 8px 24px rgb(25 26 35 / 0.08);
+  --shadow-focus: 0 0 0 3px rgb(167 31 62 / 0.25);
 }
 
 /* Sequential ramp (magnitude, one hue, light -> dark), from the brand red. Used for map bubbles, read at runtime

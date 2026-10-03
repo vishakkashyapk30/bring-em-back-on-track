@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { toast } from "sonner";
+
 import { post } from "@/api/client";
 import { useGet } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
@@ -19,7 +21,8 @@ export default function StewardIdentity() {
   const qc = useQueryClient();
   const decide = useMutation({
     mutationFn: ({ id, verdict }: { id: string; verdict: string }) => post(`/steward/identity/${id}`, { verdict }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["audit"] }),
+    onSuccess: (_r, v) => { qc.invalidateQueries({ queryKey: ["audit"] }); toast.success(`Verdict saved: ${v.verdict.replace("_", " ")}`, { description: `Pair ${v.id}, applied on the next identity run.` }); },
+    onError: () => toast.error("Couldn't save the verdict"),
   });
   const items: Pair[] = q.data?.items ?? [];
   return (
@@ -44,7 +47,7 @@ export default function StewardIdentity() {
               <div className="mt-3 flex items-center gap-2">
                 {[["link", "Link"], ["no_link", "No link"], ["unsure", "Unsure"]].map(([v, l]) => (
                   <button key={v} type="button" disabled={decide.isPending} onClick={() => decide.mutate({ id: p.pair_id, verdict: v })}
-                    className={`rounded-[var(--radius-md)] border border-ink px-4 py-2 ${v === "link" ? "bg-brand text-white" : "bg-white"}`}>{l}</button>
+                    className={`rounded-[var(--radius-md)] border border-grey-300 px-4 py-2 transition-colors hover:bg-grey-100 ${v === "link" ? "bg-brand text-white" : "bg-white"}`}>{l}</button>
                 ))}
                 <span aria-live="polite" className="text-sm text-muted">{done ? `Saved: ${decide.variables?.verdict.replace("_", " ")} (audited)` : ""}</span>
               </div>

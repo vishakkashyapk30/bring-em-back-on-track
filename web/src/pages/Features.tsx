@@ -31,14 +31,14 @@ export default function Features() {
         { label: "LLM-built features", value: String(by("llm")), note: "offline rules by default; an LLM is optional" },
       ]} />
       <QueryState q={q}>
-        <DataTable columns={["Feature", "Entity", "Type", "Source", "Available from", "Built by"]}
+        <DataTable searchable="Search features" filters={[{ id: "rule", label: "Rule-built", test: (r) => r[5] === "rule" }, { id: "sql", label: "SQL", test: (r) => r[5] === "sql" }, { id: "llm", label: "LLM", test: (r) => r[5] === "llm" }]} columns={["Feature", "Entity", "Type", "Source", "Available from", "Built by"]}
           rows={f.map((x) => [x.name, x.entity, x.type, (x.source as string[]).join(", "), x.available_ts, x.built_by])}
           render={(v, col) => (col === "Built by" ? <Badge kind={v === "llm" ? "llm" : v === "rule" ? "model-estimate" : "sql"}>{String(v)}</Badge> : col === "Feature" ? <code>{String(v)}</code> : String(v ?? ""))} />
       </QueryState>
       <h2 className="mt-10 text-xl">Live feature vector</h2>
       <form className="mb-4 flex gap-2" onSubmit={(e) => { e.preventDefault(); setLookup(gid.trim()); }}>
         <label htmlFor="gid" className="sr-only">Golden ID</label>
-        <input id="gid" value={gid} onChange={(e) => setGid(e.target.value)} className="rounded-[var(--radius-md)] border border-ink bg-white px-3 py-2 font-mono" />
+        <input id="gid" value={gid} onChange={(e) => setGid(e.target.value)} className="rounded-[var(--radius-md)] border border-grey-300 bg-white transition-colors hover:bg-grey-100 px-3 py-2 font-mono" />
         <button className="rounded-[var(--radius-md)] bg-ink px-4 text-white">Look up</button>
       </form>
       <QueryState q={vec}>

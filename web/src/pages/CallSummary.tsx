@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 import { post } from "@/api/client";
 import { useCallSummary, useTranscript } from "@/api/hooks";
@@ -17,7 +18,11 @@ export default function CallSummary() {
   const { contactId = "" } = useParams();
   const s = useCallSummary(contactId);
   const t = useTranscript(contactId);
-  const approve = useMutation({ mutationFn: () => post<{ audit_id: number }>(`/calls/${contactId}/summary/approve`, { draft: s.data?.draft }) });
+  const approve = useMutation({
+    mutationFn: () => post<{ audit_id: number }>(`/calls/${contactId}/summary/approve`, { draft: s.data?.draft }),
+    onSuccess: (r) => toast.success("Summary approved", { description: `Saved to the case and the audit log (#${r.audit_id}).` }),
+    onError: () => toast.error("Couldn't save the summary"),
+  });
   const d = s.data?.draft;
   return (
     <>
@@ -39,7 +44,6 @@ export default function CallSummary() {
               <h3>Next step</h3><p>{d.next_steps?.[0]?.text}</p>
               <button type="button" disabled={approve.isPending || approve.isSuccess} onClick={() => approve.mutate()}
                 className="rounded-[var(--radius-md)] bg-brand px-5 py-3 text-white disabled:opacity-60">{approve.isSuccess ? "Approved" : "Approve summary"}</button>
-              <span aria-live="polite" className="ml-3 text-sm text-muted">{approve.isSuccess && `Saved · audit #${approve.data.audit_id}`}{approve.isError && "Couldn't save"}</span>
             </Card>
           )}
         </QueryState>

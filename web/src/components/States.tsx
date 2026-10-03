@@ -5,9 +5,9 @@ import { Card } from "./Card";
 
 export function Skeleton({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="animate-pulse space-y-3" aria-busy="true" aria-label="Loading">
+    <div className="space-y-3" aria-busy="true" aria-label="Loading">
       {Array.from({ length: lines }).map((_, i) => (
-        <div key={i} className="h-4 rounded bg-grey-300" style={{ width: `${90 - i * 7}%` }} />
+        <div key={i} className="skeleton h-3.5 rounded-full" style={{ width: `${92 - ((i * 13) % 35)}%` }} />
       ))}
     </div>
   );
@@ -43,7 +43,7 @@ export function RefusalCard({ reason, alternative }: { reason: string; alternati
   );
 }
 
-export function QueryState({ q, children, empty }: { q: { isLoading: boolean; isError: boolean; error: unknown; data?: unknown }; children: ReactNode; empty?: boolean }) {
+export function QueryState({ q, children, empty, banner = true }: { q: { isLoading: boolean; isError: boolean; error: unknown; data?: unknown }; children: ReactNode; empty?: boolean; banner?: boolean }) {
   if (q.isLoading) return <Skeleton lines={5} />;
   if (q.isError) {
     const e = q.error as { forbidden?: boolean; reason?: string; message?: string };
@@ -51,7 +51,7 @@ export function QueryState({ q, children, empty }: { q: { isLoading: boolean; is
   }
   if (empty) return <EmptyState title="Nothing here yet" />;
   const fixture = (q.data as { meta?: { fixture?: boolean } } | undefined)?.meta?.fixture;
-  return <>{fixture && <SampleDataBanner />}{children}</>;
+  return <div className="fade-in">{fixture && banner && <SampleDataBanner />}{children}</div>;
 }
 
 /** Shown wherever an endpoint still serves sample data (its module isn't built yet), so nothing passes as real. */
@@ -60,5 +60,15 @@ export function SampleDataBanner() {
     <p role="note" className="mb-3 mt-0 inline-flex items-center gap-2 rounded-[var(--radius-sm)] bg-gold px-3 py-1 text-sm text-ink">
       <FlaskConical size={14} aria-hidden /> Sample data: this part is still being built (Layer 4), not the real dataset.
     </p>
+  );
+}
+
+/** Small inline marker for a panel that still shows sample data (Layer 4), for places where a banner is too loud. */
+export function SampleBadge() {
+  return (
+    <span title="This part is still being built (Layer 4) and shows sample data, not the real dataset."
+      className="inline-flex items-center gap-1 rounded-full bg-gold/70 px-2 py-0.5 text-[11.5px] font-medium text-ink">
+      <FlaskConical size={11} aria-hidden /> Sample data
+    </span>
   );
 }

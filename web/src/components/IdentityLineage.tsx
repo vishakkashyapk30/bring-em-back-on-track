@@ -1,12 +1,31 @@
-import { Badge } from "./Badge";
+const SYSTEM: Record<string, string> = { crm: "CRM", cards: "Cards", lending: "Lending", core_banking: "Core banking", bureau: "Credit bureau", collections: "Collections" };
 
-/** "4 source IDs → 1 golden ID · confidence 0.97" + 9-source lineage strip (brief takeaway 1). */
-export function IdentityLineage({ data }: { data: { golden_id: string; match_confidence: number; match_method: string; sources: { system: string; ref: string }[]; lineage: string[] } }) {
+type Src = { system: string; ref: string; method?: string; confidence?: number | null };
+
+/** Identity & lineage: how many systems and keys resolve to this golden ID, grouped by system. */
+export function IdentityLineage({ data }: { data: { golden_id: string; match_confidence: number; match_method: string; sources: Src[] } }) {
+  const groups = data.sources.reduce<Record<string, Src[]>>((a, s) => ({ ...a, [s.system]: [...(a[s.system] ?? []), s] }), {});
   return (
-    <div className="space-y-3">
-      <p className="m-0">{data.sources.length} source IDs → 1 golden ID · match confidence <b className="tabular">{data.match_confidence.toFixed(2)}</b> <span className="text-muted">({data.match_method})</span></p>
-      <div className="flex flex-wrap gap-2 font-mono text-sm">{data.sources.map((s) => <span key={s.ref} className="rounded bg-grey-100 px-2 py-0.5">{s.system}:{s.ref}</span>)}</div>
-      <div className="flex flex-wrap gap-1"><span className="text-sm text-muted">Lineage:</span>{data.lineage.map((l) => <Badge key={l} kind="neutral">{l}</Badge>)}</div>
+    <div>
+      <div className="grid grid-cols-3 gap-2 text-center">
+        {[["Systems", Object.keys(groups).length], ["Source keys", data.sources.length], ["Confidence", data.match_confidence.toFixed(2)]].map(([k, v]) => (
+          <div key={k} className="rounded-[var(--radius-md)] bg-grey-100 px-2 py-2.5">
+            <div className="font-[family-name:var(--font-display)] text-[18px] font-semibold tabular">{v}</div>
+            <div className="text-[12px] text-muted">{k}</div>
+          </div>
+        ))}
+      </div>
+      <p className="mb-3 mt-3 text-[13px] text-muted">Linked {data.match_method === "deterministic" ? "by exact keys (no fuzzy matching needed)" : "partly by scored matching"}.</p>
+      <ul className="m-0 list-none divide-y divide-grey-300/60 p-0">
+        {Object.entries(groups).map(([sys, items]) => (
+          <li key={sys} className="flex items-start justify-between gap-3 py-2">
+            <span className="text-[13.5px] font-medium">{SYSTEM[sys] ?? sys}</span>
+            <span className="flex flex-col items-end gap-0.5">
+              {items.map((s) => <code key={s.ref} className="text-[12.5px] text-muted">{s.ref}</code>)}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

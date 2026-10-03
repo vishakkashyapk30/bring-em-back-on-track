@@ -16,7 +16,7 @@ export function RequireRole({ roles, children }: { roles: Role[]; children: Reac
 }
 
 export const NAV: { to: string; label: string; roles: Role[] }[] = [
-  { to: "/queue", label: "Queue", roles: ["agent", "team_lead"] },
+  { to: "/queue", label: "Queue", roles: ["agent", "team_lead", "hardship_specialist"] },
   { to: "/ask", label: "Ask", roles: ["analyst", "team_lead", "agent"] },
   { to: "/hardship", label: "Hardship", roles: ["hardship_specialist"] },
   { to: "/map", label: "Map", roles: ["team_lead", "analyst"] },

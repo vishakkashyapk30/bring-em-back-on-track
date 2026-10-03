@@ -1,26 +1,51 @@
-import { Bell, Mail, MessageSquare, Phone, Smartphone, Zap } from "lucide-react";
+import clsx from "clsx";
+import { Bell, ChevronRight, Mail, MessageSquare, Phone, Smartphone, Zap } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const ICON: Record<string, JSX.Element> = {
-  call: <Phone size={16} />, sms: <MessageSquare size={16} />, email: <Mail size={16} />,
-  push: <Smartphone size={16} />, system: <Zap size={16} />, letter: <Bell size={16} />,
-};
+const ICON: Record<string, typeof Phone> = { call: Phone, sms: MessageSquare, email: Mail, push: Smartphone, system: Zap, letter: Bell };
+const LABEL: Record<string, string> = { call: "Call", sms: "SMS", email: "Email", push: "App notification", system: "System event", letter: "Letter", ivr: "Phone menu", chat: "Chat" };
 
-type Item = { date: string; type: string; text: string; contact_id?: string; transcript_id?: string; severity?: string };
+type Item = { date: string; type: string; text: string; contact_id?: string | null; transcript_id?: string | null; severity?: string | null };
 
-export function Timeline({ items }: { items: Item[] }) {
+/** Contact timeline: a vertical rail, one row per contact, newest first; calls with a transcript open the summary. */
+export function Timeline({ items, initial = 8 }: { items: Item[]; initial?: number }) {
+  const [n, setN] = useState(initial);
+  if (!items.length) return <p className="text-sm text-muted">No contacts recorded.</p>;
   return (
-    <ol className="m-0 list-none space-y-3 p-0">
-      {items.map((it, i) => (
-        <li key={i} className="flex gap-3">
-          <span className="w-16 shrink-0 text-sm text-muted tabular">{new Date(it.date).toLocaleDateString("en-CA", { day: "numeric", month: "short" })}</span>
-          <span aria-hidden className={it.severity === "high" ? "text-danger" : ""}>{ICON[it.type] ?? <Zap size={16} />}</span>
-          <span className="flex-1">
-            <span className="sr-only">{it.type}: </span>{it.text}
-            {it.contact_id && <> · <Link to={`/calls/${it.contact_id}`} className="text-brand">transcript {it.transcript_id}</Link></>}
-          </span>
-        </li>
-      ))}
-    </ol>
+    <div>
+      <ol className="relative m-0 list-none p-0">
+        <span aria-hidden className="absolute bottom-3 left-[15px] top-3 w-px bg-grey-300" />
+        {items.slice(0, n).map((it, i) => {
+          const Icon = ICON[it.type] ?? Zap;
+          const d = new Date(it.date);
+          return (
+            <li key={i} className="relative flex gap-3 py-2.5">
+              <span className={clsx("z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border bg-white",
+                it.severity === "high" ? "border-brand/40 text-brand" : "border-grey-300 text-muted")}><Icon size={15} aria-hidden /></span>
+              <div className="min-w-0 flex-1 pt-1">
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-[13px] font-medium text-ink">{LABEL[it.type] ?? it.type}</span>
+                  <time dateTime={it.date} className="shrink-0 text-[12.5px] text-muted tabular">
+                    {d.toLocaleDateString("en-CA", { day: "numeric", month: "short", year: d.getFullYear() !== 2026 ? "numeric" : undefined })}
+                  </time>
+                </div>
+                <p className="m-0 text-[14px] text-ink/85">{it.text}</p>
+                {it.contact_id && (
+                  <Link to={`/calls/${it.contact_id}`} className="mt-1 inline-flex items-center gap-0.5 text-[13px] font-medium">
+                    Read the call summary <ChevronRight size={14} aria-hidden />
+                  </Link>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+      {items.length > n && (
+        <button type="button" onClick={() => setN(n + 10)} className="mt-1 w-full rounded-[var(--radius-md)] py-2 text-[13.5px] font-medium text-brand transition-colors hover:bg-brand-50">
+          Show {Math.min(10, items.length - n)} more
+        </button>
+      )}
+    </div>
   );
 }

@@ -1,13 +1,17 @@
 import type { ReactNode } from "react";
 
-/** Figma "Heading & Subheading": highlighted pill + short subtitle beside it. */
-export function SectionTag({ children, subtitle, as: Tag = "h2" }: { children: ReactNode; subtitle?: ReactNode; as?: "h1" | "h2" | "h3" }) {
+/** Page and section headings. h1 = page title with a short brand accent; h2/h3 = section titles.
+ * (Name kept for compatibility; this replaced the oversized red pill headings.) */
+export function SectionTag({ children, subtitle, as: Tag = "h2", actions }: { children: ReactNode; subtitle?: ReactNode; as?: "h1" | "h2" | "h3"; actions?: ReactNode }) {
+  const page = Tag === "h1";
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-x-8 gap-y-2">
-      <Tag className="m-0 inline-block rounded-[var(--radius-sm)] bg-brand px-2 text-2xl font-medium leading-tight text-white md:text-[40px] md:leading-[1.2]">
-        {children}
-      </Tag>
-      {subtitle && <p className="m-0 max-w-xl text-muted">{subtitle}</p>}
+    <div className={page ? "mb-6 flex flex-wrap items-end justify-between gap-4" : "mb-4 mt-2 flex flex-wrap items-end justify-between gap-3"}>
+      <div className="min-w-0">
+        {page && <span aria-hidden className="mb-2 block h-1 w-8 rounded-full bg-brand" />}
+        <Tag className={page ? "m-0 text-[1.875rem] text-ink" : "m-0 text-xl text-ink"}>{children}</Tag>
+        {subtitle && <p className={page ? "mb-0 mt-1.5 max-w-3xl text-[15px] text-muted" : "mb-0 mt-1 max-w-3xl text-sm text-muted"}>{subtitle}</p>}
+      </div>
+      {actions && <div className="flex items-center gap-2">{actions}</div>}
     </div>
   );
 }
