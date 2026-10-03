@@ -80,31 +80,31 @@ def desired(
         return (
             "no_contact",
             [],
-            _rc("LADDER_ON_PLAN", "The customer is on an agreed hardship plan: no contact, the plan is being followed"),
+            _rc("LADDER_ON_PLAN", "This customer is on an agreed hardship plan, so we won't contact them while the plan runs"),
         )
     if gate_result.route_to in ("hardship_specialist", "vulnerable_customer_certified"):
         why = (
-            "Hardship is flagged"
+            "This customer has a hardship flag"
             if gate_result.route_to == "hardship_specialist"
-            else "The customer is flagged as vulnerable"
+            else "This customer is flagged as vulnerable"
         )
         return (
             "specialist_referral",
             PREFERENCE["specialist_referral"],
-            _rc("LADDER_REFERRAL", f"{why}: refer to a trained agent, no pressure"),
+            _rc("LADDER_REFERRAL", f"{why}, so a trained agent should handle it, without pressure"),
         )
     if just_broken and delayed:
         return (
             "plan_offer",
             PREFERENCE["plan_offer"],
-            _rc("LADDER_BROKEN_LATE_PAY", "A promise just broke and pay is late: offer a plan"),
+            _rc("LADDER_BROKEN_LATE_PAY", "They broke a recent promise and their pay is late, so offer a payment plan before another reminder"),
         )
     if dpd >= cfg["dpd_agent_call_min"] and (band == "high" or band is None):
-        basis = "and high break risk" if band == "high" else "and no promise on the case"
+        basis = "and likely to break a promise" if band == "high" else "with no promise on the case"
         return (
             "reminder",
             AGENT_CALL,
-            _rc("LADDER_AGENT_CALL", f"{cfg['dpd_agent_call_min']}+ days past due {basis}: a call from an agent"),
+            _rc("LADDER_AGENT_CALL", f"They're {cfg['dpd_agent_call_min']}+ days past due {basis}, so an agent should call"),
         )
     if open_ptp and band == "high" and due is not None and due <= cfg["due_soon_days"]:
         return (
@@ -112,22 +112,22 @@ def desired(
             PREFERENCE["reminder"],
             _rc(
                 "LADDER_PTP_DUE_SOON",
-                f"High break risk and the promise falls due within {cfg['due_soon_days']} days: send a reminder",
+                f"Their promise is due within {cfg['due_soon_days']} days and may well break, so send a reminder",
             ),
         )
     if open_ptp and band == "low":
         return (
             "no_contact",
             [],
-            _rc("LADDER_PTP_ON_TRACK", "A promise is open and the break risk is low: no contact needed"),
+            _rc("LADDER_PTP_ON_TRACK", "They've made a promise and are unlikely to break it, so no contact is needed"),
         )
     if open_ptp:
         return (
             "no_contact",
             [],
-            _rc("LADDER_PTP_WAIT", "A promise is open and not due soon: wait, look again closer to the date"),
+            _rc("LADDER_PTP_WAIT", "They've made a promise that isn't due yet, so wait and look again closer to the date"),
         )
-    return "payment_link", PREFERENCE["payment_link"], _rc("LADDER_DEFAULT", "No open promise: send a payment link")
+    return "payment_link", PREFERENCE["payment_link"], _rc("LADDER_DEFAULT", "There is no open promise, so send a payment link")
 
 
 def choose(

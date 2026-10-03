@@ -10,10 +10,10 @@ from decisioning.policy_gate import CHANNEL_LABEL
 from decisioning.schemas import Action, Explanation, GateResult, ReasonCode
 
 WINDOW_TEXT = {
-    "08-12": "between 08:00 and 12:00",
-    "12-17": "between 12:00 and 17:00",
-    "17-21": "between 17:00 and 21:00",
-    "all_day": "any time of day",
+    "08-12": "between 8 am and noon",
+    "12-17": "between noon and 5 pm",
+    "17-21": "between 5 pm and 9 pm",
+    "all_day": "at any time of day",
 }
 BAND_LABEL = {"low": "Low", "medium": "Medium", "high": "High", "very_high": "Very high"}
 
@@ -33,9 +33,9 @@ def recommendation(a: Action, route_to: str | None = None, program_name: str | N
         return "No contact for now"
     if t == "reminder":
         return (
-            f"Call the customer to talk about the payment{_when(a)}"
+            f"Call about the payment{_when(a)}"
             if ch == "call"
-            else f"Send a payment reminder by {label}{_when(a)}"
+            else f"Send a reminder by {label}{_when(a)}"
         )
     if t == "payment_link":
         return f"Send a payment link by {label}{_when(a)}"
@@ -44,7 +44,7 @@ def recommendation(a: Action, route_to: str | None = None, program_name: str | N
         return f"Offer {what} by {label}{_when(a)}"
     if t == "specialist_referral":
         who = "a hardship specialist" if route_to == "hardship_specialist" else "a trained agent"
-        return f"Refer to {who} by {label}{_when(a)}; no pressure"
+        return f"Hand over to {who} by {label}{_when(a)}, with no pressure"
     return t.replace("_", " ")
 
 
@@ -61,7 +61,7 @@ def positives(gate_result: GateResult, customer: dict, a: Action) -> list[Reason
     if ch == "call":
         s, e = customer.get("permitted_call_start_local", "08:00"), customer.get("permitted_call_end_local", "20:00")
         out.append(
-            ReasonCode(code="HOURS_OK", text=f"Inside permitted call hours {s[:5]} to {e[:5]} local time", kind="rule")
+            ReasonCode(code="HOURS_OK", text=f"Within call hours ({s[:5]} to {e[:5]} local time)", kind="rule")
         )
     return out
 
@@ -80,11 +80,11 @@ def drivers(case: dict, p_break: float | None) -> list[ReasonCode]:
         )
     pd_ = case.get("payroll_delay_days")
     if pd_ and pd_ > 0:
-        out.append(ReasonCode(code="payroll_delay_days", text=f"Payroll deposit {int(pd_)} days late", kind="signal"))
+        out.append(ReasonCode(code="payroll_delay_days", text=f"Payroll arrived {int(pd_)} days late", kind="signal"))
     if (case.get("nsf_count_mtd") or 0) >= 2:
         out.append(
             ReasonCode(
-                code="nsf_count_mtd", text=f"{int(case['nsf_count_mtd'])} returned payments this month", kind="signal"
+                code="nsf_count_mtd", text=f"{int(case['nsf_count_mtd'])} payments returned this month", kind="signal"
             )
         )
     return out
@@ -96,11 +96,10 @@ def changes(case: dict, as_of: date) -> list[ReasonCode]:
     if lb is not None and lb == lb:
         d = lb.date() if hasattr(lb, "date") else lb
         pid = case.get("last_broken_ptp")
-        out.append(
-            ReasonCode(code="PTP_BROKEN", text=f"Promise{' ' + pid if pid else ''} broken on {d:%-d %b}", kind="change")
-        )
+        which = f"Promise {pid}" if pid else "A promise"
+        out.append(ReasonCode(code="PTP_BROKEN", text=f"{which} was broken on {d:%-d %b}", kind="change"))
     if case.get("hardship_source") == "set in the app":
-        out.append(ReasonCode(code="HARDSHIP_SET", text="Hardship flag set by a person in the app", kind="change"))
+        out.append(ReasonCode(code="HARDSHIP_SET", text="A person set the hardship flag in the app", kind="change"))
     return out
 
 
@@ -149,7 +148,7 @@ def explain(
         rules_applied=rules,
         model_evidence=evidence,
         what_changed=chg,
-        freshness=ReasonCode(code="FRESH", text=f"Data as of {as_of:%-d %b %Y}", kind="freshness"),
+        freshness=ReasonCode(code="FRESH", text=f"Data from {as_of:%-d %b %Y}", kind="freshness"),
         alternatives=alternatives,
         generated_by="template",
     )
