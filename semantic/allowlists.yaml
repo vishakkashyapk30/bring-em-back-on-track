@@ -1,0 +1,19 @@
+# Role allowlists. The NL-to-SQL executor can only read these views and columns.
+# TODO(WS-B): fill columns once role views are final.
+agent:
+  views: [gold.role_agent_customer_v]
+  row_filter: "assigned_agent_id = :user_id"
+  aggregate_only: false
+hardship_specialist:
+  views: [gold.role_hardship_case_v]
+  aggregate_only: false
+team_lead:
+  views: [gold.role_lead_team_v, gold.role_analyst_metrics_v]
+  row_filter: "team_id = :team_id"
+  aggregate_only: false
+analyst:
+  views: [gold.role_analyst_metrics_v]
+  aggregate_only: true
+steward:
+  views: [gold.role_steward_identity_v]
+  aggregate_only: false
