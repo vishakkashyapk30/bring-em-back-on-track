@@ -1,19 +1,13 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const TITLES: [RegExp, string][] = [
-  [/^\/$/, "Bring 'em back on track"], [/^\/login/, "Sign in"], [/^\/queue/, "Today's queue"],
-  [/^\/customers\//, "Customer 360"], [/^\/calls\//, "Post-call summary"], [/^\/ask/, "Collections Ask"],
-  [/^\/hardship/, "Hardship workbench"], [/^\/map/, "Weather map"], [/^\/team/, "Team"], [/^\/features/, "Feature store"],
-  [/^\/governance/, "Governance"], [/^\/steward/, "Identity review"],
-];
+const TAB_TITLE = "Bring 'em back on track"; // the same on every page, by request
 
-/** Natural navigation: new pages start at the top (or at the #section asked for), and the tab title follows. */
+/** Natural navigation: new pages start at the top (or at the #section asked for), and the tab title stays the same. */
 export function NavigationEffects() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    const t = TITLES.find(([re]) => re.test(pathname))?.[1] ?? "Collections 360";
-    document.title = `${t} · Collections 360`;
+    document.title = TAB_TITLE;
     if (hash) {
       const el = document.getElementById(hash.slice(1));
       if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }

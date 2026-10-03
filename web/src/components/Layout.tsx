@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { LogOut, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Suspense, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -38,39 +38,39 @@ export function Layout() {
     <div className="flex min-h-screen flex-col">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2">Skip to content</a>
       <header className="sticky top-0 z-40 border-b border-grey-300/70 bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
-        <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center gap-6 px-5 md:px-8">
-          <Link to={signedIn ? (links[0]?.to ?? "/") : "/"} className="flex shrink-0 items-center gap-2.5 text-ink no-underline hover:no-underline">
+        <div className="mx-auto flex h-[72px] w-full max-w-[1680px] items-center gap-8 px-5 md:px-10">
+          <Link to="/" aria-label="back-on-track.ai, home page" className="flex shrink-0 items-center gap-2.5 text-ink no-underline hover:no-underline">
             <img src="/favicon.svg" alt="" width={28} height={28} />
-            <span className="font-[family-name:var(--font-display)] text-[17px] font-semibold tracking-tight">Collections <span className="text-brand">360</span></span>
+            <span className="font-[family-name:var(--font-display)] text-[26px] font-semibold leading-none">back-on-track<span className="text-brand">.ai</span></span>
           </Link>
 
           <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
             {signedIn
               ? links.map((n) => (
                   <NavLink key={n.to} to={n.to} className={({ isActive }) => clsx(
-                    "relative rounded-[var(--radius-md)] px-3 py-2 text-[14px] font-medium no-underline transition-colors hover:no-underline",
+                    "relative rounded-[var(--radius-md)] px-4 py-2.5 text-[16px] font-medium no-underline transition-colors hover:no-underline",
                     isActive ? "text-brand" : "text-ink/75 hover:bg-grey-100 hover:text-ink")}>
-                    {({ isActive }) => (<>{n.label}{isActive && <span aria-hidden className="absolute inset-x-3 -bottom-[13px] h-0.5 rounded-full bg-brand" />}</>)}
+                    {({ isActive }) => (<>{n.label}{isActive && <span aria-hidden className="absolute inset-x-4 -bottom-[13px] h-0.5 rounded-full bg-brand" />}</>)}
                   </NavLink>))
               : PUBLIC_LINKS.map(([to, label]) => (
-                  <a key={to} href={to} className="rounded-[var(--radius-md)] px-3 py-2 text-[14px] font-medium text-ink/75 no-underline transition-colors hover:bg-grey-100 hover:text-ink hover:no-underline">{label}</a>))}
+                  <a key={to} href={to} className="rounded-[var(--radius-md)] px-4 py-2.5 text-[16px] font-medium text-ink/75 no-underline transition-colors hover:bg-grey-100 hover:text-ink hover:no-underline">{label}</a>))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center">
             {signedIn ? (
               <>
-                <div className="hidden text-right leading-tight sm:block">
-                  <div className="text-[13px] font-medium">{me.data?.display_name}</div>
-                  <div className="text-[12px] text-muted">{ROLE_LABEL[me.data?.role ?? ""]}</div>
+                <div className="hidden leading-tight sm:block">
+                  <div className="text-[15px] font-semibold">{me.data?.display_name}</div>
+                  <div className="text-[13px] text-muted">{ROLE_LABEL[me.data?.role ?? ""]}</div>
                 </div>
-                <button type="button" onClick={signOut} title="Switch role" className="inline-flex h-9 items-center gap-1.5 rounded-[var(--radius-md)] border border-grey-300 bg-white px-3 text-[13px] font-medium transition-colors hover:bg-grey-100">
-                  <LogOut size={15} aria-hidden /> Switch role
+                <button type="button" onClick={signOut} className="ml-6 border-l border-grey-300 py-2 pl-6 text-[14.5px] font-semibold text-brand underline-offset-4 hover:underline">
+                  Switch role
                 </button>
               </>
             ) : (
-              <Link to="/login" className="inline-flex h-9 items-center rounded-[var(--radius-md)] bg-brand px-4 text-[14px] font-medium text-white no-underline transition-colors hover:bg-brand-700 hover:no-underline">Sign in</Link>
+              <Link to="/login" className="inline-flex h-10 items-center rounded-[var(--radius-md)] bg-brand px-5 text-[15px] font-medium text-white no-underline transition-colors hover:bg-brand-700 hover:no-underline">Sign in</Link>
             )}
-            <button type="button" className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-grey-300 md:hidden" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+            <button type="button" className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] md:hidden" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
               {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
@@ -84,16 +84,16 @@ export function Layout() {
         )}
       </header>
 
-      <main id="main" className={clsx("w-full flex-1", !fullBleed && "mx-auto max-w-[1400px] px-5 py-8 md:px-8")}>
-        <Suspense fallback={<div className="mx-auto max-w-[1400px] px-5 py-8 md:px-8"><Skeleton lines={8} /></div>}>
+      <main id="main" className={clsx("w-full flex-1", !fullBleed && "mx-auto max-w-[1680px] px-5 py-8 md:px-10")}>
+        <Suspense fallback={<div className="mx-auto max-w-[1680px] px-5 py-8 md:px-10"><Skeleton lines={8} /></div>}>
           <div key={loc.pathname} className="page-in"><Outlet /></div>
         </Suspense>
       </main>
 
       <footer className="border-t border-grey-300/70 bg-white">
-        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 px-5 py-5 text-[13px] text-muted md:px-8">
-          <span>Collections 360 · Team Deep in Debt · CIBC Collections Hackathon</span>
-          <span>Synthetic data (Maple Bank, snapshot 28 Sep 2026)</span>
+        <div className="mx-auto flex max-w-[1680px] flex-wrap items-center justify-between gap-2 px-5 py-5 text-[13px] text-muted md:px-10">
+          <span>Back-on-Track.ai, built by Team Deep in Debt for the CIBC Collections Hackathon.</span>
+          <span>Every customer here is synthetic (Maple Bank, data as of 28 Sep 2026).</span>
         </div>
       </footer>
     </div>
