@@ -23,7 +23,8 @@ def test_views_survive_publish(tmp_path):
     building = tmp_path / "building" / "warehouse.duckdb"
     building.parent.mkdir()
     with duckdb.connect(str(building)) as c:
-        c.execute("create schema gold; create table gold.t as select 1 as v; create view gold.v as select * from warehouse.gold.t")
+        c.execute("create schema gold; create table gold.t as select 1 as v")
+        c.execute("create view gold.v as select * from warehouse.gold.t")
     publish(building, live)
     with duckdb.connect(str(live), read_only=True) as c:
         assert c.execute("select v from gold.v").fetchone()[0] == 1
