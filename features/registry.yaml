@@ -1,12 +1,396 @@
-# One entry per feature. The /features catalog is generated from this file.
-# CI fails if any name/source references a protected attribute (tests/constraints).
+# Feature registry (Layer 3). One entry per feature; the /features catalog reads this file.
+# Promise features share ONE definition (pipeline/macros/ptp_features.sql) evaluated as of the promise's creation
+# for training (features.f_ptp_offline) and as of the scoring time for live use (features.f_ptp_online).
+# built_by: sql | rule (offline text extractor, validated on the release's public labels) | llm (optional provider).
+- name: ptp_amount
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Promised amount (CAD)
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: days_to_due_at_creation
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Days between promise and due date
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: prior_broken_ptp_count
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Promises broken before this one
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: ptp_to_overdue_ratio
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Promise amount / overdue amount
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: dpd_at_creation
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Days past due when the promise was made
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: ptp_sequence_in_case
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Nth promise in the case
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: reminder_scheduled
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Reminder scheduled
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: due_minus_stated_payday_days
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Due date minus the customer's stated payday (A2 promise check)
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: stated_payday_known
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Customer stated a payday
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: days_in_case
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - collections_cases
+  description: Days since case open, as of scoring
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: as_of_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: entry_dpd
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - collections_cases
+  description: DPD when the case opened
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: case_open_date
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: attempts_30d
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - contact_history
+  description: Outbound attempts in the 30 days before as-of
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: contact_ts_local < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: rpc_30d
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - contact_history
+  description: Right-party contacts in the 30 days before as-of
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: contact_ts_local < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: contacts_90d
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - contact_history
+  description: Contacts in the 90 days before as-of
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: contact_ts_local < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: complaints_90d
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - contact_history
+  description: Complaints raised, 90 days
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: contact_ts_local < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: disputes_90d
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - contact_history
+  description: Disputes raised, 90 days
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: contact_ts_local < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: hardship_mentions_90d
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - contact_history
+  description: Agent-coded hardship mentions, 90 days
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: contact_ts_local < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: broken_before_in_case
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Promises in the case broken before as-of
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: status_ts < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: kept_before_in_case
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - promises_to_pay
+  description: Promises in the case kept before as-of
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: status_ts < as_of
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: text_hardship_clear_90d
+  entity: promise
+  type: int
+  built_by: rule
+  source:
+  - agent_notes
+  - call_transcripts
+  description: Notes/calls with clear hardship (rule extractor), 90 days
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: note last edit / call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  label_accuracy: &id001
+    metric: accuracy vs 500 public note labels (hardship / reason), recall
+    value: 0.952 / 0.986, 0.842
+    n: 500
+- name: text_hardship_possible_90d
+  entity: promise
+  type: int
+  built_by: rule
+  source:
+  - agent_notes
+  - call_transcripts
+  description: Notes/calls with possible hardship, 90 days
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: note last edit / call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  label_accuracy: *id001
+- name: text_dispute_90d
+  entity: promise
+  type: int
+  built_by: rule
+  source:
+  - agent_notes
+  - call_transcripts
+  description: Notes/calls with a dispute cue, 90 days
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: note last edit / call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  label_accuracy: &id002
+    metric: accuracy vs 500 public transcript labels (hardship / reason / summary)
+    value: 0.996 / 0.996 / 0.98
+    n: 500
+- name: text_complaint_90d
+  entity: promise
+  type: int
+  built_by: rule
+  source:
+  - agent_notes
+  - call_transcripts
+  description: Notes/calls with a complaint cue, 90 days
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: note last edit / call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  label_accuracy: *id002
+- name: last_stated_delay_reason
+  entity: promise
+  type: category
+  built_by: rule
+  source:
+  - agent_notes
+  - call_transcripts
+  description: Latest stated delay reason from text
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: note last edit / call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  label_accuracy: *id002
+- name: dpd_max_current
+  entity: customer
+  type: int
+  built_by: sql
+  source:
+  - gold.c360_customer
+  description: Max DPD over open accounts
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: snapshot_date
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: total_past_due_cad
+  entity: customer
+  type: decimal
+  built_by: sql
+  source:
+  - gold.c360_customer
+  description: Past-due amount over open accounts
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: snapshot_date
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
 - name: payroll_delay_days
   entity: customer
   type: int
   built_by: sql
-  source: [deposit_accounts]
-  definition: pipeline/models/features/f_customer_payroll.sql
-  available_ts: snapshot_date + extract_lag
+  source:
+  - deposit_accounts
+  description: Payroll deposit delay (days)
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: snapshot_date
   refresh: daily
   freshness_sla_hours: 26
   owner: Collections Analytics
@@ -16,27 +400,142 @@
   entity: customer
   type: int
   built_by: sql
-  source: [promises_to_pay]
-  definition: pipeline/models/features/f_promise_history.sql
+  source:
+  - promises_to_pay
+  description: Promises broken in 90 days
+  definition: pipeline/models/features/f_customer_online.sql
   available_ts: status_ts
   refresh: daily
   freshness_sla_hours: 26
   owner: Collections Analytics
   version: 1
   fairness_review: pending
-- name: hardship_signal
+- name: nsf_count_mtd
+  entity: customer
+  type: int
+  built_by: sql
+  source:
+  - deposit_accounts
+  description: NSF events this month (cash stress S7)
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: snapshot_date
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: days_negative_mtd
+  entity: customer
+  type: int
+  built_by: sql
+  source:
+  - deposit_accounts
+  description: Days overdrawn this month (S7)
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: snapshot_date
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: high_cost_lender_txn_flag
+  entity: customer
+  type: bool
+  built_by: sql
+  source:
+  - deposit_accounts
+  description: Payments to high-cost lenders (S7)
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: snapshot_date
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: ei_deposit_flag
+  entity: customer
+  type: bool
+  built_by: sql
+  source:
+  - deposit_accounts
+  description: EI deposits present
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: snapshot_date
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: bureau_score_delta_90d
+  entity: customer
+  type: int
+  built_by: sql
+  source:
+  - external
+  description: Bureau score change in 90 days
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: pull_date
+  refresh: per_pull
+  freshness_sla_hours: 4400
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: bnpl_trades_count
+  entity: customer
+  type: int
+  built_by: sql
+  source:
+  - external
+  description: Buy-now-pay-later trades
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: pull_date
+  refresh: per_pull
+  freshness_sla_hours: 4400
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: last_note_hardship_signal
   entity: customer
   type: enum[none,possible,clear]
-  built_by: rule            # rule (offline) | llm; switch only if llm beats rule on labels
-  source: [call_transcripts, agent_notes]
-  definition: features/text_rules.py
-  available_ts: call_end_ts + extraction_time
+  built_by: rule
+  source:
+  - agent_notes
+  description: Latest note hardship signal
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: note last edit
   refresh: per_contact
   freshness_sla_hours: 26
   owner: Collections Analytics
   version: 1
   fairness_review: pending
-  prompt: llm/prompts/text_features/v1.md
-  label_accuracy: {metric: recall, value: null, n: 200}
-# TODO(WS-C): rest of the Phase 1 set: delinquency, promise history, payday, cash stress, bureau,
-# contactability, employer cohort, text and voice (call-level) features
+  label_accuracy: *id001
+- name: last_call_hardship_signal
+  entity: customer
+  type: enum[none,possible,clear]
+  built_by: rule
+  source:
+  - call_transcripts
+  description: Latest call hardship signal
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: call end
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  label_accuracy: *id002
+- name: last_call_next_step
+  entity: customer
+  type: category
+  built_by: rule
+  source:
+  - call_transcripts
+  description: Next step agreed on the latest call
+  definition: pipeline/models/features/f_customer_online.sql
+  available_ts: call end
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  label_accuracy: *id002

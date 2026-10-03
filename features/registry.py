@@ -25,6 +25,7 @@ class FeatureSpec(BaseModel):
     owner: str
     version: int
     fairness_review: str
+    description: str | None = None
     prompt: str | None = None
     label_accuracy: dict | None = None
 
