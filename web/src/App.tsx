@@ -9,6 +9,8 @@ import { RequireRole } from "@/lib/session";
 const Ask = lazy(() => import("@/pages/Ask"));
 const CallSummary = lazy(() => import("@/pages/CallSummary"));
 const Customer = lazy(() => import("@/pages/Customer"));
+const Demo = lazy(() => import("@/pages/Demo"));
+const DemoJourney = lazy(() => import("@/pages/DemoJourney"));
 const DevKit = lazy(() => import("@/pages/DevKit"));
 const Features = lazy(() => import("@/pages/Features"));
 const Governance = lazy(() => import("@/pages/governance/Governance"));
@@ -39,6 +41,8 @@ export default function App() {
     () => import("@/pages/Ask"),
     () => import("@/pages/CallSummary"),
     () => import("@/pages/Customer"),
+    () => import("@/pages/Demo"),
+    () => import("@/pages/DemoJourney"),
     () => import("@/pages/DevKit"),
     () => import("@/pages/Features"),
     () => import("@/pages/governance/Governance"),
@@ -47,6 +51,7 @@ export default function App() {
     () => import("@/pages/hardship/Lists"),
     () => import("@/pages/hardship/Simulator"),
     () => import("@/pages/Landing"),
+    () => import("@/components/Globe"),
     () => import("@/pages/Login"),
     () => import("@/pages/NotFound"),
     () => import("@/pages/Queue"),
@@ -62,6 +67,8 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/demo" element={<Demo />} />
+        <Route path="/demo/:persona" element={<DemoJourney />} />
         <Route path="/queue" element={R(["agent", "team_lead", "hardship_specialist"], <Queue />)} />
         <Route path="/customers/:goldenId" element={R(["agent", "hardship_specialist", "team_lead", "steward"], <Customer />)} />
         <Route path="/calls/:contactId" element={R(["agent"], <CallSummary />)} />

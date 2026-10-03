@@ -33,17 +33,25 @@ export default function Login() {
         {PERSONAS.map(({ role, title, home, blurb, icon: Icon }) => {
           const busy = login.isPending && login.variables === role;
           return (
-            <button key={role} type="button" disabled={login.isPending}
-              onClick={() => login.mutate(role, { onSuccess: () => nav(home) })}
-              className="group flex w-full items-center gap-4 rounded-[var(--radius-md)] border border-grey-300 bg-white p-4 text-left transition-colors hover:border-ink disabled:opacity-70">
-              <Icon size={24} aria-hidden className="shrink-0 text-brand" />
-              <span className="min-w-0 flex-1">
-                <span className="block font-[family-name:var(--font-display)] text-[22px] font-semibold leading-tight">{title}</span>
-                <span className="block text-[15px] text-muted">{blurb}</span>
-              </span>
-              {busy ? <Loader2 size={18} className="animate-spin text-brand" aria-label="Signing in" />
-                : <ArrowRight size={18} aria-hidden className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-brand" />}
-            </button>
+            <div key={role} className="rounded-[var(--radius-md)] border border-grey-300 bg-white transition-colors hover:border-ink">
+              <button type="button" disabled={login.isPending}
+                onClick={() => login.mutate(role, { onSuccess: () => nav(home) })}
+                className="group flex w-full items-center gap-4 rounded-[var(--radius-md)] p-4 text-left disabled:opacity-70">
+                <Icon size={24} aria-hidden className="shrink-0 text-brand" />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-[family-name:var(--font-display)] text-[22px] font-semibold leading-tight">{title}</span>
+                  <span className="block text-[15px] text-muted">{blurb}</span>
+                </span>
+                {busy ? <Loader2 size={18} className="animate-spin text-brand" aria-label="Signing in" />
+                  : <ArrowRight size={18} aria-hidden className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-brand" />}
+              </button>
+              <div className="px-4 pb-3 pl-[58px]">
+                <button type="button" disabled={login.isPending} onClick={() => login.mutate(role, { onSuccess: () => nav(`/demo/${role}`) })}
+                  className="text-[14px] font-semibold text-brand underline-offset-4 hover:underline disabled:opacity-60">
+                  Watch this persona's demo
+                </button>
+              </div>
+            </div>
           );
         })}
         {login.isError && <p role="alert" className="text-sm text-danger">We couldn't sign you in. Check that the API is running and try again.</p>}
