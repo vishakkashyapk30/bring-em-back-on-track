@@ -1,0 +1,1 @@
+{"type": "object", "required": ["diff", "explanation"], "properties": {"diff": {"type": "string"}, "explanation": {"type": "string"}}}

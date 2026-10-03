@@ -1,0 +1,1 @@
+{"type": "object", "required": ["candidates"], "properties": {"candidates": {"type": "array", "items": {"type": "object", "properties": {"target": {"type": "string"}, "reason": {"type": "string"}, "score": {"type": "number"}}}}}}

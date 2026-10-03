@@ -1,0 +1,1 @@
+{"type": "object", "required": ["insight", "followups"], "properties": {"insight": {"type": "string"}, "followups": {"type": "array", "items": {"type": "string"}}}}

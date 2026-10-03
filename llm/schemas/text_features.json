@@ -1,0 +1,3 @@
+{"type": "object", "required": ["hardship_signal", "stated_delay_reason", "ptp_intent_strength", "dispute_signal", "evidence"],
+ "properties": {"hardship_signal": {"enum": ["none", "possible", "clear"]}, "stated_delay_reason": {"type": ["string", "null"]},
+  "ptp_intent_strength": {"type": ["number", "null"]}, "dispute_signal": {"type": "boolean"}, "evidence": {"type": "array"}}}
