@@ -1,0 +1,71 @@
+# Collections 360. Modular monolith: web + api long-running, jobs run-to-completion.
+#   make up       -> web on http://localhost:8080 (fixtures until a warehouse is published)
+#   make nightly  -> docker compose run --rm jobs nightly
+name: collections360
+
+x-python-env: &python-env
+  env_file:
+    - path: .env
+      required: false
+
+services:
+  api:
+    <<: *python-env
+    build: {context: ., target: api}
+    image: collections360/api:dev
+    environment:
+      USE_FIXTURES: ${USE_FIXTURES:-true}
+      CORS_ORIGINS: http://localhost:8080
+    volumes:
+      - c360-data:/app/data
+      - c360-artefacts:/app/models/ptp_break/artefacts
+      - c360-reports:/app/reports
+      - c360-models-cache:/app/.cache/models
+    restart: unless-stopped
+
+  web:
+    build: {context: ./web}
+    image: collections360/web:dev
+    ports: ["${WEB_PORT:-8080}:8080"]
+    depends_on:
+      api: {condition: service_healthy}
+    restart: unless-stopped
+
+  jobs:
+    <<: *python-env
+    build:
+      context: .
+      target: jobs
+      args: {JOBS_EXTRAS: "${JOBS_EXTRAS:---extra pipeline}"}
+    image: collections360/jobs:dev
+    profiles: [jobs]
+    environment:
+      C360_DUCKDB_MEMORY: ${C360_DUCKDB_MEMORY:-8GB}
+    volumes:
+      - c360-data:/app/data
+      - ./data/raw:/app/data/raw:ro          # dataset never goes into an image
+      - c360-artefacts:/app/models/ptp_break/artefacts
+      - c360-reports:/app/reports
+      - c360-models-cache:/app/.cache/models
+
+  # Optional: event re-scoring / LLM backfill consumer. Only if inline re-scoring is too slow.
+  worker:
+    <<: *python-env
+    image: collections360/jobs:dev
+    profiles: [realtime]
+    entrypoint: ["python", "-c", "raise SystemExit('worker not implemented: see docs/architecture/README.md')"]
+    volumes:
+      - c360-data:/app/data
+
+  # Optional: local LLM for LLM_PROVIDER=ollama (D13). Set OLLAMA_HOST=http://ollama:11434 in .env.
+  ollama:
+    image: ollama/ollama:latest
+    profiles: [llm-local]
+    volumes: [ollama-models:/root/.ollama]
+
+volumes:
+  c360-data: {}
+  c360-artefacts: {}
+  c360-reports: {}
+  c360-models-cache: {}
+  ollama-models: {}

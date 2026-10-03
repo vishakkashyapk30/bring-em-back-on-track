@@ -1,0 +1,13 @@
+# make test-containers: run the Python suites inside the image, plus the independent spec suite
+# (tests_spec/, D18) when it lands, against the running api container (SPEC_API_URL).
+services:
+  tests:
+    build: {context: ., target: test}
+    image: collections360/test:dev
+    profiles: [test]
+    environment:
+      SPEC_API_URL: http://api:8000
+      USE_FIXTURES: "true"
+    depends_on:
+      api: {condition: service_healthy}
+    command: ["sh", "-c", "pytest && if [ -d tests_spec ]; then pytest tests_spec -q; fi"]
