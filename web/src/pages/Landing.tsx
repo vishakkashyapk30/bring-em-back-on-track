@@ -1,48 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 
-import { api } from "@/api/client";
 import { useMe } from "@/api/hooks";
+import type { Session } from "@/api/types";
+import { usePublicSummary, type PublicSummary } from "@/api/visuals";
+import { Card } from "@/components/Card";
+import { SectionTag } from "@/components/SectionTag";
+import { Skeleton } from "@/components/States";
+import { DecisionFlow } from "@/components/visuals/DecisionFlow";
+import { Hero } from "@/components/visuals/Hero";
 import { NAV } from "@/lib/session";
 
-type Summary = {
-  golden_customers?: number; crm_records?: number; accounts_linked_pct?: number | null; open_cases?: number;
-  issues_found?: number; contract_tests_passed?: number; contract_tests?: number; benchmark_questions?: number;
-  benchmark_dev_score?: number; parity_mismatches?: number; text_hardship_accuracy?: number;
-};
-
-// The globe and its map data load after the page has painted, so they never delay the headline or the buttons.
-const Globe = lazy(() => import("@/components/Globe").then((m) => ({ default: m.Globe })));
-
-function GlobePlaceholder() {
-  return (
-    <div aria-hidden className="mx-auto grid aspect-square w-full max-w-[600px] place-items-center">
-      <div className="aspect-square w-[80%] rounded-full bg-gradient-to-br from-white to-grey-100 shadow-[0_0_60px_rgb(167_31_62/0.14)]" />
-    </div>
-  );
-}
-
-function LazyGlobe() {
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
-    const go = () => setReady(true);
-    if (w.requestIdleCallback) { const id = w.requestIdleCallback(go, { timeout: 800 }); return () => (window as never as { cancelIdleCallback: (n: number) => void }).cancelIdleCallback(id); }
-    const t = setTimeout(go, 300);
-    return () => clearTimeout(t);
-  }, []);
-  return ready ? <Suspense fallback={<GlobePlaceholder />}><Globe /></Suspense> : <GlobePlaceholder />;
-}
-
-const fmt = (n?: number | null) => (n == null ? "n/a" : n.toLocaleString());
+// The map and the constellation are their own chunks, so the greeting and buttons paint first.
+const CanadaRiskMap = lazy(() => import("@/components/visuals/CanadaRiskMap").then((m) => ({ default: m.CanadaRiskMap })));
+const IdentityConstellation = lazy(() => import("@/components/visuals/IdentityConstellation").then((m) => ({ default: m.IdentityConstellation })));
 
 const LAYERS = [
-  { n: 1, title: "Customer 360", text: "One customer can appear in five different systems, each with its own ID. We match them into a single record per person and show how sure we are about each match." },
-  { n: 2, title: "Collections Ask", text: "Ask a question in plain English. You get the answer along with the SQL or the policy it came from, and anything off-limits is politely refused." },
-  { n: 3, title: "Feature store", text: "Each signal we use, like days past due or the tone of a call, is defined once and used the same way in training and in live scoring." },
-  { n: 4, title: "Next best action", text: "Policy rules come first. Then a model estimates how likely a promise is to break, and treatment rules pick the action. Every suggestion comes with its reason." },
+  { title: "Customer 360", text: "One customer can appear in five different systems, each with its own ID. We match them into a single record per person and show how sure we are about each match." },
+  { title: "Collections Ask", text: "Ask a question in plain English. You get the answer along with the SQL or the policy it came from, and anything off-limits is politely refused." },
+  { title: "Feature store", text: "Each signal we use, like days past due or the tone of a call, is defined once and used the same way in training and in live scoring." },
+  { title: "Next best action", text: "Policy rules come first. Then a model estimates how likely a promise is to break, and treatment rules pick the action. Every suggestion comes with its reason." },
 ];
 
 const STEPS = [
@@ -60,125 +38,122 @@ const RULES = [
   { title: "Fair by design", text: "No protected attributes in any feature, rule or query. Signs of hardship pause the pressure." },
 ];
 
-/** Public landing page (navbar comes from the shared Layout). Headline numbers are live from the pipeline. */
+export const ROLE_LABEL: Record<string, string> = {
+  agent: "Collections agent", hardship_specialist: "Hardship specialist", team_lead: "Team lead", analyst: "Strategy analyst", steward: "Data steward",
+};
+export const ROLE_BLURB: Record<string, string> = {
+  agent: "Work today's queue: review each suggested next step, then approve, edit or override it.",
+  hardship_specialist: "Pick up customers who show signs of hardship and choose the right kind of support.",
+  team_lead: "See how your team is doing, review overrides and watch where promises are breaking.",
+  analyst: "Ask questions in plain English, explore the signals we use and compare strategies.",
+  steward: "Check data quality, review identity matches and keep the governance record.",
+};
+
+/** The first screen a persona lands on, from the same list the navigation uses. */
+export const firstScreen = (role: Session["role"]): string => NAV.find((n) => n.roles.includes(role))?.to ?? "/queue";
+
+/** "/": the globe and the story for visitors, a personal home with the live data for signed-in people.
+ * Nothing from the pipeline is requested or drawn until someone is signed in. */
 export default function Landing() {
-  const s = useQuery({ queryKey: ["public-summary"], queryFn: () => api<Summary>("/public/summary") });
   const me = useMe();
-  const d = s.data ?? {};
-  const home = me.data ? NAV.find((n) => n.roles.includes(me.data!.role))?.to ?? "/queue" : "/login";
+  if (me.isLoading) return <div className="mx-auto max-w-[1680px] px-5 py-12 md:px-10"><Skeleton lines={5} /></div>;
+  if (me.data) return <SignedInHome me={me.data} />;
+  return <SignedOutLanding />;
+}
+
+function SignedOutLanding() {
   return (
     <div>
-      {/* Hero */}
-      <section className="border-b border-grey-300/70">
-        <div className="mx-auto grid max-w-[1680px] items-center gap-10 px-5 py-8 md:px-10 lg:grid-cols-[1fr_0.9fr] lg:py-6">
-          <div>
-            <h1 className="m-0 text-[48px] leading-[1.05] md:text-[64px]">
-              Help customers get back <span className="text-brand">on track.</span>
-            </h1>
-            <p className="mb-0 mt-5 max-w-[520px] text-[18px] leading-relaxed text-muted">
-              Back-on-Track.ai brings each customer's accounts into one place, answers your questions in plain English, and suggests a next step for a person to approve.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Link to={home} className="inline-flex h-12 items-center gap-2 rounded-[var(--radius-md)] bg-brand px-6 text-[16px] font-semibold text-white no-underline transition-colors hover:bg-brand-700 hover:no-underline">
-                {me.data ? "Go to your workspace" : "Open the app"} <ArrowRight size={17} aria-hidden />
-              </Link>
-              <a href="#how" className="text-[16px] font-semibold text-ink underline decoration-brand decoration-2 underline-offset-[6px] hover:no-underline">
-                See how it works
-              </a>
-            </div>
-          </div>
-          <figure className="m-0">
-            <LazyGlobe />
-          </figure>
-        </div>
-      </section>
-
-      {/* Live numbers */}
-      <section aria-label="Live numbers from the pipeline" className="border-b border-grey-300/70 bg-white">
-        <div className="mx-auto grid max-w-[1680px] gap-y-8 px-5 py-12 sm:grid-cols-2 md:px-10 lg:grid-cols-4">
-        <Stat value={fmt(d.golden_customers)} label="customers, one record each" note={`merged from ${fmt(d.crm_records)} CRM records`} />
-        <Stat value={d.accounts_linked_pct != null ? `${d.accounts_linked_pct}%` : "n/a"} label="of accounts linked to a customer" note="across five source systems" />
-        <Stat value={d.benchmark_dev_score != null ? d.benchmark_dev_score.toFixed(3) : "n/a"} label="score on the practice questions" note={`${fmt(d.benchmark_questions)} questions answered`} />
-        <Stat value={`${d.contract_tests_passed ?? "n/a"} of ${d.contract_tests ?? "n/a"}`} label="data contract tests passing" note={`${fmt(d.issues_found)} data issues found and handled`} />
-        </div>
-      </section>
-
-      {/* Layers */}
-      <section id="layers" className="mx-auto max-w-[1680px] scroll-mt-24 px-5 py-16 md:px-10">
-        <SectionHead title="Four layers, from scattered systems to a next step" text="Each layer builds on the one before it, and the whole chain runs on the full hackathon dataset." />
-        <div className="grid gap-x-10 gap-y-10 md:grid-cols-2 xl:grid-cols-4">
-          {LAYERS.map(({ n, title, text }) => (
-            <div key={n} className="border-t-2 border-ink pt-4">
-              <div className="text-[14px] font-semibold text-brand">Layer {n}</div>
-              <h3 className="mb-2 mt-1 text-[26px]">{title}</h3>
-              <p className="m-0 text-[16px] leading-relaxed text-muted">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* How a decision is made */}
-      <section id="how" className="scroll-mt-16 border-y border-grey-300/70 bg-white">
-        <div className="mx-auto max-w-[1680px] px-5 py-16 md:px-10">
-          <SectionHead title="How a next best action is made" text="Rules first, a person last. Nothing reaches a customer without a reason and an approval." />
-          <ol className="m-0 grid list-none gap-8 p-0 md:grid-cols-5">
-            {STEPS.map((st, i) => (
-              <li key={st.title}>
-                <div aria-hidden className="font-[family-name:var(--font-display)] text-[40px] font-semibold leading-none text-brand">{i + 1}</div>
-                <h3 className="mb-1.5 mt-3 text-[20px]">{st.title}</h3>
-                <p className="m-0 text-[15px] leading-relaxed text-muted">{st.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* Ground rules */}
-      <section id="rules" className="mx-auto max-w-[1680px] scroll-mt-24 px-5 py-16 md:px-10">
-        <SectionHead title="Built to be trusted" text="The hackathon's ground rules are enforced in code and checked by tests, not just written in a document." />
-        <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-          {RULES.map(({ title, text }) => (
-            <div key={title} className="border-t-2 border-ink pt-4">
-              <h3 className="mb-1.5 mt-0 text-[20px]">{title}</h3>
-              <p className="m-0 text-[15px] leading-relaxed text-muted">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Call to action */}
+      <Hero />
+      <Section id="how" title="How a next best action is made" text="Rules first, a person last. Nothing reaches a customer without a reason and an approval." cols="lg:grid-cols-5" items={STEPS} label="Step" />
+      <Section id="layers" tinted title="Four layers, from scattered systems to a next step" text="Each layer builds on the one before it." cols="md:grid-cols-2 xl:grid-cols-4" items={LAYERS} label="Layer" />
+      <Section id="rules" title="Built to be trusted" text="The ground rules are enforced in code and checked by tests, not just written in a document." cols="sm:grid-cols-2 xl:grid-cols-4" items={RULES} />
       <section className="border-t border-grey-300/70 bg-white">
-       <div className="mx-auto max-w-[1680px] px-5 py-16 md:px-10">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-[var(--radius-md)] bg-navy px-8 py-10 text-white md:flex-row md:items-center md:px-12">
+        <div className="mx-auto flex max-w-[1680px] flex-col items-start justify-between gap-5 px-5 py-12 md:flex-row md:items-center md:px-10">
           <div>
-            <h2 className="m-0 text-[32px] text-white">Try it as each of the five people who use it</h2>
-            <p className="mb-0 mt-2 max-w-xl text-[16px] text-white/75">Pick a role: collections agent, hardship specialist, team lead, strategy analyst or data steward. Each one sees different screens.</p>
+            <h2 className="m-0 text-[1.5rem]">Try it as each of the five people who use it</h2>
+            <p className="mb-0 mt-1 max-w-2xl text-[14.5px] text-muted">Pick a role: collections agent, hardship specialist, team lead, strategy analyst or data steward. Each one sees different screens.</p>
           </div>
-          <Link to="/login" className="inline-flex h-12 shrink-0 items-center gap-2 rounded-[var(--radius-md)] bg-white px-6 text-[16px] font-semibold text-ink no-underline transition-colors hover:bg-grey-100 hover:no-underline">
-            Choose a role <ArrowRight size={17} aria-hidden />
+          <Link to="/login" className="inline-flex h-12 shrink-0 items-center gap-2 rounded-[var(--radius-md)] bg-brand px-6 text-[16px] font-semibold text-white no-underline transition-colors hover:bg-brand-700 hover:no-underline">
+            Sign in as a persona <ArrowRight size={17} aria-hidden />
           </Link>
         </div>
-       </div>
       </section>
     </div>
   );
 }
 
-function SectionHead({ title, text }: { title: string; text: string }) {
+function Section({ id, title, text, items, cols, label, tinted = false }: {
+  id: string; title: string; text: string; items: { title: string; text: string }[]; cols: string; label?: string; tinted?: boolean;
+}) {
   return (
-    <div className="mb-10 max-w-2xl">
-      <h2 className="m-0 text-[38px] leading-tight">{title}</h2>
-      <p className="mb-0 mt-3 text-[17px] leading-relaxed text-muted">{text}</p>
-    </div>
+    <section id={id} className={`scroll-mt-20 border-t border-grey-300/70 ${tinted ? "bg-white" : ""}`}>
+      <div className="mx-auto max-w-[1680px] px-5 py-14 md:px-10">
+        <SectionTag subtitle={text}>{title}</SectionTag>
+        <ol className={`m-0 mt-6 grid list-none gap-4 p-0 ${cols}`}>
+          {items.map((it, i) => (
+            <li key={it.title}>
+              <Card variant={tinted ? "grey" : "plain"} className="h-full">
+                {label && <div className="text-[13px] font-semibold text-muted">{label} {i + 1}</div>}
+                <h3 className="mb-1.5 mt-1 text-[1.25rem]">{it.title}</h3>
+                <p className="m-0 text-[14.5px] leading-relaxed text-muted">{it.text}</p>
+              </Card>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
   );
 }
 
-function Stat({ value, label, note }: { value: string; label: string; note: string }) {
+const LINK_BTN = "inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-md)] border px-6 text-base font-medium no-underline transition-colors hover:no-underline";
+const fmt = (n?: number | null) => (n == null ? "n/a" : n.toLocaleString("en-CA"));
+
+/** The few numbers that frame the pictures below. Read from the same endpoint the rest of the home uses. */
+export function statItems(s: PublicSummary): { value: string; label: string }[] {
+  return [
+    { value: fmt(s.golden_customers), label: "customers, one record each" },
+    { value: fmt(s.open_cases), label: "customers with an open case" },
+    { value: s.accounts_linked_pct != null ? `${s.accounts_linked_pct}%` : "n/a", label: "of accounts linked across systems" },
+    { value: `${s.contract_tests_passed ?? "n/a"} of ${s.contract_tests ?? "n/a"}`, label: "data tests passing" },
+  ];
+}
+
+function SignedInHome({ me }: { me: Session }) {
+  const summary = usePublicSummary(true);
+  const name = me.display_name || me.user_id;
   return (
-    <div>
-      <div className="font-[family-name:var(--font-display)] text-[44px] font-semibold leading-none tabular">{value}</div>
-      <div className="mt-2 text-[15px] font-semibold">{label}</div>
-      <div className="text-[14px] text-muted">{note}</div>
+    <div className="mx-auto max-w-[1680px] px-5 py-10 md:px-10">
+      <SectionTag as="h1" subtitle={<>{ROLE_LABEL[me.role] ?? me.role}. {ROLE_BLURB[me.role]}</>}
+        actions={<div className="flex flex-wrap gap-2">
+          <Link to={`/demo/${me.role}`} className={`${LINK_BTN} border-grey-300 bg-white text-ink hover:border-ink/40 hover:bg-grey-100`}>Watch my demo</Link>
+          <Link to={firstScreen(me.role)} className={`${LINK_BTN} border-transparent bg-brand text-white hover:bg-brand-700`}>Open my workspace <ArrowRight size={17} aria-hidden /></Link>
+        </div>}>
+        Hello, {name}
+      </SectionTag>
+
+      {summary.data && (
+        <Card className="mb-8 grid gap-y-5 p-5 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-grey-300/70" role="group" aria-label="Live numbers from the pipeline">
+          {statItems(summary.data).map((s) => (
+            <div key={s.label} className="lg:px-6 lg:first:pl-0">
+              <div className="font-[family-name:var(--font-display)] text-[2rem] font-semibold leading-none tabular">{s.value}</div>
+              <div className="mt-1.5 text-[14px] text-muted">{s.label}</div>
+            </div>
+          ))}
+        </Card>
+      )}
+
+      <div className="grid gap-6 lg:grid-cols-12">
+        <div className="min-w-0 lg:col-span-7">
+          <Suspense fallback={<div role="status" aria-label="Loading" className="skeleton h-[520px] w-full rounded-[var(--radius-lg)]" />}><CanadaRiskMap /></Suspense>
+        </div>
+        <div className="min-w-0 lg:col-span-5">
+          <Suspense fallback={<div role="status" aria-label="Loading" className="skeleton h-[400px] w-full rounded-[var(--radius-lg)]" />}>
+            <IdentityConstellation goldenId="sample" height={440} framed />
+          </Suspense>
+        </div>
+        <div className="min-w-0 lg:col-span-12"><DecisionFlow /></div>
+      </div>
     </div>
   );
 }
