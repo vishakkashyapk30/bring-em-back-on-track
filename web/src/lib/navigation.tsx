@@ -1,13 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const TAB_TITLE = "Bring 'em back on track"; // the same on every page, by request
+const TAB_TITLE = "back-on-track.ai"; // the same on every page, by request
 
 /** Natural navigation: new pages start at the top (or at the #section asked for), and the tab title stays the same. */
 export function NavigationEffects() {
   const { pathname, hash } = useLocation();
-  useEffect(() => {
-    document.title = TAB_TITLE;
+  useEffect(() => { document.title = TAB_TITLE; }, [pathname]);
+  // Before the browser paints the new page, so the old scroll position is never seen on it.
+  useLayoutEffect(() => {
     if (hash) {
       const el = document.getElementById(hash.slice(1));
       if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
