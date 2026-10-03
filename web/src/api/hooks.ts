@@ -44,8 +44,14 @@ export const useDecide = (caseId: string) => {
   });
 };
 export const useWhatIf = () => useMutation({ mutationFn: (body: Json) => post<Json>("/nba/what-if", body) });
-export const useAsk = () => useMutation({ mutationFn: (question: string) => post<AskResponse>("/ask", { question }) });
-export const usePolicyAnswer = () => useMutation({ mutationFn: (question: string) => post<Json>("/assist/policy", { question }) });
+export type AskExtras = { answered_by?: "rules" | "language model"; mode_note?: string | null };
+export const useAsk = () =>
+  useMutation({ mutationFn: ({ question, mode }: { question: string; mode?: "rules" | "llm" }) => post<AskResponse & AskExtras>("/ask", { question, mode }) });
+export const useHealth = () => useQuery({ queryKey: ["health"], queryFn: () => api<Json>("/health"), staleTime: 30_000 });
+export const useAskSuggestions = () =>
+  useQuery({ queryKey: ["ask-suggestions"], queryFn: () => api<{ role: string; intro: string; questions: string[] }>("/ask/suggestions"), staleTime: 300_000 });
+export const usePolicyAnswer = () =>
+  useMutation({ mutationFn: (question: string) => post<Json>("/assist/policy", { question, mode: localStorage.getItem("bot-answer-mode") === "llm" ? "llm" : "rules" }) });
 export const useCallSummary = (cid: string) => useQuery({ queryKey: ["summary", cid], queryFn: () => api<Json>(`/calls/${cid}/summary`) });
 export const useTranscript = (cid: string) => useQuery({ queryKey: ["transcript", cid], queryFn: () => api<Json>(`/calls/${cid}/transcript`) });
 export const useGet = (key: string, path: string) => useQuery({ queryKey: [key, path], queryFn: () => api<Json>(path) });

@@ -1,7 +1,7 @@
 import { Loader2, Search } from "lucide-react";
 import { useState } from "react";
 
-import { useAsk } from "@/api/hooks";
+import { useAsk, useAskSuggestions } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
 import { ChipEditor } from "@/components/ChipEditor";
@@ -9,6 +9,7 @@ import { DataTable } from "@/components/DataTable";
 import { SectionTag } from "@/components/SectionTag";
 import { SqlBlock } from "@/components/SqlBlock";
 import { RefusalCard, Skeleton } from "@/components/States";
+import { ModeSwitch, useAnswerMode, useLlmStatus } from "@/lib/answerMode";
 
 function chipsFrom(ch: Record<string, unknown> | null | undefined) {
   if (!ch) return [];
@@ -21,25 +22,19 @@ function chipsFrom(ch: Record<string, unknown> | null | undefined) {
   return out;
 }
 
-/** Collections Ask. TODO(WS-G): question history, chip editing re-runs the query. */
-const EXAMPLES = [
-  "What was the broken-promise rate by agent site for promises due in July-September 2026?",
-  "How many collections cases are open today, by current bucket?",
-  "Does the National Do Not Call List stop collection calls?",
-  "What is the hardship rate of cases opened in 2026, by primary product?",
-  "Summarise the most recent recorded call on case CS-2026-614370: what did the customer say and agree to?",
-  "List the gender and marital status of customers who broke a promise last month.",
-];
-
 export default function Ask() {
   const [q, setQ] = useState("");
   const ask = useAsk();
+  const [mode] = useAnswerMode();
+  const llm = useLlmStatus();
+  const sugg = useAskSuggestions();
+  const run = (question: string, m: "rules" | "llm" = mode) => ask.mutate({ question, mode: m });
   const r = ask.data;
   const freshness = (r as { freshness?: string | null } | undefined)?.freshness;
   return (
     <>
       <SectionTag as="h1" subtitle="Ask in plain English. Every answer shows the SQL or sources behind it, and any caveats.">Collections Ask</SectionTag>
-      <form onSubmit={(e) => { e.preventDefault(); if (q.trim()) ask.mutate(q); }}
+      <form onSubmit={(e) => { e.preventDefault(); if (q.trim()) run(q); }}
         className="mb-4 flex gap-2 rounded-[var(--radius-lg)] border border-grey-300/70 bg-white p-2 shadow-[var(--shadow-card)] transition-shadow focus-within:shadow-[var(--shadow-raised)]">
         <label htmlFor="ask-q" className="sr-only">Question</label>
         <div className="flex flex-1 items-center gap-2 px-3"><Search aria-hidden size={18} className="text-muted" />
@@ -49,28 +44,40 @@ export default function Ask() {
           {ask.isPending ? <Loader2 size={16} className="animate-spin" aria-hidden /> : null} Ask
         </button>
       </form>
+      <ModeSwitch className="mb-4" />
       {!r && !ask.isPending && (
         <div className="fade-in mb-6">
-          <p className="mb-2 text-sm text-muted">Not sure where to start? Try one of these.</p>
+          <p className="mb-2 text-sm text-muted">{sugg.data?.intro ?? "Not sure where to start?"} Try one of these.</p>
           <div className="flex flex-col items-start gap-1">
-            {EXAMPLES.map((ex) => (
-              <button key={ex} type="button" onClick={() => { setQ(ex); ask.mutate(ex); }}
+            {(sugg.data?.questions ?? []).map((ex) => (
+              <button key={ex} type="button" onClick={() => { setQ(ex); run(ex); }}
                 className="rounded-[var(--radius-sm)] px-0 py-1 text-left text-[15px] text-brand underline-offset-4 hover:underline">{ex}</button>
             ))}
           </div>
         </div>
       )}
       {ask.isPending && <Skeleton lines={6} />}
-      {r?.refused && <RefusalCard reason={r.refusal_reason ?? ""} alternative="Cure rate by province this month" />}
+      {r?.refused && (
+        <>
+          <RefusalCard reason={r.refusal_reason ?? ""} alternative={(sugg.data?.questions ?? [])[0]} />
+          {mode === "rules" && llm.available && !String(r.refusal_reason ?? "").startsWith("Refused:") && (
+            <p className="mt-3 text-sm">Not what you expected? <button type="button" className="text-brand underline-offset-4 hover:underline" onClick={() => run(q, "llm")}>Try it with the language model</button> (rules still check the SQL and refusals).</p>
+          )}
+        </>
+      )}
       {r && !r.refused && (
         <div className="space-y-5">
+          <p className="m-0 flex flex-wrap items-center gap-2 text-sm text-muted">
+            <Badge kind={r.answered_by === "language model" ? "llm" : "ok"}>{r.answered_by === "language model" ? "Understood by a language model" : "Answered by rules"}</Badge>
+            {r.mode_note && <span>{r.mode_note}</span>}
+          </p>
           <ChipEditor chips={chipsFrom(r.chips)} />
           <DataTable columns={r.columns ?? []} rows={r.rows ?? []} />
           {r.insight && <Card><Badge kind="llm">Insight · from these rows only</Badge><p className="mb-0">{r.insight}</p></Card>}
           {(r.followups ?? []).length > 0 && (
             <div>
               <p className="mb-1 text-sm text-muted">You could also ask:</p>
-              <div className="flex flex-col items-start gap-1">{(r.followups ?? []).map((f) => <button key={f} type="button" onClick={() => { setQ(f); ask.mutate(f); }} className="px-0 py-0.5 text-left text-[15px] text-brand underline-offset-4 hover:underline">{f}</button>)}</div>
+              <div className="flex flex-col items-start gap-1">{(r.followups ?? []).map((f) => <button key={f} type="button" onClick={() => { setQ(f); run(f); }} className="px-0 py-0.5 text-left text-[15px] text-brand underline-offset-4 hover:underline">{f}</button>)}</div>
             </div>
           )}
           <details className="rounded-[var(--radius-md)] border border-grey-300 bg-white p-4" open>
