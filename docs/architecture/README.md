@@ -1,6 +1,6 @@
 # Architecture (build phase)
 
-Deliverable 2 is the final diagram as **`architecture.png` / `architecture.pdf` in this folder**. It will be regenerated from the design-phase generator (`../design/diagrams/architecture_v1.py`), updated for what the build actually runs (to do, WS-I). Until then, this page is the reference. Design rationale: [`../design_changes.md`](../design_changes.md).
+Deliverable 2 is the final diagram: [`architecture.png`](architecture.png) and [`architecture.pdf`](architecture.pdf) in this folder (also `architecture.svg`). It shows what the build actually runs and is drawn by `make_diagram.py` (`python3 docs/architecture/make_diagram.py`, needs Chrome for the export). The design-phase diagram is `../design/diagrams/architecture_v1.png`. This page is the written reference. Design rationale: [`../design_changes.md`](../design_changes.md).
 
 ## Logical view: four layers, one use case
 

@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1090" viewBox="0 0 1700 1090">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B675F"/></marker></defs>
+<rect width="1700" height="1090" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#2B2A28" text-anchor="start">Collections 360: architecture of the build</text>
+<text x="40" y="66" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14.5" font-weight="400" fill="#6B675F" text-anchor="start">Four layers on the real Maple Bank data, one use case in depth (next best action). Runs with one command: docker compose up --build.</text>
+<rect x="1000" y="28" width="16" height="16" rx="4" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="1022" y="41" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#6B675F" text-anchor="start">rules / code</text>
+<rect x="1120" y="28" width="16" height="16" rx="4" fill="#F7DFD2" stroke="#D9A68B" stroke-width="1.4"/>
+<text x="1142" y="41" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#6B675F" text-anchor="start">model / language model</text>
+<rect x="1320" y="28" width="16" height="16" rx="4" fill="#F4ECC8" stroke="#CDBB6B" stroke-width="1.4"/>
+<text x="1342" y="41" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#6B675F" text-anchor="start">a person decides</text>
+<rect x="1470" y="28" width="16" height="16" rx="4" fill="#DEE4EC" stroke="#9DADC2" stroke-width="1.4"/>
+<text x="1492" y="41" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#6B675F" text-anchor="start">store</text>
+<rect x="40" y="86" width="1620" height="56" rx="10" fill="#DEE4EC" stroke="#9DADC2" stroke-width="1.4"/>
+<text x="54" y="108" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Sources: Maple Bank release, 31 tables from five customer-key systems</text>
+<text x="54" y="128" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">CRM, Cards, Lending, Core banking (CIF), Collections  |  contacts, promises, notes (760k), transcripts (25k), bureau, ops events, 19 policy documents</text>
+<line x1="850" y1="142" x2="850" y2="170" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="40" y="170" width="1620" height="156" rx="16" fill="#FBFAF7" stroke="#E2DED4" stroke-width="1.3"/>
+<rect x="40" y="170" width="8" height="156" rx="4" fill="#A71F3E"/>
+<text x="64" y="200" font-family="Inter, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#A71F3E" text-anchor="start">LAYER 1  Data product factory</text>
+<text x="429.79999999999995" y="200" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#6B675F" text-anchor="start">pipeline/ (dbt + DuckDB), identity/</text>
+<rect x="64" y="214" width="372" height="96" rx="10" fill="#DEE4EC" stroke="#9DADC2" stroke-width="1.4"/>
+<text x="78" y="236" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Bronze</text>
+<text x="78" y="256" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">raw Parquet, one file per table,</text>
+<text x="78" y="273" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">landed in about a minute</text>
+<rect x="468" y="214" width="372" height="96" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="482" y="236" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Silver: 39 typed models</text>
+<text x="482" y="256" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">dates in three formats, CIF zero padding,</text>
+<text x="482" y="273" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">mistyped CRM IDs repaired</text>
+<rect x="872" y="214" width="372" height="96" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="886" y="236" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Identity resolution</text>
+<text x="886" y="256" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">exact keys, scored matching (99.96% precise),</text>
+<text x="886" y="273" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">steward review queue for the unsure</text>
+<rect x="1276" y="214" width="360" height="96" rx="10" fill="#DEE4EC" stroke="#9DADC2" stroke-width="1.4"/>
+<text x="1290" y="236" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Gold C360 (the hub)</text>
+<text x="1290" y="256" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">1,001,072 golden customers, match confidence,</text>
+<text x="1290" y="273" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">11 contract tests, atomic publish</text>
+<line x1="436" y1="262" x2="466" y2="262" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="840" y1="262" x2="870" y2="262" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="1244" y1="262" x2="1274" y2="262" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="40" y="372" width="530" height="490" rx="16" fill="#FBFAF7" stroke="#E2DED4" stroke-width="1.3"/>
+<rect x="40" y="372" width="8" height="490" rx="4" fill="#A71F3E"/>
+<text x="64" y="402" font-family="Inter, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#A71F3E" text-anchor="start">LAYER 2  Insight and NLP</text>
+<text x="368.79999999999995" y="402" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#6B675F" text-anchor="start">Ask</text>
+<rect x="594" y="372" width="490" height="490" rx="16" fill="#FBFAF7" stroke="#E2DED4" stroke-width="1.3"/>
+<rect x="594" y="372" width="8" height="490" rx="4" fill="#A71F3E"/>
+<text x="618" y="402" font-family="Inter, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#A71F3E" text-anchor="start">LAYER 3  Feature store</text>
+<text x="898.4" y="402" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#6B675F" text-anchor="start">features/</text>
+<rect x="1108" y="372" width="552" height="490" rx="16" fill="#FBFAF7" stroke="#E2DED4" stroke-width="1.3"/>
+<rect x="1108" y="372" width="8" height="490" rx="4" fill="#A71F3E"/>
+<text x="1132" y="402" font-family="Inter, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#A71F3E" text-anchor="start">LAYER 4  Next best action</text>
+<text x="1449.0" y="402" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#6B675F" text-anchor="start">decisioning/, models/</text>
+<line x1="305" y1="326" x2="305" y2="374" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="839" y1="326" x2="839" y2="374" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="1384" y1="326" x2="1384" y2="374" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="60" y="418" width="490" height="56" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="74" y="440" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Refusal rules</text>
+<text x="74" y="460" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">personal data, protected traits, marketing, writes, forecasts</text>
+<rect x="60" y="484" width="490" height="56" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="74" y="506" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Certified metric compiler</text>
+<text x="74" y="526" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">25 metrics, breakdowns, filters, periods; SQL shown</text>
+<rect x="60" y="550" width="490" height="70" rx="10" fill="#F7DFD2" stroke="#D9A68B" stroke-width="1.4"/>
+<text x="74" y="572" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Optional language model</text>
+<text x="74" y="592" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">picks a metric from a closed list; words policy</text>
+<text x="74" y="609" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">answers from quoted sections; offline by default</text>
+<rect x="60" y="630" width="490" height="56" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="74" y="652" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">SQL guard</text>
+<text x="74" y="672" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">read-only, allowlist, role row filters, groups under 10 hidden</text>
+<rect x="60" y="696" width="490" height="56" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="74" y="718" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Policy retrieval</text>
+<text x="74" y="738" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">BM25, authority precedence, no citation means no answer</text>
+<rect x="60" y="762" width="490" height="56" rx="10" fill="#FFFFFF" stroke="#C9C4B8" stroke-width="1.4"/>
+<text x="74" y="784" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Answer</text>
+<text x="74" y="804" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">numbers + the SQL or sources + caveats, or a refusal</text>
+<rect x="614" y="418" width="450" height="62" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="628" y="440" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Registry: one definition per feature</text>
+<text x="628" y="460" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">37 features with owner, source, refresh, version</text>
+<rect x="614" y="490" width="450" height="56" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="628" y="512" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">SQL features</text>
+<text x="628" y="532" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">contact, promise, cash-stress, payroll, bureau</text>
+<rect x="614" y="556" width="450" height="72" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="628" y="578" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Text features (rules, no LLM)</text>
+<text x="628" y="598" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">hardship, dispute, complaint, delay reason from</text>
+<text x="628" y="615" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">transcripts and notes; 99.6% hardship accuracy</text>
+<rect x="614" y="638" width="450" height="72" rx="10" fill="#DEE4EC" stroke="#9DADC2" stroke-width="1.4"/>
+<text x="628" y="660" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Offline (training) and online (live)</text>
+<text x="628" y="680" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">one dbt macro, evaluated as of the promise</text>
+<text x="628" y="697" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">or as of now; parity check: 0 mismatches in 1,000</text>
+<rect x="614" y="720" width="450" height="56" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="628" y="742" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Fairness inputs</text>
+<text x="628" y="762" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">no protected attribute reaches a feature</text>
+<rect x="1128" y="418" width="512" height="68" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="1142" y="440" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">1  Policy gate (before any model)</text>
+<text x="1142" y="460" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">consent, hours, Sundays, holidays, do-not-call, 7-day cap,</text>
+<text x="1142" y="477" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">cease, insolvency, dispute, hardship latch</text>
+<rect x="1128" y="494" width="512" height="66" rx="10" fill="#F7DFD2" stroke="#D9A68B" stroke-width="1.4"/>
+<text x="1142" y="516" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">2  Promise-break risk</text>
+<text x="1142" y="536" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">LightGBM + bank v2.1 blend, AUC 0.744 vs 0.694,</text>
+<text x="1142" y="553" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">SHAP reason codes</text>
+<rect x="1128" y="568" width="512" height="66" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="1142" y="590" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">3  Treatment ladder, 4  Capacity allocator</text>
+<text x="1142" y="610" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">first match wins; priority = risk x capped amount - cost;</text>
+<text x="1142" y="627" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">channel and agent capacity</text>
+<rect x="1128" y="642" width="512" height="52" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="1142" y="664" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">5  Plain-English explanation</text>
+<text x="1142" y="684" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">rules applied, model estimate, what changed, freshness, alternatives</text>
+<rect x="1128" y="702" width="512" height="66" rx="10" fill="#F4ECC8" stroke="#CDBB6B" stroke-width="1.4"/>
+<text x="1142" y="724" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">6  A person reviews</text>
+<text x="1142" y="744" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">agent approves, edits or overrides (reason needed);</text>
+<text x="1142" y="761" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">team lead approves batches; specialist confirms hardship</text>
+<rect x="1128" y="776" width="512" height="52" rx="10" fill="#F4ECC8" stroke="#CDBB6B" stroke-width="1.4"/>
+<text x="1142" y="798" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Hardship workbench</text>
+<text x="1142" y="818" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">plan simulator, review board, missed offers, override audit</text>
+<line x1="1064" y1="596" x2="1128" y2="596" stroke="#6B675F" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="40" y="884" width="1620" height="176" rx="16" fill="#FBFAF7" stroke="#E2DED4" stroke-width="1.3"/>
+<rect x="40" y="884" width="8" height="176" rx="4" fill="#A71F3E"/>
+<text x="64" y="914" font-family="Inter, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#A71F3E" text-anchor="start">GOVERNANCE</text>
+<text x="198.0" y="914" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#6B675F" text-anchor="start">across every layer</text>
+<rect x="64" y="920" width="304" height="110" rx="10" fill="#DEE4EC" stroke="#9DADC2" stroke-width="1.4"/>
+<text x="78" y="942" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Audit log</text>
+<text x="78" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">append-only (SQLite triggers);</text>
+<text x="78" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">every customer-affecting write</text>
+<rect x="382" y="920" width="304" height="110" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="396" y="942" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Hardship latch</text>
+<text x="396" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">raised by rules or agents,</text>
+<text x="396" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">lowered only by a person with a reason</text>
+<rect x="700" y="920" width="304" height="110" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="714" y="942" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Fairness audit</text>
+<text x="714" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">proxy test (no group at 0.65) and</text>
+<text x="714" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">outcome tests by group, review not drop</text>
+<rect x="1018" y="920" width="304" height="110" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="1032" y="942" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Protected attributes</text>
+<text x="1032" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">kept out of features, rules, prompts</text>
+<text x="1032" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">and models; one auditor view reads them</text>
+<rect x="1336" y="920" width="304" height="110" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
+<text x="1350" y="942" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Monitoring and contract</text>
+<text x="1350" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">model evaluation, data quality report,</text>
+<text x="1350" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">freshness rule 11, benchmark 0.994 (dev)</text>
+</svg>
