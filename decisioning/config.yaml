@@ -1,0 +1,13 @@
+# NBA thresholds and weights. Report these in the deck.
+risk:
+  low_max: 0.30        # TBC after calibration
+  high_min: 0.60       # matches model_scores.threshold_used example
+due_soon_days: 3
+dpd_agent_call_min: 31
+allocator:
+  amount_cap: p75_past_due     # CAP in priority formula (D3)
+  lambda_complaint: 50.0       # CAD-equivalent penalty weight, TBC
+batch:
+  sample_pct: 0.02
+hardship:
+  review_business_days: 5      # D11 (TBC)
