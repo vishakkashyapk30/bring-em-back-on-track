@@ -11,7 +11,7 @@ import { HoldingsTable } from "@/components/HoldingsTable";
 import { IdentityLineage } from "@/components/IdentityLineage";
 import { NbaCard } from "@/components/NbaCard";
 import { SectionTag } from "@/components/SectionTag";
-import { QueryState } from "@/components/States";
+import { QueryState, SampleDataBanner } from "@/components/States";
 import { Timeline } from "@/components/Timeline";
 
 /** C360 workspace, the money screen. */
@@ -53,7 +53,7 @@ export default function Customer() {
           <section><SectionTag as="h2">Contact timeline</SectionTag><Card><QueryState q={tl}><Timeline items={tl.data?.items ?? []} /></QueryState></Card></section>
         </div>
         <aside className="space-y-6">
-          <AssistPanel eligibility={elig.data?.programs ?? []} />
+          <AssistPanel eligibility={elig.data?.programs ?? []} sample={!!elig.data?.meta?.fixture} />
           <PromiseCheck caseId={caseId} />
           <Card><h3 className="mt-0">Identity & lineage</h3><QueryState q={ident}>{ident.data && <IdentityLineage data={ident.data as never} />}</QueryState></Card>
         </aside>
@@ -62,7 +62,7 @@ export default function Customer() {
   );
 }
 
-function AssistPanel({ eligibility }: { eligibility: never[] }) {
+function AssistPanel({ eligibility, sample }: { eligibility: never[]; sample: boolean }) {
   const [q, setQ] = useState("");
   const ans = usePolicyAnswer();
   return (
@@ -80,6 +80,7 @@ function AssistPanel({ eligibility }: { eligibility: never[] }) {
         </div>
       )}
       <h4 className="mb-2">Eligibility</h4>
+      {sample && <SampleDataBanner />}
       <EligibilityList programs={eligibility} />
     </Card>
   );
@@ -90,6 +91,7 @@ function PromiseCheck({ caseId }: { caseId?: string }) {
   return (
     <Card>
       <h3 className="mt-0">Promise check</h3>
+      <SampleDataBanner />
       <p className="m-0">Due 2 Oct is <b>6 days before</b> the expected payday (8 Oct).</p>
       <button type="button" disabled={!caseId} onClick={() => wi.mutate({ case_id: caseId, ptp_amount: 800, ptp_due_date: "2026-10-08" })} className="mt-3 rounded-[var(--radius-md)] border border-ink bg-white px-3 py-2">Try 8 Oct</button>
       {wi.data && <p className="mb-0">Break risk {wi.data.p_break_before} → <b>{wi.data.p_break_after}</b> <Badge kind="model-estimate">{wi.data.label}</Badge></p>}

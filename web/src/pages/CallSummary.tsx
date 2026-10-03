@@ -1,5 +1,7 @@
+import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
+import { post } from "@/api/client";
 import { useCallSummary, useTranscript } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
@@ -7,29 +9,41 @@ import { SectionTag } from "@/components/SectionTag";
 import { QueryState } from "@/components/States";
 import { TranscriptBubbles } from "@/components/TranscriptBubbles";
 
-/** Post-call summary review: draft with turn citations; agent edits + approves.
- * TODO(WS-G): inline edit, approve -> POST, mismatch highlight. Plan: also embed as a panel in C360. */
+const label = (v?: string | null) => (v ? v.replace(/_/g, " ") : "none");
+
+/** Post-call summary review: rule-based draft (validated on 500 labelled transcripts), promise checked against the
+ * promise recorded on this contact, agent approves before anything is saved (audited). */
 export default function CallSummary() {
   const { contactId = "" } = useParams();
   const s = useCallSummary(contactId);
   const t = useTranscript(contactId);
+  const approve = useMutation({ mutationFn: () => post<{ audit_id: number }>(`/calls/${contactId}/summary/approve`, { draft: s.data?.draft }) });
   const d = s.data?.draft;
-  const cited: number[] = d ? [...d.summary.turns, ...(d.promise?.turns ?? []), ...d.signals.turns] : [];
   return (
     <>
-      <SectionTag as="h1" subtitle={<>Draft, needs approval <Badge kind={s.data?.provider === "offline" ? "sql" : "llm"}>{s.data?.provider}</Badge></>}>Post-call summary</SectionTag>
+      <SectionTag as="h1" subtitle={<>Draft for the agent to check <Badge kind="sql">rules, no LLM</Badge></>}>Post-call summary</SectionTag>
       <div className="grid gap-6 lg:grid-cols-2">
         <QueryState q={s}>
           {d && (
             <Card hard>
-              <h3 className="mt-0">Summary</h3><p>{d.summary.text} <span className="text-sm text-muted">turns {d.summary.turns.join(", ")}</span></p>
-              <h3>Promise</h3><p>{d.promise ? `$${d.promise.amount} by ${d.promise.date}` : "None found"} {s.data?.checks.promise_matches_record ? <Badge kind="ok">Matches record</Badge> : <Badge kind="danger">Differs from record</Badge>}</p>
-              <h3>Signals</h3><p>Hardship: {d.signals.hardship_signal} · Delay reason: {d.signals.stated_delay_reason ?? "—"} · Dispute: {d.signals.dispute_signal ? "yes" : "no"}</p>
-              <button type="button" className="rounded-[var(--radius-md)] bg-brand px-5 py-3 text-white">Approve summary</button>
+              <p className="mt-0 text-sm text-muted">Case {s.data?.case_id} · transcript {s.data?.transcript_id}</p>
+              <h3 className="mt-0">Summary</h3><p>{d.summary.text}</p>
+              <h3>Promise</h3>
+              <p>{d.promise ? `$${Number(d.promise.amount).toLocaleString()} by ${d.promise.date}` : "No promise made"}{" "}
+                {d.promise && (s.data?.checks.promise_matches_record ? <Badge kind="ok">matches the recorded promise</Badge> : <Badge kind="danger">differs from the recorded promise</Badge>)}</p>
+              <h3>Signals</h3>
+              <ul className="mt-0">
+                <li>Hardship: {label(d.signals.hardship_signal)}{d.signals.hardship_reason ? ` (${label(d.signals.hardship_reason)})` : ""}</li>
+                <li>Dispute: {d.signals.dispute_signal ? "yes" : "no"} · Complaint: {d.signals.complaint_cue ? "yes" : "no"} · Asked to stop contact: {d.signals.cease_request ? "yes" : "no"}</li>
+              </ul>
+              <h3>Next step</h3><p>{d.next_steps?.[0]?.text}</p>
+              <button type="button" disabled={approve.isPending || approve.isSuccess} onClick={() => approve.mutate()}
+                className="rounded-[var(--radius-md)] bg-brand px-5 py-3 text-white disabled:opacity-60">{approve.isSuccess ? "Approved" : "Approve summary"}</button>
+              <span aria-live="polite" className="ml-3 text-sm text-muted">{approve.isSuccess && `Saved · audit #${approve.data.audit_id}`}{approve.isError && "Couldn't save"}</span>
             </Card>
           )}
         </QueryState>
-        <QueryState q={t}><TranscriptBubbles turns={t.data?.turns ?? []} cited={cited} /></QueryState>
+        <QueryState q={t}><TranscriptBubbles turns={t.data?.turns ?? []} /></QueryState>
       </div>
     </>
   );

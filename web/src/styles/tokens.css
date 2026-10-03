@@ -35,3 +35,14 @@
   /* Elevation: Positivus hard offset shadow, hero cards + primary CTAs only */
   --shadow-hard: 0 5px 0 0 #191a23;
 }
+
+/* Sequential ramp (magnitude, one hue, light -> dark), from the brand red. Used for map bubbles, read at runtime
+   with getComputedStyle, so it lives in :root (Tailwind only emits @theme variables that a utility uses). */
+:root {
+  --color-seq-1: #f8e9ed;
+  --color-seq-2: #eeb4c2;
+  --color-seq-3: #d66680;
+  --color-seq-4: #a71f3e;
+  --color-seq-5: #5e0f22;
+  --color-map-stroke: #191a23;
+}

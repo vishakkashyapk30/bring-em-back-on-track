@@ -1,4 +1,4 @@
-import { AlertTriangle, Inbox, Lock } from "lucide-react";
+import { AlertTriangle, FlaskConical, Inbox, Lock } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Card } from "./Card";
@@ -50,5 +50,15 @@ export function QueryState({ q, children, empty }: { q: { isLoading: boolean; is
     return <ErrorState forbidden={e.forbidden} title={e.forbidden ? "Not available for your role" : undefined} detail={e.reason ?? e.message} />;
   }
   if (empty) return <EmptyState title="Nothing here yet" />;
-  return <>{children}</>;
+  const fixture = (q.data as { meta?: { fixture?: boolean } } | undefined)?.meta?.fixture;
+  return <>{fixture && <SampleDataBanner />}{children}</>;
+}
+
+/** Shown wherever an endpoint still serves sample data (its module isn't built yet), so nothing passes as real. */
+export function SampleDataBanner() {
+  return (
+    <p role="note" className="mb-3 mt-0 inline-flex items-center gap-2 rounded-[var(--radius-sm)] bg-gold px-3 py-1 text-sm text-ink">
+      <FlaskConical size={14} aria-hidden /> Sample data: this part is still being built (Layer 4), not the real dataset.
+    </p>
+  );
 }

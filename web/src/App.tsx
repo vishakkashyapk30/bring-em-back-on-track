@@ -17,7 +17,7 @@ import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
 import Queue from "@/pages/Queue";
-import Radar from "@/pages/Radar";
+import MapPage from "@/pages/MapPage";
 import StewardIdentity from "@/pages/StewardIdentity";
 import Team from "@/pages/Team";
 
@@ -41,7 +41,8 @@ export default function App() {
           <Route path="overrides" element={<Overrides />} />
           <Route path="simulator/:caseId" element={<Simulator />} />
         </Route>
-        <Route path="/radar" element={R(["team_lead", "analyst"], <Radar />)} />
+        <Route path="/map" element={R(["team_lead", "analyst"], <MapPage />)} />
+        <Route path="/radar" element={<Navigate to="/map" replace />} />
         <Route path="/team" element={R(["team_lead"], <Team />)} />
         <Route path="/features" element={R(["analyst", "steward"], <Features />)} />
         <Route path="/governance" element={R(["steward", "analyst", "team_lead"], <Governance />)}>
