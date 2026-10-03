@@ -26,7 +26,15 @@ SYNONYMS = {"attempts": ["calls", "contact"], "sue": ["legal", "court", "lawsuit
             "proposal": ["insolvency", "bankruptcy"], "grace": ["broken", "promise"],
             "hours": ["shifts", "hardship", "reduced"], "mid": ["mid-stage"], "dnc": ["do", "not", "call"],
             "programme": ["program"], "program": ["programme"], "drop": ["outage", "degraded", "incident"],
-            "volume": ["capacity"]}
+            "volume": ["capacity"],
+            # everyday wording the policy documents don't use
+            "stop": ["cease", "communication"], "stopping": ["cease", "communication"], "contacting": ["contact", "communication"],
+            "representative": ["represents", "lawyer", "trustee", "counselling"], "attorney": ["lawyer"],
+            "counsellor": ["counselling"], "counselor": ["counselling"], "bankrupt": ["bankruptcy", "insolvency"],
+            "bankruptcy": ["insolvency", "stay"], "layoff": ["hardship"], "laid": ["hardship"], "fired": ["hardship"],
+            "unemployed": ["hardship"], "jobless": ["hardship"], "job": ["hardship", "income"], "sick": ["hardship"],
+            "illness": ["hardship"], "text": ["sms"], "texts": ["sms"], "cap": ["maximum"], "limit": ["maximum"],
+            "holiday": ["holidays", "statutory"]}
 
 
 def _stem(t: str) -> str:

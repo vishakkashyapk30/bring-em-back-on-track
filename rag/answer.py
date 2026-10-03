@@ -13,6 +13,12 @@ MIN_SCORE = 2.0
 SUBSTITUTES = {"sue": ["legal", "court", "lawsuit", "litigation"], "lawsuit": ["legal", "court"]}
 
 
+# Topics the 19 current documents never mention: refuse instead of answering from the nearest section.
+# (Checked against the corpus; add a term here only after confirming no document covers it.)
+NOT_COVERED = re.compile(
+    r"\b(collection agenc\w*|agency placement|placed with an? agenc\w*|third[- ]party collect\w*|garnish\w*|repossess\w*|"
+    r"statute of limitations?|voice ?mails?|deceased|passed away|died|estate|debt (sale|buyer)s?)\b", re.I)
+
 LIST_ITEM = re.compile(r"^\s*(?:\d+\.|[-*])\s+")
 DUTY_Q = re.compile(r"\b(must|should|what (do|does|should)|what to do|before)\b", re.I)
 
@@ -97,6 +103,9 @@ def _covers(question: str, text: str) -> bool:
 
 def answer_question(question: str, product: str | None = None, province: str | None = None,
                     language: str | None = None) -> dict:
+    if NOT_COVERED.search(question):
+        return {"answer": None, "citations": [], "refused": True,
+                "refusal_reason": "The current policy documents don't cover this topic."}
     hits = retrieve(question, language=language, product=product, province=province)
     if not hits or hits[0].score < MIN_SCORE:
         return {"answer": None, "citations": [], "refused": True,
@@ -126,3 +135,43 @@ def answer_question(question: str, product: str | None = None, province: str | N
 @register("rag_answer")
 def answer_offline(inputs: dict) -> dict:
     return answer_question(inputs["question"])
+
+
+def _norm(t: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", re.sub(r"\*\*|`", "", t).lower()).strip()
+
+
+def answer_with_llm(question: str, product: str | None = None, province: str | None = None,
+                    language: str | None = None) -> dict:
+    """Policy answer written by the configured LLM from the retrieved sections, accepted only when it is grounded:
+    every citation must be a section that was retrieved and every quote must appear word for word in that section.
+    Anything else (no LLM, unreachable, ungrounded, refused) falls back to the extractive answer above, so the
+    answer is never worse than the offline one. Topics the documents never cover are refused before the model runs."""
+    from common.config import get_settings
+
+    base = answer_question(question, product=product, province=province, language=language)
+    if get_settings().llm_provider == "offline" or NOT_COVERED.search(question):
+        return base
+    hits = retrieve(question, language=language, product=product, province=province)[:3]
+    if not hits:
+        return base
+    try:
+        from llm.client import complete_json
+
+        out = complete_json(
+            "rag_answer", 1,
+            {"question": question, "sections": [{"doc_id": h.section.doc_id, "section": h.section.section,
+                                                 "text": h.section.text} for h in hits]}, "rag_answer")
+    except Exception:  # noqa: BLE001 - an LLM problem must never break policy answers
+        return base
+    if out.get("_meta", {}).get("provider") == "offline" or out.get("refused") or not out.get("answer"):
+        return base
+    by_id = {(h.section.doc_id, h.section.section): _norm(h.section.text) for h in hits}
+    cites = out.get("citations") or []
+    if not cites or any((c.get("doc_id"), c.get("section")) not in by_id
+                        or not _norm(c.get("quote", "")) or _norm(c["quote"]) not in by_id[(c["doc_id"], c["section"])]
+                        for c in cites):
+        return base
+    return {"answer": out["answer"].strip(),
+            "citations": [{"doc_id": c["doc_id"], "section": c["section"], "quote": c["quote"]} for c in cites],
+            "refused": False, "refusal_reason": None, "by_llm": True}
