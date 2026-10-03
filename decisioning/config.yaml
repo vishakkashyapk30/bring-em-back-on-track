@@ -1,13 +1,19 @@
 # NBA thresholds and weights. Report these in the deck.
 risk:
-  low_max: 0.30        # TBC after calibration
-  high_min: 0.60       # matches model_scores.threshold_used example
-due_soon_days: 3
-dpd_agent_call_min: 31
+  low_max: 0.35        # below this the promise is low risk (same edges as the model bands in models/ptp_break/score.py)
+  high_min: 0.55       # at or above this it is high risk
+due_soon_days: 3       # V1: a high-risk promise due within three days gets a reminder
+dpd_agent_call_min: 31 # V1: more than 30 days behind and high risk gets an agent call
+broken_lookback_days: 30   # a broken promise this recent counts as "just broken"
+default_p_break: 0.5   # used only for ordering when a case has no promise score; never shown as a model score
 allocator:
   amount_cap: p75_past_due     # CAP in priority formula (D3)
   lambda_complaint: 50.0       # CAD-equivalent penalty weight, TBC
+  complaint_rate: 0.0          # no per-case complaint model yet, so the penalty term is zero (stated, not hidden)
 batch:
   sample_pct: 0.02
+uplift:                       # Phase 2 gate, V1 section 6
+  min_overlap_share: 0.70
+  min_cases_per_action: 1000
 hardship:
   review_business_days: 5      # D11 (TBC)
