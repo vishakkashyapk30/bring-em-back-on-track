@@ -39,11 +39,13 @@ class SimulatorIn(BaseModel):
 class AskIn(BaseModel):
     question: str
     chips: dict | None = None
+    mode: str | None = None  # rules | llm: the user's choice between deterministic rules and a language model
 
 
 class PolicyQuestionIn(BaseModel):
     question: str
     case_id: str | None = None
+    mode: str | None = None  # rules | llm
 
 
 class StressTestIn(BaseModel):

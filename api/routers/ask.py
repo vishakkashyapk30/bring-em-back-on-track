@@ -14,6 +14,23 @@ FOLLOWUPS = {
 }
 
 
+@router.get("/ask/suggestions")
+def suggestions(s=Depends(require({Role.analyst, Role.team_lead, Role.agent, Role.hardship_specialist, Role.steward}))):
+    """Example questions that work for the signed-in persona."""
+    from api.services.ask_suggestions import for_role
+
+    return for_role(s.role.value if hasattr(s.role, "value") else str(s.role), s.user_id)
+
+
+def _chip_dict(chips: dict) -> dict:
+    """The edited chips from the Ask page (the shape the response sends, or the plain form), as the compiler reads
+    them. Allowlist checks happen in the compiler."""
+    tr = chips.get("time_range")
+    return {"metric": chips.get("metric_id") or chips.get("metric"), "dimensions": list(chips.get("dimensions") or []),
+            "filters": [f.get("value") if isinstance(f, dict) else f for f in chips.get("filters") or []],
+            "time": (tr.get("label") if isinstance(tr, dict) else tr) or chips.get("time")}
+
+
 @router.post("/ask")
 def ask(body: AskIn, s=Depends(require({Role.analyst, Role.team_lead, Role.agent}))) -> AskResponse:
     """Collections Ask (Layer 2): refusals, cited policy answers, call summaries, certified-metric SQL."""
@@ -25,16 +42,26 @@ def ask(body: AskIn, s=Depends(require({Role.analyst, Role.team_lead, Role.agent
             audit.record(s.user_id, s.role, "refusal", "question", None, {"q": body.question}, reason)
             return AskResponse(question=body.question, refused=True, refusal_reason=reason)
         return AskResponse.model_validate({**stub("ask"), "question": body.question})
+    from api.services.ask_access import scope_for
+    from common.ask_scope import use_scope
+    from common.llm_mode import availability, use_mode
     from nlq.pipeline import ask as run
 
-    a = run(body.question, None)
+    note = None
+    if body.mode == "llm" and not availability()["available"]:
+        note = availability()["reason"] + " Answered with rules instead."
+    # Authorisation first, identical in both modes: a language model never widens what a role may receive.
+    role = s.role.value if hasattr(s.role, "value") else str(s.role)
+    with use_scope(scope_for(role, s.user_id, s.team_id)), use_mode(body.mode):
+        a = run(body.question, None, _chip_dict(body.chips) if body.chips else None)
     if a.kind == "metric" and s.role == Role.agent:
         # Agents work their own customers in the C360; portfolio-wide metrics are for analysts and team leads.
         reason = "Refused: portfolio metrics are available to analysts and team leads. Agents see their own customers in the C360."
         audit.record(s.user_id, s.role, "refusal", "question", None, {"q": body.question}, reason)
         return AskResponse(question=body.question, refused=True, refusal_reason=reason)
     audit.record(s.user_id, s.role, "refusal" if a.refused else "query", "question", None,
-                 {"q": body.question}, {"kind": a.kind, "sql_or_sources": a.sql_or_sources})
+                 {"q": body.question, "mode": body.mode or "default"},
+                 {"kind": a.kind, "sql_or_sources": a.sql_or_sources, "answered_by": a.answered_by})
     if a.refused:
         return AskResponse(question=body.question, refused=True, refusal_reason=a.refusal_reason)
     chips = None
@@ -59,4 +86,4 @@ def ask(body: AskIn, s=Depends(require({Role.analyst, Role.team_lead, Role.agent
         preflight=Preflight(incidents=incidents) if incidents else None,
         sources=[a.sql_or_sources] if a.kind != "metric" else ["silver (typed release tables)"],
         freshness=a.freshness,
-        followups=FOLLOWUPS.get(a.kind, []), refused=False)
+        followups=FOLLOWUPS.get(a.kind, []), answered_by=a.answered_by, mode_note=note, refused=False)

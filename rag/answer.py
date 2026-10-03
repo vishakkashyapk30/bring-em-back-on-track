@@ -7,9 +7,9 @@ from __future__ import annotations
 import re
 
 from llm.providers.offline import register
-from rag.retrieve import Hit, expand, idf, retrieve, tokens
+from rag.retrieve import Hit, corpus_scale, expand, idf, retrieve, tokens
 
-MIN_SCORE = 2.0
+MIN_SCORE = 2.0  # on the scale of the 19-section release corpus; scores are rescaled by corpus_scale()
 SUBSTITUTES = {"sue": ["legal", "court", "lawsuit", "litigation"], "lawsuit": ["legal", "court"]}
 
 
@@ -107,7 +107,7 @@ def answer_question(question: str, product: str | None = None, province: str | N
         return {"answer": None, "citations": [], "refused": True,
                 "refusal_reason": "The current policy documents don't cover this topic."}
     hits = retrieve(question, language=language, product=product, province=province)
-    if not hits or hits[0].score < MIN_SCORE:
+    if not hits or hits[0].score * corpus_scale() < MIN_SCORE:
         return {"answer": None, "citations": [], "refused": True,
                 "refusal_reason": "No current policy section answers this question."}
     best = next((h for h in hits if _covers(question, _best_sentences(question, h))), None)
@@ -147,10 +147,10 @@ def answer_with_llm(question: str, product: str | None = None, province: str | N
     every citation must be a section that was retrieved and every quote must appear word for word in that section.
     Anything else (no LLM, unreachable, ungrounded, refused) falls back to the extractive answer above, so the
     answer is never worse than the offline one. Topics the documents never cover are refused before the model runs."""
-    from common.config import get_settings
+    from common.llm_mode import effective_provider
 
     base = answer_question(question, product=product, province=province, language=language)
-    if get_settings().llm_provider == "offline" or NOT_COVERED.search(question):
+    if effective_provider() == "offline" or NOT_COVERED.search(question):
         return base
     hits = retrieve(question, language=language, product=product, province=province)[:3]
     if not hits:

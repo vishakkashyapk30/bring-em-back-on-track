@@ -49,6 +49,18 @@ def idf(term: str) -> float:
     return _active().idf.get(term, 0.0)
 
 
+REFERENCE_DOCS = 19  # the release corpus the retrieval confidence line was tuned on
+
+
+def corpus_scale(n_sections: int | None = None) -> float:
+    """BM25 scores shrink as the corpus does (a term's weight is log(1 + (N - n + 0.5) / (n + 0.5))). This factor
+    rescales a score to what the same match would score on the 19-section release corpus, so one confidence line
+    (rag.answer.MIN_SCORE) holds for a one-section corpus and for the full one. It is 1.0 for the release corpus."""
+    n = n_sections or len(_active().sections)
+    top = lambda m: math.log(1 + (m - 0.5) / 1.5)  # noqa: E731  weight of a term found in exactly one section
+    return top(REFERENCE_DOCS) / top(max(n, 1))
+
+
 @dataclass
 class Hit:
     section: Section

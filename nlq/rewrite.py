@@ -14,6 +14,7 @@ import re
 from datetime import date
 
 from common.config import get_settings
+from common.llm_mode import effective_provider
 from llm.providers.offline import register
 
 # metric id -> (what it measures, sample wording that the compiler recognises). Checked by a unit test.
@@ -88,7 +89,7 @@ def rewrite_offline(inputs: dict) -> dict:
 
 def choose_metric(question: str, as_of: date | None = None) -> dict | None:
     """{"metric_id", "measure"} chosen by the LLM and verified, or None (no LLM configured, unreachable, or declined)."""
-    if get_settings().llm_provider == "offline" or NOT_MEASURABLE.search(question):
+    if effective_provider() == "offline" or NOT_MEASURABLE.search(question):
         return None
     from llm.client import complete_json
 

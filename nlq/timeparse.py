@@ -36,6 +36,13 @@ def parse(q: str, as_of: date) -> TimeRange | None:
     def clip(d: date) -> date:
         return min(d, as_of)
 
+    # between 10 Sep and 20 Sep 2026 (each end names its month; the year may follow either or only the second)
+    m = re.search(rf"between (\d{{1,2}}) {MON}\w*(?: (\d{{4}}))? and (\d{{1,2}}) {MON}\w* (\d{{4}})", t)
+    if m:
+        y2 = int(m.group(6))
+        start = date(int(m.group(3) or y2), _month(m.group(2)), int(m.group(1)))
+        end = date(y2, _month(m.group(5)), int(m.group(4)))
+        return TimeRange(start, clip(end), f"{start.day} {start:%b}-{end.day} {end:%b}")
     # between 15 and 22 September 2026 [compared with the 8 days before]
     m = re.search(rf"between (\d{{1,2}}) and (\d{{1,2}}) {MON}\w* (\d{{4}})", t)
     if m:

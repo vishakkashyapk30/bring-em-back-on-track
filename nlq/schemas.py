@@ -47,5 +47,7 @@ class AskResponse(BaseModel):
     sources: list[str] = Field(default_factory=list)
     freshness: str | None = None  # when the data behind the answer was built (ISO, UTC); metric answers only
     followups: list[str] = Field(default_factory=list)
+    answered_by: Literal["rules", "language model"] = "rules"
+    mode_note: str | None = None  # why a requested language model was not used (e.g. not configured)
     refused: bool = False
     refusal_reason: str | None = None
