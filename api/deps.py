@@ -54,3 +54,19 @@ def stub(name: str):
     if get_settings().use_fixtures:
         return fixture(name)
     raise HTTPException(501, f"{name} not implemented yet")
+
+
+def live_data() -> bool:
+    """Real warehouse data when it exists (and fixtures aren't forced); sample fixtures otherwise."""
+    s = get_settings()
+    return s.warehouse_path.exists() and not s.force_fixtures
+
+
+def live_or_fixture(name: str, fn, *args):
+    """Call the real service when the warehouse exists; fall back to the fixture otherwise."""
+    if live_data():
+        out = fn(*args)
+        if out is None:
+            raise HTTPException(404, f"{name}: not found")
+        return out
+    return fixture(name)

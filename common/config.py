@@ -40,7 +40,8 @@ class Settings(BaseSettings):
     llm_cache_dir: Path = ROOT / "data" / "llm_cache"
 
     # API
-    use_fixtures: bool = True  # serve api/fixtures/*.json until modules are real
+    use_fixtures: bool = True  # serve api/fixtures/*.json for endpoints whose module isn't real yet
+    force_fixtures: bool = False  # serve fixtures even when a warehouse exists (offline demos, tests)
     session_secret: str = "dev-only-change-me"
     cors_origins: str = "http://localhost:5173"
 
