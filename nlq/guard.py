@@ -69,3 +69,30 @@ def validate(sql: str, allowed_views: set[str], max_limit: int = DEFAULT_LIMIT) 
         if n > max_limit:
             tree = tree.limit(max_limit)
     return tree.sql(dialect="duckdb")
+
+
+def agent_row_filters(user_id: str) -> dict[str, str]:
+    """Row filters for the agent role (V1 §4 step 3): an agent only ever sees cases assigned to them."""
+    uid = "".join(ch for ch in user_id if ch.isalnum() or ch in "-_")
+    pred = f"assigned_agent_id = '{uid}'"
+    return {"collections_cases": pred, "c360_case": pred}
+
+
+def apply_row_filters(safe_sql: str, filters: dict[str, str]) -> tuple[str, bool]:
+    """Wrap every filtered table in a sub-select that carries the user's row filter, so nothing in the user's own
+    WHERE (an `OR 1=1`, a filter on another agent) can widen the rows. Run it on SQL that already passed `validate`
+    and the column checks. Returns (sql, applied)."""
+    tree = sqlglot.parse_one(safe_sql, read="duckdb")
+    ctes = {c.alias_or_name.lower() for c in tree.find_all(exp.CTE)}
+    applied = False
+    for t in list(tree.find_all(exp.Table)):
+        name = t.name.lower()
+        if name in ctes or name not in filters:
+            continue
+        source = t.copy()
+        source.set("alias", None)
+        inner = exp.select("*").from_(source).where(filters[name])
+        alias = t.alias or t.name
+        t.replace(exp.Subquery(this=inner, alias=exp.TableAlias(this=exp.to_identifier(alias))))
+        applied = True
+    return tree.sql(dialect="duckdb"), applied

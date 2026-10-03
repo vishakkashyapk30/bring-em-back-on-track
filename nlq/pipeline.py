@@ -11,7 +11,7 @@ import csv
 import io
 import re
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import UTC, date
 from typing import Any
 
 from common.config import get_settings
@@ -37,6 +37,7 @@ class Answer:
     caveats: list[str] = field(default_factory=list)
     chips: dict[str, Any] = field(default_factory=dict)
     citations: list[dict] = field(default_factory=list)
+    freshness: str | None = None      # when the warehouse behind the answer was built (ISO, UTC)
 
 
 def _csv(cols: list[str], rows: list[tuple]) -> str:
@@ -125,7 +126,21 @@ def _call_summary(question: str) -> Answer | None:
                   chips={"case_id": s["case_id"], "call": s["call_start_ts"]})
 
 
+def _warehouse_built_at() -> str | None:
+    from datetime import datetime
+
+    p = get_settings().warehouse_path
+    return datetime.fromtimestamp(p.stat().st_mtime, tz=UTC).isoformat(timespec="seconds") if p.exists() else None
+
+
 def ask(question: str, as_of: date | None = None) -> Answer:
+    a = _ask(question, as_of)
+    if not a.refused and a.kind == "metric":
+        a.freshness = _warehouse_built_at()
+    return a
+
+
+def _ask(question: str, as_of: date | None = None) -> Answer:
     from nlq.refusal import check
 
     as_of = as_of or get_settings().as_of_date

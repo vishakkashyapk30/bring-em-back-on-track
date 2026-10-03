@@ -42,9 +42,14 @@ def check_columns(sql: str) -> None:
         raise PermissionError(f"Direct personal details can't be queried: {sorted(cols & PII_COLUMNS)}")
 
 
-def execute(sql: str, max_rows: int = 1000) -> tuple[str, list[str], list[tuple[Any, ...]]]:
+def execute(sql: str, max_rows: int = 1000,
+            row_filters: dict[str, str] | None = None) -> tuple[str, list[str], list[tuple[Any, ...]]]:
     safe = validate(sql, ALLOWED, max_limit=max_rows)
     check_columns(safe)
+    if row_filters:
+        from nlq.guard import apply_row_filters
+
+        safe, _ = apply_row_filters(safe, row_filters)
     con = warehouse(read_only=True)
     try:
         con.execute("SET search_path = 'silver,gold'")

@@ -58,4 +58,5 @@ def ask(body: AskIn, s=Depends(require({Role.analyst, Role.team_lead, Role.agent
         insight=insight, caveats=[c for c in a.caveats if not c.startswith("Incident")],
         preflight=Preflight(incidents=incidents) if incidents else None,
         sources=[a.sql_or_sources] if a.kind != "metric" else ["silver (typed release tables)"],
+        freshness=a.freshness,
         followups=FOLLOWUPS.get(a.kind, []), refused=False)

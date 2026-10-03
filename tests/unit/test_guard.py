@@ -24,3 +24,16 @@ def test_rejects_unsafe(sql):
 
 def test_caps_large_limit():
     assert "LIMIT 1000" in validate("select * from gold.role_analyst_metrics_v limit 999999", VIEWS)
+
+
+def test_agent_row_filter_cannot_be_widened():
+    from nlq.guard import agent_row_filters, apply_row_filters, validate
+
+    safe = validate("SELECT case_id FROM collections_cases WHERE assigned_agent_id = 'agent-002' OR 1=1",
+                    {"collections_cases"})
+    sql, applied = apply_row_filters(safe, agent_row_filters("agent-001"))
+    assert applied
+    assert "(SELECT * FROM collections_cases WHERE assigned_agent_id = 'agent-001') AS collections_cases" in sql
+    # a user id with quotes cannot break out of the filter
+    sql2, _ = apply_row_filters(safe, agent_row_filters("a'; DROP TABLE x;--"))
+    assert "DROP" in sql2 and "'aDROPTABLEx--'" in sql2
