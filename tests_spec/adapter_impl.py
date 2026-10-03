@@ -56,6 +56,8 @@ from tests_spec.adapter import (
     SummaryDraft,
     SummaryPromise,
 )
+from tests_spec.adapter_l4_hardship import HardshipMixin
+from tests_spec.adapter_l4_nba import NbaMixin
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "docs" / "contracts" / "c360_customer.v1.yaml"
@@ -409,12 +411,13 @@ def quality_rules(snapshot: Mapping[str, list[dict]], now: dt.datetime) -> Quali
 # =====================================================================================================
 # Adapter
 # =====================================================================================================
-class Layer123Adapter(SpecAdapterBase):
+class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
     def __init__(self) -> None:
         self.reset()
 
     def reset(self) -> None:
         self._sections = None          # injected reference-document corpus (load_reference_documents)
+        self.reset_hardship()          # private ops.db of the hardship mixin
 
     # ---------------- Layer 1: identity ----------------
     def resolve_identities(self, records, previous=None):
@@ -494,11 +497,11 @@ class Layer123Adapter(SpecAdapterBase):
         # The two checks nlq/executor.execute() runs before any SQL reaches the read-only warehouse:
         # nlq/guard.validate (one SELECT, allowlisted tables, no protected columns, LIMIT) and
         # nlq/executor.check_columns (no direct identifiers, no SELECT *).
-        # The Ask allowlist is role-independent: there is no per-agent row filter in Ask.
+        # Agents also get the row filter (nlq/guard.apply_row_filters): their tables are wrapped in a sub-select.
         import sqlglot
 
         from nlq.executor import ALLOWED, check_columns
-        from nlq.guard import DEFAULT_LIMIT, GuardError, validate
+        from nlq.guard import DEFAULT_LIMIT, GuardError, agent_row_filters, apply_row_filters, validate
 
         try:
             safe = validate(sql, ALLOWED, max_limit=DEFAULT_LIMIT)
@@ -506,7 +509,10 @@ class Layer123Adapter(SpecAdapterBase):
         except (GuardError, PermissionError) as e:
             return SqlCheck(False, [str(e)])
         lim = sqlglot.parse_one(safe, read="duckdb").args.get("limit")
-        return SqlCheck(True, [], safe, int(lim.expression.name) if lim is not None else None, False)
+        applied = False
+        if user.role == "agent":
+            safe, applied = apply_row_filters(safe, agent_row_filters(user.user_id))
+        return SqlCheck(True, [], safe, int(lim.expression.name) if lim is not None else None, applied)
 
     def suppress_small_groups(self, rows, count_field):
         # Threshold: common/config.py suppression_min_group (10). Groups below it are hidden entirely.
@@ -558,7 +564,8 @@ class Layer123Adapter(SpecAdapterBase):
                    if a.kind == "metric" and a.rows else (a.answer if a.kind != "metric" else None))
         return AskAnswer(
             refused=False, tokens=self._tokens_from_chips(a.chips) if a.kind == "metric" else None, sql=sql,
-            rows=rows, data_products=products, freshness=None, caveats=list(a.caveats), incidents=incidents,
+            rows=rows, data_products=products,
+            freshness=dt.datetime.fromisoformat(a.freshness) if a.freshness else None, caveats=list(a.caveats), incidents=incidents,
             coverage=None, insight_text=insight, follow_ups=list(FOLLOWUPS.get(a.kind, [])))
 
     def cure_rate_30d(self, cases):
