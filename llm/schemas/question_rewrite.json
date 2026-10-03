@@ -1,0 +1,2 @@
+{"type": "object", "required": ["measure", "metric_id", "reason"],
+ "properties": {"measure": {"type": "string"}, "metric_id": {"type": ["string", "null"]}, "reason": {"type": "string"}}}

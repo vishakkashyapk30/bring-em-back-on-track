@@ -60,7 +60,8 @@ def complete_json(
     s = get_settings()
     name = provider or s.llm_provider
     prompt, schema = load_prompt(prompt_id, version), load_schema(schema_name)
-    key = stable_hash([name, prompt_id, version, inputs])
+    model = getattr(s, f"{name}_model", None)  # a different model must not reuse another model's cached answer
+    key = stable_hash([name, model, prompt_id, version, inputs])
     cache = s.llm_cache_dir / f"{key}.json"
     if cache.exists():
         return json.loads(cache.read_text())
