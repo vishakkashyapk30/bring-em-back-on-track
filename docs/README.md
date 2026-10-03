@@ -1,6 +1,6 @@
 # Documentation
 
-Start with the root [`README.md`](../README.md) (what it is, how to run it, what changed from the design).
+Start with the root [`README.md`](../README.md) (what it is, how to run it, what changed from the design) and [`submission.md`](../submission.md) (the judges' index).
 
 ## Submission deliverables (build phase)
 
@@ -28,6 +28,8 @@ The full checklist with the official rules is in [`submission_checklist.md`](sub
 | [`contracts/`](contracts/) | Data contract for `gold.c360_customer` (deliverable 3) | Yes |
 | [`data_quality_report.md`](data_quality_report.md) | Data issues, records affected, handling (deliverable 4) | Generated |
 | [`design_changes.md`](design_changes.md) | What changed from the design phase and why | Yes |
+| [`ask.md`](ask.md) | Layer 2: how Collections Ask answers, refuses and is benchmarked | Yes |
+| [`feature_store.md`](feature_store.md) | Layer 3: features, one definition for training and live scoring, text-feature accuracy | Yes |
 | [`profiling_report.md`](profiling_report.md) | Profiling numbers from the released data | Generated (`make profile`) |
 | [`profiling_decisions.md`](profiling_decisions.md) | Decisions taken from profiling: headline capability, identity bridges, settled questions, business value, benchmark plan, demo customer | Yes |
 | [`ai_tools.md`](ai_tools.md) | AI tools used to build the project, and AI used inside the product | Yes |

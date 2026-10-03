@@ -11,13 +11,13 @@ A collections platform on the synthetic Maple Bank dataset, with four layers wor
 3. **Feature Store:** structured and text features, one definition for training and live scoring.
 4. **Next Best Action:** the Layer 4 use case, built in depth. A policy gate, a promise-break model, a treatment ladder and a plain-English explanation, with an agent who approves, edits or overrides every action.
 
-All documentation lives in [`docs/`](docs/README.md).
+All documentation lives in [`docs/`](docs/README.md). **Judges: start with [`submission.md`](submission.md)**, which links every deliverable and shows where each layer's must-show item is.
 
 ## How to run it
 
 **Requirements:** Docker with Compose v2, **or** Python 3.12 ([uv](https://docs.astral.sh/uv/)) and Node 20. About 20 GB of free disk.
 
-**1. Get the data** (about 2.3 GB zipped, 7 GB unzipped):
+**1. Get the data** (optional with Docker, which downloads it for you; about 2.3 GB zipped, 7 GB unzipped):
 
 ```bash
 mkdir -p data/raw && cd data/raw
@@ -29,21 +29,18 @@ unzip -q maple_collections_release.zip && cd ../..
 **2a. With Docker (recommended):**
 
 ```bash
-cp .env.example .env
-make up                  # web + api at http://localhost:8080
-make nightly             # build the warehouse: ingest, silver, identity, gold + contract tests, features, train, publish
-make jobs TASK=benchmark # generate the benchmark answers CSV
-make test-containers     # run the tests inside the image
+docker compose up --build   # the whole system on http://localhost:8080
 ```
 
-Until `make nightly` has published a warehouse, the API serves sample data (`USE_FIXTURES=true`). Set it to `false` in `.env` afterwards.
+That one command builds the images, then a one-off `bootstrap` container downloads the dataset into `./data/raw` if it isn't there, builds the warehouse on the first run (about 5 minutes: ingest, silver, identity, gold + contract tests, features, quality report, benchmark), and exits. The API starts once it succeeds and the web once the API is healthy. Later runs find the data and start in seconds. `REBUILD=1 docker compose up --build` rebuilds the warehouse; `make test-containers` runs the tests in the image; `docker compose down` stops it.
 
 **2b. Locally:**
 
 ```bash
 cp .env.example .env
 make setup               # Python + web dependencies
-make data && make train && make score
+make data               # bronze, silver, identity, gold + contract tests, quality report, features
+make benchmark          # answers every benchmark question -> deliverables/benchmark_answers.csv
 make api                 # terminal 1: FastAPI on :8000
 make web                 # terminal 2: http://localhost:5173
 make test && make lint

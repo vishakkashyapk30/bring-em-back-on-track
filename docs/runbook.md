@@ -21,15 +21,12 @@ Read `data/raw/maple_collections_release/README.md` (conventions: only empty str
 ## 2a. Run with Docker (recommended for the demo)
 
 ```bash
-cp .env.example .env
-make up                  # web + api: http://localhost:8080 (sample data until a warehouse is published)
-make nightly             # jobs container: ingest → silver → identity → gold + contract tests → features → train → publish
-make jobs TASK=benchmark # writes the benchmark answers CSV
-make test-containers     # tests inside the image
-make down
+docker compose up --build   # the whole system on http://localhost:8080
 ```
 
-After `make nightly` succeeds, set `USE_FIXTURES=false` in `.env` and run `make up` again to serve real data.
+That one command builds the images, then a one-off `bootstrap` container downloads the dataset into `./data/raw` if it isn't there, builds the warehouse on the first run (about 5 minutes: ingest, silver, identity, gold + contract tests, features, quality report, benchmark), and exits. The API starts once it succeeds and the web once the API is healthy. Later runs find the data and start in seconds. `REBUILD=1 docker compose up --build` rebuilds the warehouse; `make test-containers` runs the tests in the image; `docker compose down` stops it.
+
+
 
 ## 2b. Run locally
 

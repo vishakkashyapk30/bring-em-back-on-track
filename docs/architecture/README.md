@@ -39,7 +39,7 @@ Deliverable 2 is the final diagram as **`architecture.png` / `architecture.pdf` 
                                               ├─ read-only ──► warehouse.duckdb · lancedb/ · model artefacts
                                               └─ read/write ─► ops.db (SQLite WAL: approvals, audit, hardship events)
  jobs (run to completion): ingest → dbt silver → identity → dbt gold + contract tests → features → train/evaluate
-      → quality report → publish (atomic swap of warehouse.building.duckdb → warehouse.duckdb)
+      → quality report → publish (atomic swap of building/warehouse.duckdb → warehouse.duckdb)
  optional: worker (event re-scoring), ollama (local LLM)
 ```
 

@@ -18,11 +18,11 @@ The product is **offline-first**: every AI-assisted step has a deterministic fal
 
 | Where | What it does | Model / method | Why AI, and why not rules alone | How it's checked |
 |---|---|---|---|---|
-| Ask: question → chips | Turns a plain-English question into editable search tokens | Offline rule parser (synonyms from `metric_definitions`); optional LLM (provider TBC) | Free-text questions | Allowlists, refusal rules, SQL guard, SQL shown, benchmark score |
+| Ask: question → chips | Maps a plain-English question onto a certified metric, dimensions, filters and time range | Offline semantic compiler (no LLM); optional LLM (provider TBC) to widen coverage | Free-text questions | Refusal rules, SQL guard, SQL shown, dev benchmark 0.994 |
 | Ask: insight text | 2–3 sentence summary of the result rows | Template offline; optional LLM using **only** the returned rows | Readable summaries | Rows shown alongside; no numbers outside the rows |
-| Policy answers (agent assist) | Answers policy questions with citations | Local embeddings (fastembed, model TBC) + LanceDB hybrid search; extractive offline, optional LLM | Long documents | Citation required or refusal; precedence rules; 30 graded answers |
-| Text features | Hardship signal, delay reason, dispute signal, promise from notes and transcripts | Keyword/regex rules offline; optional LLM | Signals exist only in text | Accuracy against the release's 500 public labels each for notes and transcripts |
-| Post-call summary | Structured notes with turn citations | Template + extractive offline; optional LLM | Free speech | Schema check, promise checked against the record, agent approves |
+| Policy answers (Ask and agent assist) | Answers policy questions with citations | BM25 over current policy sections with precedence (offline); optional LLM for wording | Many documents, some outdated | Citation required or refusal; precedence rules; benchmark policy questions |
+| Text features | Hardship signal and reason, delay reason, dispute, complaint, cease request, next step from notes and transcripts | Rules mined from the release's labels (offline); optional LLM | Signals exist only in text | Transcripts: 99.6% hardship accuracy, 98% exact summaries; notes: 95% (500 public labels each) |
+| Post-call summary | Structured summary in the gold template | Rule extraction + template (offline); optional LLM | Free speech | 98% exact match on 500 labelled transcripts; promise checked against the record; agent approves |
 | Promise-break model | Ranks open promises by break risk | LightGBM (monotone constraints, calibrated) + SHAP reason codes | Many interacting signals | Must beat the bank's v2.1 on the same promises; calibration; top-decile metrics |
 | Identity grey band (optional) | Evidence summary for a masked candidate pair | Optional LLM hint | Nicknames, typos | Steward decides; never automatic |
 
