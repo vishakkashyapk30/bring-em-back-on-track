@@ -1,0 +1,39 @@
+# What changed from the design phase, and why
+
+The build-phase rules allow changing the design if the README says what changed and why. This is the full list. The root README has a summary.
+
+**Baseline:** the design-phase submission, [`design/system_design_files/collections_system_design_V1.md`](design/system_design_files/collections_system_design_V1.md) (V1) and its shorter version v2. **Drivers of change:** the [critique](reviews/system_design_critique.md), the [build-phase instructions](brief/build_phase_instructions.md), and practical constraints (36 hours, solo, no LLM budget). Decision IDs (Dn) are the numbers of the build plan's decisions.
+
+Status: **Decided** = agreed and in the plan. **Built** = implemented in the repo. **Planned** = scheduled, not built yet.
+
+| # | Area | Design phase said | Build does | Why | Status |
+|---|---|---|---|---|---|
+| 1 | Layer 4 scope | Three use cases: NBA, post-call summary, agent assist (V1 also adds 15 novel capabilities) | **One use case, Next Best Action.** Post-call summary and agent assist are supporting services inside the NBA workspace. The summary feeds approved text features into NBA (D1) | The brief asks for one use case; the critique flagged scope | Decided |
+| 2 | NBA framing | Risk model + ladder, uplift in Phase 2 | Stated explicitly: Phase 1 is a **rule-based treatment ladder informed by a break-risk model**, not causal optimisation (D2) | Break risk is not treatment effect; honest framing | Decided |
+| 3 | Allocation objective | break chance × amount at risk − contact cost | Expected cure benefit with a **capped** amount at risk, minus contact cost and a complaint penalty (D3) | Aligns the objective with the 30-day cure KPI instead of dollars | Planned |
+| 4 | Identity resolution | Exact keys → Splink → LLM reads masked pair, steward decides | Deterministic → Splink → steward review; the **LLM is only an optional hint**. We report precision, recall, false-merge and false-split rates (D4) | LLM verdicts are hard to validate; a false merge is the worst error | Planned |
+| 5 | NL-to-SQL security | Semantic-layer allowlist + sqlglot checker | **Role-specific database views on a read-only connection are the boundary**; sqlglot is defence in depth (D5) | A parser miss can't expose data outside the role's views | Guard built; views planned |
+| 6 | LLM provider | Claude via API on synthetic data; bank-hosted in production | **Provider-agnostic and offline-first**: deterministic rules/templates by default, Gemini free tier or local Ollama optional (D13) | No LLM budget; the system must work and demo with no LLM | Built (offline provider + interface) |
+| 7 | Frontend | Streamlit | **React + Vite + TypeScript + Tailwind**, inspired by a Figma community file and themed in CIBC colours (D7) | Approve/override flows, role-based navigation, a polished demo | Built (skeleton on fixtures) |
+| 8 | Operational writes | DuckDB has one writer, so approvals go to a side file merged nightly | **SQLite (WAL) `ops.db`** for approvals, overrides, summaries, hardship events and an **append-only audit log** (enforced by triggers) (D8) | Real-time writes for the demo; nightly merge contradicted the < 5 min re-score | Built |
+| 9 | Fairness gate | Drop or coarsen any feature group with proxy AUC > 0.65 | **Proxy test triggers a review**, plus **outcome tests** by group (action, contact and cure rates, calibration, error rates, overrides) (D10) | Proxy prediction alone isn't a fairness criterion | Planned |
+| 10 | Hardship latch | Raise to possible, specialist confirms, a person lowers with a reason | Same, plus a **review deadline** for `possible` (default 5 business days, TBC) with escalation to the team lead (D11) | An unresolved `possible` shouldn't persist indefinitely | Latch rules built; deadline planned |
+| 11 | RAG | Current versions only; no citation, no answer | Plus **precedence for conflicting documents** (regulatory summary > policy > programme terms > procedure > call script > FAQ); unresolved conflicts are refused (D12) | Critique: conflicting current documents weren't handled | Planned |
+| 12 | Model evaluation | AUC vs the bank's v2.1 | AUC **plus** calibration, precision/recall at the top decile, lift, backtested cure impact (D15) | Capacity is limited, so ranking quality at the top matters | Planned |
+| 13 | Data contract | 10 quality rules | Adds **rule 11: no customer-facing decision may use a feature older than its freshness SLA**. Will be aligned with the release's example contract **DC-COLL-001** | Critique recommendation; build-phase instruction | Draft built |
+| 14 | Hand labels | ~200 identity pairs, 200 hardship snippets, 30 RAG answers, all by hand | Hardship and text-feature evaluation uses the **release's 500 public labels each for notes and transcripts**; identity pairs and RAG answers still by hand | The release provides labels; saves about 1.5 hours | Decided |
+| 15 | Benchmark | Organisers' benchmark with tolerance + rubric | Also scored against the release's **dev answers**; submitted in the official CSV format (`question_id, answer, sql_or_sources, refused`), generated by the system, never edited by hand | Build-phase instruction | Planned |
+| 16 | Deployment | Laptop (DuckDB, Streamlit); production stack named | **Docker Compose modular monolith**: `web` (nginx), `api` (all layers in one process), `jobs` (batch, run to completion); optional `worker` and `ollama`. **No microservices** (D17) | Reproducible demo with no host setup; splitting adds hops with no benefit at this scale | Built |
+| 17 | Warehouse refresh | Nightly gold rebuild | Built into a separate file, contract-tested, then **atomically swapped in**; the API picks it up without a restart | DuckDB single-writer rule; "a failed test blocks publish" | Built |
+| 18 | Testing | Contract tests, benchmark | Plus an **independent spec test suite** written by a separate agent that saw only the brief and design docs (unit, integration and system tests against an adapter interface) (D18) | Catches drift between the build and the spec | Written; binding planned |
+| 19 | Hosting | Not in scope | Optional **Render Blueprint** (free plans) for a hosted demo on fixtures or a small demo warehouse | Shareable demo link | Written, not deployed |
+
+## Open spec questions found during the build
+
+From the independent spec suite's review of the design (to be settled after data profiling, then reflected here):
+
+1. "clear" is both the confirmed hardship level and a verb for lowering the flag. The data uses `clear` as a level (`hardship_programs.min_hardship_level`), so the data keeps it; the UI says "confirmed".
+2. Sundays: V1 says never; v2 says unless `sunday_contact_permitted`. Pending.
+3. "Pressure actions" need a definition (reminders and payment links; whether collection calls count is pending).
+4. The treatment ladder needs an explicit rule order (the demo customer matches several rules).
+5. Role permissions for lowering and confirming hardship, and for running the simulator.
