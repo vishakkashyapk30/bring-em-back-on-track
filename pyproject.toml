@@ -1,0 +1,61 @@
+[project]
+name = "collections360"
+version = "0.1.0"
+description = "Bring 'em back on track: Collections 360 for the CIBC Collections Hackathon"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "duckdb>=1.1",
+    "pyarrow>=17",
+    "pandas>=2.2",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+    "pyyaml>=6",
+    "sqlglot>=25",
+    "rapidfuzz>=3.9",
+    "python-dotenv>=1",
+    "httpx>=0.27",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+]
+
+[project.optional-dependencies]
+# Layer 1: dbt transforms + Splink identity resolution
+pipeline = ["dbt-duckdb>=1.8", "splink>=4.0"]
+# Layer 4: PTP-break model
+ml = ["lightgbm>=4.3", "scikit-learn>=1.5", "shap>=0.46"]
+# Layer 2/assist: RAG (heavy, ~400 MB with onnxruntime + embedding model; install when disk allows)
+rag = ["lancedb>=0.13", "fastembed>=0.4"]
+# Optional LLM providers (D13: offline is the default and needs nothing)
+llm = ["google-genai>=0.3"]
+# Phase 2 overlap / uplift check only
+causal = ["econml>=0.15"]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "common", "identity", "semantic", "nlq", "rag", "features", "llm",
+    "models", "decisioning", "governance", "api", "eval",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "todo: constraint test for a module not implemented yet (skipped until the module lands)",
+]
+addopts = "-m 'not todo' -q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["web", "data", "pipeline/target", "pipeline/dbt_packages", "docs/design", "docs/brief", "docs/data_dictionary", "docs/reviews"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008"]  # FastAPI Depends() in defaults is idiomatic
