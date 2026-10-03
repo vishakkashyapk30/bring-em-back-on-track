@@ -37,8 +37,15 @@ def _time_condition(col: str, tr: TimeRange) -> str:
     return f"{col} BETWEEN DATE '{tr.start}' AND DATE '{tr.end}'"
 
 
+POLICY_MODAL = re.compile(r"\b(can we|may we|are we allowed|allowed to|permitted|maximum|minimum|limit)\b", re.I)
+
+
 def _pick_metric(q: str) -> Metric | None:
     for m in METRICS:
+        if m.id == "contact_count" and POLICY_MODAL.search(q):
+            continue
+        if m.id.endswith("_count") and re.search(r"\b(share|percent\w*|proportion|rate|fraction|ratio)\b", q, re.I):
+            continue  # a count metric must not hijack a question that asks for a rate
         if find(m.patterns, q):
             return m
     return None
@@ -49,10 +56,13 @@ def _roll_rate(q: str, as_of: date) -> Compiled | None:
         return None
     ends = re.findall(rf"end of {MON}\w* (\d{{4}})", q.lower())
     if len(ends) < 2:
-        return None
+        bt = re.search(rf"between {MON}\w*(?: (\d{{4}}))? and {MON}\w* (\d{{4}})", q.lower())
+        if not bt:
+            return None
+        ends = [(bt.group(1), bt.group(2) or bt.group(4)), (bt.group(3), bt.group(4))]
     (m1, y1), (m2, y2) = ends[0], ends[1]
     d1, d2 = _month_end(int(y1), _month(m1)), _month_end(int(y2), _month(m2))
-    b = re.search(r"(\d+)\s*-\s*(\d+) days past due", q)
+    b = re.search(r"(\d+)\s*-\s*(\d+) (?:days past due|bucket)", q)
     lo, hi = (int(b.group(1)), int(b.group(2))) if b else (1, 30)
     by_product = re.search(r"\bproducts?\b", q, re.I)
     dim = "a.product_type, " if by_product else ""
@@ -85,13 +95,16 @@ def _ptp_break_list(q: str, as_of: date) -> Compiled | None:
                     ["Break probability is the bank's ptp_break v2.1 score (a model estimate)."])
 
 
-def compile_question(question: str, as_of: date) -> Compiled | None:
+def compile_question(question: str, as_of: date, force_metric: str | None = None) -> Compiled | None:
+    """`force_metric` is a certified metric id chosen by the optional LLM step; everything else (breakdowns, filters,
+    period) is still read from the question by the rules."""
     q = question
-    for special in (_roll_rate, _ptp_break_list):
-        c = special(q, as_of)
-        if c:
-            return c
-    metric = _pick_metric(q)
+    if not force_metric:
+        for special in (_roll_rate, _ptp_break_list):
+            c = special(q, as_of)
+            if c:
+                return c
+    metric = next((m for m in METRICS if m.id == force_metric), None) if force_metric else _pick_metric(q)
     if metric is None:
         return None
     alias = metric.alias
@@ -109,7 +122,14 @@ def compile_question(question: str, as_of: date) -> Compiled | None:
     joins: list[str] = []
     where = [w.replace("{as_of}", str(as_of)) for w in metric.where]
     filters = []
+    chan_words = [w for w in (r"\bcalls?\b", r"\b(sms|text messages?|texts)\b", r"\bemails?\b") if re.search(w, q, re.I)]
+    compare_channels = alias == "h" and len(chan_words) >= 2
+    if compare_channels and "channel" not in ids:
+        dims.append(next(d for d in DIMENSIONS if d.id == "channel"))
+        ids.add("channel")
     for pattern, conds, fjoins in FILTERS:
+        if compare_channels and pattern in (r"\bcalls?\b", r"\b(sms|text messages?|texts)\b", r"\bemails?\b"):
+            continue
         if re.search(pattern, q, re.I) and alias in conds:
             cond = conds[alias]
             if cond not in where:
@@ -117,22 +137,37 @@ def compile_question(question: str, as_of: date) -> Compiled | None:
                 filters.append(cond)
             if alias in fjoins and fjoins[alias] not in joins:
                 joins.append(fjoins[alias])
+    bm = re.search(r"(\d+\s*-\s*\d+|\d+\+)\s*(?:days?\s*)?(?:past due\s*)?bucket", q, re.I)
+    if bm and alias in ("c", "p", "h"):
+        val = re.sub(r"\s+", "", bm.group(1)).lower()
+        bucket = next(d for d in DIMENSIONS if d.id == "current_bucket")
+        col = bucket.expr[alias]
+        if alias in bucket.joins and bucket.joins[alias] not in joins:
+            joins.append(bucket.joins[alias])
+        where.append(f"{col} = '{val}'")
+        filters.append(f"bucket {val}")
     for d in dims:
         j = d.joins.get(alias)
         if j and j not in joins:
             joins.append(j)
     select_dims = [f"{d.expr[alias]} AS {d.id}" for d in dims]
+    unsupported = [d.id for d in DIMENSIONS if find(d.patterns, q) and alias not in d.expr and d.id not in ids]
     tr = parse(q, as_of) if metric.time_col else None
     caveats = []
     if metric.time_col and tr:
         if tr.previous:
             col = metric.time_col
             cur, prev = tr, tr.previous
-            select_dims.insert(0, f"CASE WHEN {col} >= {'TIMESTAMP' if 'ts' in col else 'DATE'} '{cur.start}' "
-                                  f"THEN '{cur.label}' ELSE '{prev.label}' END AS period")
-            where.append(_time_condition(col, TimeRange(prev.start, cur.end, "")))
+            cur_c, prev_c = _time_condition(col, cur), _time_condition(col, prev)
+            select_dims.insert(0, f"CASE WHEN {cur_c} THEN '{cur.label}' ELSE '{prev.label}' END AS period")
+            where.append(f"(({cur_c}) OR ({prev_c}))")
         else:
             where.append(_time_condition(metric.time_col, tr))
+    tm = re.search(r"(\d+)\s*(?:or more|\+)\s*days past due|(?:more than|over|at least) (\d+) days past due", q, re.I)
+    if tm and metric.id in ("delinquency_rate", "loan_delinquency_rate"):
+        n = int(tm.group(1) or tm.group(2))
+        metric = Metric(**{**metric.__dict__, "select": metric.select.replace("dpd >= 1", f"dpd >= {n}")})
+        filters.append(f"dpd >= {n}")
     select = metric.select.replace("{cure_days}", "30" if re.search(r"30 days|30-day", q) else "30")
     sql = f"SELECT {', '.join(select_dims + [select])} FROM {metric.base}"
     if joins:
@@ -141,8 +176,18 @@ def compile_question(question: str, as_of: date) -> Compiled | None:
         sql += " WHERE " + " AND ".join(where)
     if select_dims:
         n = len(select_dims)
-        sql += " GROUP BY " + ", ".join(str(i) for i in range(1, n + 1)) + " ORDER BY " + ", ".join(
-            str(i) for i in range(1, n + 1))
+        sql += " GROUP BY " + ", ".join(str(i) for i in range(1, n + 1))
+        rank = re.search(r"\b(highest|top|most|best|greatest|largest)\b|\b(lowest|least|worst|fewest|smallest)\b", q, re.I)
+        if rank and ("agent" in ids or re.match(r"\s*which\b", q, re.I)):
+            if "agent" in ids:
+                sql += " HAVING count(*) >= 30"
+                caveats.append("Agents with fewer than 30 records are left out so small samples don't top the list.")
+            sql += f" ORDER BY {n + 1} {'ASC' if rank.group(2) else 'DESC'} LIMIT 10"
+            caveats.append("Top 10 shown, ranked by the first value column.")
+        else:
+            sql += " ORDER BY " + ", ".join(str(i) for i in range(1, n + 1))
+    for u in unsupported:
+        caveats.append(f"Not split by {u.replace('_', ' ')}: that breakdown isn't available for this metric.")
     if "strategy" in {d.id for d in dims} and not re.search(r"randomi[sz]ed", q, re.I):
         caveats.append("Observed, not causal: strategies were not randomly assigned outside the randomised pilot.")
     if "test_cell" in {d.id for d in dims} and re.search(r"randomi[sz]ed", q, re.I):

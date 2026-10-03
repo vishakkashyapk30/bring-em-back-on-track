@@ -49,6 +49,21 @@ def parse(q: str, as_of: date) -> TimeRange | None:
             label = f"{ps.day}-{pe.day} {pe:%b}" if ps.month == pe.month else f"{ps.day} {ps:%b}-{pe.day} {pe:%b}"
             tr.previous = TimeRange(ps, pe, label)
         return tr
+    # two named months compared: "June 2026 with May 2026", "June versus May 2026"
+    if re.search(r"compar|versus|\bvs\b|\bwith\b.*\b20\d\d", t):
+        found = re.findall(r"\b(january|february|march|april|may|june|july|august|september|october|november|december)"
+                           r"(?: (20\d\d))?", t)
+        if len(found) >= 2 and found[0][0] != found[1][0]:
+            y2 = int(next((y for _, y in reversed(found) if y), as_of.year))
+            y1 = int(found[0][1] or y2)
+
+            def span(name: str, y: int) -> TimeRange:
+                mo = _month(name)
+                return TimeRange(date(y, mo, 1), clip(_month_end(y, mo)), f"{name.title()} {y}")
+
+            cur = span(found[0][0], y1)
+            cur.previous = span(found[1][0], int(found[1][1] or y2))
+            return cur
     # July-September 2026 / July to September 2026
     m = re.search(rf"{MON}\w*\s*(?:-|–|to|through)\s*{MON}\w* (\d{{4}})", t)
     if m:
@@ -67,6 +82,17 @@ def parse(q: str, as_of: date) -> TimeRange | None:
         n, unit = int(m.group(1)), m.group(2)
         days = n * {"day": 1, "week": 7, "month": 30}[unit]
         return TimeRange(as_of - timedelta(days=days - 1), as_of, f"last {n} {unit}s")
+    # a single day (on 25 September 2026) or a day range (23-24 September 2026)
+    m = re.search(rf"\b(\d{{1,2}})\s*(?:-|–|to)\s*(\d{{1,2}}) {MON}\w* (\d{{4}})", t)
+    if m:
+        mo, y = _month(m.group(3)), int(m.group(4))
+        start, end = date(y, mo, int(m.group(1))), date(y, mo, int(m.group(2)))
+        return TimeRange(start, clip(end), f"{start.day}-{end.day} {end:%b %Y}")
+    m = re.search(rf"\b(\d{{1,2}})(?:st|nd|rd|th)? {MON}\w* (\d{{4}})", t)
+    if m:
+        mo, y = _month(m.group(2)), int(m.group(3))
+        d = date(y, mo, int(m.group(1)))
+        return TimeRange(d, clip(d), f"{d.day} {d:%b %Y}")
     # September 2026 / in August 2026
     m = re.search(rf"\b{MON}\w* (\d{{4}})", t)
     if m:
