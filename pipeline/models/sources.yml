@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: Raw dataset landed unchanged as Parquet by pipeline/ingest.py
+    meta:
+      external_location: "{{ env_var('C360_DATA_DIR', '../data') }}/bronze/{name}.parquet"
+    tables:
+      - name: customers
+      - name: card_accounts
+      - name: loan_accounts
+      - name: deposit_accounts
+      - name: collections_cases
+      - name: contact_history
+      - name: promises_to_pay
+      - name: agent_notes
+      - name: call_transcripts
+      - name: voice_samples
+      - name: external
+      - name: loan_instalments
+      - name: transactions
+      - name: card_statements
+      - name: account_monthly_snapshot
+      - name: bureau_history
+      - name: salary_credit_history
+      - name: model_scores
+      - name: offers
+      - name: metric_definitions
+      - name: benchmark_questions
+      - name: reference_documents
+      - name: hardship_programs
+      - name: qa_checklist
+      - name: agents
+      - name: case_assignment_history
+      - name: agent_shifts
+      - name: channel_capacity
+      - name: ops_events
+      - name: geo_reference
+      - name: code_lookups
+
+  - name: identity
+    description: Written by identity/run.py into the warehouse
+    schema: identity
+    tables:
+      - name: identity_xref
+      - name: identity_events
+      - name: employer_xref

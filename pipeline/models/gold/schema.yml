@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: c360_customer
+    description: Golden customer record v1.0 (docs/contracts/c360_customer.v1.yaml)
+    columns:
+      - name: golden_id
+        data_tests: [unique, not_null]        # contract rule 1
+      - name: match_confidence
+        data_tests:
+          - dbt_utils_free_range:             # contract rule 2 (generic test in tests/generic)
+              arguments: {min_value: 0, max_value: 1}
+      - name: consent_call
+        data_tests: [not_null]                # contract rule 4 (partial)
+      - name: contact_block
+        data_tests:
+          - accepted_values:
+              arguments: {values: [none, cease, insolvency, deceased, represented]}
+      - name: hardship_flag
+        data_tests:
+          - accepted_values:
+              arguments: {values: [none, possible, clear]}

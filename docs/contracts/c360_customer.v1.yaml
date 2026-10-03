@@ -1,0 +1,77 @@
+# Data contract: gold.c360_customer (DC-COLL-C360-001), deliverable 3.
+# Structure follows the release's example contract DC-COLL-001 (files/docs/data_contracts/DC-COLL-001_v1.0_EN.md):
+# owner, refresh, quality rules, allowed uses, not allowed. Extended with schema, grain, SLA and lineage.
+# Narrative: docs/design/system_design_files/collections_system_design_V1.md Part 3.
+contract_id: DC-COLL-C360-001
+based_on: DC-COLL-001
+product: gold.c360_customer
+version: "1.0"
+status: draft            # draft until profiling confirms the TBCs
+owner: Head of Collections Analytics
+steward: Collections Data Engineering lead
+policy_approver: Collections Policy Office
+grain: one row per golden_id (resolved person), current state
+source_systems:          # the five systems with their own customer key (release README "Customer keys")
+  - {system: CRM, key: customers.crm_customer_id, note: "a person can have two records"}
+  - {system: Cards, key: card_accounts.src_customer_ref, note: card-system customer number}
+  - {system: Lending, key: loan_accounts.src_customer_ref, note: borrower number}
+  - {system: Core banking, key: "deposit_accounts.src_customer_ref, external.bank_subject_ref, bureau_history.bank_subject_ref", note: "10-digit CIF, keep leading zeros"}
+  - {system: Collections, key: "collections_cases.coll_customer_ref (CRM ID copied at case open)", note: "also contact_history / promises_to_pay / agent_notes.crm_customer_id"}
+consumers: [agent workspace, Collections Ask (semantic layer), NBA feature table, employer radar, fairness audit view]
+refresh: daily batch after source extracts, landed by 06:30 ET; hardship_flag and consent changes event-driven in production
+freshness_sla: _refreshed_at no older than 26 hours; alert to steward on breach
+retention: follows source retention (7 years on notes and recordings); exact period TBC
+schema:
+  - {name: golden_id, type: string, pii_class: none, source_rule: "generated; stable across reruns"}
+  - {name: crm_customer_ids, type: "array<string>", pii_class: internal_key, source_rule: "customers.crm_customer_id via identity_xref"}
+  - {name: match_method, type: enum, pii_class: none, source_rule: "deterministic / probabilistic / reviewed"}
+  - {name: match_confidence, type: "decimal(4,3)", pii_class: none, source_rule: "lowest link probability in the cluster"}
+  - {name: display_name, type: string, pii_class: direct_pii_masked_for_analysts, source_rule: "preferred_name else first_name + last_name"}
+  - {name: phone_token, type: string, pii_class: direct_pii_tokenised, source_rule: primary_phone_e164}
+  - {name: email_token, type: string, pii_class: direct_pii_tokenised, source_rule: "email (verified, not bounced)"}
+  - {name: province_code, type: enum, pii_class: quasi_identifier, source_rule: customers.province_code}
+  - {name: fsa, type: string, pii_class: quasi_identifier, source_rule: customers.fsa}
+  - {name: time_zone, type: string, pii_class: quasi_identifier, source_rule: "customers.time_zone checked against geo_reference.time_zone"}
+  - {name: preferred_language, type: enum, pii_class: quasi_identifier, source_rule: customers.preferred_language}
+  - {name: consent_call, type: boolean, pii_class: none, source_rule: "most restrictive across linked records"}
+  - {name: consent_sms, type: boolean, pii_class: none, source_rule: "most restrictive across linked records"}
+  - {name: consent_email, type: boolean, pii_class: none, source_rule: "most restrictive across linked records"}
+  - {name: consent_push, type: boolean, pii_class: none, source_rule: "most restrictive across linked records"}
+  - {name: permitted_call_start_local, type: "string HH:MM", pii_class: none, source_rule: customers.permitted_call_start_local}
+  - {name: permitted_call_end_local, type: "string HH:MM", pii_class: none, source_rule: customers.permitted_call_end_local}
+  - {name: contact_block, type: enum, pii_class: none, source_rule: "none/cease/insolvency/deceased/represented from cease_communication_flag, bankruptcy_flag, consumer_proposal_flag, deceased_flag, credit_counselling_agency_flag, legal_representative_flag"}
+  - {name: hardship_flag, type: enum, pii_class: sensitive_not_protected, source_rule: "none/possible/clear from collections_cases.hardship_flag, hardship_mentioned_flag, hardship_signal"}
+  - {name: vulnerability_flag, type: boolean, pii_class: sensitive_not_protected, source_rule: "customers.vulnerability_flag, collections_cases.vulnerable_customer_flag"}
+  - {name: dispute_open_flag, type: boolean, pii_class: none, source_rule: "dispute_status = open or card_accounts.dispute_open_flag"}
+  - {name: employer_key, type: string, pii_class: quasi_identifier_tokenised, source_rule: "customers.employer_name matched to deposit_accounts.payroll_descriptor_raw (S1)"}
+  - {name: payroll_delay_days, type: int, pii_class: none, source_rule: "max deposit_accounts.payroll_delay_days"}
+  - {name: max_dpd, type: int, pii_class: none, source_rule: "max dpd over open accounts in c360_account"}
+  - {name: total_past_due_cad, type: "decimal(12,2)", pii_class: none, source_rule: "sum past_due_amount over open accounts"}
+  - {name: open_case_id, type: string, pii_class: none, source_rule: "collections_cases.case_id where case_status = open (values TBC)"}
+  - {name: _refreshed_at, type: timestamp, pii_class: none, source_rule: pipeline run time}
+quality_rules:
+  - {id: 1, rule: "golden_id is unique and not null", severity: error, test: "unique + not_null on golden_id"}
+  - {id: 2, rule: "match_confidence in [0,1] and >= auto cut-off unless deterministic or reviewed", severity: error, test: dbt_utils_free_range}
+  - {id: 3, rule: "max_dpd > 0 implies total_past_due_cad > 0 (max_dpd = 0 with > CAD 1 past due: warn)", severity: error, test: TODO}
+  - {id: 4, rule: "consent flags never null and never more permissive than any linked current CRM record", severity: error, test: "not_null + TODO"}
+  - {id: 5, rule: "no golden_id links two different non-null national_id_hash values", severity: error, test: TODO}
+  - {id: 6, rule: "every current CRM record maps to exactly one golden_id; every c360_account row has one primary party", severity: error, test: TODO}
+  - {id: 7, rule: "every drop of hardship_flag to none has a hardship_flag_events row with reviewer and reason", severity: error, test: TODO}
+  - {id: 8, rule: "no protected-attribute column exists in this table", severity: error, test: contract_no_protected_columns}
+  - {id: 9, rule: "_refreshed_at within the last 26 hours", severity: error, test: contract_freshness}
+  - {id: 10, rule: "employer_key match rate >= 90% on the transactions.payroll_employer_key sample (TBC)", severity: warn, test: TODO}
+  - {id: 11, rule: "no customer-facing decision uses a feature older than its freshness SLA", severity: error, test: "tests/constraints (policy gate)"}
+allowed_uses:
+  - "Collections servicing: the agent view and NBA"
+  - "Collections analytics and reporting"
+  - "Employer monitoring, in groups of 10 or more"
+  - "Training and monitoring collections models"
+  - "Fairness audits through the restricted view"
+not_allowed:
+  - "Marketing or cross-selling"
+  - "Credit decisions or limit changes"
+  - "Any purpose outside collections"
+  - "Contacting customers not yet behind, without Policy Office sign-off"
+  - "Exporting direct PII outside the restricted zone"
+  - "Joining protected attributes back in for decisions"
+  - "Sending raw PII to an external LLM"

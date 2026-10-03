@@ -1,0 +1,26 @@
+name: collections360
+version: "0.1.0"
+config-version: 2
+profile: collections360
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  collections360:
+    silver:
+      +materialized: table
+      +schema: silver
+    gold:
+      +materialized: table
+      +schema: gold
+      role_views:
+        +materialized: view
+        +schema: gold
+    features:
+      +materialized: table
+      +schema: features
