@@ -31,7 +31,7 @@ OFFLINE_HANDLER_MODULES = ["decisioning.post_call", "features.text_rules", "nlq.
 for _m in OFFLINE_HANDLER_MODULES:
     importlib.import_module(_m)
 
-app = FastAPI(title="Collections 360 API", version="0.1.0")
+app = FastAPI(title="Back-on-Track.ai API", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[o.strip() for o in get_settings().cors_origins.split(",")],

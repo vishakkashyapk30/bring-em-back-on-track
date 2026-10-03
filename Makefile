@@ -1,4 +1,4 @@
-# Collections 360 tasks. `make help` lists targets.
+# Back-on-Track.ai tasks. `make help` lists targets.
 UV ?= uv
 DBT = cd pipeline && C360_DATA_DIR=$(CURDIR)/data C360_WAREHOUSE=$(CURDIR)/data/warehouse.duckdb $(UV) run dbt
 

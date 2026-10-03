@@ -1,7 +1,7 @@
 [project]
 name = "collections360"
 version = "0.1.0"
-description = "Bring 'em back on track: Collections 360 for the CIBC Collections Hackathon"
+description = "Back-on-Track.ai: helping customers get back on track, for the CIBC Collections Hackathon"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "duckdb>=1.1",
