@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from api.deps import live_or_fixture, require, stub
+from api.deps import live_data, live_or_fixture, require, stub
 from api.schemas.nba import StressTestIn
 from api.services import analytics
 from common.types import Role
@@ -10,7 +10,12 @@ router = APIRouter(tags=["team"])
 
 @router.post("/stress-test")
 def stress(body: StressTestIn, s=Depends(require({Role.team_lead, Role.analyst}))):
-    return stub("stress_test")
+    if not live_data():
+        return stub("stress_test")
+    from api.services.c360 import _meta
+    from decisioning import stress_test
+
+    return {"meta": _meta(), **stress_test.run(body.model_dump())}
 
 
 @router.get("/scorecard")

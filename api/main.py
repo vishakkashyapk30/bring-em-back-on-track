@@ -17,6 +17,7 @@ from api.routers import (
     governance,
     hardship,
     nba,
+    public,
     queue,
     radar,
     steward,
@@ -39,7 +40,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for r in (auth, queue, customers, nba, ask, assist, calls, hardship, radar, team, features, governance, steward):
+ROUTERS = (public, auth, queue, customers, nba, ask, assist, calls, hardship, radar, team, features, governance,
+           steward)
+for r in ROUTERS:
     app.include_router(r.router, prefix="/api")
 
 
