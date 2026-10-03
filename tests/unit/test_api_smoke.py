@@ -16,7 +16,7 @@ def test_health_and_login_flow():
     assert r.status_code == 422  # override needs a reason code
     r = c.post(f"/api/nba/{case_id}/decision", json={"decision": "approve"})
     assert r.json()["audit_id"] > 0
-    assert c.post("/api/nba/CS-NOPE/decision", json={"decision": "approve"}).status_code in (200, 404)
+    assert c.post("/api/nba/CS-NOPE/decision", json={"decision": "approve"}).status_code in (200, 403, 404)
 
 
 def test_ask_refuses_protected():

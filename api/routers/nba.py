@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 
+from api import access
 from api.deps import live_data, require, stub
 from api.schemas.common import WriteResult
 from api.schemas.nba import DecisionIn, WhatIfIn
@@ -18,6 +19,7 @@ def proposal(case_id: str, s=Depends(require({Role.agent, Role.hardship_speciali
 
     from api.services import nba as svc
 
+    access.case(s, case_id)
     p = svc.proposal(case_id, s)
     if p is None:
         raise HTTPException(404, "No open case with that ID")
@@ -37,6 +39,7 @@ def decide(case_id: str, body: DecisionIn, s=Depends(require({Role.agent, Role.h
         return WriteResult(audit_id=audit.record(s.user_id, s.role, "nba_decision", "case", case_id, body.model_dump()))
     from api.services import nba as svc
 
+    access.case(s, case_id)
     try:
         return WriteResult(audit_id=svc.record_decision(s, case_id, body))
     except KeyError as e:
@@ -52,6 +55,7 @@ def what_if(body: WhatIfIn, s=Depends(require({Role.agent, Role.hardship_special
         return stub("what_if")
     from decisioning.promise_check import what_if as run
 
+    access.case(s, body.case_id)
     out = run(body.case_id, body.ptp_amount, body.ptp_due_date, body.split)
     from api.services.c360 import _meta
 
@@ -67,6 +71,8 @@ def eligibility(case_id: str, s=Depends(require({Role.agent, Role.hardship_speci
 
     from api.services.c360 import _meta
     from decisioning import eligibility as elig
+
+    access.case(s, case_id)
 
     out = elig.check(case_id)
     if out is None:
