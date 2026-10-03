@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "plan_id": {"type": "string", "maxLength": 40},
+    "slots": {
+      "type": "object",
+      "properties": {
+        "case_id": {"type": ["string", "null"]},
+        "golden_id": {"type": ["string", "null"]},
+        "date": {"type": ["string", "null"]},
+        "amount": {"type": ["number", "null"]},
+        "channel": {"type": ["string", "null"], "enum": ["call", "sms", "email", "push", null]},
+        "question": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "summary": {"type": "string", "maxLength": 900}
+  },
+  "additionalProperties": true
+}
