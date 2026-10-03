@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "golden_id": "G-004817",
+  "as_of": "2026-09-28T06:00:00-04:00",
+  "vector": {
+    "dpd_max_current": 38,
+    "ptp_broken_count_90d": 1,
+    "payroll_delay_days": 29,
+    "card_utilisation": 0.94,
+    "sms_response_rate_30d": 0.0,
+    "hardship_signal": "clear",
+    "stated_delay_reason": "reduced_income",
+    "ptp_intent_strength": 0.55
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "answer": "A card customer at 45 DPD may be offered a payment deferral if eligible under \u00a74.2.",
+  "citations": [
+    {
+      "doc_id": "POL-COLL-004",
+      "section": "\u00a74.2",
+      "quote": "(fixture) Deferral may be offered where..."
+    }
+  ],
+  "refused": false,
+  "refusal_reason": null
+}

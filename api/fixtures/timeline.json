@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "items": [
+    {
+      "date": "2026-09-25",
+      "type": "call",
+      "text": "New PTP $800 by 2 Oct, agent A. Roy",
+      "transcript_id": "TR-8843",
+      "contact_id": "CT-55120"
+    },
+    {
+      "date": "2026-09-18",
+      "type": "sms",
+      "text": "Payment reminder delivered, no response"
+    },
+    {
+      "date": "2026-09-15",
+      "type": "system",
+      "text": "PTP broken: $1,000 not received",
+      "severity": "high"
+    },
+    {
+      "date": "2026-09-12",
+      "type": "call",
+      "text": "\"Shifts cut at the plant since August\", PTP $1,000 by 15 Sep",
+      "transcript_id": "TR-8812"
+    },
+    {
+      "date": "2026-09-05",
+      "type": "push",
+      "text": "Push notification opened, no payment"
+    }
+  ],
+  "next_cursor": null
+}

@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "week": "2026-W39",
+  "items": [
+    {
+      "employer_key": "EMP-LAKESHORE-AUTO",
+      "employer": "Lakeshore Auto Parts Ltd.",
+      "industry_naics2": "33",
+      "customers": 64,
+      "payroll_gap": 41,
+      "new_ei": 18,
+      "avg_pay_change_pct": -0.22,
+      "pattern": "layoff-like",
+      "open_cases": 23,
+      "exposure_cad": 412000
+    }
+  ]
+}

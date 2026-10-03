@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "score": null,
+  "questions": 0,
+  "passed": 0,
+  "refusals_correct": 0,
+  "items": []
+}

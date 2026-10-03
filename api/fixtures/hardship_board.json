@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "items": [
+    {
+      "golden_id": "G-004817",
+      "name": "R. Mitchell",
+      "level": "possible",
+      "source": "model",
+      "raised": "2026-09-25",
+      "review_due": "2026-10-02",
+      "overdue": false
+    }
+  ]
+}

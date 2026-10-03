@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "metric": "broken_ptp_rate",
+  "level": "fsa",
+  "items": [
+    {
+      "fsa": "N9A",
+      "lat": 42.31,
+      "lon": -83.04,
+      "value": 0.34,
+      "customers": 812
+    },
+    {
+      "fsa": "M5V",
+      "lat": 43.64,
+      "lon": -79.39,
+      "value": 0.18,
+      "customers": 1450
+    },
+    {
+      "fsa": "H2X",
+      "lat": 45.51,
+      "lon": -73.57,
+      "value": 0.21,
+      "customers": 990
+    }
+  ],
+  "suppressed": 12
+}

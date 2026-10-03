@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "items": [
+    {
+      "strategy_code": "STR-DIG-02",
+      "cure_rate_30d": 0.41,
+      "cost_per_cure": 18.4,
+      "complaints_per_1k": 0.9,
+      "causal": false
+    },
+    {
+      "strategy_code": "STR-CALL-01",
+      "cure_rate_30d": 0.44,
+      "cost_per_cure": 52.1,
+      "complaints_per_1k": 1.6,
+      "causal": true
+    }
+  ]
+}

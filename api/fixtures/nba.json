@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "case_id": "CS-2026-031877",
+  "golden_id": "G-004817",
+  "action": {
+    "treatment": "plan_offer",
+    "channel": "call",
+    "window": "17-21",
+    "program_id": "HP-LOAN-RED3"
+  },
+  "priority": 412.5,
+  "explanation": {
+    "recommendation": "Offer the 3-month reduced payment plan on a call, Thu 17:00-21:00 ET",
+    "rules_applied": [
+      {
+        "code": "HARDSHIP_POSSIBLE",
+        "text": "Hardship possible: pressure actions paused",
+        "kind": "rule"
+      },
+      {
+        "code": "CAP_7D_OK",
+        "text": "2 of 3 contacts used this week",
+        "kind": "rule"
+      },
+      {
+        "code": "HOURS_OK",
+        "text": "Inside permitted hours 08:00-20:00 ET",
+        "kind": "rule"
+      },
+      {
+        "code": "ELIGIBLE_HP_LOAN_RED3",
+        "text": "Eligible for HP-LOAN-RED3 (4 of 4 rules passed)",
+        "kind": "rule"
+      }
+    ],
+    "model_evidence": {
+      "p_break": 0.81,
+      "band": "very_high",
+      "label": "model estimate",
+      "model": "ptp_break ours v0 (fixture)",
+      "drivers": [
+        {
+          "code": "payroll_delay_days",
+          "text": "Payroll deposit 29 days late",
+          "kind": "model",
+          "contribution": 0.21
+        },
+        {
+          "code": "prior_broken_ptp_30d",
+          "text": "1 broken PTP in 30 days",
+          "kind": "model",
+          "contribution": 0.12
+        },
+        {
+          "code": "bureau_score_delta_90d",
+          "text": "Bureau score down 42 in 90 days",
+          "kind": "model",
+          "contribution": 0.07
+        }
+      ]
+    },
+    "what_changed": [
+      {
+        "code": "PTP_BROKEN",
+        "text": "Promise PTP-0090311 broken on 15 Sep",
+        "kind": "change"
+      }
+    ],
+    "freshness": {
+      "code": "FRESH",
+      "text": "Features as of 28 Sep 06:00 ET",
+      "kind": "freshness"
+    },
+    "alternatives": [
+      {
+        "action": {
+          "treatment": "payment_link",
+          "channel": "sms"
+        },
+        "why_not": "Removed: pressure action while hardship is possible"
+      },
+      {
+        "action": {
+          "treatment": "specialist_referral"
+        },
+        "why_not": "Eligible for an agent-level program; referral not needed"
+      }
+    ]
+  }
+}

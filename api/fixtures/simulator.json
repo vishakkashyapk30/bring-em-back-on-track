@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "case_id": "CS-2026-031877",
+  "within_program": true,
+  "approver_level": "agent",
+  "results": {
+    "new_payment": 290.0,
+    "surplus": 610.0,
+    "payment_share_of_surplus": 0.48,
+    "months_to_clear": 31,
+    "months_to_clear_current": 28,
+    "total_interest": 2140.0,
+    "total_interest_current": 1890.0,
+    "bank_impact_vs_status_quo": 1250.0,
+    "hold_rate_similar": {
+      "value": 0.62,
+      "n": 143,
+      "label": "observed, not causal"
+    }
+  },
+  "assumptions": {
+    "annual_discount_rate": 0.06,
+    "lgd": 0.65
+  }
+}

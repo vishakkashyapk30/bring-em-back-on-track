@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "chips": {
+    "intent": "list",
+    "metric_id": "ptp_break_probability",
+    "dimensions": [
+      "customer",
+      "product"
+    ],
+    "filters": [
+      {
+        "field": "ptp_status",
+        "op": "=",
+        "value": "open"
+      }
+    ],
+    "time_range": {
+      "start": "2026-09-28",
+      "end": "2026-10-04",
+      "label": "due 28 Sep - 4 Oct"
+    },
+    "sort": {
+      "break_prob": "desc"
+    },
+    "limit": 8,
+    "out_of_scope": null
+  },
+  "sql": "SELECT c.golden_id, c.name, p.product, p.ptp_amount, p.ptp_due_date, s.score AS break_prob\nFROM gold.promises_to_pay p\nJOIN gold.model_scores s ON s.ptp_id = p.ptp_id AND s.model_name = 'ptp_break' AND s.score_date = '2026-09-28'\nJOIN gold.c360_customer c USING (golden_id)\nWHERE p.ptp_status = 'open' AND p.ptp_due_date BETWEEN '2026-09-28' AND '2026-10-04'\nORDER BY break_prob DESC\nLIMIT 8",
+  "sql_source": "semantic",
+  "columns": [
+    "customer",
+    "product",
+    "ptp_amount",
+    "due",
+    "break_prob"
+  ],
+  "rows": [
+    [
+      "G-004817 R. Mitchell",
+      "PL + Card",
+      800,
+      "2 Oct",
+      0.81
+    ],
+    [
+      "G-011203 S. Tremblay",
+      "Card",
+      2250,
+      "30 Sep",
+      0.78
+    ],
+    [
+      "G-007741 A. Nguyen",
+      "PL",
+      1900,
+      "1 Oct",
+      0.74
+    ],
+    [
+      "G-020915 P. Gagnon",
+      "Card",
+      640,
+      "29 Sep",
+      0.69
+    ]
+  ],
+  "insight": "8 open promises due this week have a break probability above 0.60, with $12,990 at risk. Half are on cards.",
+  "caveats": [
+    "Excludes charged-off and insolvency-hold accounts (default filter)."
+  ],
+  "preflight": {
+    "coverage_pct": 100.0,
+    "incidents": [
+      {
+        "event_id": "INC-0914",
+        "text": "14 Sep app outage delayed payment posting"
+      }
+    ],
+    "default_filters": [
+      "exclude charged_off and insolvency_hold"
+    ]
+  },
+  "sources": [
+    "gold.promises_to_pay",
+    "gold.model_scores",
+    "gold.c360_customer"
+  ],
+  "followups": [
+    "Why is G-004817 high risk?",
+    "Split by agent team",
+    "Compare with last week",
+    "Which have hardship flags?"
+  ],
+  "refused": false,
+  "refusal_reason": null
+}

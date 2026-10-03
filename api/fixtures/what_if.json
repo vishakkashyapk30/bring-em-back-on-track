@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "p_break_before": 0.81,
+  "p_break_after": 0.52,
+  "days_before_payday_before": 6,
+  "days_before_payday_after": 0,
+  "label": "model estimate, not cause and effect"
+}

@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "tables": [
+    {
+      "table": "customers",
+      "rows": 1020000,
+      "null_rate_max": 0.12,
+      "dup_keys": 0,
+      "status": "pass"
+    }
+  ],
+  "contract_rules": [
+    {
+      "id": 1,
+      "rule": "golden_id unique and not null",
+      "status": "pass"
+    }
+  ],
+  "identity": {
+    "precision": null,
+    "recall": null,
+    "false_merge_rate": null,
+    "false_split_rate": null,
+    "review_queue": 0
+  },
+  "drift": [
+    {
+      "table": "contact_history",
+      "change": "channel -> channel_v2",
+      "date": "2026-09-26",
+      "explained_by": "release_note"
+    }
+  ]
+}

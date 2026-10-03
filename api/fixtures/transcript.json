@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "contact_id": "CT-55120",
+  "transcript_id": "TR-8843",
+  "turns": [
+    {
+      "turn_index": 0,
+      "speaker": "agent",
+      "text": "Hi, this is A. Roy calling from the bank about your account."
+    },
+    {
+      "turn_index": 3,
+      "speaker": "customer",
+      "text": "My shifts got cut at the plant in August and pay has been late."
+    },
+    {
+      "turn_index": 7,
+      "speaker": "customer",
+      "text": "I can do $800 by the 2nd, that's when I should get paid."
+    },
+    {
+      "turn_index": 9,
+      "speaker": "agent",
+      "text": "Thanks. I'll note $800 by 2 October."
+    }
+  ]
+}

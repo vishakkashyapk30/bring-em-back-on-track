@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "case_id": "CS-2026-031877",
+  "programs": [
+    {
+      "program_id": "HP-LOAN-RED3",
+      "program_name": "3-month reduced payment",
+      "eligible": true,
+      "approver_level": "agent",
+      "payment_reduction_pct": 0.5,
+      "duration_months": 3,
+      "fees_waived_flag": true,
+      "rules": [
+        {
+          "rule": "max_dpd",
+          "passed": true,
+          "value": 34,
+          "limit": 90
+        },
+        {
+          "rule": "min_months_on_book",
+          "passed": true,
+          "value": 41,
+          "limit": 6
+        },
+        {
+          "rule": "max_uses_12m",
+          "passed": true,
+          "value": 0,
+          "limit": 1
+        },
+        {
+          "rule": "excludes_broken_plan_90d",
+          "passed": true,
+          "value": false,
+          "limit": true
+        }
+      ]
+    }
+  ]
+}

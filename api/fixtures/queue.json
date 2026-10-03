@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "date": "2026-10-01",
+  "items": [
+    {
+      "case_id": "CS-2026-031877",
+      "golden_id": "G-004817",
+      "name": "R. Mitchell",
+      "product": "PL + Card",
+      "dpd": 38,
+      "action": {
+        "treatment": "plan_offer",
+        "channel": "call",
+        "window": "17-21",
+        "program_id": "HP-LOAN-RED3"
+      },
+      "priority": 412.5,
+      "risk_band": "very_high",
+      "p_break": 0.81,
+      "hardship_flag": "possible",
+      "vulnerable": false
+    },
+    {
+      "case_id": "CS-2026-029114",
+      "golden_id": "G-011203",
+      "name": "S. Tremblay",
+      "product": "Card",
+      "dpd": 22,
+      "action": {
+        "treatment": "payment_link",
+        "channel": "sms",
+        "window": "12-17"
+      },
+      "priority": 301.0,
+      "risk_band": "high",
+      "p_break": 0.78,
+      "hardship_flag": "none",
+      "vulnerable": false
+    },
+    {
+      "case_id": "CS-2026-030552",
+      "golden_id": "G-007741",
+      "name": "A. Nguyen",
+      "product": "PL",
+      "dpd": 9,
+      "action": {
+        "treatment": "reminder",
+        "channel": "push",
+        "window": "08-12"
+      },
+      "priority": 188.2,
+      "risk_band": "high",
+      "p_break": 0.74,
+      "hardship_flag": "none",
+      "vulnerable": false
+    },
+    {
+      "case_id": "CS-2026-027765",
+      "golden_id": "G-020915",
+      "name": "P. Gagnon",
+      "product": "Card",
+      "dpd": 15,
+      "action": {
+        "treatment": "no_contact"
+      },
+      "priority": 0,
+      "risk_band": "low",
+      "p_break": 0.18,
+      "hardship_flag": "none",
+      "vulnerable": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "proxy": [],
+  "outcome": [],
+  "note": "Aggregates only; groups < 10 suppressed."
+}

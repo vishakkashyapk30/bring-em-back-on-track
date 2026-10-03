@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "as_of": "2026-09-28T06:00:00-04:00",
+    "freshness_hours": 3,
+    "fixture": true
+  },
+  "golden_id": "G-004817",
+  "display_name": "Ryan Mitchell",
+  "segment": "Hourly wage",
+  "city": "Windsor",
+  "province_code": "ON",
+  "customer_since": "2016",
+  "time_zone": "America/Toronto",
+  "badges": {
+    "risk": {
+      "band": "high",
+      "score": 0.71
+    },
+    "bucket": "31-60",
+    "consent": {
+      "call": "08:00-20:00 ET",
+      "sms": true,
+      "email": true,
+      "push": false,
+      "language": "EN"
+    },
+    "hardship_flag": "possible",
+    "hardship_source": "model",
+    "hardship_raised": "2026-09-25",
+    "vulnerability_flag": false,
+    "dispute_open_flag": false,
+    "contact_block": "none"
+  },
+  "holdings": [
+    {
+      "product": "Credit card (Visa)",
+      "account": "\u2022\u20224417",
+      "balance": 8430,
+      "overdue": 452,
+      "dpd": 38,
+      "status": "31-60"
+    },
+    {
+      "product": "Personal loan",
+      "account": "\u2022\u20220921",
+      "balance": 18650,
+      "overdue": 1160,
+      "dpd": 34,
+      "status": "2 payments missed"
+    },
+    {
+      "product": "Chequing",
+      "account": "\u2022\u20227730",
+      "balance": 234,
+      "overdue": null,
+      "dpd": null,
+      "status": "No payroll deposit since 30 Aug"
+    },
+    {
+      "product": "Credit bureau (external)",
+      "account": "score",
+      "balance": 648,
+      "overdue": null,
+      "dpd": null,
+      "status": "2 new inquiries"
+    }
+  ],
+  "open_case_id": "CS-2026-031877"
+}
