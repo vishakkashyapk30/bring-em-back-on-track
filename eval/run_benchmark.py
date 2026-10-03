@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import re
 import time
@@ -22,6 +23,13 @@ from nlq.pipeline import ask
 
 ROOT = Path(__file__).resolve().parents[1]
 REL = get_settings().raw_dir / "maple_collections_release"
+
+
+def _as_of(q: dict) -> date | None:
+    try:
+        return date.fromisoformat(q["as_of_date"]) if q.get("as_of_date") else None
+    except ValueError:
+        return None
 
 
 def _tol(t: str) -> float:
@@ -66,15 +74,38 @@ def score_text(ours: str, gold: str, sources: str, gold_sources: str) -> float:
     return round(0.5 * overlap + 0.5 * cited, 3)
 
 
+def _read_extra(path: str, seen: set[str]) -> list[dict]:
+    """The 19:00 file, tolerantly: any delimiter and BOM, `question_id` and `question_text` under a few likely names,
+    other columns optional, ids already answered skipped (so re-running is safe)."""
+    raw = Path(path).read_text(encoding="utf-8-sig")
+    dialect = csv.Sniffer().sniff(raw[:2000], delimiters=",;\t|") if raw.strip() else csv.excel
+    out = []
+    for r in csv.DictReader(io.StringIO(raw), dialect=dialect):
+        r = {(k or "").strip().lower(): (v or "").strip() for k, v in r.items()}
+        qid = r.get("question_id") or r.get("id") or r.get("qid")
+        text = r.get("question_text") or r.get("question") or r.get("text")
+        if qid and text and qid not in seen:
+            out.append({**r, "question_id": qid, "question_text": text})
+            seen.add(qid)
+    print(f"{len(out)} extra questions read from {path}")
+    return out
+
+
 def main(extra: str | None = None) -> None:
     qs = list(csv.DictReader(open(REL / "data" / "benchmark_questions.csv")))
     if extra:
-        qs += list(csv.DictReader(open(extra)))
+        qs += _read_extra(extra, {q["question_id"] for q in qs})
     gold = {r["question_id"]: r for r in csv.DictReader(open(REL / "labels" / "benchmark_dev_answers.csv"))}
     out_rows, report = [], []
     for q in qs:
         t0 = time.perf_counter()
-        a = ask(q["question_text"], date.fromisoformat(q["as_of_date"]) if q.get("as_of_date") else None)
+        try:
+            a = ask(q["question_text"], _as_of(q))
+        except Exception as e:  # noqa: BLE001 - one bad question must not stop the submission; answer it as a refusal
+            from nlq.pipeline import Answer
+
+            a = Answer(q["question_text"], "refused", f"The system could not answer this question ({type(e).__name__}).",
+                       "", refused=True)
         ms = round((time.perf_counter() - t0) * 1000)
         out_rows.append({"question_id": q["question_id"], "answer": a.answer, "sql_or_sources": a.sql_or_sources,
                          "refused": "true" if a.refused else "false"})

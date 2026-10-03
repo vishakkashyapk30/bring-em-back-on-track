@@ -15,7 +15,7 @@ special_handling,90.1,9576","SELECT c.queue AS queue, ROUND(AVG(c.current_dpd), 
 BQ-005,No. The National Do Not Call List applies to telemarketing only and does not block collection calls. CASL express consent is for marketing messages and is not needed for collection reminders.,POL-COLL-001 §5.3,false
 BQ-006,"period,disputes
 15-22 Sep,875
-7-14 Sep,566","SELECT CASE WHEN h.contact_ts_local >= CAST('2026-09-15' AS TIMESTAMP) THEN '15-22 Sep' ELSE '7-14 Sep' END AS period, COUNT(*) AS disputes FROM contact_history AS h WHERE h.dispute_raised_flag AND h.contact_ts_local >= CAST('2026-09-07' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-23' AS TIMESTAMP) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
+7-14 Sep,566","SELECT CASE WHEN h.contact_ts_local >= CAST('2026-09-15' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-23' AS TIMESTAMP) THEN '15-22 Sep' ELSE '7-14 Sep' END AS period, COUNT(*) AS disputes FROM contact_history AS h WHERE h.dispute_raised_flag AND ((h.contact_ts_local >= CAST('2026-09-15' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-23' AS TIMESTAMP)) OR (h.contact_ts_local >= CAST('2026-09-07' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-15' AS TIMESTAMP))) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
 BQ-007,"agent_site,broken_rate_pct,promises
 Calgary,61.4,7123
 Halifax,58.7,5902
@@ -73,12 +73,7 @@ vulnerable_certified,cure_rate_pct,cases,cured_any_time_pct
 False,0.0,2499,3.0
 True,0.0,2203,4.0","SELECT cah.certified_for_vulnerable_flag AS vulnerable_certified, ROUND(100.0 * AVG(CASE WHEN c.cure_flag AND c.days_to_cure <= 30 THEN 1 ELSE 0 END), 1) AS cure_rate_pct, COUNT(*) AS cases, ROUND(100.0 * AVG(CASE WHEN c.cure_flag THEN 1 ELSE 0 END), 1) AS cured_any_time_pct FROM collections_cases AS c JOIN case_assignment_history AS cah ON cah.case_id = c.case_id WHERE NOT COALESCE(c.insolvency_hold_flag, FALSE) AND NOT COALESCE(c.deceased_hold_flag, FALSE) AND cah.assignment_method = 'randomised_pilot' AND c.hardship_flag GROUP BY 1 ORDER BY 1 LIMIT 1000",false
 BQ-015,"product,accounts_charged_off,chargeoff_amount_cad
-auto_loan,137,3718099.2
-card,360,2007836.32
-mortgage,4,1235398.37
-personal_loan,236,3207027.83
-student_loc,2,25929.27
-unsecured_loc,102,947148.47","SELECT w.product AS product, COUNT(*) AS accounts_charged_off, ROUND(SUM(w.chargeoff_amount), 2) AS chargeoff_amount_cad FROM (SELECT 'card' AS product, chargeoff_date, chargeoff_amount, chargeoff_flag FROM card_accounts UNION ALL SELECT product_type, chargeoff_date, chargeoff_amount, chargeoff_flag FROM loan_accounts) AS w WHERE w.chargeoff_flag AND w.chargeoff_date BETWEEN CAST('2025-09-29' AS DATE) AND CAST('2026-09-28' AS DATE) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
+card,360,2007836.32","SELECT w.product AS product, COUNT(*) AS accounts_charged_off, ROUND(SUM(w.chargeoff_amount), 2) AS chargeoff_amount_cad FROM (SELECT 'card' AS product, chargeoff_date, chargeoff_amount, chargeoff_flag FROM card_accounts UNION ALL SELECT product_type, chargeoff_date, chargeoff_amount, chargeoff_flag FROM loan_accounts) AS w WHERE w.chargeoff_flag AND w.product = 'card' AND w.chargeoff_date BETWEEN CAST('2025-09-29' AS DATE) AND CAST('2026-09-28' AS DATE) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
 BQ-016,Customer reports illness; promised $95 on 14 Oct; next step: hardship plan review.,transcript 5010384,false
 BQ-017,"product_type,roll_rate_pct,accounts
 auto_loan,7.4,430
