@@ -1,5 +1,26 @@
--- Latest snapshot per account (history stays in account_monthly_snapshot). Never use the wide _m01.._m12
--- columns for training. TODO(WS-A): cast types, select needed columns only.
-select *
+-- Core banking: one row per deposit account. CIF restored to 10 digits. Names "LAST F M"; DOB YYYYMMDD.
+select
+    deposit_account_id as account_id, product_type, product_code, currency,
+    {{ cif('src_customer_ref') }} as src_customer_ref, src_customer_ref as src_customer_ref_raw,
+    nullif(joint_holder_ref, '') as joint_holder_ref,
+    try_cast(snapshot_date as date) as snapshot_date, try_cast(open_date as date) as open_date, account_status,
+    try_cast(current_balance as double) as current_balance, try_cast(overdraft_limit as double) as overdraft_limit,
+    try_cast(overdraft_used as double) as overdraft_used, try_cast(overdraft_dpd as int) as dpd, overdraft_dpd_bucket as dpd_bucket,
+    try_cast(days_negative_mtd as int) as days_negative_mtd, try_cast(nsf_count_mtd as int) as nsf_count_mtd,
+    {{ to_bool('payroll_deposit_flag') }} as payroll_deposit_flag, payroll_descriptor_raw,
+    try_cast(last_payroll_date as date) as last_payroll_date, try_cast(expected_next_payroll_date as date) as expected_next_payroll_date,
+    try_cast(payroll_delay_days as int) as payroll_delay_days, try_cast(payroll_avg_amount_3m as double) as payroll_avg_amount_3m,
+    try_cast(payroll_amount_change_pct as double) as payroll_amount_change_pct, payroll_frequency_detected,
+    {{ to_bool('ei_deposit_flag') }} as ei_deposit_flag, try_cast(ei_first_deposit_date as date) as ei_first_deposit_date,
+    try_cast(other_lender_payment_amount_mtd as double) as other_lender_payment_amount_mtd,
+    try_cast(other_lender_payment_count_mtd as int) as other_lender_payment_count_mtd,
+    {{ to_bool('high_cost_lender_txn_flag') }} as high_cost_lender_txn_flag,
+    try_cast(essential_spend_amount_mtd as double) as essential_spend_amount_mtd,
+    try_cast(net_cash_flow_mtd as double) as net_cash_flow_mtd,
+    try_cast(income_to_debt_service_ratio_est as double) as income_to_debt_service_ratio_est,
+    holder_name_raw as name_raw, {{ first_token('holder_name_raw') }} as last_name_key,
+    left(regexp_extract({{ norm_text('holder_name_raw') }}, '^[A-Z]+ ([A-Z])', 1), 1) as first_initial,
+    try_strptime(holder_dob_raw, '%Y%m%d')::date as dob,
+    {{ phone_digits('holder_phone_raw') }} as phone_digits,
+    {{ postal('holder_postal_raw') }} as postal
 from {{ source('bronze', 'deposit_accounts') }}
-qualify row_number() over (partition by deposit_account_id order by snapshot_date desc) = 1

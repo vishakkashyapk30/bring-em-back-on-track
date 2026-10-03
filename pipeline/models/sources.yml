@@ -42,6 +42,17 @@ sources:
     description: Written by identity/run.py into the warehouse
     schema: identity
     tables:
+      - name: crm_golden
+      - name: source_key_xref
+      - name: account_xref
+      - name: case_xref
       - name: identity_xref
-      - name: identity_events
-      - name: employer_xref
+      - name: review_queue
+      - name: metrics
+
+  - name: features
+    description: Written by features/extract_text.py (rule-based text features over notes and transcripts)
+    schema: features
+    tables:
+      - name: transcript_features
+      - name: note_features
