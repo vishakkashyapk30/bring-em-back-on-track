@@ -33,7 +33,7 @@ The five source systems (and their keys) are confirmed by the release README: CR
 
 | Question | Decision | Evidence |
 |---|---|---|
-| Sunday contact | Follow the data: calls on Sunday only if `sunday_contact_permitted` is true (v2 wording, not V1's "never") | The field exists per customer; a blanket ban would ignore it |
+| Sunday contact | Never call on Sundays (V1 wording). `sunday_contact_permitted` is read but does not unlock Sunday calls. Decided 3 Oct: no Sunday calls for anyone (spec wording, and agents get a day of rest) | The specification suite tests V1 as primary; the switch keeps the v2 reading one line away |
 | "clear" means two things | Keep `clear` as the confirmed level, as in the data (`hardship_programs.min_hardship_level`); the UI says **"confirmed"**; lowering the flag is called **"clear the flag"** only in code comments, never in the UI | Data enum |
 | What counts as a pressure action | `reminder`, `payment_link` and **collection calls** (outbound calls asking for payment). Allowed under hardship: `plan_offer`, `specialist_referral`, `no_contact`, and calls that only offer help | Brief: "flag hardship"; pressure must stop |
 | Treatment ladder order | First match wins: (1) hardship possible/confirmed or vulnerable → `specialist_referral` or eligible `plan_offer`; (2) broken promise + payroll delay or cash stress → `plan_offer`; (3) 31+ DPD + high risk → agent call; (4) open promise + high risk + due within 3 days → reminder near payday; (5) open promise + low risk → `no_contact`; (6) otherwise `payment_link` | Removes the ambiguity the spec review found |

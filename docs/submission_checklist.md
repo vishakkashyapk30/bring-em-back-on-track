@@ -34,7 +34,7 @@ Deadline **4 Oct 2026, 21:00 IST**, via the organisers' form. Commits after 21:0
 
 - ☐ Every decision shown to an agent has a plain-English reason
 - ☐ A human can review anything that affects a customer
-- ☐ No protected attributes in decisions (constraint tests green; fairness report done)
+- ☐ No protected attributes in decisions (constraint tests green; fairness report: ☑ proxy and outcome tests on the promise-break model, ☐ NBA action rates by group once Layer 4 decisions exist)
 - ☐ Financial hardship is flagged (hardship latch visible in the UI)
 - ☐ Benchmark CSV produced by `jobs benchmark` from the final build, not hand-edited
 - ☐ Final commit before 21:00 IST; tag `submission`
