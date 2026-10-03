@@ -1,6 +1,6 @@
 # Model card: promise-to-pay break model (`ptp_break`, ours)
 
-> **Status: template.** Filled after training (`models/ptp_break/evaluate.py` writes the numbers). Structure follows OSFI E-23 model-risk expectations.
+> **Status: trained and evaluated** (3 to 4 Oct 2026). Numbers come from `reports/model_eval.json`, written by `python -m models.ptp_break.train`. Structure follows OSFI E-23 model-risk expectations.
 
 | | |
 |---|---|
@@ -9,20 +9,31 @@
 | Use in decisions | One input to a rule-based treatment ladder, after the policy gate. A person approves every customer-facing action |
 | Label | Promise broken or partly kept after due date + grace days = 1; kept = 0; open/cancelled excluded; promises overlapping a payment-posting outage excluded |
 | Data | `promises_to_pay` + point-in-time features from the feature store (`features/registry.yaml`) |
-| Algorithm | LightGBM with monotone constraints, isotonic calibration; SHAP top-3 reason codes |
-| Split | Time-based: train to Mar 2026, validate Apr–Jun, test Jul–Sep (TBC after profiling) |
-| Baseline | Bank's `model_scores` `ptp_break` v2.1 (AUC 0.74 at validation) on the same test promises |
+| Algorithm | LightGBM (monotone constraints on prior broken promises, days past due, complaints and disputes), isotonic calibration, then a logistic blend with the bank's v2.1 score; TreeSHAP top-3 reason codes |
+| Split | Time-based on the date the promise was made: train before 1 Apr 2026 (121,975 promises), calibration and blend fitting Apr to Jun 2026 (24,846), test Jul to Sep 2026 (56,935) |
+| Baseline | Bank's `model_scores` `ptp_break` v2.1 (the data dictionary says AUC 0.74; on our test promises it is 0.694) on the same promises |
 
-## Performance (test period, same promises as v2.1)
+## Performance (Jul to Sep 2026, the 25,617 test promises that v2.1 also scored)
 
-| Metric | Ours | v2.1 |
-|---|---|---|
-| AUC | TBC | TBC |
-| Brier score | TBC | TBC |
-| Precision / recall @ top 10% | TBC | TBC |
-| Lift @ top 10% | TBC | TBC |
+| Metric | Bank v2.1 | Ours alone | **Blend (used)** |
+|---|---|---|---|
+| AUC | 0.694 | 0.666 | **0.744** |
+| Brier score (lower is better) | 0.230 | 0.224 | **0.195** |
+| Precision @ top 10% | 0.861 | 0.822 | 0.920 |
+| Recall @ top 10% | 0.138 | 0.131 | 0.147 |
+| Lift @ top 10% | 1.375 | 1.313 | 1.469 |
 
-**Decision rule:** if ours does not beat v2.1, NBA uses v2.1 scores and this card says so.
+The base rate of broken promises in this period is 62.6%, so precision at the top 10% is high for every model and lift is the fairer comparison. On all 56,935 test promises (including those v2.1 did not score) our model alone has AUC 0.656 and Brier 0.219.
+
+**Decision taken:** our model alone does not beat v2.1 on ranking (AUC 0.666 against 0.694), so by the rule below we do not replace it. A logistic blend of the two scores, fitted on the Apr to Jun calibration period and judged on Jul to Sep, beats both on every metric. The app scores the 33,005 open promises with the blend. Blend weights on the logit scale: v2.1 0.60, ours 0.93, intercept 0.77.
+
+**Why ours alone is weaker than a model "should" be.** The first version scored AUC 0.95. That was leakage: in this release the promised amount looks back-filled after the outcome (69% of kept promises are for the full overdue amount, against 0.3% of still-open ones). `ptp_amount` and `ptp_to_overdue_ratio` are excluded, and training stops with an error if test AUC goes above 0.90. Also excluded: the case queue (current state, not as of the promise), entry days past due (constant 1) and due date minus stated payday (constant 0). The honest signal is modest, and the strongest drivers are days between creation and due date, days past due at creation, hardship language in the transcripts and notes, and time in the case.
+
+**Calibration (blend).** Close to the diagonal in the upper bins; the model under-predicts breaks in the latest quarter by 3.6 points overall (predicted bin 0.0 to 0.1 observed 0.13; bin 0.2 to 0.3 observed 0.32), worst for vulnerable customers (see Fairness). Calibration is by overall period, not by segment.
+
+**Fallback.** A promise the bank did not score is scored by our calibrated model alone and labelled `our model (no bank v2.1 score)` on the row. Today every one of the 33,005 open promises has a v2.1 score, so the fallback is used 0 times. The same fallback applies to 31,318 of the 56,935 test promises, which is why the all-promise figure above is lower.
+
+**Decision rule:** if ours does not beat v2.1, NBA uses v2.1 scores (or the blend when the blend beats both) and this card says so.
 
 ## Fairness
 
