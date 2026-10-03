@@ -1,4 +1,5 @@
 -- Contract rule 8: no protected-attribute column exists in gold.c360_customer.
+-- depends_on: {{ ref('c360_customer') }}
 select column_name
 from information_schema.columns
 where table_schema = 'gold' and table_name = 'c360_customer'

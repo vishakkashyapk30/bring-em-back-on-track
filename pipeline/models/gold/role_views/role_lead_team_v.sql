@@ -1,4 +1,5 @@
--- Role view for NL-to-SQL and the API (D5). The read-only executor can only see role_<role>_* views.
--- TODO(WS-A/WS-B): restrict columns, apply row filters, mask names, suppress groups < 10 where aggregate.
-select golden_id, province_code, fsa, max_dpd, total_past_due_cad, hardship_flag, _refreshed_at
-from {{ ref('c360_customer') }}
+-- Team lead view: open-case customers with team assignment.
+select c.golden_id, c.display_name, c.hardship_flag, c.vulnerability_flag, c.max_dpd, c.total_past_due_cad,
+       k.case_id, k.assigned_team, k.assigned_agent_id, k.queue, k.strategy_code, k.test_cell
+from {{ ref('c360_customer') }} c
+join {{ ref('c360_case') }} k on k.case_id = c.open_case_id

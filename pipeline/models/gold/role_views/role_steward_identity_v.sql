@@ -1,4 +1,3 @@
--- Role view for NL-to-SQL and the API (D5). The read-only executor can only see role_<role>_* views.
--- TODO(WS-A/WS-B): restrict columns, apply row filters, mask names, suppress groups < 10 where aggregate.
-select golden_id, province_code, fsa, max_dpd, total_past_due_cad, hardship_flag, _refreshed_at
-from {{ ref('c360_customer') }}
+-- Data steward view: identity links and confidence, no contact details.
+select x.golden_id, x.source_system, x.source_ref, x.match_method, x.match_probability, x.evidence
+from {{ source('identity', 'identity_xref') }} x

@@ -1,4 +1,6 @@
--- Role view for NL-to-SQL and the API (D5). The read-only executor can only see role_<role>_* views.
--- TODO(WS-A/WS-B): restrict columns, apply row filters, mask names, suppress groups < 10 where aggregate.
-select golden_id, province_code, fsa, max_dpd, total_past_due_cad, hardship_flag, _refreshed_at
+-- Analyst view (D5): no direct identifiers (no names, tokens or CRM IDs). Aggregates are suppressed below 10
+-- customers by the Ask executor.
+select golden_id, province_code, fsa, time_zone, preferred_language, segment, contact_block, hardship_flag,
+       vulnerability_flag, dispute_open_flag, payroll_delay_days, max_dpd, total_past_due_cad, open_accounts,
+       open_cases, match_method, _refreshed_at
 from {{ ref('c360_customer') }}
