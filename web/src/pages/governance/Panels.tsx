@@ -1,9 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
 import { useGet } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
 import { DataTable } from "@/components/DataTable";
+import { ModelEval } from "@/components/ModelEval";
 import { StatTiles } from "@/components/StatTiles";
 import { QueryState } from "@/components/States";
 
@@ -31,7 +32,7 @@ export function Quality() {
         { label: "Contract tests", value: `${passed} / ${tests.length}`, note: passed === tests.length ? "all passing" : "failures block publish", status: passed === tests.length ? "ok" : "bad" },
       ]} />
       <h2 className="text-xl">Issues found</h2>
-      <DataTable columns={["Issue", "Table(s)", "Records affected", "How we handled it"]}
+      <DataTable searchable="Search issues" columns={["Issue", "Table(s)", "Records affected", "How we handled it"]}
         rows={issues.map((i) => [i.issue, i.tables, i.records_affected, i.handled])}
         render={(v, col) => (col === "Records affected" ? <span className="tabular">{n(v)}</span> : String(v ?? ""))} />
       <h2 className="mt-8 text-xl">Contract tests (gold.c360_customer)</h2>
@@ -56,7 +57,7 @@ export function Benchmark() {
         { label: "Refused", value: n(d.refused), note: "out of scope, protected or personal data" },
         { label: "Slowest answer", value: items.length ? `${Math.max(...items.map((i) => i.latency_ms ?? 0))} ms` : "n/a" },
       ]} />
-      <DataTable columns={["Question", "Split", "Answered as", "Refused", "Dev score", "Latency"]}
+      <DataTable searchable="Search questions" filters={[{ id: "dev", label: "Dev split", test: (r) => r[1] === "dev" }, { id: "refused", label: "Refused", test: (r) => r[3] === "yes" }, { id: "sql", label: "Answered with SQL", test: (r) => String(r[2]).includes("sql") }]} columns={["Question", "Split", "Answered as", "Refused", "Dev score", "Latency"]}
         rows={items.map((i) => [i.question_id, i.split, i.kind?.replace("_", " "), i.refused ? "yes" : "no", i.score ?? "hidden", `${i.latency_ms} ms`])} />
       <p className="text-sm text-muted">The submission file is deliverables/benchmark_answers.csv, produced by the system as it is (make benchmark).</p>
     </QueryState>
@@ -80,7 +81,8 @@ export function Monitoring() {
       ]} />
       <h2 className="text-xl">Text features vs 500 labelled transcripts</h2>
       <DataTable columns={["Field", "Accuracy"]} rows={Object.entries(tx).map(([k, v]) => [k.replace(/_/g, " "), pct(v)])} />
-      <Card variant="grey" className="mt-6 text-sm">Model drift and calibration (PSI, Brier) appear here once the promise-break model is trained (Layer 4).</Card>
+      <h2 className="mt-8 text-xl">Promise-break model</h2>
+      <ModelEval />
     </QueryState>
   );
 }
@@ -111,11 +113,68 @@ export function Contract() {
   );
 }
 
+const ATTR_LABEL: Record<string, string> = {
+  gender_code: "Gender", age_band: "Age band", marital_status: "Marital status", citizenship_status: "Citizenship",
+  newcomer_program_flag: "Newcomer", accessibility_needs_flag: "Accessibility needs", vulnerability_type: "Vulnerability type",
+  household_size: "Household size", dependants_count: "Dependants",
+};
+const signed = (v: unknown) => (typeof v === "number" ? `${v > 0 ? "+" : ""}${(v * 100).toFixed(1)} pts` : "n/a");
+
+/** Fairness audit: can the features stand in for a protected attribute (proxy test), and does the promise-break
+ * score treat groups the same once it meets real outcomes (outcome test). Aggregates only; small groups hidden. */
 export function Fairness() {
   const q = useGet("fairness", "/governance/fairness");
+  const d: Json = q.data ?? {};
+  const live = d.proxy && !Array.isArray(d.proxy);
+  const proxy: Json[] = live ? d.proxy.groups ?? [] : [];
+  const attrs: Json[] = live ? d.outcome?.attributes ?? [] : [];
+  const [attr, setAttr] = useState("vulnerability_type");
+  const cur = attrs.find((a) => a.attribute === attr) ?? attrs[0];
+  const review: string[] = d.review_items ?? [];
+  const o: Json = d.outcome?.overall ?? {};
   return (
     <QueryState q={q}>
-      <Card variant="grey">The fairness audit (proxy test + outcome test by group, aggregates only, groups under 10 suppressed) runs against the promise-break model and the next-best-action decisions, which are being built in Layer 4. Protected attributes are already excluded from every feature, model input and Ask query (constraint tests).</Card>
+      {!live ? (
+        <Card variant="grey">The fairness audit has not been run yet. Run <code>python -m governance.fairness.report</code>.</Card>
+      ) : (
+        <>
+          <StatTiles items={[
+            { label: "Feature groups tested", value: String(proxy.length), note: `${proxy.filter((g) => g.decision === "review").length} above the ${d.proxy.threshold} AUC line`, status: proxy.some((g) => g.decision === "review") ? "warn" : "ok" },
+            { label: "Highest proxy AUC", value: Math.max(...proxy.map((g) => g.max_auc)).toFixed(3), note: "0.5 means no signal; line is 0.65", status: "ok" },
+            { label: "Test promises audited", value: n(d.outcome?.promises), note: `${d.outcome?.test_period}, ${n(o.customers)} customers` },
+            { label: "Groups for review", value: String(review.filter((r) => !r.includes("predicts")).length), note: "a person looks and explains", status: review.length ? "warn" : "ok" },
+          ]} />
+          <h2 className="text-xl">Proxy test</h2>
+          <p className="text-[14px] text-muted">For each group of features, a simple model tries to predict each protected attribute from that group alone ({n(d.proxy.customers)} customers, 5-fold cross-validation). AUC above {d.proxy.threshold} sends the group to review; it is never an automatic drop.</p>
+          <DataTable columns={["Feature group", "Features", "Highest AUC", "Predicts best", "Decision"]}
+            rows={proxy.map((g) => [g.group.replace(/_/g, " "), g.n_features, g.max_auc.toFixed(3), ATTR_LABEL[g.worst_attribute] ?? g.worst_attribute, g.decision])}
+            render={(v, c) => (c === "Decision" ? <Badge kind={v === "keep" ? "ok" : "danger"}>{v === "keep" ? "Keep" : "Review"}</Badge> : String(v ?? "n/a"))} />
+          <h2 className="mt-8 text-xl">Outcome test</h2>
+          <p className="text-[14px] text-muted">On the {n(d.outcome?.promises)} promises due {d.outcome?.test_period}, by group: how often the promise was broken, how the score compared, and how often the group was flagged high risk (score of {d.outcome?.thresholds?.flag_at} or more). Overall the score runs {Math.abs(o.calibration_gap * 100).toFixed(1)} points {o.calibration_gap < 0 ? "below" : "above"} reality, so a group is flagged for review only when its gap differs from that by more than {d.outcome?.thresholds?.calibration_gap * 100} points, or its flag rate is outside {d.outcome?.thresholds?.flag_ratio?.[0]}x to {d.outcome?.thresholds?.flag_ratio?.[1]}x of everyone's.</p>
+          <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label="Protected attribute">
+            {attrs.map((a) => (
+              <button key={a.attribute} type="button" aria-pressed={cur?.attribute === a.attribute} onClick={() => setAttr(a.attribute)}
+                className={`h-8 rounded-full border px-3 text-[13.5px] font-medium transition-colors ${cur?.attribute === a.attribute ? "border-ink bg-ink text-white" : "border-grey-300/80 bg-white text-muted hover:text-ink"}`}>
+                {ATTR_LABEL[a.attribute] ?? a.attribute}{a.reviews > 0 && <span className="ml-1.5 text-brand-700" aria-label={`${a.reviews} to review`}>•</span>}
+              </button>
+            ))}
+          </div>
+          {cur && (
+            <DataTable columns={["Group", "Promises", "Broke", "Predicted", "Excess gap", "Flagged", "vs all", "Caught", "False alarms", "Calls / 30d", "Status"]}
+              rows={cur.groups.map((r: Json) => [r.group, r.promises, pct(r.break_rate), pct(r.predicted), signed(r.excess_gap), pct(r.flag_rate), r.flag_ratio == null ? "n/a" : `${r.flag_ratio.toFixed(2)}x`, pct(r.tpr), pct(r.fpr), r.attempts_30d.toFixed(1), r.status])}
+              render={(v, c) => (c === "Status" ? <Badge kind={v === "ok" ? "ok" : v === "review" ? "danger" : "neutral"}>{v === "ok" ? "OK" : v === "review" ? "Review" : "Low volume"}</Badge> : String(v ?? "n/a"))} />
+          )}
+          {cur?.suppressed_groups > 0 && <p className="mt-2 text-[13px] text-muted">{cur.suppressed_groups} group(s) with fewer than 10 customers are hidden.</p>}
+          {review.some((r) => r.startsWith("vulnerability_type")) && (
+            <Card variant="grey" className="mt-6">
+              <h3 className="mt-0">What we found, and what it means</h3>
+              <p className="mb-2">Customers with a recorded vulnerability break more promises than others (about 72 to 75% against 63%) and the score flags them more often. That follows reality, but the score under-predicts their breaks by a further 3 to 4 points and gives them more false alarms.</p>
+              <p className="mb-0">This is acceptable only because a higher break risk never raises pressure: the policy gate runs first, vulnerable and hardship customers get gentler treatment, and risk only decides whether to add a reminder or a person's follow-up. The review is to confirm that in the decisions once Layer 4 produces them, and to recalibrate by segment if the gap persists.</p>
+            </Card>
+          )}
+          <p className="mt-4 text-[13px] text-muted">{d.note} Next-best-action rates by group (pressure actions, contact rates, overrides) are added when Layer 4 decisions exist for the test period.</p>
+        </>
+      )}
     </QueryState>
   );
 }
@@ -126,7 +185,7 @@ export function Audit() {
   const items: Json[] = q.data?.items ?? [];
   return (
     <QueryState q={q} empty={items.length === 0}>
-      <DataTable columns={["#", "When (UTC)", "Who", "Role", "Event", "Subject"]}
+      <DataTable searchable="Search who, event or subject" filters={[{ id: "decisions", label: "Decisions", test: (r) => String(r[4]).includes("decision") || ["edit", "override"].includes(String(r[4])) }, { id: "hardship", label: "Hardship", test: (r) => String(r[4]).includes("hardship") }, { id: "batch", label: "Batches", test: (r) => String(r[4]).includes("batch") }, { id: "sim", label: "Simulator", test: (r) => String(r[4]).includes("simulator") }]} columns={["#", "When (UTC)", "Who", "Role", "Event", "Subject"]}
         rows={items.map((a) => [a.audit_id, a.ts, a.user_id, a.role, a.event_type, [a.entity_type, a.entity_id].filter(Boolean).join(" ")])} />
     </QueryState>
   );

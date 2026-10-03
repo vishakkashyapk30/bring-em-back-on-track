@@ -1,4 +1,6 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+
+import { RouteTabs } from "@/components/Tabs";
 
 import { SectionTag } from "@/components/SectionTag";
 
@@ -8,9 +10,7 @@ export default function Governance() {
   return (
     <>
       <SectionTag as="h1" subtitle="Trusted, not just joined.">Governance</SectionTag>
-      <nav aria-label="Governance" className="mb-6 flex flex-wrap gap-2">
-        {TABS.map(([to, label]) => <NavLink key={to} to={to} className={({ isActive }) => `rounded-[var(--radius-md)] border border-ink px-3 py-1.5 no-underline ${isActive ? "bg-brand text-white" : "bg-white text-ink"}`}>{label}</NavLink>)}
-      </nav>
+      <RouteTabs tabs={TABS as [string, string][]} label="Governance" />
       <Outlet />
     </>
   );
