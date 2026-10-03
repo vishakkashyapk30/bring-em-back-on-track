@@ -174,11 +174,13 @@ dependencies = [
     { name = "duckdb" },
     { name = "fastapi" },
     { name = "httpx" },
+    { name = "jsonschema" },
     { name = "pandas" },
     { name = "pyarrow" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
+    { name = "pytz" },
     { name = "pyyaml" },
     { name = "rapidfuzz" },
     { name = "sqlglot" },
@@ -199,6 +201,7 @@ ml = [
 ]
 pipeline = [
     { name = "dbt-duckdb" },
+    { name = "huggingface-hub" },
     { name = "splink" },
 ]
 rag = [
@@ -221,6 +224,8 @@ requires-dist = [
     { name = "fastembed", marker = "extra == 'rag'", specifier = ">=0.4" },
     { name = "google-genai", marker = "extra == 'llm'", specifier = ">=0.3" },
     { name = "httpx", specifier = ">=0.27" },
+    { name = "huggingface-hub", marker = "extra == 'pipeline'", specifier = ">=0.25" },
+    { name = "jsonschema", specifier = ">=4.20" },
     { name = "lancedb", marker = "extra == 'rag'", specifier = ">=0.13" },
     { name = "lightgbm", marker = "extra == 'ml'", specifier = ">=4.3" },
     { name = "pandas", specifier = ">=2.2" },
@@ -228,6 +233,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.8" },
     { name = "pydantic-settings", specifier = ">=2.4" },
     { name = "python-dotenv", specifier = ">=1" },
+    { name = "pytz", specifier = ">=2024.1" },
     { name = "pyyaml", specifier = ">=6" },
     { name = "rapidfuzz", specifier = ">=3.9" },
     { name = "scikit-learn", marker = "extra == 'ml'", specifier = ">=1.5" },

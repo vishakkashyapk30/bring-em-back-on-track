@@ -55,7 +55,8 @@ COPY --from=dirs --chown=app:app /app /app
 COPY --chown=app:app . .
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --extra ml --extra rag --extra llm ${JOBS_EXTRAS} \
- && install -m 0755 docker/jobs-entrypoint.sh /usr/local/bin/jobs
+ && install -m 0755 docker/jobs-entrypoint.sh /usr/local/bin/jobs \
+ && install -m 0755 docker/bootstrap.sh /usr/local/bin/bootstrap
 USER app
 ENTRYPOINT ["jobs"]
 CMD ["help"]

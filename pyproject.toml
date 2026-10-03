@@ -5,6 +5,8 @@ description = "Bring 'em back on track: Collections 360 for the CIBC Collections
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "duckdb>=1.1",
+    "pytz>=2024.1",  # duckdb needs it to return TIMESTAMPTZ values
+    "jsonschema>=4.20",  # validates LLM/offline outputs against llm/schemas
     "pyarrow>=17",
     "pandas>=2.2",
     "pydantic>=2.8",
@@ -20,7 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 # Layer 1: dbt transforms + Splink identity resolution
-pipeline = ["dbt-duckdb>=1.8", "splink>=4.0"]
+pipeline = ["dbt-duckdb>=1.8", "splink>=4.0", "huggingface_hub>=0.25"]
 # Layer 4: PTP-break model
 ml = ["lightgbm>=4.3", "scikit-learn>=1.5", "shap>=0.46"]
 # Layer 2/assist: RAG (heavy, ~400 MB with onnxruntime + embedding model; install when disk allows)
@@ -59,3 +61,25 @@ extend-exclude = ["web", "data", "pipeline/target", "pipeline/dbt_packages", "do
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 ignore = ["B008"]  # FastAPI Depends() in defaults is idiomatic
+
+[tool.ruff.lint.per-file-ignores]
+# SQL-heavy modules: long query lines read better unwrapped
+"governance/quality_report.py" = ["E501"]
+"identity/run.py" = ["E501"]
+"scripts/profile/profile_all.py" = ["E501"]
+"api/services/c360.py" = ["E501"]
+"api/services/analytics.py" = ["E501"]
+"api/routers/calls.py" = ["E501"]
+"api/routers/ask.py" = ["E501"]
+"features/text_rules.py" = ["E501"]  # long regex alternations
+"eval/run_benchmark.py" = ["E501"]
+"nlq/pipeline.py" = ["E501"]
+"nlq/refusal.py" = ["E501"]
+"nlq/timeparse.py" = ["E501"]
+"rag/answer.py" = ["E501"]
+"rag/retrieve.py" = ["E501"]
+"tests/unit/test_ask_offline.py" = ["E501"]
+"semantic/registry.py" = ["E501"]
+"semantic/compiler.py" = ["E501"]
+# Independent spec suite (D18): kept exactly as written by the spec agent
+"tests_spec/**" = ["E501", "B905"]

@@ -1,6 +1,11 @@
 # Collections 360. Modular monolith: web + api long-running, jobs run-to-completion.
-#   make up       -> web on http://localhost:8080 (fixtures until a warehouse is published)
-#   make nightly  -> docker compose run --rm jobs nightly
+#
+#   docker compose up --build    -> the whole system on http://localhost:8080
+#     1. bootstrap: downloads the dataset into ./data/raw if it isn't there, builds the warehouse on the first run
+#        (about 5 minutes), then exits; later runs find both and exit in seconds
+#     2. api starts once bootstrap succeeds; web starts once the api is healthy
+#   REBUILD=1 docker compose up --build   -> rebuild the warehouse from scratch
+#   make nightly                          -> docker compose run --rm jobs nightly (manual rebuild)
 name: collections360
 
 x-python-env: &python-env
@@ -17,10 +22,13 @@ services:
       USE_FIXTURES: ${USE_FIXTURES:-true}
       CORS_ORIGINS: http://localhost:8080
     volumes:
-      - c360-data:/app/data
+      - ./data:/app/data                     # shared with local runs: one warehouse, no duplicate copy
+      - ./data/raw:/app/data/raw:ro          # dataset is read-only for the api
       - c360-artefacts:/app/models/ptp_break/artefacts
-      - c360-reports:/app/reports
+      - ./reports:/app/reports
       - c360-models-cache:/app/.cache/models
+    depends_on:
+      bootstrap: {condition: service_completed_successfully}
     restart: unless-stopped
 
   web:
@@ -31,21 +39,34 @@ services:
       api: {condition: service_healthy}
     restart: unless-stopped
 
-  jobs:
+  # Runs once per `docker compose up`: dataset + warehouse, then exits (see docker/bootstrap.sh).
+  bootstrap:
     <<: *python-env
     build:
       context: .
       target: jobs
       args: {JOBS_EXTRAS: "${JOBS_EXTRAS:---extra pipeline}"}
     image: collections360/jobs:dev
+    entrypoint: ["bootstrap"]
+    environment:
+      C360_DUCKDB_MEMORY: ${C360_DUCKDB_MEMORY:-8GB}
+      REBUILD: ${REBUILD:-0}
+    volumes:
+      - ./data:/app/data                     # dataset is downloaded into ./data/raw if missing; warehouse built here
+      - c360-artefacts:/app/models/ptp_break/artefacts
+      - ./reports:/app/reports
+      - c360-models-cache:/app/.cache/models
+
+  jobs:
+    <<: *python-env
+    image: collections360/jobs:dev
     profiles: [jobs]
     environment:
       C360_DUCKDB_MEMORY: ${C360_DUCKDB_MEMORY:-8GB}
     volumes:
-      - c360-data:/app/data
-      - ./data/raw:/app/data/raw:ro          # dataset never goes into an image
+      - ./data:/app/data
       - c360-artefacts:/app/models/ptp_break/artefacts
-      - c360-reports:/app/reports
+      - ./reports:/app/reports
       - c360-models-cache:/app/.cache/models
 
   # Optional: event re-scoring / LLM backfill consumer. Only if inline re-scoring is too slow.
@@ -55,7 +76,7 @@ services:
     profiles: [realtime]
     entrypoint: ["python", "-c", "raise SystemExit('worker not implemented: see docs/architecture/README.md')"]
     volumes:
-      - c360-data:/app/data
+      - ./data:/app/data
 
   # Optional: local LLM for LLM_PROVIDER=ollama (D13). Set OLLAMA_HOST=http://ollama:11434 in .env.
   ollama:
@@ -64,8 +85,6 @@ services:
     volumes: [ollama-models:/root/.ollama]
 
 volumes:
-  c360-data: {}
   c360-artefacts: {}
-  c360-reports: {}
   c360-models-cache: {}
   ollama-models: {}

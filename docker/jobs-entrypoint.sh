@@ -4,26 +4,32 @@ set -euo pipefail
 cd /app
 
 LIVE="${WAREHOUSE_PATH:-/app/data/warehouse.duckdb}"
-BUILD="/app/data/warehouse.building.duckdb"
+# Same file name in a separate folder: dbt hard-codes the database name (= file stem) into views, so the
+# build file must be called warehouse.duckdb too, or the views break after the swap.
+BUILD="/app/data/building/warehouse.duckdb"
 
 dbt_() { (cd pipeline && C360_DATA_DIR=/app/data C360_WAREHOUSE="${C360_WAREHOUSE:-$LIVE}" dbt "$@" --profiles-dir .); }
 
 nightly() {
   # Build into a separate file, test, then atomically publish (DuckDB single-writer rule).
-  rm -f "$BUILD"
+  rm -f "$BUILD" "$BUILD.wal"; mkdir -p "$(dirname "$BUILD")"
   export WAREHOUSE_PATH="$BUILD" C360_WAREHOUSE="$BUILD"
   python -m pipeline.ingest
   dbt_ run --select silver
   python -m identity.run
   dbt_ build --select gold          # contract tests: a failure stops here, nothing is published
+  mkdir -p /app/reports && cp pipeline/target/run_results.json /app/reports/contract_tests.json
+  python -m features.extract_text
   dbt_ run --select features
   python -m features.build_offline
   python -m features.build_online
-  python -m models.ptp_break.train
-  python -m models.ptp_break.evaluate
+  python -m features.parity
+  # Layer 4 model steps: optional until the model lands (the bank's v2.1 scores are used meanwhile)
+  python -m models.ptp_break.train || echo "ptp model training not available yet; skipping"
+  python -m models.ptp_break.evaluate || echo "ptp model evaluation not available yet; skipping"
   python -m governance.quality_report
+  python -m eval.run_benchmark
   python -m pipeline.publish "$BUILD" "$LIVE"
-  # TODO(WS-B): python -m rag.ingest && rag index build (needs `--extra rag`, already in the image)
 }
 
 case "${1:-help}" in

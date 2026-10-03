@@ -2,7 +2,7 @@
 UV ?= uv
 DBT = cd pipeline && C360_DATA_DIR=$(CURDIR)/data C360_WAREHOUSE=$(CURDIR)/data/warehouse.duckdb $(UV) run dbt
 
-.PHONY: help setup setup-rag bronze silver identity gold features train score data api web demo test lint dbt-parse profile types
+.PHONY: help setup setup-rag bronze silver identity gold quality features benchmark train score data api web demo test lint dbt-parse profile types
 
 help:
 	@grep -E '^[a-z-]+:' Makefile | cut -d: -f1 | tr '\n' ' '; echo
@@ -17,6 +17,9 @@ setup-rag:        ## heavy: lancedb + fastembed (~400 MB)
 profile:
 	$(UV) run python -m scripts.profile.profile_all
 
+quality:          ## regenerate docs/data_quality_report.md from the warehouse
+	$(UV) run python -m governance.quality_report
+
 bronze:
 	$(UV) run python -m pipeline.ingest
 
@@ -27,10 +30,13 @@ identity:
 	$(UV) run python -m identity.run
 
 gold:
-	$(DBT) run --profiles-dir . --select gold && $(DBT) test --profiles-dir . --select gold
+	($(DBT) run --profiles-dir . --select gold) && ($(DBT) test --profiles-dir . --select gold) && mkdir -p reports && cp pipeline/target/run_results.json reports/contract_tests.json
 
-features:
-	$(DBT) run --profiles-dir . --select features && $(UV) run python -m features.build_online
+features:          ## text features -> dbt feature models -> offline export -> parity
+	$(UV) run python -m features.extract_text && ($(DBT) run --profiles-dir . --select features) && $(UV) run python -m features.build_offline && $(UV) run python -m features.build_online && $(UV) run python -m features.parity
+
+benchmark:        ## answer every benchmark question -> deliverables/benchmark_answers.csv
+	$(UV) run python -m eval.run_benchmark
 
 train:
 	$(UV) run python -m models.ptp_break.train && $(UV) run python -m models.ptp_break.evaluate
@@ -38,7 +44,7 @@ train:
 score:
 	$(UV) run python -c "from decisioning.nba import build_queue; build_queue('today')"
 
-data: bronze silver identity gold features
+data: bronze silver identity gold quality features
 
 dbt-parse:
 	$(DBT) parse --profiles-dir .
@@ -66,8 +72,8 @@ lint:
 .PHONY: up down logs build-images nightly jobs test-containers ps
 build-images:
 	docker compose build api web
-up:               ## web on http://localhost:8080
-	docker compose up -d --build api web
+up:               ## the whole system on http://localhost:8080 (bootstrap builds data on first run)
+	docker compose up -d --build
 down:
 	docker compose down
 ps:
