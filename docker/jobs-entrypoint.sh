@@ -41,7 +41,7 @@ case "${1:-help}" in
   train)        python -m models.ptp_break.train && python -m models.ptp_break.evaluate ;;
   benchmark)    python -m eval.run_benchmark ;;
   parity)       python -c "from features.parity import run; print(run())" ;;
-  fairness)     python -c "from governance.fairness import proxy_test, outcome_test; proxy_test.run(); outcome_test.run()" ;;
+  fairness)     python -m eval.ptp_test_scores && python -m governance.fairness.report ;;
   label-sample) shift; python -m eval.label_sample "$@" ;;
   rag-index)    python -m rag.ingest ;;
   shell)        exec bash ;;

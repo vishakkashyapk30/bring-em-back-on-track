@@ -52,5 +52,71 @@ def group_proxy_auc(features: Sequence[Mapping[str, Any]], protected: Sequence[M
     return out
 
 
+# Feature groups audited. The first four are what the promise-break model uses; "cash_stress" is the
+# transaction and bureau signal the next-best-action rules read; "case_context" is the delinquency picture.
+GROUPS: dict[str, list[str]] = {
+    "promise_terms": ["days_to_due_at_creation", "prior_broken_ptp_count", "ptp_sequence_in_case", "reminder_scheduled",
+                      "stated_payday_known", "ptp_type=*", "payment_method_promised=*", "ptp_channel=*"],
+    "delinquency": ["dpd_at_creation", "overdue_at_creation", "days_in_case", "product=*", "case_product=*"],
+    "contact_history": ["attempts_30d", "rpc_30d", "contacts_90d", "complaints_90d", "disputes_90d",
+                        "cease_requests_90d", "broken_before_in_case", "kept_before_in_case"],
+    "text_signals": ["hardship_mentions_90d", "text_hardship_clear_90d", "text_hardship_possible_90d",
+                     "text_dispute_90d", "text_complaint_90d", "last_stated_delay_reason=*"],
+    "cash_stress": ["nsf_count_mtd", "days_negative_mtd", "high_cost_lender_txn_flag", "ei_deposit_flag",
+                    "payroll_delay_days", "payroll_amount_change_pct", "bureau_risk_score", "bnpl_trades_count",
+                    "off_us_delinquent_trades"],
+}
+SAMPLE = 60_000  # customers; the proxy AUC is stable well before this
+
+
+def _frame():
+    """One row per customer (their latest promise in the offline store) with every audited feature, numeric."""
+    import duckdb
+    import pandas as pd
+
+    from common.config import get_settings
+
+    s = get_settings()
+    con = duckdb.connect(str(s.warehouse_path), read_only=True)
+    df = con.sql(f"""
+        SELECT t.*, o.nsf_count_mtd, o.days_negative_mtd, o.high_cost_lender_txn_flag::int AS high_cost_lender_txn_flag,
+               o.ei_deposit_flag::int AS ei_deposit_flag, o.payroll_delay_days, o.payroll_amount_change_pct,
+               o.bureau_risk_score, o.bnpl_trades_count, o.off_us_delinquent_trades
+        FROM features.f_ptp_offline t LEFT JOIN features.f_customer_online o USING (golden_id)
+        QUALIFY row_number() OVER (PARTITION BY t.golden_id ORDER BY t.ptp_created_ts DESC) = 1
+        USING SAMPLE reservoir({SAMPLE} ROWS) REPEATABLE (7)""").df()
+    con.close()
+    groups: dict[str, list[str]] = {}
+    for g, cols in GROUPS.items():
+        names: list[str] = []
+        for c in cols:
+            if c.endswith("=*"):
+                dummies = pd.get_dummies(df[c[:-2]].fillna("missing").astype(str), prefix=c[:-2], dtype=float)
+                df = pd.concat([df, dummies], axis=1)
+                names += list(dummies.columns)
+            else:
+                df[c] = pd.to_numeric(df[c], errors="coerce").astype("float64")
+                df[c] = df[c].fillna(df[c].median() if df[c].notna().any() else 0.0)
+                names.append(c)
+        groups[g] = names
+    return df, groups
+
+
 def run() -> dict:
-    raise NotImplementedError("TODO(WS-H)")
+    """Proxy test on the real feature groups against the audited protected attributes. Returns the report rows."""
+    from governance.fairness import auditor
+
+    df, groups = _frame()
+    prot = auditor.load()
+    prot = prot[prot.golden_id.isin(df.golden_id)]
+    feats = [{"entity_id": r["golden_id"], **{c: r[c] for cols in groups.values() for c in cols}}
+             for r in df.to_dict("records")]
+    protected = [{"entity_id": r["golden_id"], **{a: r[a] for a in auditor.ATTRIBUTES}}
+                 for r in prot.to_dict("records")]
+    res = group_proxy_auc(feats, protected, groups)
+    rows = []
+    for g, r in res.items():
+        rows.append({"group": g, "n_features": len(groups[g]), "max_auc": r["max_auc"],
+                     "worst_attribute": r["worst_attribute"], "decision": r["decision"],
+                     "aucs": {k: round(v, 4) for k, v in sorted(r["aucs"].items(), key=lambda kv: -kv[1])}})
+    return {"customers": len(feats), "threshold": THRESHOLD_AUC, "groups": rows}

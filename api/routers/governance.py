@@ -33,6 +33,12 @@ def benchmark(s=Depends(require(GOV))):
     return _report("benchmark", "benchmark")
 
 
+@router.get("/model")
+def model(s=Depends(require(GOV))):
+    """Promise-break model evaluation (reports/model_eval.json): head-to-head vs the bank's v2.1, calibration."""
+    return _report("model_eval", "monitoring")
+
+
 @router.get("/features/parity")
 def parity(s=Depends(require(GOV))):
     return _report("feature_parity", "monitoring")
@@ -48,7 +54,9 @@ def monitoring(s=Depends(require(GOV))):
 
 @router.get("/fairness")
 def fairness(s=Depends(require(GOV))):
-    return stub("fairness")
+    """Fairness audit (reports/fairness.json): proxy test and outcome test by group, aggregates only.
+    Regenerate with `python -m governance.fairness.report` (or `make jobs TASK=fairness`)."""
+    return _report("fairness", "fairness")
 
 
 @router.get("/audit")
