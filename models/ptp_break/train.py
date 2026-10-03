@@ -16,12 +16,21 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import brier_score_loss, roc_auc_score
 
 from common.config import get_settings
-from models.ptp_break.dataset import CATEGORICAL, FEATURES, NUMERIC, build_dataset
+from models.ptp_break.dataset import CATEGORICAL, DROPPED_BY_PROXY_GATE, FEATURES, NUMERIC, build_dataset
 
 log = logging.getLogger("ptp_break")
 ART = Path(__file__).resolve().parent / "artefacts"
 # More of these can never LOWER the risk (keeps the model sensible and explainable).
-MONOTONE_UP = {"prior_broken_ptp_count", "broken_before_in_case", "dpd_at_creation", "complaints_90d", "disputes_90d"}
+MONOTONE_UP = {
+    "prior_broken_ptp_count",
+    "broken_before_in_case",
+    "dpd_at_creation",
+    "complaints_90d",
+    "disputes_90d",
+    "bur_delinq_trades",
+    "sal_gap_months_3",
+    "card_cycles_delinq",
+}
 LEAK_CHECK_MAX_AUC = 0.90  # a promise-break model this good on real-world-like data means something leaks: stop
 FALLBACK = (
     "Promises without a bank v2.1 score are scored by our calibrated model alone and labelled "
@@ -145,7 +154,8 @@ def main() -> None:
                 key=lambda x: -x[1],
             )[:15]
         ),
-        "features": {"numeric": NUMERIC, "categorical": CATEGORICAL, "monotone_increasing": sorted(MONOTONE_UP)},
+        "features": {"numeric": NUMERIC, "categorical": CATEGORICAL, "monotone_increasing": sorted(MONOTONE_UP),
+                     "dropped_by_proxy_gate": DROPPED_BY_PROXY_GATE},
     }
     h = report["head_to_head"]
     o, b, bl = h["ours"], h["bank_v2_1"], h["blend"]

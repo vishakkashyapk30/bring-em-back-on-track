@@ -31,6 +31,11 @@ rag = ["lancedb>=0.13", "fastembed>=0.4"]
 llm = ["google-genai>=0.3"]
 # Phase 2 overlap / uplift check only
 causal = ["econml>=0.15"]
+voice = [
+    "faster-whisper>=1.0",
+    "nvidia-cublas-cu12>=12.9.2.10",
+    "nvidia-cudnn-cu12>=9.27.0.42",
+]
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]

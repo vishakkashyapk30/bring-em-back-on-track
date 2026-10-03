@@ -1,7 +1,9 @@
 # Feature registry (Layer 3). One entry per feature; the /features catalog reads this file.
 # Promise features share ONE definition (pipeline/macros/ptp_features.sql) evaluated as of the promise's creation
 # for training (features.f_ptp_offline) and as of the scoring time for live use (features.f_ptp_online).
-# built_by: sql | rule (offline text extractor, validated on the release's public labels) | llm (optional provider).
+# built_by: sql | ai | voice. Text features are built_by: ai through the registered prompt "text_features" (provider: offline
+# = our rule extractor validated on the release's public labels; an optional language model uses the same prompt).
+# No voice acoustic or protected-attribute features are ever registered.
 - name: ptp_amount
   entity: promise
   type: decimal
@@ -271,7 +273,7 @@
 - name: text_hardship_clear_90d
   entity: promise
   type: int
-  built_by: rule
+  built_by: ai
   source:
   - agent_notes
   - call_transcripts
@@ -287,10 +289,13 @@
     metric: accuracy vs 500 public note labels (hardship / reason), recall
     value: 0.952 / 0.986, 0.842
     n: 500
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
 - name: text_hardship_possible_90d
   entity: promise
   type: int
-  built_by: rule
+  built_by: ai
   source:
   - agent_notes
   - call_transcripts
@@ -303,10 +308,13 @@
   version: 1
   fairness_review: pending
   label_accuracy: *id001
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
 - name: text_dispute_90d
   entity: promise
   type: int
-  built_by: rule
+  built_by: ai
   source:
   - agent_notes
   - call_transcripts
@@ -322,10 +330,13 @@
     metric: accuracy vs 500 public transcript labels (hardship / reason / summary)
     value: 0.996 / 0.996 / 0.98
     n: 500
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
 - name: text_complaint_90d
   entity: promise
   type: int
-  built_by: rule
+  built_by: ai
   source:
   - agent_notes
   - call_transcripts
@@ -338,10 +349,13 @@
   version: 1
   fairness_review: pending
   label_accuracy: *id002
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
 - name: last_stated_delay_reason
   entity: promise
   type: category
-  built_by: rule
+  built_by: ai
   source:
   - agent_notes
   - call_transcripts
@@ -354,6 +368,112 @@
   version: 1
   fairness_review: pending
   label_accuracy: *id002
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
+- name: hardship_signal
+  entity: call
+  type: category
+  built_by: ai
+  source: &id003
+  - call_transcripts
+  definition: features/text_rules.py (prompt text_features)
+  available_ts: call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
+  description: 'Hardship level from the customer''s own words: none, possible or clear; missing when the recording is poor
+    (ASR confidence below 0.80)'
+  label_accuracy:
+    metric: accuracy vs 500 public transcript labels (label_hardship)
+    value: '0.996'
+    n: 500
+- name: stated_delay_reason
+  entity: call
+  type: category
+  built_by: ai
+  source: *id003
+  definition: features/text_rules.py (prompt text_features)
+  available_ts: call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
+  description: Reason the customer gives for the delay (reduced_income, dispute, forgot, payroll_timing, bank_error, travel,
+    refuses, other); missing on a poor recording
+  label_accuracy:
+    metric: accuracy vs 500 public transcript labels (label_stated_delay_reason)
+    value: '0.904'
+    n: 500
+- name: dispute_signal
+  entity: call
+  type: bool
+  built_by: ai
+  source: *id003
+  definition: features/text_rules.py (prompt text_features)
+  available_ts: call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
+  description: The customer disputes a charge; missing on a poor recording
+  label_accuracy:
+    metric: accuracy vs 500 public transcript labels (label_dispute)
+    value: '1.0'
+    n: 500
+- name: complaint_cue
+  entity: call
+  type: bool
+  built_by: ai
+  source: *id003
+  definition: features/text_rules.py (prompt text_features)
+  available_ts: call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
+  description: The customer wants to make a complaint; missing on a poor recording
+  label_accuracy:
+    metric: accuracy vs 500 public transcript labels (label_complaint)
+    value: '1.0'
+    n: 500
+- name: ptp_intent_strength
+  entity: call
+  type: float
+  built_by: ai
+  source: *id003
+  definition: features/text_rules.py (prompt text_features)
+  available_ts: call end < as_of
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
+  description: 'How firm the promise sounded: 0.85 plain commitment, 0.45 hedged ("I will try to"); empty when no promise'
+  label_accuracy:
+    metric: accuracy vs 500 public transcript labels (label_ptp_intent_strength, in-sample)
+    value: '1.0'
+    n: 500
 - name: dpd_max_current
   entity: customer
   type: int
@@ -497,7 +617,7 @@
 - name: last_note_hardship_signal
   entity: customer
   type: enum[none,possible,clear]
-  built_by: rule
+  built_by: ai
   source:
   - agent_notes
   description: Latest note hardship signal
@@ -509,10 +629,13 @@
   version: 1
   fairness_review: pending
   label_accuracy: *id001
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
 - name: last_call_hardship_signal
   entity: customer
   type: enum[none,possible,clear]
-  built_by: rule
+  built_by: ai
   source:
   - call_transcripts
   description: Latest call hardship signal
@@ -524,10 +647,13 @@
   version: 1
   fairness_review: pending
   label_accuracy: *id002
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
 - name: last_call_next_step
   entity: customer
   type: category
-  built_by: rule
+  built_by: ai
   source:
   - call_transcripts
   description: Next step agreed on the latest call
@@ -539,3 +665,258 @@
   version: 1
   fairness_review: pending
   label_accuracy: *id002
+  provider: offline
+  prompt: text_features
+  prompt_version: 1
+- name: bur_score
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - bureau_history
+  description: Bureau risk score at the latest pull before the promise
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: bur_util
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - bureau_history
+  description: Bureau revolving utilisation at the latest pull before the promise
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: bur_delinq_trades
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - bureau_history
+  description: Delinquent trades on the bureau at the latest pull before the promise
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: bur_inq_6m
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - bureau_history
+  description: Hard inquiries in six months at the latest pull before the promise
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: bur_stale
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - bureau_history
+  description: 1 when the bureau score is stale at the latest pull before the promise
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: sal_gap_months_3
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - salary_credit_history
+  description: Months with no salary credit in the three months before the promise month
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: sal_avg_credit_3
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - salary_credit_history
+  description: Average monthly salary credits in the three months before the promise month
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: sal_gap_last_month
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - salary_credit_history
+  description: 1 when there was no salary credit in the month before the promise
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: card_util
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - card_statements
+  description: Closing balance over credit limit on the last card statement already due
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: card_min_paid
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - card_statements
+  description: 1 when the minimum was paid on the last card statement already due
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: card_paid_full
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - card_statements
+  description: 1 when the last card statement already due was paid in full
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: card_days_late
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - card_statements
+  description: Days the last due card payment was late, only if paid before the promise
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: card_cycles_delinq
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - card_statements
+  description: Cycles delinquent at the last card statement already due
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: card_pay_to_min
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - card_statements
+  description: Payments in the cycle over the minimum due, last card statement already due
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: snap_util
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - account_monthly_snapshot
+  description: Balance over limit at the latest month-end snapshot (up to 120 days old)
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: snap_pay_to_min
+  entity: promise
+  type: decimal
+  built_by: sql
+  source:
+  - account_monthly_snapshot
+  description: Payment made over minimum due at the latest month-end snapshot
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: snap_dpd
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - account_monthly_snapshot
+  description: Days past due at the latest month-end snapshot
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: snap_overlimit
+  entity: promise
+  type: int
+  built_by: sql
+  source:
+  - account_monthly_snapshot
+  description: 1 when over limit at the latest month-end snapshot
+  definition: pipeline/macros/ptp_features.sql
+  available_ts: ptp_created_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending

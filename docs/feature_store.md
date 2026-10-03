@@ -16,7 +16,7 @@ The **parity check** ([`features/parity.py`](../features/parity.py)) recomputes 
 
 ## Features
 
-37 features are registered in [`features/registry.yaml`](../features/registry.yaml), each with entity, type, source, how it is built, when it becomes available, refresh and owner. The `/features` page reads the registry.
+55 features are registered in [`features/registry.yaml`](../features/registry.yaml), each with entity, type, source, how it is built, when it becomes available, refresh and owner. The `/features` page reads the registry.
 
 - **Structured (SQL):**
   - the promise itself: amount, days to due, prior broken promises, promise-to-overdue ratio, DPD at creation
@@ -34,11 +34,21 @@ Rules were mined from, and are measured against, the release's 500 public labels
 
 | Labels | Hardship (none/possible/clear) | Hardship reason | Hardship recall | Other |
 |---|---|---|---|---|
-| Call transcripts (500) | 99.6% | 99.6% | 100% | dispute 100%, complaint 100%, cease request 100%, next step 99%, **summary exact match 98%** |
+| Call transcripts (500) | 99.6% | 99.6% | 100% | dispute 100%, complaint 100%, cease request 100%, next step 99%, stated delay reason 90.4%, **promise firmness 100%**, **summary exact match 98%** |
 | Agent notes (500) | 95.2% | 98.6% | 84.2% | |
+
+Promise firmness (`ptp_intent_strength`) has two gold levels, 0.85 for a plain commitment ("I can pay $200 the 24th") and 0.45 for a hedged one ("I'll try to pay $64 next payday"). The rule (hedge words such as "try to", "maybe", "hopefully", and the French equivalents, in the customer's own promise turns) matches the label on 500 of 500 transcripts (100%). The rule was mined from the same 500 labels, so held-out accuracy may be lower.
+
+**Poor recordings count as missing.** A call with `asr_confidence_avg` below 0.80 (the v2 rule, now our decision) gets its text features set to missing, not guessed: `features.text_rules.extract(..., asr_confidence_avg=...)` returns empty values and `low_confidence = True`, and the post-call draft says the recording quality was poor.
+
+**Registry.** The text features are registered with `built_by: ai`, provider `offline` (the rule extractor), prompt `text_features`, prompt version 1 and the accuracy above. The allowed values of `built_by` are `sql`, `ai` and `voice`. Per-call features: `hardship_signal`, `stated_delay_reason`, `dispute_signal`, `complaint_cue`, `ptp_intent_strength`. No voice acoustic or protected-attribute feature is registered.
 
 The release notes that agent-coded hardship captures only about 60% of real hardship, so these text features add real signal. The public labels shaped the rules, so held-out accuracy may be a little lower.
 
 ## Not yet in the training features
 
 Deposit and bureau values are only available as of the latest snapshot, not as history. They are used in the online customer vector and the NBA rules, but kept out of model training to avoid leakage.
+
+## Credit and account history features (added 4 Oct)
+
+Eighteen promise-level features read the bank's own history as of the moment the promise was made, in the same macro (so training and live scoring still share one definition; the parity check recomputes 1,000 live rows with 0 mismatches over 56 columns): `bur_*` (latest bureau pull on or before the date: score, revolving utilisation, delinquent trades, hard inquiries, stale flag), `sal_*` (salary credits in the three whole months before the promise month), `card_*` (the last card statement whose due date has passed: utilisation, minimum or full payment, days late, delinquent cycles, payment over minimum) and `snap_*` (the latest month-end account snapshot within 120 days). They lifted the promise-break model from AUC 0.667 to 0.712 on its own (see [`model_card_ptp_break.md`](model_card_ptp_break.md)). One of them leaked before it was fixed: a card statement's `days_late` comes from the first payment after the due date, which can fall after the promise, so it is used only when that payment had already happened.

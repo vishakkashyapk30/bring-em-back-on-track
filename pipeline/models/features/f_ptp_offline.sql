@@ -4,5 +4,5 @@
 with f as ({{ ptp_features('p.ptp_created_ts') }})
 select f.*,
        case when f.ptp_status in ('broken', 'partially_kept') then 1 when f.ptp_status = 'kept' then 0 end as label_broken,
-       f.ptp_due_date = date '2026-09-14' as excluded_outage
+       f.ptp_due_date = date '{{ var('outage_date', '2026-09-14') }}' as excluded_outage
 from f

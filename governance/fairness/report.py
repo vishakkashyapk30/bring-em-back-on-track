@@ -13,8 +13,7 @@ from governance.fairness import outcome_test, proxy_test
 def build() -> dict:
     proxy = proxy_test.run()
     outcome = outcome_test.run()
-    reviews = [f"{g['group']} predicts {g['worst_attribute']} (AUC {g['max_auc']})" for g in proxy["groups"]
-               if g["decision"] == "review"]
+    reviews = [g["review_note"] for g in proxy["groups"] if g.get("review")]
     reviews += [f"{a['attribute']}: {r['group']} ({r['status']}, excess gap {r['excess_gap']:+.3f}, flag ratio "
                 f"{r['flag_ratio']})" for a in outcome["attributes"] for r in a["groups"] if r["status"] == "review"]
     return {

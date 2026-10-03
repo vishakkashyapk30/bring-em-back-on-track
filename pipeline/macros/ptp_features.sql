@@ -47,6 +47,58 @@ tx as (
         from {{ source('features', 'transcript_features') }}
     ) t on t.case_id = p.case_id and t.available_ts < p.as_of_ts and t.available_ts >= p.as_of_ts - interval 90 day
     group by 1
+),
+bu as (  -- latest bureau pull on or before the as-of date
+    select p.ptp_id, h.risk_score as bur_score, h.revolving_utilisation as bur_util,
+           h.delinquent_trades_count as bur_delinq_trades, h.inquiries_hard_6m as bur_inq_6m,
+           cast(h.stale_score_flag as int) as bur_stale
+    from p
+    join {{ source('identity', 'case_xref') }} x on x.case_id = p.case_id
+    join (select k.golden_id, e.pull_date, e.risk_score, e.revolving_utilisation, e.delinquent_trades_count,
+                 e.inquiries_hard_6m, e.stale_score_flag
+          from {{ ref('bureau_history') }} e
+          join {{ source('identity', 'source_key_xref') }} k
+            on k.source_system = 'bureau' and k.source_ref = e.bank_subject_ref) h
+      on h.golden_id = x.golden_id and h.pull_date <= cast(p.as_of_ts as date)
+    qualify row_number() over (partition by p.ptp_id order by h.pull_date desc) = 1
+),
+sal as (  -- salary credits in the three whole months before the as-of month (never the current month)
+    select p.ptp_id, sum(cast(s.gap_flag as int)) as sal_gap_months_3, avg(s.credit_amount_total) as sal_avg_credit_3,
+           max(case when s.credit_month = strftime(cast(p.as_of_ts as date) - interval 1 month, '%Y-%m')
+                    then cast(s.gap_flag as int) end) as sal_gap_last_month
+    from p
+    join {{ source('identity', 'case_xref') }} x on x.case_id = p.case_id
+    join {{ source('identity', 'account_xref') }} a on a.golden_id = x.golden_id and a.source_system = 'core_banking'
+    join {{ ref('salary_credit_history') }} s
+      on s.deposit_account_id = a.account_id
+     and s.credit_month < strftime(cast(p.as_of_ts as date), '%Y-%m')
+     and s.credit_month >= strftime(cast(p.as_of_ts as date) - interval 3 month, '%Y-%m')
+    group by 1
+),
+cs as (  -- last card statement whose due date has passed (so its payment outcome is known)
+    select p.ptp_id, s.closing_balance / nullif(s.credit_limit_at_statement, 0) as card_util,
+           cast(s.min_paid_flag as int) as card_min_paid, cast(s.paid_in_full_flag as int) as card_paid_full,
+           -- days_late comes from the first payment after the due date: use it only if that payment already happened
+           case when s.first_payment_after_due_date <= cast(p.as_of_ts as date) then s.days_late end as card_days_late,
+           s.cycles_delinquent_at_statement as card_cycles_delinq,
+           s.payments_amount / nullif(s.minimum_due, 0) as card_pay_to_min
+    from p
+    join {{ ref('card_statements') }} s
+      on s.card_account_id = p.account_id and s.due_date <= cast(p.as_of_ts as date)
+    qualify row_number() over (partition by p.ptp_id order by s.statement_date desc) = 1
+),
+sn as (  -- latest month-end account snapshot within 120 days before the as-of date (three date formats)
+    select p.ptp_id, s.balance / nullif(s.limit_or_original_amount, 0) as snap_util,
+           s.payment_made / nullif(s.minimum_due, 0) as snap_pay_to_min, s.dpd as snap_dpd,
+           cast(s.overlimit_flag as int) as snap_overlimit
+    from p
+    join (select account_id, balance, limit_or_original_amount, minimum_due, payment_made, dpd, overlimit_flag,
+                 coalesce(try_strptime(month_end_date, '%Y-%m-%d'), try_strptime(month_end_date, '%d/%m/%Y'),
+                          try_strptime(month_end_date, '%Y%m%d'))::date as me
+          from {{ ref('account_monthly_snapshot') }}) s
+      on s.account_id = p.account_id and s.me <= cast(p.as_of_ts as date)
+     and s.me >= cast(p.as_of_ts as date) - interval 120 day
+    qualify row_number() over (partition by p.ptp_id order by s.me desc) = 1
 )
 select
     p.ptp_id, p.case_id, x.golden_id, p.as_of_ts, p.ptp_created_ts, p.ptp_due_date, p.ptp_status,
@@ -70,11 +122,20 @@ select
     coalesce(tx.text_hardship_clear_90d, 0) as text_hardship_clear_90d,
     coalesce(tx.text_hardship_possible_90d, 0) as text_hardship_possible_90d,
     coalesce(tx.text_dispute_90d, 0) as text_dispute_90d, coalesce(tx.text_complaint_90d, 0) as text_complaint_90d,
-    tx.last_stated_delay_reason
+    tx.last_stated_delay_reason,
+    -- credit and account history as of the promise (bureau pull, salary credits, card statement, month-end snapshot)
+    bu.bur_score, bu.bur_util, bu.bur_delinq_trades, bu.bur_inq_6m, bu.bur_stale,
+    sal.sal_gap_months_3, sal.sal_avg_credit_3, sal.sal_gap_last_month,
+    cs.card_util, cs.card_min_paid, cs.card_paid_full, cs.card_days_late, cs.card_cycles_delinq, cs.card_pay_to_min,
+    sn.snap_util, sn.snap_pay_to_min, sn.snap_dpd, sn.snap_overlimit
 from p
 join {{ ref('collections_cases') }} k on k.case_id = p.case_id
 left join {{ source('identity', 'case_xref') }} x on x.case_id = p.case_id
 left join ch on ch.ptp_id = p.ptp_id
 left join pr on pr.ptp_id = p.ptp_id
 left join tx on tx.ptp_id = p.ptp_id
+left join bu on bu.ptp_id = p.ptp_id
+left join sal on sal.ptp_id = p.ptp_id
+left join cs on cs.ptp_id = p.ptp_id
+left join sn on sn.ptp_id = p.ptp_id
 {% endmacro %}

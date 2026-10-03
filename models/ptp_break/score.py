@@ -45,11 +45,11 @@ def main() -> None:
     ours = pickle.load(open(ART / "calibrator.pkl", "rb")).predict(raw)
     has = df.v21.notna().to_numpy()
     p, label = ours.copy(), np.full(len(df), "our model (no bank v2.1 score)", dtype=object)
-    if decision == "use blend":
+    if decision == "use blend" and has.any():  # nothing to blend when the bank scored no promise
         blender = pickle.load(open(ART / "blender.pkl", "rb"))
         p[has] = blender.predict_proba(blend_x(df.v21.to_numpy()[has], raw[has]))[:, 1]
         label[has] = "blend of the bank's v2.1 and our model"
-    elif decision == "use ours":
+    elif decision == "use ours" or (decision == "use blend" and not has.any()):
         label[:] = "our model"
     else:
         p[has] = df.v21.to_numpy()[has]
@@ -61,7 +61,7 @@ def main() -> None:
         bank = [
             {"code": "bank_v2_1", "text": t, "contribution": None, "kind": "model"}
             for t in (r.get("r1"), r.get("r2"))
-            if t
+            if isinstance(t, str) and t
         ]
         rows.append(
             {

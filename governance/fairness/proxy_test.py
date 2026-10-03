@@ -13,9 +13,10 @@ def group_proxy_auc(features: Sequence[Mapping[str, Any]], protected: Sequence[M
     """For each feature group, the cross-validated AUC of a logistic model predicting each protected attribute
     from that group alone (rows joined on entity_id; multi-class attributes use one-vs-rest macro AUC).
 
-    A group above `threshold` for any attribute gets decision "review" (design_changes.md #9, D10: the proxy test
-    triggers a review instead of an automatic drop); otherwise "keep". Returns
-    {group: {max_auc, worst_attribute, aucs: {attribute: auc}, decision}}.
+    A group above `threshold` for any attribute gets decision "drop" (V1 section 5: "I drop it or make it coarser";
+    design_changes.md #9): training leaves it out (see `dropped_inputs`) AND it goes to a person for review with the
+    numbers (`review` is True, `review_note` carries them); otherwise "keep". Returns
+    {group: {max_auc, worst_attribute, aucs: {attribute: auc}, decision, review, review_note}}.
     """
     import numpy as np
     from sklearn.linear_model import LogisticRegression
@@ -47,9 +48,28 @@ def group_proxy_auc(features: Sequence[Mapping[str, Any]], protected: Sequence[M
             aucs[attr] = float(auc)
         worst = max(aucs, key=aucs.get) if aucs else None
         max_auc = aucs[worst] if worst else 0.5
+        over = max_auc > threshold
         out[group] = {"max_auc": round(max_auc, 4), "worst_attribute": worst, "aucs": aucs,
-                      "decision": "review" if max_auc > threshold else "keep"}
+                      "decision": "drop" if over else "keep", "review": over,
+                      "review_note": (f"{group} predicts {worst} (AUC {max_auc:.3f} > {threshold}): dropped from the "
+                                      "model input, sent for review") if over else None}
     return out
+
+
+def dropped_inputs(report: Mapping[str, Any] | None = None) -> set[str]:
+    """Model input columns that the latest proxy report dropped (groups decided "drop"). Reads only the aggregate
+    report (reports/fairness.json), never a protected attribute. Training calls this to leave those columns out."""
+    import json
+
+    from common.config import get_settings
+
+    if report is None:
+        path = get_settings().reports_dir / "fairness.json"
+        if not path.exists():
+            return set()
+        report = json.loads(path.read_text()).get("proxy", {})
+    return {c.removesuffix("=*") for g in report.get("groups", []) if g.get("decision") == "drop"
+            for c in GROUPS.get(g["group"], [])}
 
 
 # Feature groups audited. The first four are what the promise-break model uses; "cash_stress" is the
@@ -62,6 +82,10 @@ GROUPS: dict[str, list[str]] = {
                         "cease_requests_90d", "broken_before_in_case", "kept_before_in_case"],
     "text_signals": ["hardship_mentions_90d", "text_hardship_clear_90d", "text_hardship_possible_90d",
                      "text_dispute_90d", "text_complaint_90d", "last_stated_delay_reason=*"],
+    "credit_history": ["bur_score", "bur_util", "bur_delinq_trades", "bur_inq_6m", "bur_stale", "sal_gap_months_3",
+                       "sal_avg_credit_3", "sal_gap_last_month", "card_util", "card_min_paid", "card_paid_full",
+                       "card_days_late", "card_cycles_delinq", "card_pay_to_min", "snap_util", "snap_pay_to_min",
+                       "snap_dpd", "snap_overlimit"],
     "cash_stress": ["nsf_count_mtd", "days_negative_mtd", "high_cost_lender_txn_flag", "ei_deposit_flag",
                     "payroll_delay_days", "payroll_amount_change_pct", "bureau_risk_score", "bnpl_trades_count",
                     "off_us_delinquent_trades"],
@@ -117,6 +141,7 @@ def run() -> dict:
     rows = []
     for g, r in res.items():
         rows.append({"group": g, "n_features": len(groups[g]), "max_auc": r["max_auc"],
-                     "worst_attribute": r["worst_attribute"], "decision": r["decision"],
+                     "worst_attribute": r["worst_attribute"], "decision": r["decision"], "review": r["review"],
+                     "review_note": r["review_note"],
                      "aucs": {k: round(v, 4) for k, v in sorted(r["aucs"].items(), key=lambda kv: -kv[1])}})
     return {"customers": len(feats), "threshold": THRESHOLD_AUC, "groups": rows}

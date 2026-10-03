@@ -46,4 +46,9 @@ def test_proxy_test_flags_a_group_that_copies_a_protected_attribute():
     feats = [{"entity_id": i, "copy": float(i % 2), "noise": float((i * 7919) % 13)} for i in range(400)]
     prot = [{"entity_id": i, "gender_code": "F" if i % 2 else "M"} for i in range(400)]
     res = group_proxy_auc(feats, prot, {"proxy": ["copy"], "other": ["noise"]})
-    assert res["proxy"]["decision"] == "review" and res["other"]["decision"] == "keep"
+    assert res["proxy"]["decision"] == "drop" and res["proxy"]["review"] and res["proxy"]["review_note"]
+    assert res["other"]["decision"] == "keep" and not res["other"]["review"]
+    from governance.fairness.proxy_test import dropped_inputs
+
+    assert dropped_inputs({"groups": [{"group": "contact_history", "decision": "drop"},
+                                      {"group": "delinquency", "decision": "keep"}]}) >= {"attempts_30d", "rpc_30d"}

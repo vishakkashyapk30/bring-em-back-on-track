@@ -10,6 +10,7 @@ import pandas as pd
 
 from common.config import get_settings
 from common.protected import assert_no_protected
+from governance.fairness import proxy_test
 
 WIDE_COLS = re.compile(r"_m(0[1-9]|1[0-2])$")
 
@@ -34,6 +35,25 @@ NUMERIC = [
     "text_hardship_possible_90d",
     "text_dispute_90d",
     "text_complaint_90d",
+    # credit and account history as of the promise (features/registry.yaml, pipeline/macros/ptp_features.sql)
+    "bur_score",
+    "bur_util",
+    "bur_delinq_trades",
+    "bur_inq_6m",
+    "bur_stale",
+    "sal_gap_months_3",
+    "sal_avg_credit_3",
+    "sal_gap_last_month",
+    "card_util",
+    "card_min_paid",
+    "card_paid_full",
+    "card_days_late",
+    "card_cycles_delinq",
+    "card_pay_to_min",
+    "snap_util",
+    "snap_pay_to_min",
+    "snap_dpd",
+    "snap_overlimit",
 ]
 CATEGORICAL = [
     "ptp_type",
@@ -50,6 +70,11 @@ CATEGORICAL = [
 # - queue: the case's *current* queue reflects what happened after the promise.
 # - entry_dpd (always 1) and due_minus_stated_payday_days (always 0): constant in the release.
 # - ids, status and timestamps.
+# Fairness gate (V1 section 5, governance/fairness/proxy_test.py): a feature group whose proxy AUC is above 0.65 is
+# dropped from the model input. On the current data no group is, so nothing is removed.
+DROPPED_BY_PROXY_GATE = sorted(proxy_test.dropped_inputs() & set(NUMERIC + CATEGORICAL))
+NUMERIC = [c for c in NUMERIC if c not in DROPPED_BY_PROXY_GATE]
+CATEGORICAL = [c for c in CATEGORICAL if c not in DROPPED_BY_PROXY_GATE]
 FEATURES = NUMERIC + CATEGORICAL
 
 TRAIN_END = "2026-04-01"  # train: promises made before this date
