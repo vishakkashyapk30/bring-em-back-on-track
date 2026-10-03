@@ -56,7 +56,7 @@ out.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" vi
 out.append('<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">'
            f'<path d="M0,0 L10,5 L0,10 z" fill="{MUTED}"/></marker></defs>')
 out.append(f'<rect width="{W}" height="{H}" fill="#FFFFFF"/>')
-text(40, 42, "Collections 360: architecture of the build", 26, 700, INK)
+text(40, 42, "back-on-track.ai: architecture of the build", 26, 700, INK)
 text(40, 66, "Four layers on the real Maple Bank data, one use case in depth (next best action). Runs with one command: docker compose up --build.",
      14.5, 400, MUTED)
 
@@ -108,8 +108,8 @@ for (t, s, k), h in zip(l2, heights, strict=True):
 # layer 3 nodes
 y = CY + 46
 l3 = [
-    ("Registry: one definition per feature", "37 features with owner, source, refresh, version", "rule", 62),
-    ("SQL features", "contact, promise, cash-stress, payroll, bureau", "rule", 56),
+    ("Registry: one definition per feature", "55 features with owner, source, refresh, version", "rule", 62),
+    ("SQL features", "contact, promise, bureau, salary, card, account history", "rule", 56),
     ("Text features (rules, no LLM)", "hardship, dispute, complaint, delay reason from\ntranscripts and notes; 99.6% hardship accuracy", "rule", 72),
     ("Offline (training) and online (live)", "one dbt macro, evaluated as of the promise\nor as of now; parity check: 0 mismatches in 1,000", "store", 72),
     ("Fairness inputs", "no protected attribute reaches a feature", "rule", 56),
@@ -122,7 +122,7 @@ for t, s, k, h in l3:
 y = CY + 46
 l4 = [
     ("1  Policy gate (before any model)", "consent, hours, Sundays, holidays, do-not-call, 7-day cap,\ncease, insolvency, dispute, hardship latch", "rule", 68),
-    ("2  Promise-break risk", "LightGBM + bank v2.1 blend, AUC 0.744 vs 0.694,\nSHAP reason codes", "ai", 66),
+    ("2  Promise-break risk", "LightGBM + bank v2.1 blend, AUC 0.772 vs 0.694,\nSHAP reason codes", "ai", 66),
     ("3  Treatment ladder, 4  Capacity allocator", "first match wins; priority = risk x capped amount - cost;\nchannel and agent capacity", "rule", 66),
     ("5  Plain-English explanation", "rules applied, model estimate, what changed, freshness, alternatives", "rule", 52),
     ("6  A person reviews", "agent approves, edits or overrides (reason needed);\nteam lead approves batches; specialist confirms hardship", "human", 66),

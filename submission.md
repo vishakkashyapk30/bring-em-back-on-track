@@ -1,4 +1,4 @@
-# Submission: Bring 'em back on track
+# Submission: back-on-track.ai
 
 Team **Deep in Debt** (Vishak Kashyap K) · CIBC Collections Hackathon, build phase · deadline 4 Oct 2026, 21:00 IST.
 
@@ -26,7 +26,7 @@ This page is the judges' index: every required deliverable, where it is, and whe
 | 2 Insight and NLP | Plain-English questions answered over the C360 | [`nlq/pipeline.py`](nlq/pipeline.py), [`semantic/registry.py`](semantic/registry.py), [`semantic/compiler.py`](semantic/compiler.py), [`rag/`](rag/) | `/ask` (sign in as analyst) | Dev benchmark 0.99 (our scorer, [`docs/ask.md`](docs/ask.md)) |
 | 2 | The SQL or source shown with every answer | Same | "How I got this" on every answer | `sql_or_sources` column in the benchmark CSV |
 | 2 | Out-of-scope questions refused | [`nlq/refusal.py`](nlq/refusal.py), [`nlq/guard.py`](nlq/guard.py), [`nlq/executor.py`](nlq/executor.py) | Ask refusal card | All refusal questions in the benchmark refused, with reasons |
-| 3 Feature Store | Features from structured data and from text or voice | [`features/registry.yaml`](features/registry.yaml), [`features/extract_text.py`](features/extract_text.py), [`features/text_rules.py`](features/text_rules.py) | `/features` (catalog), customer feature vector | 37 features; text features validated on the release's 500 public labels each (transcripts: 99.6% hardship accuracy, 98% exact summaries; notes: 95%) ([`docs/feature_store.md`](docs/feature_store.md)) |
+| 3 Feature Store | Features from structured data and from text or voice | [`features/registry.yaml`](features/registry.yaml), [`features/extract_text.py`](features/extract_text.py), [`features/text_rules.py`](features/text_rules.py) | `/features` (catalog), customer feature vector | 55 features; text features validated on the release's 500 public labels each (transcripts: 99.6% hardship accuracy, 98% exact summaries; notes: 95%) ([`docs/feature_store.md`](docs/feature_store.md)) |
 | 3 | One definition used for both training and live scoring | [`pipeline/macros/ptp_features.sql`](pipeline/macros/ptp_features.sql) used by [`f_ptp_offline`](pipeline/models/features/f_ptp_offline.sql) and [`f_ptp_online`](pipeline/models/features/f_ptp_online.sql); [`features/parity.py`](features/parity.py) | n/a | Parity check: 1,000 sampled online rows, 0 mismatches across 38 columns |
 | 4 Models and Decisioning | A working model or agent; plain-English explanation of each decision; a point where a human reviews or overrides | [`models/ptp_break/`](models/ptp_break/), [`decisioning/`](decisioning/) | Customer page: Next best action card (approve / edit / override) | In progress |
 

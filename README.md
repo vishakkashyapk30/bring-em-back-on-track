@@ -1,6 +1,6 @@
-# Back-on-Track.ai
+# back-on-track.ai
 
-**Back-on-Track.ai** for the CIBC Collections Hackathon, by team **Deep in Debt** (Vishak Kashyap K).
+**back-on-track.ai** for the CIBC Collections Hackathon, by team **Deep in Debt** (Vishak Kashyap K).
 
 *Every customer in one place, every answer in plain English, every next step explained and approved by a person.*
 

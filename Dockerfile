@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-# Back-on-Track.ai: Python images. Targets: api | jobs | test.
+# back-on-track.ai: Python images. Targets: api | jobs | test.
 #   docker build --target api  -t c360-api  .
 #   docker build --target jobs -t c360-jobs .
 
