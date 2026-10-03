@@ -1,12 +1,15 @@
-"""Public (no sign-in) headline numbers for the landing page, read from the pipeline's own reports."""
+"""Portfolio headline numbers and the home-page visuals. Every endpoint here needs a signed-in persona: nothing
+data-driven is shown before sign-in. (The router is still named public for the URL the frontend already uses.)"""
 
 import json
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Response
 
+from api.deps import current_session
+from api.services import public_visuals as pv
 from common.config import get_settings
 
-router = APIRouter(prefix="/public", tags=["public"])
+router = APIRouter(prefix="/public", tags=["portfolio"], dependencies=[Depends(current_session)])
 
 
 def _load(name: str) -> dict:
@@ -32,3 +35,24 @@ def summary() -> dict:
         "parity_mismatches": parity.get("mismatched_rows"), "parity_sampled": parity.get("sampled"),
         "text_hardship_accuracy": (text.get("accuracy") or {}).get("hardship"),
     }
+
+
+@router.get("/map")
+def public_map(response: Response) -> dict:
+    """Province and postal-area risk numbers for the landing map: all four metrics, last 12 months, one payload."""
+    response.headers["Cache-Control"] = "private, max-age=300"
+    return pv.public_map()
+
+
+@router.get("/flow")
+def public_flow(response: Response) -> dict:
+    """Counts at each step of last night's decision run. Empty (available=false) if the plan is not built."""
+    response.headers["Cache-Control"] = "private, max-age=300"
+    return pv.public_flow()
+
+
+@router.get("/sample-customer")
+def public_sample_customer(response: Response) -> dict:
+    """One anonymous customer: source systems, match confidences and the proposed next action. No identifiers."""
+    response.headers["Cache-Control"] = "private, max-age=300"
+    return pv.public_sample()
