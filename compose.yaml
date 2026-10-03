@@ -1,4 +1,4 @@
-# Collections 360. Modular monolith: web + api long-running, jobs run-to-completion.
+# Back-on-Track.ai. Modular monolith: web + api long-running, jobs run-to-completion.
 #
 #   docker compose up --build    -> the whole system on http://localhost:8080
 #     1. bootstrap: downloads the dataset into ./data/raw if it isn't there, builds the warehouse on the first run
@@ -21,6 +21,14 @@ services:
     environment:
       USE_FIXTURES: ${USE_FIXTURES:-true}
       CORS_ORIGINS: http://localhost:8080
+      # Optional language model for Ask (default offline = rules only). `ollama` reaches the Ollama running on the host.
+      LLM_PROVIDER: ${LLM_PROVIDER:-offline}
+      OLLAMA_HOST: ${OLLAMA_HOST_FOR_DOCKER:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-mistral:latest}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./data:/app/data                     # shared with local runs: one warehouse, no duplicate copy
       - ./data/raw:/app/data/raw:ro          # dataset is read-only for the api
