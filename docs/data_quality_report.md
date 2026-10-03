@@ -1,6 +1,6 @@
 # Data quality report (deliverable 4)
 
-> **Status: template.** `governance/quality_report.py` regenerates this file from the pipeline run (`jobs nightly` or `make data`). Counts marked TBC are filled from the real data. The required content (per the build-phase instructions) is: **the issues found, how many records each affected, and how we handled them.**
+> **Status: template.** Issues already found during profiling, with counts, are listed in [`profiling_decisions.md`](profiling_decisions.md) §7. `governance/quality_report.py` regenerates this file from the pipeline run (`jobs nightly` or `make data`). Counts marked TBC are filled from the real data. The required content (per the build-phase instructions) is: **the issues found, how many records each affected, and how we handled them.**
 
 - **Dataset:** Maple Bank synthetic release, snapshot 2026-09-28 (`data/raw/maple_collections_release/`)
 - **Run:** TBC (timestamp, git commit, warehouse file)

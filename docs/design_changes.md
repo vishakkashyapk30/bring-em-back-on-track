@@ -27,13 +27,10 @@ Status: **Decided** = agreed and in the plan. **Built** = implemented in the rep
 | 17 | Warehouse refresh | Nightly gold rebuild | Built into a separate file, contract-tested, then **atomically swapped in**; the API picks it up without a restart | DuckDB single-writer rule; "a failed test blocks publish" | Built |
 | 18 | Testing | Contract tests, benchmark | Plus an **independent spec test suite** written by a separate agent that saw only the brief and design docs (unit, integration and system tests against an adapter interface) (D18) | Catches drift between the build and the spec | Written; binding planned |
 | 19 | Hosting | Not in scope | Optional **Render Blueprint** (free plans) for a hosted demo on fixtures or a small demo warehouse | Shareable demo link | Written, not deployed |
+| 20 | Headline novel capability | Choose in hour 3 between S1 (employer shock radar) and H1 (plan simulator) | **H1 plan simulator** with H2 review board and H3 missed offers. S1 not built | Profiling found no employer or regional cluster for the ECO-0715 layoffs (Windsor-Essex manufacturing payroll delay 7.3% vs 7.8% elsewhere); H1 is fully supported, including card programs and 0% rate overrides. See [`profiling_decisions.md`](profiling_decisions.md) | Decided |
+| 21 | Identity bridges | Exact keys, then Splink | Exact keys plus a **majority vote over the CRM IDs in account snapshots** (fixes ~2.6% mistyped IDs, links 99.8% of snapshotted accounts) and **CIF normalisation** (156,837 CIFs lost leading zeros) before Splink | Found in profiling | Decided |
+| 22 | Business value | ~2,800 cases a month, CAD 0.7M a year | ~14,400 cases a month in 2026, ~CAD 2.1M a year for +2 points of 30-day cure (to be refined on matured cohorts) | Real volumes | Decided |
 
 ## Open spec questions found during the build
 
-From the independent spec suite's review of the design (to be settled after data profiling, then reflected here):
-
-1. "clear" is both the confirmed hardship level and a verb for lowering the flag. The data uses `clear` as a level (`hardship_programs.min_hardship_level`), so the data keeps it; the UI says "confirmed".
-2. Sundays: V1 says never; v2 says unless `sunday_contact_permitted`. Pending.
-3. "Pressure actions" need a definition (reminders and payment links; whether collection calls count is pending).
-4. The treatment ladder needs an explicit rule order (the demo customer matches several rules).
-5. Role permissions for lowering and confirming hardship, and for running the simulator.
+The independent spec suite's review raised five questions (meaning of "clear", Sunday contact, the definition of pressure actions, the treatment ladder order, and who may change the hardship flag or run the simulator). All five are settled in [`profiling_decisions.md`](profiling_decisions.md) §3.
