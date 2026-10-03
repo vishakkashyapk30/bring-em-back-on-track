@@ -23,7 +23,25 @@ def warehouse(read_only: bool = True) -> duckdb.DuckDBPyConnection:
     s = get_settings()
     if read_only and not s.warehouse_path.exists():
         raise FileNotFoundError(f"{s.warehouse_path} not built yet; run `make gold`")
-    return duckdb.connect(str(s.warehouse_path), read_only=read_only)
+    con = duckdb.connect(str(s.warehouse_path), read_only=read_only)
+    if read_only:
+        _shadow_container_paths(con)
+    return con
+
+
+def _shadow_container_paths(con: duckdb.DuckDBPyConnection) -> None:
+    """The warehouse is built in Docker, where dbt bakes `/app/data/bronze/...` into the views over the big raw
+    tables. On a machine where that folder doesn't exist (a local run sharing ./data), re-create those views in the
+    session's temp schema pointing at the local bronze folder. Nothing is written to the warehouse file."""
+    if Path("/app/data").exists():
+        return
+    local = get_settings().data_dir
+    rows = con.execute(
+        "SELECT schema_name, view_name, sql FROM duckdb_views() WHERE sql LIKE '%/app/data/%'"
+    ).fetchall()
+    for _schema, name, sql in rows:
+        body = sql[sql.index(" AS ") + 4 :].rstrip().rstrip(";").replace("/app/data", str(local))
+        con.execute(f'CREATE OR REPLACE TEMP VIEW "{name}" AS {body}')
 
 
 def init_ops_db(path: Path | None = None, attempts: int = 20) -> None:
