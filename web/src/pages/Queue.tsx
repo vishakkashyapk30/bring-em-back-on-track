@@ -1,36 +1,142 @@
-import { Link } from "react-router-dom";
+import { ArrowDown, ArrowUpDown, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { useQueue } from "@/api/hooks";
+import { useMe, useQueue } from "@/api/hooks";
+import type { QueueItem } from "@/api/types";
 import { Badge } from "@/components/Badge";
-import { FreshnessPill } from "@/components/FreshnessPill";
+import { Button } from "@/components/Button";
+import { FilterChips, SearchBox, SortSelect, Toolbar, type Chip } from "@/components/FilterBar";
 import { SectionTag } from "@/components/SectionTag";
-import { QueryState } from "@/components/States";
+import { EmptyState, QueryState } from "@/components/States";
+import { actionLabel, productLabel, windowLabel } from "@/lib/labels";
 
-/** Today's NBA queue (priority-sorted). TODO(WS-G): filters, batch-approve toolbar for leads. */
+const BAND = { low: "Low", medium: "Medium", high: "High", very_high: "Very high" } as const;
+const SORTS: [string, string][] = [["priority", "Priority"], ["risk", "Break risk"], ["overdue", "Amount past due"], ["dpd", "Days past due"], ["name", "Name"]];
+const PAGE = 50;
+
+const money = (n?: number) => (n == null ? "" : n.toLocaleString("en-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 }));
+
+function Risk({ it }: { it: QueueItem }) {
+  if (it.p_break == null || !it.risk_band) return <span className="text-muted">No promise to score</span>;
+  return <span className="tabular">{BAND[it.risk_band as keyof typeof BAND] ?? it.risk_band}<span className="ml-1.5 text-[12.5px] text-muted">{Math.round(it.p_break * 100)}%</span></span>;
+}
+
+function Status({ it }: { it: QueueItem }) {
+  if (it.decision) return <Badge kind="ok">{it.decision.decision === "approve" ? "Approved" : it.decision.decision === "edit" ? "Changed" : "Overridden"}</Badge>;
+  if (it.status === "deferred") return <span title={it.deferred_reason ?? undefined}><Badge kind="neutral">Tomorrow</Badge></span>;
+  return null;
+}
+
+/** Debounce so typing in the search box doesn't fire a request per keystroke. */
+function useDebounced<T>(v: T, ms = 250) {
+  const [d, setD] = useState(v);
+  useEffect(() => { const t = setTimeout(() => setD(v), ms); return () => clearTimeout(t); }, [v, ms]);
+  return d;
+}
+
+/** Today's queue: filter, search and sort. The choices live in the URL, so back/forward and shared links keep them. */
 export default function Queue() {
-  const q = useQueue();
+  const nav = useNavigate();
+  const me = useMe();
+  const [sp, setSp] = useSearchParams();
+  const view = sp.get("view") ?? "all";
+  const sort = sp.get("sort") ?? "priority";
+  const [text, setText] = useState(sp.get("q") ?? "");
+  const q = useDebounced(text);
+  const [limit, setLimit] = useState(PAGE);
+
+  const set = (k: string, v: string, def: string) => {
+    const n = new URLSearchParams(sp);
+    if (v === def || !v) n.delete(k); else n.set(k, v);
+    setSp(n, { replace: true });
+    setLimit(PAGE);
+  };
+  useEffect(() => { set("q", q, ""); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [q]);
+
+  const res = useQueue({ view, sort, q, limit });
+  const items = res.data?.items ?? [];
+  const c = res.data?.counts;
+  const lead = me.data?.role === "team_lead";
+  const chips: Chip[] = [
+    { id: "all", label: "To work", count: c?.all },
+    { id: "calls", label: "Calls", count: c?.calls },
+    { id: "digital", label: "Text and email", count: c?.digital },
+    { id: "hardship", label: "Hardship", count: c?.hardship },
+    { id: "vulnerable", label: "Vulnerable", count: c?.vulnerable },
+    { id: "high_risk", label: "High break risk", count: c?.high_risk },
+    { id: "tomorrow", label: "Moved to tomorrow", count: c?.tomorrow },
+    ...(lead ? [{ id: "batch", label: "Batch reminders", count: c?.batch }] : []),
+    { id: "no_contact", label: "No contact today", count: c?.no_contact },
+  ];
+  const total = res.data?.total ?? 0;
+  const filtered = view !== "all" || q !== "";
+
   return (
     <>
-      <SectionTag as="h1" subtitle={<FreshnessPill asOf={q.data?.meta?.as_of} hours={q.data?.meta?.freshness_hours} fixture={q.data?.meta?.fixture} />}>Today's queue</SectionTag>
-      <QueryState q={q} empty={q.data?.items.length === 0}>
-        <div className="overflow-x-auto rounded-[var(--radius-md)] border border-grey-300 bg-white">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-grey-100"><tr>{["Customer", "Product", "DPD", "Next best action", "Break risk", "Flags", "Priority"].map((h) => <th key={h} className="px-3 py-2 font-medium">{h}</th>)}</tr></thead>
-            <tbody>
-              {q.data?.items.map((it) => (
-                <tr key={it.case_id} className="border-t border-grey-300">
-                  <td className="px-3 py-2"><Link to={`/customers/${it.golden_id}`} className="text-brand">{it.golden_id} {it.name}</Link></td>
-                  <td className="px-3 py-2">{it.product}</td>
-                  <td className="px-3 py-2 tabular">{it.dpd}</td>
-                  <td className="px-3 py-2">{it.action.treatment.replace("_", " ")}{it.action.channel && ` · ${it.action.channel}`}{it.action.window && ` · ${it.action.window}`}</td>
-                  <td className="px-3 py-2 tabular">{it.p_break.toFixed(2)} <span className="text-muted">({it.risk_band.replace("_", " ")})</span></td>
-                  <td className="space-x-1 px-3 py-2">{it.hardship_flag !== "none" && <Badge kind="hardship">Hardship {it.hardship_flag}</Badge>}{it.vulnerable && <Badge kind="vulnerable">Vulnerable</Badge>}</td>
-                  <td className="px-3 py-2 tabular">{it.priority.toFixed(0)}</td>
+      <SectionTag as="h1" subtitle={res.data?.scope ? `Showing ${res.data.scope}.${lead ? "" : " Routine reminders go out through your team lead's batch."}` : "Cases to work today."}>Today's queue</SectionTag>
+      <Toolbar
+        left={<FilterChips label="Filter the queue" chips={chips} value={view} onChange={(v) => set("view", v, "all")} />}
+        right={<><SearchBox label="Search the queue" placeholder="Name, case or product" value={text} onChange={setText} /><SortSelect value={sort} onChange={(v) => set("sort", v, "priority")} options={SORTS} /></>}
+      />
+      <QueryState q={res} empty={false}>
+        {items.length === 0 ? (
+          <EmptyState title={filtered ? "Nothing matches" : "Nothing to work today"}
+            detail={filtered ? "Try a different filter or clear the search." : undefined}
+            action={filtered ? <Button size="sm" onClick={() => { setText(""); setSp({}, { replace: true }); }}>Clear filters</Button> : undefined} />
+        ) : (
+          <div className="overflow-hidden rounded-[var(--radius-lg)] border border-grey-300/70 bg-white shadow-[var(--shadow-card)]">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[720px] text-left text-[14px]">
+              <thead className="bg-grey-100/95">
+                <tr>
+                  {([["Customer", "name"], ["Past due", "overdue"], ["What to do and why", "priority"], ["Break risk", "risk"], ["", ""], ["", ""]] as const).map(([h, key], i) => (
+                    <th key={i} scope="col" aria-sort={key && key === sort ? "descending" : "none"} className="px-4 py-2.5 text-[12.5px] font-semibold uppercase tracking-wide text-muted">
+                      {key ? (
+                        <button type="button" onClick={() => set("sort", key, "priority")} title={`Sort by ${h.toLowerCase()}`}
+                          className={`inline-flex items-center gap-1 bg-transparent uppercase transition-colors hover:text-ink ${key === sort ? "text-ink" : ""}`}>
+                          {h}{key === sort ? <ArrowDown size={13} aria-hidden /> : <ArrowUpDown size={13} aria-hidden className="opacity-40" />}
+                        </button>
+                      ) : h}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {items.map((it) => {
+                  const open = () => nav(`/customers/${it.golden_id}`);
+                  const when = windowLabel(it.action.window);
+                  return (
+                    <tr key={it.case_id} tabIndex={0} onClick={open} onKeyDown={(e) => { if (e.key === "Enter") open(); }}
+                      className="group cursor-pointer border-t border-grey-300/60 outline-none transition-colors hover:bg-brand-50/50 focus-visible:bg-brand-50/60">
+                      <td className="px-4 py-3">
+                        <div className="font-medium">{it.name}</div>
+                        <div className="text-[12.5px] text-muted">{productLabel(it.product)} · {it.dpd} days late</div>
+                      </td>
+                      <td className="px-4 py-3 tabular">{money(it.overdue)}</td>
+                      <td className="max-w-[440px] px-4 py-3">
+                        <div className="font-medium">{actionLabel(it.action)}{when && <span className="font-normal text-muted"> · {when}</span>}</div>
+                        {it.headline && <div className="text-[13px] text-muted">{it.headline}</div>}
+                      </td>
+                      <td className="px-4 py-3"><Risk it={it} /></td>
+                      <td className="space-x-1 px-4 py-3">
+                        {it.hardship_flag && it.hardship_flag !== "none" && <Badge kind="hardship">Hardship</Badge>}
+                        {it.vulnerable && <Badge kind="vulnerable">Vulnerable</Badge>}
+                        <Status it={it} />
+                      </td>
+                      <td className="px-4 py-3 text-right"><ChevronRight size={17} aria-hidden className="inline text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-brand" /></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            </div>
+            <div className="flex items-center justify-between border-t border-grey-300/60 bg-grey-100/50 px-4 py-2 text-[13.5px] text-muted">
+              <span aria-live="polite">Showing {items.length.toLocaleString()} of {total.toLocaleString()}</span>
+              {total > items.length && <Button size="sm" variant="ghost" onClick={() => setLimit(limit + PAGE * 2)}>Show more</Button>}
+            </div>
+          </div>
+        )}
       </QueryState>
     </>
   );
