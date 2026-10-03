@@ -1,0 +1,42 @@
+# One entry per feature. The /features catalog is generated from this file.
+# CI fails if any name/source references a protected attribute (tests/constraints).
+- name: payroll_delay_days
+  entity: customer
+  type: int
+  built_by: sql
+  source: [deposit_accounts]
+  definition: pipeline/models/features/f_customer_payroll.sql
+  available_ts: snapshot_date + extract_lag
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: ptp_broken_count_90d
+  entity: customer
+  type: int
+  built_by: sql
+  source: [promises_to_pay]
+  definition: pipeline/models/features/f_promise_history.sql
+  available_ts: status_ts
+  refresh: daily
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+- name: hardship_signal
+  entity: customer
+  type: enum[none,possible,clear]
+  built_by: rule            # rule (offline) | llm; switch only if llm beats rule on labels
+  source: [call_transcripts, agent_notes]
+  definition: features/text_rules.py
+  available_ts: call_end_ts + extraction_time
+  refresh: per_contact
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  prompt: llm/prompts/text_features/v1.md
+  label_accuracy: {metric: recall, value: null, n: 200}
+# TODO(WS-C): rest of the Phase 1 set: delinquency, promise history, payday, cash stress, bureau,
+# contactability, employer cohort, text and voice (call-level) features
