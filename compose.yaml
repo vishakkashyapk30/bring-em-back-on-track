@@ -1,4 +1,4 @@
-# Back-on-Track.ai. Modular monolith: web + api long-running, jobs run-to-completion.
+# back-on-track.ai. Modular monolith: web + api long-running, jobs run-to-completion.
 #
 #   docker compose up --build    -> the whole system on http://localhost:8080
 #     1. bootstrap: downloads the dataset into ./data/raw if it isn't there, builds the warehouse on the first run
@@ -27,6 +27,8 @@ services:
       OLLAMA_MODEL: ${OLLAMA_MODEL:-mistral:latest}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-chat}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

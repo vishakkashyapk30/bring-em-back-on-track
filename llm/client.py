@@ -18,6 +18,7 @@ from typing import Any
 
 from common.config import get_settings
 from common.hashing import stable_hash
+from common.llm_mode import effective_provider
 from llm.providers.base import Provider, ProviderUnavailable
 from llm.providers.offline import OfflineProvider
 
@@ -33,6 +34,10 @@ def _provider(name: str) -> Provider:
         from llm.providers.gemini import GeminiProvider
 
         return GeminiProvider()
+    if name == "deepseek":
+        from llm.providers.deepseek import DeepSeekProvider
+
+        return DeepSeekProvider()
     if name == "ollama":
         from llm.providers.ollama import OllamaProvider
 
@@ -58,7 +63,7 @@ def complete_json(
     prompt_id: str, version: int, inputs: dict[str, Any], schema_name: str, provider: str | None = None
 ) -> dict:
     s = get_settings()
-    name = provider or s.llm_provider
+    name = provider or effective_provider()
     prompt, schema = load_prompt(prompt_id, version), load_schema(schema_name)
     model = getattr(s, f"{name}_model", None)  # a different model must not reuse another model's cached answer
     key = stable_hash([name, model, prompt_id, version, inputs])

@@ -32,9 +32,12 @@ class Settings(BaseSettings):
     hardship_review_business_days: int = 5  # D11, TBC policy
 
     # LLM (D13): offline is the default and must always work
-    llm_provider: str = "offline"  # offline | gemini | ollama
+    llm_provider: str = "offline"  # offline | gemini | deepseek | ollama
     gemini_api_key: str | None = None
-    gemini_model: str = "TBC"
+    gemini_model: str = "gemini-2.5-flash"
+    deepseek_api_key: str | None = None
+    deepseek_model: str = "deepseek-chat"
+    deepseek_base_url: str = "https://api.deepseek.com"
     ollama_host: str = "http://localhost:11434"
     ollama_model: str = "TBC"
     llm_cache_dir: Path = ROOT / "data" / "llm_cache"
