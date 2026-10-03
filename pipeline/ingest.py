@@ -32,8 +32,10 @@ def find_source(raw: Path, table: str, fmt: str) -> list[Path]:
 def land_table(con: duckdb.DuckDBPyConnection, table: str, fmt: str, files: list[Path], out: Path) -> int:
     paths = [str(f) for f in files]
     reader = {
+        # all_varchar keeps identifiers as text (10-digit CIF has leading zeros); only empty string is null,
+        # so the "NA" outcome code and literal "N/A" in notes survive (release README, file conventions).
         "csv": f"read_csv({paths}, all_varchar=true, header=true, filename=true)",
-        "parquet": f"read_parquet({paths}, filename=true, union_by_name=true)",
+        "parquet": f"read_parquet({paths}, filename=true, union_by_name=true, hive_partitioning=true)",
         "json": f"read_json_auto({paths}, filename=true)",
     }[fmt]
     con.execute(
