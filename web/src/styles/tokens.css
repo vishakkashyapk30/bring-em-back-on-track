@@ -1,0 +1,37 @@
+/* Design tokens. CIBC theme + Positivus-inspired shapes. NO raw hex in components. */
+@theme {
+  /* Brand */
+  --color-brand: #a71f3e; /* CIBC red (user-confirmed) */
+  --color-brand-700: #861832; /* hover/pressed */
+  --color-brand-50: #f8e9ed; /* tint backgrounds, selected rows */
+  --color-brand-300: #f28b9b; /* red text/icons ON DARK surfaces only */
+
+  /* Neutrals */
+  --color-ink: #191a23; /* Figma "Dark": text, borders, hard shadow */
+  --color-navy: #161b2e; /* organisers' deck: hero, KPI band, footer */
+  --color-grey-100: #f3f3f3; /* Figma "Grey": cards, panels, inputs */
+  --color-grey-300: #d9d9de;
+  --color-cream: #f5f2eb; /* app background */
+  --color-muted: #5f6170; /* secondary text */
+
+  /* Accents / semantics */
+  --color-gold: #ffd58a; /* accent on dark, LLM/AI badges */
+  --color-teal: #1e7b6d; /* success: kept, passed, cured */
+  --color-teal-50: #e3f2ef;
+  --color-amber: #b86e00; /* hardship / vulnerability: "care", not red */
+  --color-amber-50: #fff1d6;
+  --color-danger: #a71f3e; /* always with an icon + text */
+
+  /* Type */
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Shape */
+  --radius-xl: 45px; /* landing cards, hero panels (Figma) */
+  --radius-lg: 24px; /* app cards, NBA card */
+  --radius-md: 14px; /* inputs, buttons, chips */
+  --radius-sm: 8px; /* badges, cells */
+
+  /* Elevation: Positivus hard offset shadow, hero cards + primary CTAs only */
+  --shadow-hard: 0 5px 0 0 #191a23;
+}
