@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "thought": {"type": "string", "maxLength": 400},
+    "action": {"type": "string", "enum": ["call_tool", "final"]},
+    "tool": {"type": ["string", "null"], "maxLength": 60},
+    "args": {"type": ["object", "null"]},
+    "answer": {"type": ["string", "null"], "maxLength": 1500},
+    "cited_steps": {"type": "array", "items": {"type": "string"}, "maxItems": 12},
+    "emphasise": {"type": "array", "items": {"type": "string"}, "maxItems": 5}
+  },
+  "required": ["thought", "action", "tool", "args", "answer", "cited_steps"],
+  "additionalProperties": true
+}

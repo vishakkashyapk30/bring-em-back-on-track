@@ -42,8 +42,9 @@ def check_columns(sql: str) -> None:
         raise PermissionError(f"Direct personal details can't be queried: {sorted(cols & PII_COLUMNS)}")
 
 
-def execute(sql: str, max_rows: int = 1000,
-            row_filters: dict[str, str] | None = None) -> tuple[str, list[str], list[tuple[Any, ...]]]:
+def execute(sql: str, max_rows: int = 1000, row_filters: dict[str, str] | None = None,
+            timeout_s: float | None = None) -> tuple[str, list[str], list[tuple[Any, ...]]]:
+    """`timeout_s` interrupts a query that runs longer (duckdb.InterruptException); used for model-written SQL."""
     safe = validate(sql, ALLOWED, max_limit=max_rows)
     check_columns(safe)
     if row_filters:
@@ -51,11 +52,19 @@ def execute(sql: str, max_rows: int = 1000,
 
         safe, _ = apply_row_filters(safe, row_filters)
     con = warehouse(read_only=True)
+    timer = None
+    if timeout_s:
+        import threading
+
+        timer = threading.Timer(timeout_s, con.interrupt)
+        timer.start()
     try:
         con.execute("SET search_path = 'silver,gold'")
         rel = con.sql(safe)
         names, rows = rel.columns, rel.fetchall()
     finally:
+        if timer:
+            timer.cancel()
         con.close()
     return safe, names, _suppress(names, rows)
 

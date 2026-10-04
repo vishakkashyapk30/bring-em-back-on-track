@@ -11,7 +11,8 @@ What is used from the recordings (the optional 2,000-call voice pack, synthetic 
   read: they can stand in for protected traits (V1 section 5, docs/model_card_ptp_break.md). `CALL_LEVEL` is the whole
   allow-list and `assert_call_level` fails if anything else is requested.
 
-Run: `python -m features.voice transcribe --n 300 --model small` (writes data/features/voice_asr.parquet and
+Run: `python -m features.voice transcribe --n 300 --model small` (writes data/features/voice_asr.parquet, the turns in
+data/features/voice_turns.parquet and
 reports/voice_eval.json: word error rate against the released transcript and agreement of the extracted signals).
 """
 
@@ -31,6 +32,7 @@ from features.text_rules import extract
 
 CALL_LEVEL = ("duration_sec", "dead_air_sec", "hold_music_sec", "snr_db", "packet_loss_pct", "clipping_pct", "channels")
 FORBIDDEN = ("pitch", "energy", "speaking_rate", "filler", "accent", "pause_count", "voice_id", "customer_voice", "agent_voice")
+VOICE_TURN_COLS = ["voice_sample_id", "contact_id", "turn_index", "speaker", "start_sec", "end_sec", "text", "asr_confidence"]
 SIGNALS = ("hardship", "dispute", "complaint", "cease_request", "stated_delay_reason", "next_step")
 
 
@@ -173,13 +175,16 @@ def transcribe(n: int = 300, size: str = "small", seed: int = 7) -> dict:
              for _, g in meta.groupby(["channels", "sample_rate_hz"])]
     sample = pd.concat(parts).head(n).reset_index(drop=True)
     model, device = load_model(size)
-    rows = []
+    rows, turn_rows = [], []
     for r in sample.itertuples():
         path = voice_dir() / f"{r.voice_sample_id}.wav"
         if not path.exists():
             continue
         turns, stereo = audio_to_turns(model, path)
         src = _source_turns(r.transcript_id, r.transcript_path)
+        turn_rows += [{"voice_sample_id": r.voice_sample_id, "contact_id": r.contact_id, "turn_index": t["turn_index"],
+                       "speaker": t["speaker"], "start_sec": t["start_sec"], "end_sec": t["end_sec"], "text": t["text"],
+                       "asr_confidence": t["asr_confidence"]} for t in turns]
         heard, said = " ".join(t["text"] for t in turns), " ".join(t["text"] for t in src)
         from_audio, from_text = extract(for_rules(turns)), extract(src)
         row = {"voice_sample_id": r.voice_sample_id, "transcript_id": r.transcript_id, "contact_id": r.contact_id,
@@ -193,6 +198,8 @@ def transcribe(n: int = 300, size: str = "small", seed: int = 7) -> dict:
     out = get_settings().features_dir / "voice_asr.parquet"
     out.parent.mkdir(parents=True, exist_ok=True)
     df.drop(columns=["text"]).to_parquet(out, index=False)
+    # the speech-to-text itself, kept for search (rag/interactions.py): redaction happens when the index is built
+    pd.DataFrame(turn_rows, columns=VOICE_TURN_COLS).to_parquet(get_settings().features_dir / "voice_turns.parquet", index=False)
     report = summarise(df, size, device, round(time.time() - t0))
     rp = get_settings().reports_dir / "voice_eval.json"
     rp.parent.mkdir(parents=True, exist_ok=True)

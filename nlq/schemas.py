@@ -45,6 +45,9 @@ class AskResponse(BaseModel):
     caveats: list[str] = Field(default_factory=list)
     preflight: Preflight | None = None
     sources: list[str] = Field(default_factory=list)
+    # Structured sources. Documents: {doc_id, section, quote}. Model-written SQL (sql_source "llm") adds kind, ref,
+    # label and tables: one {kind: "sql"} entry (quote = ref = the executed SQL) and one {kind: "table"} per table.
+    citations: list[dict[str, Any]] = Field(default_factory=list)
     freshness: str | None = None  # when the data behind the answer was built (ISO, UTC); metric answers only
     followups: list[str] = Field(default_factory=list)
     answered_by: Literal["rules", "language model"] = "rules"

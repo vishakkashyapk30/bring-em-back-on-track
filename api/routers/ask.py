@@ -61,7 +61,8 @@ def ask(body: AskIn, s=Depends(require({Role.analyst, Role.team_lead, Role.agent
         return AskResponse(question=body.question, refused=True, refusal_reason=reason)
     audit.record(s.user_id, s.role, "refusal" if a.refused else "query", "question", None,
                  {"q": body.question, "mode": body.mode or "default"},
-                 {"kind": a.kind, "sql_or_sources": a.sql_or_sources, "answered_by": a.answered_by})
+                 {"kind": a.kind, "sql_or_sources": a.sql_or_sources, "answered_by": a.answered_by,
+                  "generated": a.generated})
     if a.refused:
         return AskResponse(question=body.question, refused=True, refusal_reason=a.refusal_reason)
     chips = None
@@ -72,18 +73,22 @@ def ask(body: AskIn, s=Depends(require({Role.analyst, Role.team_lead, Role.agent
                  "time_range": {"label": c["time"]} if c.get("time") else None, "sort": None, "limit": None,
                  "out_of_scope": None}
     insight = None
-    if a.kind == "metric" and a.rows:
+    if a.generated:
+        insight = a.insight  # written from the returned rows only, numbers checked (nlq/llm_sql.py)
+    elif a.kind == "metric" and a.rows:
         insight = f"{len(a.rows)} row(s) returned from the certified {a.chips.get('metric')} definition."
-    elif a.kind in ("policy", "call_summary"):
+    elif a.kind in ("policy", "call_summary", "interactions"):
         insight = a.answer
     incidents = [{"event_id": c.split(": ")[1] if c.count(": ") >= 2 else "incident", "text": c.split(": ", 2)[-1]}
                  for c in a.caveats if c.startswith("Incident")]
     return AskResponse(
         question=body.question, chips=chips, sql=a.sql_or_sources if a.kind in ("metric", "cases") else None,
-        sql_source="semantic" if a.kind in ("metric", "cases") else None, columns=a.columns,
+        sql_source=("llm" if a.generated else "semantic") if a.kind in ("metric", "cases") else None, columns=a.columns,
         rows=[[v if isinstance(v, (int, float, str, bool)) or v is None else str(v) for v in r] for r in a.rows],
         insight=insight, caveats=[c for c in a.caveats if not c.startswith("Incident")],
         preflight=Preflight(incidents=incidents) if incidents else None,
-        sources=[a.sql_or_sources] if a.kind not in ("metric", "cases") else ["silver (typed release tables)"],
+        sources=([f"{c['kind']}: {c['label']}" for c in a.citations] if a.generated
+                 else [a.sql_or_sources] if a.kind not in ("metric", "cases") else ["silver (typed release tables)"]),
+        citations=a.citations,
         freshness=a.freshness,
         followups=FOLLOWUPS.get(a.kind, []), answered_by=a.answered_by, mode_note=note, refused=False)

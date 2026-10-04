@@ -1,0 +1,5 @@
+{"type": "object", "required": ["answer", "citations", "refused", "refusal_reason"],
+ "properties": {"answer": {"type": ["string", "null"]},
+  "citations": {"type": "array", "items": {"type": "object", "required": ["ref", "quote"],
+   "properties": {"ref": {"type": "string"}, "doc_id": {"type": "string"}, "turn_index": {"type": "integer"}, "quote": {"type": "string"}}}},
+  "refused": {"type": "boolean"}, "refusal_reason": {"type": ["string", "null"]}}}

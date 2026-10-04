@@ -49,7 +49,7 @@ OUT_OF_SCOPE = re.compile(
 
 
 # Ask reports what happened. It doesn't forecast; the bank's promise-break score is the one prediction it can list.
-FORECAST = re.compile(r"\b(forecast\w*|predict\w*|projection|projected|going to|who will|(customers?|accounts?|cases?|promises?) will|"
+FORECAST = re.compile(r"\b(forecast\w*|predict\w*|will (the )?(economy|market|rates?|inflation|unemployment)\b|recession|projection|projected|going to|who will|(customers?|accounts?|cases?|promises?) will|"
     r"will .{0,30}\b(default|break|cure|roll|pay|miss)\b)", re.I)
 
 

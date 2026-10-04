@@ -139,7 +139,42 @@ def _short(name: str | None) -> str:
     return f"{p[0][0]}. {p[-1]}" if len(p) >= 2 else (name or "Customer")
 
 
-def missed_offers(limit: int = 100) -> dict:
+MISSED_SORTS = ("newest", "days_late", "exposure", "days_since_flag", "program")  # allowlist, never interpolated
+MISSED_DIRS = ("asc", "desc")
+
+
+def sort_missed(items: list[dict], sort: str = "newest", direction: str | None = None) -> list[dict]:
+    """Order the H3 list. Default (newest, desc) keeps the incoming order, which is the spec rule (newest first).
+
+    Sorting happens in Python on an allowlisted key, so nothing user-supplied reaches SQL. Default direction is
+    desc, except for program (a to z). Ties keep the newest-first order (stable sort)."""
+    if sort not in MISSED_SORTS:
+        raise ValueError(f"unknown sort {sort!r}; allowed: {', '.join(MISSED_SORTS)}")
+    if direction is not None and direction not in MISSED_DIRS:
+        raise ValueError(f"unknown dir {direction!r}; allowed: {', '.join(MISSED_DIRS)}")
+    desc = (direction or ("asc" if sort == "program" else "desc")) == "desc"
+
+    def flag_day(i: Mapping[str, Any]) -> int:
+        d = _as_date(i.get("flag_since"))
+        return d.toordinal() if d else 0
+
+    def num(k: str):
+        return lambda i: float(i.get(k) or 0)
+
+    def prog(i: Mapping[str, Any]) -> str:
+        ps = i.get("eligible_programs") or []
+        return str(ps[0].get("program_name") or "").lower() if ps else "\uffff"  # no program sorts last
+
+    if sort == "newest":
+        return list(items) if desc else list(reversed(items))
+    if sort == "days_since_flag":  # more days since the flag means an older flag date
+        return sorted(items, key=flag_day, reverse=not desc)
+    key = {"days_late": num("dpd"), "exposure": num("overdue"), "program": prog}[sort]
+    return sorted(items, key=key, reverse=desc)
+
+
+def missed_offers(limit: int = 100, sort: str = "newest", direction: str | None = None) -> dict:
+    sort_missed([], sort, direction)  # validate before touching the warehouse
     snap = context.SNAPSHOT
     rows = _q(
         """
@@ -192,7 +227,9 @@ def missed_offers(limit: int = 100) -> dict:
             break
     return {
         "meta": _meta(),
-        "items": out,
+        "items": sort_missed(out, sort, direction),
+        "sort": sort,
+        "dir": direction or ("asc" if sort == "program" else "desc"),
         "note": "Hardship flagged, no program offered yet, and at least one agent-level program fits. Newest first.",
     }
 

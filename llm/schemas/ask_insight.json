@@ -1,1 +1,1 @@
-{"type": "object", "required": ["insight", "followups"], "properties": {"insight": {"type": "string"}, "followups": {"type": "array", "items": {"type": "string"}}}}
+{"type": "object", "required": ["insight", "numbers_used"], "properties": {"insight": {"type": "string"}, "numbers_used": {"type": "array", "items": {"type": "string"}}, "followups": {"type": "array", "items": {"type": "string"}}}}
