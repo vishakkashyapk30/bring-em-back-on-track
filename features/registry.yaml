@@ -920,3 +920,163 @@
   owner: Collections Analytics
   version: 1
   fairness_review: pending
+- name: voice_duration_sec
+  entity: call
+  type: decimal
+  built_by: voice
+  source:
+  - voice_samples
+  description: Length of the recording in seconds. Call-level measure of the line, never of the speaker.
+  definition: features/voice.py (CALL_LEVEL allow-list)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: not_needed_call_level
+- name: voice_dead_air_sec
+  entity: call
+  type: decimal
+  built_by: voice
+  source:
+  - voice_samples
+  description: Seconds of dead air on the line. Call-level measure of the line, never of the speaker.
+  definition: features/voice.py (CALL_LEVEL allow-list)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: not_needed_call_level
+- name: voice_hold_music_sec
+  entity: call
+  type: decimal
+  built_by: voice
+  source:
+  - voice_samples
+  description: Seconds of hold music on the line. Call-level measure of the line, never of the speaker.
+  definition: features/voice.py (CALL_LEVEL allow-list)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: not_needed_call_level
+- name: voice_snr_db
+  entity: call
+  type: decimal
+  built_by: voice
+  source:
+  - voice_samples
+  description: Signal-to-noise ratio of the line in dB (a call-quality measure). Call-level measure of the line, never of the speaker.
+  definition: features/voice.py (CALL_LEVEL allow-list)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: not_needed_call_level
+- name: voice_packet_loss_pct
+  entity: call
+  type: decimal
+  built_by: voice
+  source:
+  - voice_samples
+  description: Percentage of packets lost on the line. Call-level measure of the line, never of the speaker.
+  definition: features/voice.py (CALL_LEVEL allow-list)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: not_needed_call_level
+- name: voice_clipping_pct
+  entity: call
+  type: decimal
+  built_by: voice
+  source:
+  - voice_samples
+  description: Percentage of the audio that clipped. Call-level measure of the line, never of the speaker.
+  definition: features/voice.py (CALL_LEVEL allow-list)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: not_needed_call_level
+- name: voice_hardship_signal
+  entity: call
+  type: enum
+  built_by: voice
+  source:
+  - voice_samples
+  description: Hardship signal read from the recording (speech to text, then the same rules as transcripts)
+  definition: features/voice.py (faster-whisper small, then features/text_rules.py)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  label_accuracy:
+    metric: agreement with the signal read from the released transcript (2000 recordings, 47.4 hours)
+    value: 0.92
+    n: 2000
+- name: voice_dispute_signal
+  entity: call
+  type: bool
+  built_by: voice
+  source:
+  - voice_samples
+  description: Dispute raised, read from the recording
+  definition: features/voice.py (faster-whisper small, then features/text_rules.py)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  label_accuracy:
+    metric: agreement with the signal read from the released transcript (2000 recordings, 47.4 hours)
+    value: 0.991
+    n: 2000
+- name: voice_complaint_cue
+  entity: call
+  type: bool
+  built_by: voice
+  source:
+  - voice_samples
+  description: Complaint cue, read from the recording
+  definition: features/voice.py (faster-whisper small, then features/text_rules.py)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  label_accuracy:
+    metric: agreement with the signal read from the released transcript (2000 recordings, 47.4 hours)
+    value: 1.0
+    n: 2000
+- name: voice_next_step
+  entity: call
+  type: category
+  built_by: voice
+  source:
+  - voice_samples
+  description: Next step, read from the recording
+  definition: features/voice.py (faster-whisper small, then features/text_rules.py)
+  available_ts: call end
+  refresh: per_call
+  freshness_sla_hours: 26
+  owner: Collections Analytics
+  version: 1
+  fairness_review: pending
+  provider: offline
+  label_accuracy:
+    metric: agreement with the signal read from the released transcript (2000 recordings, 47.4 hours)
+    value: 0.911
+    n: 2000

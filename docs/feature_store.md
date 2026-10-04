@@ -16,7 +16,7 @@ The **parity check** ([`features/parity.py`](../features/parity.py)) recomputes 
 
 ## Features
 
-55 features are registered in [`features/registry.yaml`](../features/registry.yaml), each with entity, type, source, how it is built, when it becomes available, refresh and owner. The `/features` page reads the registry.
+70 features are registered in [`features/registry.yaml`](../features/registry.yaml), each with entity, type, source, how it is built, when it becomes available, refresh and owner. The `/features` page reads the registry.
 
 - **Structured (SQL):**
   - the promise itself: amount, days to due, prior broken promises, promise-to-overdue ratio, DPD at creation
@@ -52,3 +52,11 @@ Deposit and bureau values are only available as of the latest snapshot, not as h
 ## Credit and account history features (added 4 Oct)
 
 Eighteen promise-level features read the bank's own history as of the moment the promise was made, in the same macro (so training and live scoring still share one definition; the parity check recomputes 1,000 live rows with 0 mismatches over 56 columns): `bur_*` (latest bureau pull on or before the date: score, revolving utilisation, delinquent trades, hard inquiries, stale flag), `sal_*` (salary credits in the three whole months before the promise month), `card_*` (the last card statement whose due date has passed: utilisation, minimum or full payment, days late, delinquent cycles, payment over minimum) and `snap_*` (the latest month-end account snapshot within 120 days). They lifted the promise-break model from AUC 0.667 to 0.712 on its own (see [`model_card_ptp_break.md`](model_card_ptp_break.md)). One of them leaked before it was fixed: a card statement's `days_late` comes from the first payment after the due date, which can fall after the promise, so it is used only when that payment had already happened.
+
+## Voice features (added 4 Oct)
+
+Ten features come from the recordings (see [`voice.md`](voice.md)): six call-level measures of the line (`voice_duration_sec`,
+`voice_dead_air_sec`, `voice_hold_music_sec`, `voice_snr_db`, `voice_packet_loss_pct`, `voice_clipping_pct`) and four signals read
+from the speech-to-text of the recording with the same rules as for transcripts (`voice_hardship_signal`, `voice_dispute_signal`,
+`voice_complaint_cue`, `voice_next_step`), each with its measured agreement against the released transcripts (92%, 99%, 100%, 91%).
+They are registered as `built_by: voice`. Speaker acoustics are never registered or read.

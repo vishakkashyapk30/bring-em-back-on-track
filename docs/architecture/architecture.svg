@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1090" viewBox="0 0 1700 1090">
 <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6B675F"/></marker></defs>
 <rect width="1700" height="1090" fill="#FFFFFF"/>
-<text x="40" y="42" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#2B2A28" text-anchor="start">Collections 360: architecture of the build</text>
+<text x="40" y="42" font-family="Inter, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#2B2A28" text-anchor="start">back-on-track.ai: architecture of the build</text>
 <text x="40" y="66" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14.5" font-weight="400" fill="#6B675F" text-anchor="start">Four layers on the real Maple Bank data, one use case in depth (next best action). Runs with one command: docker compose up --build.</text>
 <rect x="1000" y="28" width="16" height="16" rx="4" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
 <text x="1022" y="41" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#6B675F" text-anchor="start">rules / code</text>
@@ -74,14 +74,14 @@
 <text x="74" y="804" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">numbers + the SQL or sources + caveats, or a refusal</text>
 <rect x="614" y="418" width="450" height="62" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
 <text x="628" y="440" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Registry: one definition per feature</text>
-<text x="628" y="460" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">55 features with owner, source, refresh, version</text>
+<text x="628" y="460" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">70 features with owner, source, refresh, version</text>
 <rect x="614" y="490" width="450" height="56" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
 <text x="628" y="512" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">SQL features</text>
 <text x="628" y="532" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">contact, promise, bureau, salary, card, account history</text>
 <rect x="614" y="556" width="450" height="72" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
-<text x="628" y="578" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Text features (rules, no LLM)</text>
-<text x="628" y="598" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">hardship, dispute, complaint, delay reason from</text>
-<text x="628" y="615" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">transcripts and notes; 99.6% hardship accuracy</text>
+<text x="628" y="578" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Text and voice features</text>
+<text x="628" y="598" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">hardship, dispute, complaint, delay reason from notes, transcripts</text>
+<text x="628" y="615" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">and recordings (speech to text); no speaker acoustics</text>
 <rect x="614" y="638" width="450" height="72" rx="10" fill="#DEE4EC" stroke="#9DADC2" stroke-width="1.4"/>
 <text x="628" y="660" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Offline (training) and online (live)</text>
 <text x="628" y="680" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">one dbt macro, evaluated as of the promise</text>
@@ -126,8 +126,8 @@
 <text x="396" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">lowered only by a person with a reason</text>
 <rect x="700" y="920" width="304" height="110" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
 <text x="714" y="942" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Fairness audit</text>
-<text x="714" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">proxy test (no group at 0.65) and</text>
-<text x="714" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">outcome tests by group, review not drop</text>
+<text x="714" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">proxy test (above 0.65 a group is dropped</text>
+<text x="714" y="979" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">and reviewed); outcome tests by group</text>
 <rect x="1018" y="920" width="304" height="110" rx="10" fill="#DCE9E0" stroke="#8FB59F" stroke-width="1.4"/>
 <text x="1032" y="942" font-family="Inter, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" fill="#2B2A28" text-anchor="start">Protected attributes</text>
 <text x="1032" y="962" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#6B675F" text-anchor="start">kept out of features, rules, prompts</text>

@@ -108,9 +108,9 @@ for (t, s, k), h in zip(l2, heights, strict=True):
 # layer 3 nodes
 y = CY + 46
 l3 = [
-    ("Registry: one definition per feature", "55 features with owner, source, refresh, version", "rule", 62),
+    ("Registry: one definition per feature", "70 features with owner, source, refresh, version", "rule", 62),
     ("SQL features", "contact, promise, bureau, salary, card, account history", "rule", 56),
-    ("Text features (rules, no LLM)", "hardship, dispute, complaint, delay reason from\ntranscripts and notes; 99.6% hardship accuracy", "rule", 72),
+    ("Text and voice features", "hardship, dispute, complaint, delay reason from notes, transcripts\nand recordings (speech to text); no speaker acoustics", "rule", 72),
     ("Offline (training) and online (live)", "one dbt macro, evaluated as of the promise\nor as of now; parity check: 0 mismatches in 1,000", "store", 72),
     ("Fairness inputs", "no protected attribute reaches a feature", "rule", 56),
 ]
@@ -140,7 +140,7 @@ band(40, 884, 1620, 176, "GOVERNANCE", "across every layer")
 gov = [
     ("Audit log", "append-only (SQLite triggers);\nevery customer-affecting write"),
     ("Hardship latch", "raised by rules or agents,\nlowered only by a person with a reason"),
-    ("Fairness audit", "proxy test (no group at 0.65) and\noutcome tests by group, review not drop"),
+    ("Fairness audit", "proxy test (above 0.65 a group is dropped\nand reviewed); outcome tests by group"),
     ("Protected attributes", "kept out of features, rules, prompts\nand models; one auditor view reads them"),
     ("Monitoring and contract", "model evaluation, data quality report,\nfreshness rule 11, benchmark 0.994 (dev)"),
 ]
