@@ -1,11 +1,15 @@
+{#- as_of_ts is a dbt var (default: the dictionary snapshot, 28 Sep 2026 06:00); the spec suite builds other dates. -#}
+{%- set as_of = var('as_of_ts', '2026-09-28 06:00:00') -%}
+{%- set day_end = "timestamp '" ~ as_of[:10] ~ "' + interval 1 day" -%}
 -- Online customer vector for the C360 screen and the NBA rules (structured + text), latest values per golden ID.
 with notes as (
     select x.golden_id,
            arg_max(n.hardship_signal, n.available_ts) as last_note_hardship_signal,
            arg_max(n.stated_delay_reason, n.available_ts) as last_stated_delay_reason,
-           count(*) filter (where n.hardship_signal <> 'none' and n.available_ts >= timestamp '2026-09-28' - interval 90 day) as text_hardship_mentions_90d
+           count(*) filter (where n.hardship_signal <> 'none' and n.available_ts >= timestamp '{{ as_of[:10] }}' - interval 90 day) as text_hardship_mentions_90d
     from {{ source('features', 'note_features') }} n
     join {{ source('identity', 'case_xref') }} x on x.case_id = n.case_id
+    where n.available_ts < {{ day_end }}  -- point in time: nothing written after the as-of day
     group by 1
 ),
 calls as (
@@ -13,11 +17,15 @@ calls as (
            arg_max(t.next_step, t.available_ts) as last_call_next_step
     from {{ source('features', 'transcript_features') }} t
     join {{ source('identity', 'case_xref') }} x on x.case_id = t.case_id
+    where t.available_ts < {{ day_end }}
     group by 1
 ),
 ptp as (
     select x.golden_id,
-           count(*) filter (where p.ptp_status in ('broken', 'partially_kept') and p.status_ts >= timestamp '2026-09-28' - interval 90 day) as ptp_broken_count_90d,
+           count(*) filter (where p.ptp_status in ('broken', 'partially_kept') and p.status_ts >= timestamp '{{ as_of[:10] }}' - interval 90 day
+                              and p.status_ts <= timestamp '{{ as_of }}'
+                              and p.ptp_due_date <> date '{{ var('outage_date', '2026-09-14') }}' -- INC-0914 outage: not the customer's break
+                           ) as ptp_broken_count_90d,
            count(*) filter (where p.ptp_status = 'open') as open_promises
     from {{ ref('promises_to_pay') }} p join {{ source('identity', 'case_xref') }} x on x.case_id = p.case_id
     group by 1
@@ -44,7 +52,7 @@ select c.golden_id, c.max_dpd as dpd_max_current, c.total_past_due_cad, c.payrol
        b.bureau_risk_score, b.bureau_score_delta_90d, b.bnpl_trades_count, b.off_us_delinquent_trades,
        n.last_note_hardship_signal, n.last_stated_delay_reason, coalesce(n.text_hardship_mentions_90d, 0) as text_hardship_mentions_90d,
        ca.last_call_hardship_signal, ca.last_call_next_step,
-       timestamp '2026-09-28 06:00:00' as as_of_ts
+       timestamp '{{ as_of }}' as as_of_ts
 from {{ ref('c360_customer') }} c
 left join ptp p using (golden_id)
 left join dep d using (golden_id)

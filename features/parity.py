@@ -19,12 +19,15 @@ ROOT = Path(__file__).resolve().parents[1]
 COMPILED = ROOT / "pipeline" / "target" / "compiled" / "collections360" / "models" / "features" / "f_ptp_online.sql"
 
 
-def run(sample_size: int = 1000) -> dict:
+def run(sample_size: int = 1000, warehouse: Path | None = None, compiled: Path | None = None,
+        write_report: bool = True) -> dict:
+    """`warehouse` and `compiled` default to the live build; the spec suite passes its temporary ones."""
     s = get_settings()
+    COMPILED = compiled or globals()["COMPILED"]
     if not COMPILED.exists():
         raise FileNotFoundError("Run `make features` (dbt) first so the compiled definition exists")
     sql = COMPILED.read_text()
-    con = duckdb.connect(str(s.warehouse_path), read_only=True)
+    con = duckdb.connect(str(warehouse or s.warehouse_path), read_only=True)
     con.execute("SET search_path = 'silver,gold,features,identity'")
     ids = [r[0] for r in con.execute(
         f"SELECT ptp_id FROM features.f_ptp_online USING SAMPLE {sample_size} ROWS (reservoir, 7)").fetchall()]
@@ -36,8 +39,9 @@ def run(sample_size: int = 1000) -> dict:
         WHERE {' OR '.join(f'r."{c}" IS DISTINCT FROM o."{c}"' for c in cols)}""").fetchone()[0]
     con.close()
     out = {"sampled": len(ids), "mismatched_rows": int(diff), "columns_checked": len(cols), "ok": diff == 0}
-    (s.reports_dir).mkdir(parents=True, exist_ok=True)
-    (s.reports_dir / "feature_parity.json").write_text(json.dumps(out, indent=2))
+    if write_report:
+        s.reports_dir.mkdir(parents=True, exist_ok=True)
+        (s.reports_dir / "feature_parity.json").write_text(json.dumps(out, indent=2))
     return out
 
 

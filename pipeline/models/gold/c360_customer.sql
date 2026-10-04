@@ -104,7 +104,7 @@ select
     i.source_systems,   -- CRM, cards, lending, core banking, bureau, collections
     i.source_refs,
     c.open_case_id, coalesce(c.open_cases, 0) as open_cases,
-    now() as _refreshed_at
+    {% if var('as_of_ts', none) %}timestamp '{{ var('as_of_ts') }}'{% else %}now(){% endif %} as _refreshed_at
 from primary_rec p
 join agg a using (golden_id)
 left join acct ac using (golden_id)

@@ -28,6 +28,7 @@ from typing import Any
 import yaml
 
 from tests_spec.adapter import (
+    ApprovedSummary,
     AskAnswer,
     Citation,
     ContractColumn,
@@ -425,6 +426,12 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
         # golden IDs are derived from the smallest CRM ID, so reruns reproduce them (design_changes.md #26).
         return resolve_in_memory(records)
 
+    def system_client(self):
+        # An in-process system on the seeded tables, built from the production modules (adapter_system.py).
+        from tests_spec.adapter_system import SpecSystemClient
+
+        return SpecSystemClient(self)
+
     def load_sources(self, tables):
         raise NotImplementedError(NOT_BUILT_PIPELINE)
 
@@ -539,16 +546,18 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
 
     def ask(self, question, user, token_overrides=None):
         # nlq/pipeline.ask on the real warehouse (read-only). Follow-ups are the API's (api/routers/ask.py).
+        chips = None
         if token_overrides is not None:
-            raise NotImplementedError("Ask has no chip-edit path: chips are shown, the answer is compiled from the "
-                                      "question text (nlq/pipeline.py)")
+            t = token_overrides
+            chips = {"metric": t.metric, "dimensions": list(t.dimensions or []), "filters": list(t.filters or {}),
+                     "time": t.time_period}
         import sqlglot
         from sqlglot import exp
 
         from api.routers.ask import FOLLOWUPS
         from nlq.pipeline import ask as run
 
-        a = run(question)
+        a = run(question, None, chips)
         if a.refused:
             return AskAnswer(refused=True, refusal_reason=a.refusal_reason)
         rows = [dict(zip(a.columns, r, strict=False)) for r in a.rows]
@@ -647,7 +656,7 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
 
     # ---------------- Layer 3: features ----------------
     def get_feature_registry(self):
-        # features/registry.yaml via features/registry.load_registry (built_by kept as recorded: sql | rule | llm)
+        # features/registry.yaml via features/registry.load_registry (built_by: sql | ai | voice)
         from features.registry import load_registry
 
         out = []
@@ -657,7 +666,8 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
                 m = re.search(r"\d*\.\d+", str(s.label_accuracy.get("value", "")))
                 acc = float(m.group(0)) if m else None
             out.append(FeatureDefinition(s.name, s.entity, s.type, ", ".join(s.source), s.refresh, s.owner,
-                                         str(s.version), s.built_by, s.prompt, acc))
+                                         str(s.version), s.built_by,
+                                         str(s.prompt_version) if s.prompt_version else s.prompt, acc))
         return out
 
     def get_features_online(self, entity_id, names):
@@ -686,9 +696,11 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
         record = ({"amount": recorded_promise.amount, "date": recorded_promise.due_date.isoformat()}
                   if recorded_promise else None)
         call_date = transcript.call_end_ts.date() if transcript.call_end_ts else None
-        d = draft_from_turns(turns, call_date, record)
+        d = draft_from_turns(turns, call_date, record, transcript.asr_confidence_avg)
         f, payload = d["fields"], d["payload"]
-        ptp = f.get("ptp") or {}
+        # The recorded promise is the default; when the call said something different, show what was said and
+        # flag the mismatch (highlighted, never silently replaced).
+        ptp = (d["checks"]["promise_in_transcript"] if not d["checks"]["promise_matches_record"] else f.get("ptp")) or {}
         due = ptp.get("date")
         promise = SummaryPromise(amount=ptp.get("amount"),
                                  due_date=dt.date.fromisoformat(due) if isinstance(due, str) else due,
@@ -702,11 +714,28 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
             schema_valid=d["schema_valid"], status="draft")
 
     def approve_post_call_summary(self, draft, approver, edits=None):
-        # decisioning/post_call.approve is still TODO(WS-E); its NotImplementedError propagates (test skips).
+        # decisioning/post_call.approve: writes call_summaries and the audit row (in this adapter's private ops.db).
         from decisioning.post_call import approve
 
-        return approve(draft.contact_id, dict(edits or {}), approver.actor_id)
-
+        if approver.kind != "person":
+            raise PermissionError("Only a person can approve a summary")
+        original = {
+            "summary": draft.summary,
+            "promise": {"amount": draft.promise.amount,
+                        "date": draft.promise.due_date.isoformat() if draft.promise.due_date else None,
+                        "ptp_intent_strength": draft.promise.intent_strength},
+            "signals": dict(draft.signals), "next_steps": list(draft.next_steps)}
+        approved = {**original, "signals": dict(original["signals"])}
+        for k, v in (edits or {}).items():
+            if k in approved["signals"]:
+                approved["signals"][k] = v
+            else:
+                approved[k] = v
+        with self._ops_scope():
+            res = approve(draft.contact_id, approved, approver.actor_id, approver.role or "agent", original=original,
+                          draft_id=draft.draft_id)
+        return ApprovedSummary(draft.draft_id, res["approved_by"], res["saved_fields"], res["edited_fields"],
+                               str(res["audit_id"]))
 
 def _certified_cure_rate(cases: Sequence[Mapping[str, Any]]) -> float | None:
     """semantic/registry.py METRICS['cure_rate'] (30-day cure) over an in-memory collections_cases table."""
@@ -730,5 +759,10 @@ def _certified_cure_rate(cases: Sequence[Mapping[str, Any]]) -> float | None:
     return None if row is None or row[0] is None or row[1] == 0 else row[0] / 100.0
 
 
+__import__("tests_spec.adapter_pipeline", fromlist=["install"]).install(Layer123Adapter)  # real pipeline on synthetic tables
+
+
 def make_adapter() -> Layer123Adapter:
-    return Layer123Adapter()
+    from tests_spec.adapter_radar import bind
+
+    return bind(Layer123Adapter())  # S1 radar, S3 drift, H5 outage shield (production modules)

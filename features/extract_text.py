@@ -25,6 +25,28 @@ log = logging.getLogger("extract_text")
 FILES = get_settings().raw_dir / "maple_collections_release" / "files"
 
 
+_TEXT_COLS = ["available_ts", "hardship_signal", "hardship_reason", "stated_delay_reason", "dispute_signal",
+              "dispute_type", "complaint_cue", "cease_request", "next_step", "ptp_amount_mentioned"]
+TRANSCRIPT_COLS = ["transcript_id", "contact_id", "case_id", "extract_ok", *_TEXT_COLS]  # for an empty batch
+NOTE_COLS = ["note_id", "contact_id", "case_id", *_TEXT_COLS]
+
+
+def _frame(rows: list[dict], cols: list[str]) -> pd.DataFrame:
+    """An empty batch still gets typed columns, so the dbt models that compare them keep compiling."""
+    if rows:
+        return pd.DataFrame(rows)
+    df = pd.DataFrame({c: pd.Series(dtype="object") for c in cols})
+    df["available_ts"] = pd.to_datetime(df["available_ts"])
+    for c in ("extract_ok", "dispute_signal", "complaint_cue", "cease_request"):
+        if c in df:
+            df[c] = df[c].astype("bool")
+    df["ptp_amount_mentioned"] = df["ptp_amount_mentioned"].astype("float64")
+    for c in cols:
+        if df[c].dtype == object:
+            df[c] = df[c].astype("string")
+    return df
+
+
 def _row(fields: dict) -> dict:
     return {"hardship_signal": fields["hardship"], "hardship_reason": fields["hardship_reason"],
             "stated_delay_reason": fields["stated_delay_reason"], "dispute_signal": fields["dispute"],
@@ -62,7 +84,7 @@ def main() -> None:
                     FROM silver.call_transcripts""").fetchall()
     with ProcessPoolExecutor() as ex:
         rows = list(ex.map(_transcript, tx, chunksize=500))
-    tdf = pd.DataFrame(rows)
+    tdf = _frame(rows, TRANSCRIPT_COLS)
     con.register("tdf", tdf)
     con.execute("CREATE OR REPLACE TABLE features.transcript_features AS SELECT * FROM tdf")
     log.info("transcripts: %d rows in %.1fs", len(tdf), time.perf_counter() - t0)
@@ -73,7 +95,7 @@ def main() -> None:
     chunks = [notes[i:i + 20000] for i in range(0, len(notes), 20000)]
     with ProcessPoolExecutor() as ex:
         nrows = [r for part in ex.map(_notes, chunks) for r in part]
-    ndf = pd.DataFrame(nrows)
+    ndf = _frame(nrows, NOTE_COLS)
     con.register("ndf", ndf)
     con.execute("CREATE OR REPLACE TABLE features.note_features AS SELECT * FROM ndf")
     log.info("notes: %d rows in %.1fs", len(ndf), time.perf_counter() - t1)
