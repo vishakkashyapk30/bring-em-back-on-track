@@ -40,7 +40,6 @@ from tests_spec.adapter import Affordability as Afford
 from tests_spec.adapter_l4_hardship import _eligibility_result
 from tests_spec.adapter_system import (
     OUT_OF_HOURS_CODES,
-    OVERRIDE_REVIEW_THRESHOLD,
     CaseCtx,
     DecisionRec,
     SpecSystemClient,
@@ -513,26 +512,34 @@ class SpecSession:
         return res
 
     def monitoring(self):
+        """governance/monitoring.snapshot (production code) bound to the in-memory system's decisions and sent log."""
+        from governance import monitoring
+
         self._need("team_lead", "analyst")
         s = self.sys
-        acted = [r for r in s.decisions.values() if r.state in ("approved", "overridden", "sent", "blocked")
-                 and r.approved_via in ("agent", "batch")]
-        over = sum(1 for r in acted if r.final_action is not None and r.approved_via == "agent"
-                   and r.nba.action != r.final_action)
-        rate = over / len(acted) if acted else None
-        pressure = cap = hours = 0
+        recs = [{"approved_via": r.approved_via if r.state in ("approved", "overridden", "sent", "blocked") else None,
+                 "proposed": r.nba.action, "final": r.final_action} for r in s.decisions.values()]
+        sent = []
         for m in s.sent_log:
             act, c = m["action"], m["contact"]
-            pressure += act.treatment in C.PRESSURE_TREATMENTS and (c.hardship_flag != "none" or c.vulnerability_flag)
-            cap += c.contacts_last_7d + 1 > c.contact_cap_7d
-            if act.channel == "call":
-                free = dataclasses.replace(c, hardship_flag="none", vulnerability_flag=False, contacts_last_7d=0)
-                g = s.adapter.policy_gate(free, [act], m["at"])
-                hours += any(code in OUT_OF_HOURS_CODES for _a, code in g.blocked)
+            sent.append({"treatment": act.treatment, "channel": act.channel, "hardship_flag": c.hardship_flag,
+                         "vulnerability_flag": c.vulnerability_flag, "contacts_last_7d": c.contacts_last_7d,
+                         "contact_cap_7d": c.contact_cap_7d, "_contact": c, "_action": act, "_at": m["at"]})
+
+        def out_of_hours(m):
+            free = dataclasses.replace(m["_contact"], hardship_flag="none", vulnerability_flag=False, contacts_last_7d=0)
+            g = s.adapter.policy_gate(free, [m["_action"]], m["_at"])
+            return any(code in OUT_OF_HOURS_CODES for _a, code in g.blocked)
+
+        snap = monitoring.snapshot(decisions=recs, sent=sent, refusals=s.refusals, out_of_hours=out_of_hours,
+                                   with_warehouse=False)
         return MonitoringSnapshot(
-            override_rate=rate, override_review_triggered=rate is not None and rate > OVERRIDE_REVIEW_THRESHOLD,
-            pressure_on_hardship_count=pressure, contact_cap_breach_count=cap, out_of_hours_contact_count=hours,
-            refusal_count=s.refusals, extra={"decisions_reviewed": len(acted), "overrides": over})
+            override_rate=snap["override_rate"], override_review_triggered=snap["override_review_triggered"],
+            pressure_on_hardship_count=snap["pressure_on_hardship_count"],
+            contact_cap_breach_count=snap["contact_cap_breach_count"],
+            out_of_hours_contact_count=snap["out_of_hours_contact_count"],
+            refusal_count=snap["refusal_count"],
+            extra={"decisions_reviewed": snap["decisions_reviewed"], "overrides": snap["overrides"]})
 
     # ------------------------------------------------------------------ analyst
     def ask(self, question, token_overrides=None):

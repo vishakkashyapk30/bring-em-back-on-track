@@ -48,8 +48,10 @@ def parity(s=Depends(require(GOV))):
 def monitoring(s=Depends(require(GOV))):
     from api.deps import live_or_fixture
     from api.services import analytics
+    from governance import monitoring as mon
 
-    return live_or_fixture("monitoring", analytics.monitoring)
+    out = live_or_fixture("monitoring", analytics.monitoring)
+    return {**out, "guardrails": mon.snapshot()}  # read-only: ops store, warehouse and reports
 
 
 @router.get("/fairness")
@@ -57,6 +59,13 @@ def fairness(s=Depends(require(GOV))):
     """Fairness audit (reports/fairness.json): proxy test and outcome test by group, aggregates only.
     Regenerate with `python -m governance.fairness.report` (or `make jobs TASK=fairness`)."""
     return _report("fairness", "fairness")
+
+
+@router.get("/fairness/nba")
+def fairness_nba(s=Depends(require(GOV))):
+    """NBA decision fairness by group (reports/fairness_nba.json), aggregates only.
+    Regenerate with `python -m governance.fairness.nba_rates`."""
+    return _report("fairness_nba", "fairness_nba")
 
 
 @router.get("/audit")

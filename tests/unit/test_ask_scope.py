@@ -81,3 +81,36 @@ def test_how_many_promises_to_pay_were_broken_is_a_certified_metric():
 
     c = compile_question("How many promises to pay were broken between 10 Sep and 20 Sep 2026?", date(2026, 9, 28))
     assert c is not None and c.metric_id == "broken_promise_count"
+
+
+@pytest.mark.parametrize("mode", ["rules", "llm"])
+def test_hardship_specialist_scope_follows_the_api_row_rule(monkeypatch, mode):
+    from api import access
+    from api.services.ask_access import scope_for
+
+    seen = []
+    monkeypatch.setattr(access, "_count",
+                        lambda s, where, param: seen.append((s.role, s.team_id, param)) or int(param == "CS-OK"))
+    scope = scope_for("hardship_specialist", "AG-5", "H-1")
+    assert not scope.allow_metrics and scope.case_allowed("CS-OK") and not scope.case_allowed("CS-NO")
+    assert seen[0] == ("hardship_specialist", "H-1", "CS-OK") and "hardship board" in scope.case_denied_reason
+    import decisioning.post_call as pc
+
+    monkeypatch.setattr(pc, "summarise", lambda **_k: (_ for _ in ()).throw(AssertionError("must not read the call")))
+    with ask_scope.use_scope(scope), llm_mode.use_mode(mode):
+        a = pipeline.ask("Summarise the most recent recorded call on case CS-2026-000001: what did the customer say?")
+    assert a.refused and "hardship board" in a.answer
+
+
+@pytest.mark.parametrize("mode", ["rules", "llm"])
+def test_steward_never_gets_a_customers_call_or_summary(monkeypatch, mode):
+    from api.services.ask_access import scope_for
+
+    scope = scope_for("steward", "DS-1", None)
+    assert not scope.allow_metrics and not scope.case_allowed("CS-1")
+    import decisioning.post_call as pc
+
+    monkeypatch.setattr(pc, "summarise", lambda **_k: (_ for _ in ()).throw(AssertionError("must not read the call")))
+    with ask_scope.use_scope(scope), llm_mode.use_mode(mode):
+        a = pipeline.ask("Summarise the most recent recorded call on case CS-2026-000001: what did the customer say?")
+    assert a.refused and "stewards" in a.answer.lower()
