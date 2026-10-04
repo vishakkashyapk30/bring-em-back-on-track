@@ -65,7 +65,7 @@ export function customerCount(p: Proposal): number {
   return p.payload.customer_ids?.length ?? p.payload.n_customers ?? 1;
 }
 export const KIND_LABEL: Record<string, string> = {
-  contact: "Offer early help", hold: "Hold pressure steps", fee_reversal: "Reverse a late fee", pressure_hold: "Hold pressure steps",
+  contact: "Offer early help", hold: "Hold pressure steps", strategy_test: "Strategy test (analyst)", fee_reversal: "Reverse a late fee", pressure_hold: "Hold pressure steps",
 };
 export const PATTERN_LABEL: Record<string, string> = {
   none: "No cluster", layoff_like: "Late pay with new EI", payroll_delay: "Late pay, no EI",

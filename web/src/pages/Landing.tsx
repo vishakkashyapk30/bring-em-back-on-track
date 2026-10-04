@@ -6,6 +6,7 @@ import { useMe } from "@/api/hooks";
 import type { Session } from "@/api/types";
 import { usePublicSummary, type PublicSummary } from "@/api/visuals";
 import { Card } from "@/components/Card";
+import { InboxTop, WatchlistPanel } from "@/components/HomePanels";
 import { SectionTag } from "@/components/SectionTag";
 import { Segmented } from "@/components/Tabs";
 import { Skeleton } from "@/components/States";
@@ -144,6 +145,8 @@ function SignedInHome({ me }: { me: Session }) {
           ))}
         </Card>
       )}
+
+      <div className="mb-8 grid gap-6 lg:grid-cols-2"><InboxTop /><WatchlistPanel /></div>
 
       <div className="mb-4 max-w-full overflow-x-auto [scrollbar-width:none]"><Segmented label="What to look at" value={view} onChange={setView}
         options={[["map", "Where promises break"], ["flow", "Last night's decisions"], ["customer", "One customer"]]} /></div>

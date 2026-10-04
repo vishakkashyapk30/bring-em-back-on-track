@@ -13,6 +13,9 @@ const Demo = lazy(() => import("@/pages/Demo"));
 const DemoJourney = lazy(() => import("@/pages/DemoJourney"));
 const DevKit = lazy(() => import("@/pages/DevKit"));
 const Features = lazy(() => import("@/pages/Features"));
+const Inbox = lazy(() => import("@/pages/Inbox"));
+const Track = lazy(() => import("@/pages/track/Track"));
+const Tracker = lazy(() => import("@/pages/track/Tracker"));
 const Governance = lazy(() => import("@/pages/governance/Governance"));
 const Audit = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Audit })));
 const Benchmark = lazy(() => import("@/pages/governance/Panels").then((m) => ({ default: m.Benchmark })));
@@ -75,6 +78,9 @@ export default function App() {
         <Route path="/customers/:goldenId" element={R(["agent", "hardship_specialist", "team_lead", "steward"], <Customer />)} />
         <Route path="/calls/:contactId" element={R(["agent"], <CallSummary />)} />
         <Route path="/ask" element={R(["analyst", "team_lead", "agent"], <Ask />)} />
+        <Route path="/inbox" element={R(["agent", "hardship_specialist", "team_lead", "analyst", "steward"], <Inbox />)} />
+        <Route path="/track" element={R(["agent", "hardship_specialist", "team_lead", "analyst", "steward"], <Track />)} />
+        <Route path="/track/:kind/:id" element={R(["agent", "hardship_specialist", "team_lead", "analyst", "steward"], <Tracker />)} />
         <Route path="/hardship" element={R(["hardship_specialist"], <Hardship />)}>
           <Route index element={<Navigate to="board" replace />} />
           <Route path="board" element={<Board />} />

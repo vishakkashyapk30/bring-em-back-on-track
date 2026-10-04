@@ -22,6 +22,7 @@ export const NAV: { to: string; label: string; roles: Role[] }[] = [
   { to: "/map", label: "Map", roles: ["team_lead", "analyst"] },
   { to: "/team", label: "Team", roles: ["team_lead"] },
   { to: "/features", label: "Features", roles: ["analyst", "steward"] },
+  { to: "/track", label: "Track", roles: ["agent", "hardship_specialist", "team_lead", "analyst", "steward"] },
   { to: "/governance", label: "Governance", roles: ["steward", "analyst", "team_lead"] },
   { to: "/steward/identity", label: "Identity review", roles: ["steward"] },
   { to: "/steward/drift", label: "Schema changes", roles: ["steward"] },
