@@ -28,11 +28,11 @@ progress.md
 docs/video/directions.md
 docs/video/script.md
 
-# Pitch deck: only the final PDF (back-on-track-deck.pdf) is tracked; its sources and the editable copy stay local
+# Pitch deck and demo video are submitted as Google Drive links (README deliverables); none of their files are tracked
 deliverables/deck/
-back-on-track-deck.pptx
-
-# Video: only the final deliverables/back-on-track-demo.mp4 is tracked; recording script, timing sheet and raw captures stay local
+deliverables/*.pdf
+deliverables/*.mp4
+*.pptx
 deliverables/video/
 docs/video/
 scripts/record_demo.py
