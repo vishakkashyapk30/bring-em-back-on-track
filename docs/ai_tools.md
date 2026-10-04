@@ -14,7 +14,9 @@ The build-phase README must say which AI tools we used and for what. Two parts: 
 
 ## 2. AI inside the product
 
-The product is **offline-first**: every AI-assisted step has a deterministic fallback, and the demo works with `LLM_PROVIDER=offline`.
+The product runs in three tiers: the configured language model (a paid API such as OpenAI `gpt-6-luna` or Anthropic `claude-haiku-4-5-20251001`), then a local Ollama model (`LLM_FALLBACK`), then the deterministic rules. Every AI-assisted step has the rules tier, so the system also runs fully with `LLM_PROVIDER=offline`. Authorisation, refusals, the SQL guard and human review run before and outside the model in every tier. Model answers carry citations that are checked against the sources. The 19:00 benchmark rounds are planned with Anthropic Haiku 4.5 and with OpenAI `gpt-6-luna`; results go in `reports/`.
+
+Language-model steps added on 4 Oct: question to certified metric (closed list, grounded), guarded model-written SQL for questions no metric covers (`nlq/llm_sql.py`), grounded answers over notes, transcripts and voice text (`rag/interactions.py`), and a tool-choosing assistant agent for all five personas (`decisioning/assistant/llm_agent.py`, 35 tools, read-only, proposals approved by a person).
 
 | Where | What it does | Model / method | Why AI, and why not rules alone | How it's checked |
 |---|---|---|---|---|

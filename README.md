@@ -53,7 +53,7 @@ Sign in at `/login` as one of five personas: collections agent, hardship special
 The full list, with reasons and status, is in [`docs/design_changes.md`](docs/design_changes.md). The main changes:
 
 - **One Layer 4 use case.** Next Best Action is the use case. Post-call summary and agent assist became supporting services inside the NBA screen; the brief asks for one use case.
-- **Offline-first AI.** We have no LLM budget, so every AI step has a deterministic fallback (rules and templates), and the system runs fully with `LLM_PROVIDER=offline`. An LLM provider can be plugged in later; it may only improve results, never be required for them.
+- **A language model on top of rules, with three tiers.** Ask, the policy and notes search and the assistant agent use a language model when one is configured (`LLM_PROVIDER`: OpenAI, Anthropic Claude, Gemini or DeepSeek), then a local Ollama model (`LLM_FALLBACK`), then the deterministic rules, which always answer and are what runs with `LLM_PROVIDER=offline` (the default). Authorisation, refusals, the SQL guard, the policy gate and every human review step run before and outside the model, identically in all three tiers. Every model answer carries citations (policy section with quote, note or call with time, or the SQL and tables used) and is checked against its sources.
 - **React frontend instead of Streamlit,** themed in CIBC colours, for approve/override flows and role-based screens.
 - **Safer by construction:**
   - NL-to-SQL runs on read-only, role-specific database views.
@@ -78,8 +78,10 @@ Details are in [`docs/ai_tools.md`](docs/ai_tools.md).
 - **Claude Code plugin skills** (Render, design, dataviz).
 
 **Inside the product:**
-- **Offline rules and templates** by default for question parsing, insights, text features and post-call summaries.
-- **Local embeddings and LanceDB** for cited policy answers.
+- **A paid language model, optional** (OpenAI `gpt-6-luna`, Anthropic `claude-haiku-4-5-20251001`; any provider can be set in `.env`) for: matching unseen phrasings to a certified metric, writing guarded SQL for questions no metric covers, wording answers from retrieved policy, notes and call text, and the tool-choosing assistant agent. Fallback: a local Ollama model, then the rules.
+- **Offline rules and templates** for everything else, and as the always-available tier: question parsing, insights, text features, post-call summaries.
+- **Search over policies, 760,594 agent notes, 25,000 call transcripts and the speech-to-text of 2,000 recordings** (BM25, access-filtered, with citations).
+- **Whisper (faster-whisper, local)** to transcribe the voice recordings.
 - **LightGBM with SHAP** for the promise-break model.
 - **Plain code**, deliberately, for the policy gate, treatment ladder, eligibility, simulator, explanations, refusals and the hardship latch.
 

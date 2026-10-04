@@ -69,3 +69,44 @@ A full pass over every screen of the web app, for every persona that can see it,
 - On phones the customer, fairness and demo-journey pages are 2.5 to 3 screens: everything stacks in one column there; the desktop layouts are within the target.
 - The home page map card keeps its own metric switcher under the view switcher; merging the two would change how the map works.
 - Rule names in the eligibility list and API-written summary sentences (for example "14064 employers") come from the API and are shown as sent.
+
+## Real-browser pass, 4 Oct 2026
+
+Method: headless Chrome driven over the DevTools protocol against the Docker stack on :8080, signed in with the demo session cookie for each persona. Every screen of every persona (35 routes, including each governance tab, the Fairness NBA view and the hardship simulator) was loaded at 1280, 768 and 390 px. Checks: axe-core (WCAG 2.0/2.1 A and AA plus best practice), a keyboard Tab walk (every stop must show an outline or ring), unlabelled controls, heading order, landmarks, horizontal overflow, tables scrolling inside their own container, and a 40 px tap-target measure at phone width. The Ask and assistant checks used the language-model switch (gpt-6-luna) with a handful of single calls.
+
+### Sources block (Ask and assistant)
+
+| Found | Fixed |
+|---|---|
+| Table sources repeated their label as the quote, so every table appeared twice. | The quote is dropped when it equals the title. |
+| Policy quotes showed raw Markdown (`**kept**`). | Quotes are shown as plain text. |
+| In the assistant run, `sql` sources (which carry `ref` and `tables`, not `quote`) showed only a heading, `data` sources and some `document` sources rendered as an empty icon, and call turns read "3510350, turn 13". | SQL shows its text and a "Tables:" line, data sources read "Data product: ...", entries with nothing to show are skipped, call turns read "Call 3510350, turn 13". |
+| SQL ran as one clipped line in Sources and in "How I got this". | Both wrap. |
+| "How I got this" listed "Data products: sql: ..., table: ..." with internal prefixes, repeating the Sources block. | The line is hidden when Sources has entries, prefixes are stripped otherwise; the whole card is hidden when it would be empty. |
+| Policy and note answers showed an empty "Nothing to show" table above the answer. | The table is skipped when the answer is text with sources. |
+| Several notes were run together in one paragraph. | One line per note or call. |
+| The Sources heading was an h3 straight under the page h1. | `Sources` takes a `level`; Ask uses h2, the drawer keeps h3. |
+
+Checked and fine: policy answer (section plus quote), notes and calls (label, quote, time), generated SQL and tables, in the Ask page for analyst, team lead and agent, and in the assistant drawer for all five personas.
+
+### Accessibility fixes
+
+| Found | Fixed |
+|---|---|
+| The loading skeleton was a div with `aria-label` and no role (axe aria-prohibited-attr). | `role="status"`. |
+| Heading jumps from h1 to h3 on the customer page (recommendation), the simulator (Plan), the map (Highest 15 areas) and Ask (Sources). | Promoted to h2 with the same look. |
+
+Results after the fixes: no axe violations on any screen except one heading-order item on Governance > Fairness (see open items); no screen lacks a visible focus ring; all labelled; one main landmark and one h1 per page; no horizontal overflow at 768 or 390; tables scroll inside their container. Tabs use roving tabindex with arrow keys by design, so only the selected tab is a Tab stop.
+
+### Tap targets (phones, tablets, coarse pointers)
+
+A single block at the end of `styles/index.css` gives buttons, tabs, selects and inputs a 40 px minimum, grows table-cell links and sort headers in height, pads `summary`, gives chip remove buttons an invisible 40 px hit area, and enlarges the map zoom buttons. The menu button and logo link in the header are 40 px. The Customer "Today's queue" and simulator "Change case" links have 40 px height. Desktop sizes are unchanged.
+
+### Open items
+
+- Governance > Fairness has an h1 to h3 jump ("What we found, and what it means") in `Panels.tsx`, which was left alone by request.
+- Governance > Fairness > NBA decisions: the tile "Groups flagged 6" does not match "1 in NBA decisions" in the summary tile (the 6 includes by-design groups), and the same "Aggregates only" note appears twice under the table.
+- Governance > Monitoring: "Override rate 100.0%" is one override out of one decision, shown as a failure; consider showing the count first or a minimum sample.
+- The assistant drawer says "Works with no language model" even when the language-model switch is on.
+- Ask caveat text says "Check the SQL below", but the SQL is shown above it.
+- The landing "SCROLL" cue and the Leaflet attribution links are below 40 px by design.
