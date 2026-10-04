@@ -288,7 +288,7 @@ SPEC_ADAPTER=tests_spec.adapter_impl:make_adapter uv run pytest tests_spec   # i
 | 4 | Data quality report | Summarised in this README (see "Data quality") and also in the repo, in full, as [`docs/data_quality_report.md`](docs/data_quality_report.md) |
 | 5 | Benchmark answers (35 release questions and the 15 extra ones) | [`deliverables/benchmark_answers.csv`](deliverables/benchmark_answers.csv). Results are summarised in this README (see "Benchmark results") and in full in [`docs/benchmark_results.md`](docs/benchmark_results.md) |
 | 6 | Demo video (under 5 minutes) | [Google Drive: demo video](https://drive.google.com/open?id=16DMe4Y6hV0HE1jRjvSuVD1PzzK8QfiOQ). A tour of as many features across the website as fit in 5 minutes, signed in as each persona (see "The demo video and the pitch deck") |
-| 7 | Pitch deck (10 slides, PDF) | [Google Drive: pitch deck PDF](https://drive.google.com/open?id=1yN4p9IidXRo8o6ANz9HOaakeGGNMr6mZ). It covers the problem, the product, the novel features, trust and the business impact. |
+| 7 | Pitch deck (10 slides, PDF) | [Google Drive: pitch deck PDF](https://drive.google.com/file/d/1lKXaoRc2QN-5X973SqygiFXHfhpbGCir/view?usp=sharing). It covers the problem, the product, the novel features, trust and the business impact. |
 
 ## Repository layout
 
