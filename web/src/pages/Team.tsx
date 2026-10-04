@@ -6,6 +6,7 @@ import { Card } from "@/components/Card";
 import { DataTable } from "@/components/DataTable";
 import { SectionTag } from "@/components/SectionTag";
 import { QueryState } from "@/components/States";
+import { Playbooks } from "@/components/Playbooks";
 
 import { Button } from "@/components/Button";
 import { productLabel } from "@/lib/labels";
@@ -36,6 +37,7 @@ export default function Team() {
         </QueryState>
       </section>
       <section><SectionTag subtitle="Routine text and email reminders go out together, once you've looked over a 2% sample.">Batch approvals</SectionTag><Batches /></section>
+      <section><SectionTag subtitle="Suggested by the employer radar, the weather map and the outage shield. Approving creates a batch for the usual sample check. Nothing is sent.">Playbooks waiting for you</SectionTag><Playbooks /></section>
       <section><SectionTag subtitle="See what happens to today's plan if a channel goes down or some agents are out.">Capacity stress test</SectionTag><StressTest /></section>
     </div>
   );

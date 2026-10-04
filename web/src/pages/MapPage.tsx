@@ -6,6 +6,7 @@ import { DataTable } from "@/components/DataTable";
 import { SectionTag } from "@/components/SectionTag";
 import { SqlBlock } from "@/components/SqlBlock";
 import { QueryState } from "@/components/States";
+import { RadarPanel } from "@/components/RadarPanel";
 import { Segmented } from "@/components/Tabs";
 
 const METRICS = [["broken_ptp_rate", "Broken-promise rate"], ["hardship_rate", "Hardship rate"]] as const;
@@ -28,6 +29,7 @@ export default function MapPage() {
           rows={top.map((r) => [r.fsa, r.city, r.province, r.customers, `${(r.value * 100).toFixed(1)}%`])} />
         {q.data?.sql && <div className="mt-6"><SqlBlock sql={q.data.sql} source="semantic" /></div>}
       </QueryState>
+      <section className="mt-10"><SectionTag subtitle="Weekly, by employer. Employers with fewer than 10 customers are hidden.">Employer radar</SectionTag><RadarPanel /></section>
     </>
   );
 }

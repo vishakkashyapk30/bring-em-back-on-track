@@ -31,6 +31,7 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const Queue = lazy(() => import("@/pages/Queue"));
 const MapPage = lazy(() => import("@/pages/MapPage"));
 const StewardIdentity = lazy(() => import("@/pages/StewardIdentity"));
+const StewardDrift = lazy(() => import("@/pages/StewardDrift"));
 const Team = lazy(() => import("@/pages/Team"));
 
 const R = (roles: Role[], el: JSX.Element) => <RequireRole roles={roles}>{el}</RequireRole>;
@@ -57,6 +58,7 @@ export default function App() {
     () => import("@/pages/Queue"),
     () => import("@/pages/MapPage"),
     () => import("@/pages/StewardIdentity"),
+    () => import("@/pages/StewardDrift"),
     () => import("@/pages/Team"),
   ]), []);
   return (
@@ -94,6 +96,7 @@ export default function App() {
           <Route path="contract" element={<Contract />} />
         </Route>
         <Route path="/steward/identity" element={R(["steward"], <StewardIdentity />)} />
+        <Route path="/steward/drift" element={R(["steward"], <StewardDrift />)} />
         <Route path="/dev/kit" element={<DevKit />} />
         <Route path="*" element={<NotFound />} />
       </Route>
