@@ -11,7 +11,7 @@ from nlq.schemas import QueryTokens
 # Always refused: asking for or segmenting by these is never a collections need.
 PROTECTED_STRICT = re.compile(
     r"\b(gender|sex|male|female|marital|married|citizenship|citizens?|immigrants?|newcomers?|refugees?|religion|"
-    r"religious|race|racial|ethnic(ity)?|accents?)\b", re.I)
+    r"religious|churche?s?|mosques?|temples?|synagogues?|gurdwaras?|worship|race|racial|ethnic(ity)?|accents?)\b", re.I)
 # Refused only when used to segment, list or rank customers (policy questions about them are fine).
 PROTECTED_SOFT = re.compile(
     r"\b(disabilit(y|ies)|household size|dependants?|children|pregnan\w*|age|age group|age band|older|younger|"
@@ -58,11 +58,13 @@ def check(question: str, tokens: QueryTokens | None = None) -> str | None:
     q = question
     if OUT_OF_SCOPE.search(q):
         return "Outside scope: I only answer questions about collections data and policy."
-    if FORECAST.search(q) and not re.search(r"(most )?likely to break|break(ing)? a promise", q, re.I):
-        return "Refused: Ask reports what has happened in the data; it doesn't forecast or predict outcomes."
     if PROXY_DECISION.search(q) or PROXY_DECISION_REV.search(q):
         return ("Refused: deciding treatment by postal area or a personal characteristic is a protected-ground "
                 "proxy and would treat customers unfairly.")
+    if strict := [m.group(0) for m in PROTECTED_STRICT.finditer(q)]:
+        return f"Refused: protected attributes can't be queried or used (asked about: {', '.join(dict.fromkeys(strict))})."
+    if FORECAST.search(q) and not re.search(r"(most )?likely to break|break(ing)? a promise", q, re.I):
+        return "Refused: Ask reports what has happened in the data; it doesn't forecast or predict outcomes."
     # every refusal names the part of the question that isn't allowed (V1 §4 step 2)
     protected = [m.group(0) for m in PROTECTED_STRICT.finditer(q)] + sorted(find_forbidden(re.findall(r"[a-z_]+", q.lower())))
     if not protected and SEGMENTING.search(q):

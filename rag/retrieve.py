@@ -34,7 +34,8 @@ SYNONYMS = {"attempts": ["calls", "contact"], "sue": ["legal", "court", "lawsuit
             "bankruptcy": ["insolvency", "stay"], "layoff": ["hardship"], "laid": ["hardship"], "fired": ["hardship"],
             "unemployed": ["hardship"], "jobless": ["hardship"], "job": ["hardship", "income"], "sick": ["hardship"],
             "illness": ["hardship"], "text": ["sms"], "texts": ["sms"], "cap": ["maximum"], "limit": ["maximum"],
-            "holiday": ["holidays", "statutory"]}
+            "holiday": ["holidays", "statutory"], "fraudulent": ["fraud"], "unauthorised": ["fraud"],
+            "unauthorized": ["fraud"]}
 
 
 def _stem(t: str) -> str:

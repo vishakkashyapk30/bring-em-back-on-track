@@ -118,7 +118,7 @@ def answer_question(question: str, product: str | None = None, province: str | N
     # a second, independent source when it is nearly as relevant (e.g. policy + FAQ, policy + QA checklist)
     for h in hits:
         if h is not best and h.section.doc_id != best.section.doc_id and h.score >= 0.6 * hits[0].score and len(cites) < 2:
-            if h.section.authority <= 5:
+            if h.section.authority <= 5 and _covers(question, _best_sentences(question, h)):
                 cites.append(h)
     text = _best_sentences(question, best)
     if re.match(r"^(does|do|is|are|can|should|must)\b", question.strip(), re.I):
