@@ -79,11 +79,11 @@ def ask(body: AskIn, s=Depends(require({Role.analyst, Role.team_lead, Role.agent
     incidents = [{"event_id": c.split(": ")[1] if c.count(": ") >= 2 else "incident", "text": c.split(": ", 2)[-1]}
                  for c in a.caveats if c.startswith("Incident")]
     return AskResponse(
-        question=body.question, chips=chips, sql=a.sql_or_sources if a.kind == "metric" else None,
-        sql_source="semantic" if a.kind == "metric" else None, columns=a.columns,
+        question=body.question, chips=chips, sql=a.sql_or_sources if a.kind in ("metric", "cases") else None,
+        sql_source="semantic" if a.kind in ("metric", "cases") else None, columns=a.columns,
         rows=[[v if isinstance(v, (int, float, str, bool)) or v is None else str(v) for v in r] for r in a.rows],
         insight=insight, caveats=[c for c in a.caveats if not c.startswith("Incident")],
         preflight=Preflight(incidents=incidents) if incidents else None,
-        sources=[a.sql_or_sources] if a.kind != "metric" else ["silver (typed release tables)"],
+        sources=[a.sql_or_sources] if a.kind not in ("metric", "cases") else ["silver (typed release tables)"],
         freshness=a.freshness,
         followups=FOLLOWUPS.get(a.kind, []), answered_by=a.answered_by, mode_note=note, refused=False)

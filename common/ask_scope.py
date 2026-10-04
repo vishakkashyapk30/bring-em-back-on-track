@@ -18,6 +18,8 @@ METRICS_DENIED = ("Refused: portfolio metrics are available to analysts and team
 @dataclass
 class AskScope:
     allow_metrics: bool = True
+    user_id: str | None = None  # who is asking (agents may list their own cases)
+    role: str | None = None
     # May this role open the call summary of this case? None = any case (no signed-in scope, e.g. batch jobs).
     case_allowed: Callable[[str], bool] | None = None
     case_denied_reason: str = "Refused: you can only open call summaries for cases you are responsible for."

@@ -37,10 +37,10 @@ CALL_OUT = "coalesce(h.channel_v2, h.channel) = 'call' AND h.direction = 'outbou
 RESOLVED = "p.ptp_status IN ('kept', 'partially_kept', 'broken')"
 
 METRICS: list[Metric] = [
-    Metric("broken_promise_count", (r"how many (promises were )?broken", r"number of broken promises", r"broken promises (were there|by)",
+    Metric("broken_promise_count", (r"how many (promises( to pay)? )?(were |was )?broken", r"(which|what) customers? (broke|broken|missed) (a |their )?promises?", r"number of broken promises", r"broken promises (were there|by)",
                                     r"count of broken promises"),
            "promises_to_pay p", "count(*) AS broken_promises", ("p.ptp_status = 'broken'",), "p.ptp_due_date", "p"),
-    Metric("kept_promise_count", (r"number of (promises )?kept", r"how many promises were kept"),
+    Metric("kept_promise_count", (r"number of (promises )?kept", r"how many promises( to pay)? (were |was )?kept"),
            "promises_to_pay p", "count(*) AS kept_promises", ("p.ptp_status = 'kept'",), "p.ptp_due_date", "p"),
     Metric("broken_promise_rate", (r"broken[- ]promise rate", r"break(ing)? (a )?promise", r"broken promises? rate"),
            "promises_to_pay p",

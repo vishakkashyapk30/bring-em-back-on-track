@@ -23,14 +23,14 @@ def scope_for(role: str, user_id: str | None, team_id: str | None) -> AskScope:
             row = _case_owner(case_id)
             return bool(row and row[0] == user_id)
 
-        return AskScope(allow_metrics=False, case_allowed=mine,
+        return AskScope(allow_metrics=False, user_id=user_id, role=role, case_allowed=mine,
                         case_denied_reason="Refused: you can only open call summaries for your own cases.")
     if role == "team_lead":
         def team(case_id: str) -> bool:
             row = _case_owner(case_id)
             return bool(row and team_id and row[1] == team_id)
 
-        return AskScope(allow_metrics=True, case_allowed=team,
+        return AskScope(allow_metrics=True, user_id=user_id, role=role, case_allowed=team,
                         case_denied_reason="Refused: you can only open call summaries for cases on your team.")
     if role == "analyst":
         # Analysts work with aggregates only; a single customer's call is not an aggregate.

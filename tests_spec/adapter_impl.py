@@ -555,9 +555,12 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
         from sqlglot import exp
 
         from api.routers.ask import FOLLOWUPS
+        from api.services.ask_access import scope_for
+        from common.ask_scope import use_scope
         from nlq.pipeline import ask as run
 
-        a = run(question, None, chips)
+        with use_scope(scope_for(str(user.role), user.user_id, user.team_id)):
+            a = run(question, None, chips)
         if a.refused:
             return AskAnswer(refused=True, refusal_reason=a.refusal_reason)
         rows = [dict(zip(a.columns, r, strict=False)) for r in a.rows]

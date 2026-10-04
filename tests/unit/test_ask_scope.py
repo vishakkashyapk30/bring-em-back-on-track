@@ -47,3 +47,37 @@ def test_policy_questions_stay_open_to_a_role_without_metrics():
     with ask_scope.use_scope(ask_scope.AskScope(allow_metrics=False)):
         a = pipeline.ask("Does the National Do Not Call List stop collection calls?")
     assert not a.refused and a.kind == "policy"
+
+
+def test_an_agent_can_list_their_own_cases_and_only_theirs(monkeypatch):
+    seen = {}
+    import nlq.executor as ex
+
+    def fake(sql, *a, **k):
+        seen["sql"] = sql
+        return sql, ["case_id"], [("CS-1",)]
+
+    monkeypatch.setattr(ex, "execute", fake)
+    scope = ask_scope.AskScope(allow_metrics=False, user_id="AG-7", role="agent")
+    with ask_scope.use_scope(scope):
+        a = pipeline.ask("Show my open cases with a broken promise")
+    assert a.kind == "cases" and not a.refused and a.rows == [["CS-1"]]
+    assert "c.assigned_agent_id = 'AG-7'" in seen["sql"] and "promises_broken > 0" in seen["sql"]
+
+
+def test_the_own_cases_listing_is_not_available_to_other_roles(monkeypatch):
+    import nlq.executor as ex
+
+    monkeypatch.setattr(ex, "execute", lambda *a, **k: (_ for _ in ()).throw(AssertionError("must not run")))
+    with ask_scope.use_scope(ask_scope.AskScope(allow_metrics=True, user_id="AN-1", role="analyst")):
+        a = pipeline.ask("Show my open cases with a broken promise")
+    assert a.kind != "cases"
+
+
+def test_how_many_promises_to_pay_were_broken_is_a_certified_metric():
+    from datetime import date
+
+    from semantic.compiler import compile_question
+
+    c = compile_question("How many promises to pay were broken between 10 Sep and 20 Sep 2026?", date(2026, 9, 28))
+    assert c is not None and c.metric_id == "broken_promise_count"
