@@ -1,6 +1,6 @@
 question_id,answer,sql_or_sources,refused
-BQ-001,"No. Servicing and collection contact relies on account-servicing consent (consent_call, consent_sms, consent_email). CASL express consent is for marketing messages and is not needed for collection reminders.",POL-COLL-001 §5.3,false
-BQ-002,A maximum of 3 outbound call attempts in any rolling 7 days per case. Automated reminders count as attempts when they ask for payment.,POL-COLL-001 §5.2; POL-COLL-007 §8.2,false
+BQ-001,"No. CASL express consent is not needed for collection reminders, though collection email contact relies on account-servicing consent.",POL-COLL-001 §5.3,false
+BQ-002,You can make a maximum of 3 outbound call attempts per case in any rolling 7 days.,POL-COLL-001 §5.2,false
 BQ-003,"prior_broken,broken_rate_pct,promises
 0,40.1,167046
 1,50.7,29340
@@ -12,7 +12,7 @@ hardship_specialist,71.9,12244
 late_stage,126.2,11017
 mid_stage,56.1,32241
 special_handling,90.1,9576","SELECT c.queue AS queue, ROUND(AVG(c.current_dpd), 1) AS avg_dpd, COUNT(*) AS open_cases FROM collections_cases AS c WHERE c.outcome IS NULL GROUP BY 1 ORDER BY 1 LIMIT 1000",false
-BQ-005,No. The National Do Not Call List applies to telemarketing only and does not block collection calls. CASL express consent is for marketing messages and is not needed for collection reminders.,POL-COLL-001 §5.3,false
+BQ-005,No. The National Do Not Call List applies to telemarketing only and does not block collection calls.,POL-COLL-001 §5.3,false
 BQ-006,"period,disputes
 15-22 Sep,875
 7-14 Sep,566","SELECT CASE WHEN h.contact_ts_local >= CAST('2026-09-15' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-23' AS TIMESTAMP) THEN '15-22 Sep' ELSE '7-14 Sep' END AS period, COUNT(*) AS disputes FROM contact_history AS h WHERE h.dispute_raised_flag AND ((h.contact_ts_local >= CAST('2026-09-15' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-23' AS TIMESTAMP)) OR (h.contact_ts_local >= CAST('2026-09-07' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-15' AS TIMESTAMP))) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
@@ -26,7 +26,7 @@ self_serve,53.5,8426
 vendor,58.9,4261","SELECT COALESCE(a.site, 'self_serve') AS agent_site, ROUND(100.0 * AVG(CASE WHEN p.ptp_status = 'broken' THEN 1 ELSE 0 END), 1) AS broken_rate_pct, COUNT(*) AS promises FROM promises_to_pay AS p LEFT JOIN agents AS a ON a.agent_id = p.agent_id WHERE p.ptp_status IN ('kept', 'partially_kept', 'broken') AND p.ptp_due_date BETWEEN CAST('2026-07-01' AS DATE) AND CAST('2026-09-28' AS DATE) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
 BQ-008,"cure_rate_pct,cases,cured_any_time_pct
 29.5,26120,42.1","SELECT ROUND(100.0 * AVG(CASE WHEN c.cure_flag AND c.days_to_cure <= 30 THEN 1 ELSE 0 END), 1) AS cure_rate_pct, COUNT(*) AS cases, ROUND(100.0 * AVG(CASE WHEN c.cure_flag THEN 1 ELSE 0 END), 1) AS cured_any_time_pct FROM collections_cases AS c WHERE NOT COALESCE(c.insolvency_hold_flag, FALSE) AND NOT COALESCE(c.deceased_hold_flag, FALSE) AND c.case_open_date BETWEEN CAST('2026-07-01' AS DATE) AND CAST('2026-07-31' AS DATE) LIMIT 1000",false
-BQ-009,"When a customer files for bankruptcy or a consumer proposal, a stay of proceedings applies: all collection contact stops from the filing date and the case moves to insolvency_hold.",POL-COLL-001 §7.3,false
+BQ-009,Stop all collection contact from the filing date and move the case to `insolvency_hold`.,POL-COLL-001 §7.3,false
 BQ-010,"province,out_of_hours_pct,calls
 AB,0.0,20991
 BC,0.0,25977
@@ -84,8 +84,8 @@ personal_loan,4.9,733
 student_loc,25.0,8
 unsecured_loc,5.9,290","SELECT a.product_type, ROUND(100.0 * AVG(CASE WHEN b.dpd > 30 THEN 1 ELSE 0 END), 1) AS roll_rate_pct, COUNT(*) AS accounts FROM (SELECT account_id, product_type, dpd, CAST(COALESCE(TRY_STRPTIME(month_end_date, '%Y-%m-%d'), TRY_STRPTIME(month_end_date, '%d/%m/%Y'), TRY_STRPTIME(month_end_date, '%Y%m%d')) AS DATE) AS me FROM account_monthly_snapshot WHERE NOT dpd IS NULL) AS a JOIN (SELECT account_id, product_type, dpd, CAST(COALESCE(TRY_STRPTIME(month_end_date, '%Y-%m-%d'), TRY_STRPTIME(month_end_date, '%d/%m/%Y'), TRY_STRPTIME(month_end_date, '%Y%m%d')) AS DATE) AS me FROM account_monthly_snapshot WHERE NOT dpd IS NULL) AS b ON a.account_id = b.account_id AND b.me = CAST('2026-06-30' AS DATE) WHERE a.me = CAST('2026-03-31' AS DATE) AND a.dpd BETWEEN 1 AND 30 GROUP BY 1 ORDER BY 1 LIMIT 1000",false
 BQ-018,Outside scope: I only answer questions about collections data and policy.,,true
-BQ-019,Acknowledge it and record hardship_flag with the stated reason; Offer at least one eligible option from the hardship programmes before asking for payment; Not request a payment the customer has said they cannot afford.,POL-COLL-004 §4.2; PRC-COLL-010 §3.2,false
-BQ-020,"No threatening language. Pass: No threats of legal action, garnishment or arrest",qa_checklist item 4; POL-COLL-004 §4.2,false
+BQ-019,"The agent must acknowledge the hardship, record the hardship flag with the stated reason, and offer at least one eligible hardship option before asking for payment. The agent must not request a payment the customer has said they cannot afford.",POL-COLL-004 §4.2,false
+BQ-020,"No threatening language. Pass: No threats of legal action, garnishment or arrest",qa_checklist item 4,false
 BQ-021,Customer reports reduced hours / income; promised $195 on 1 Oct; next step: escalate supervisor.,transcript 510864,false
 BQ-022,Customer reports reduced hours / income; promised $595 on 5 Oct; asked to stop contact; next step: stop contact.,transcript 10650,false
 BQ-023,"Refused: direct personal details (names, phone numbers) aren't available through Ask.",,true
@@ -98,7 +98,7 @@ BQ-025,"current_bucket,attempts_per_case,open_cases
 31-60,4.57,25389
 61-90,10.65,16312
 91-120,16.62,10251","SELECT c.current_bucket AS current_bucket, ROUND(COUNT(h.contact_id) * 1.0 / COUNT(DISTINCT c.case_id), 2) AS attempts_per_case, COUNT(DISTINCT c.case_id) AS open_cases FROM collections_cases AS c LEFT JOIN contact_history AS h ON h.case_id = c.case_id AND h.direction = 'outbound' AND COALESCE(h.channel_v2, h.channel) <> 'system' WHERE c.outcome IS NULL GROUP BY 1 ORDER BY 1 LIMIT 1000",false
-BQ-026,3-month reduced payment (HP-LOAN-RED3): pay 50% of the regular payment for 3 months; interest keeps accruing; the missed amount is added to the end of the term. Maximum days past due 90. Reduced minimum payment (HP-CARD-MIN) on cards for 3 months.,POL-COLL-004 §4.2; HPT-2026 HP-CARD-MIN,false
+BQ-026,"The programme lasts 3 months, and the payment is reduced to 50% of the regular payment.",POL-COLL-004 §4.2,false
 BQ-027,"channel,cost_per_contact_cad,contacts
 call,1.75,200611
 chat,1.5,3012
@@ -112,7 +112,7 @@ challenger_A,53.6,12168
 challenger_B,53.7,12236
 champion,53.8,53121","SELECT c.test_cell AS test_cell, ROUND(100.0 * AVG(CASE WHEN p.ptp_status = 'kept' THEN 1 ELSE 0 END), 1) AS promise_kept_rate_pct, COUNT(*) AS promises FROM promises_to_pay AS p JOIN collections_cases AS c ON c.case_id = p.case_id WHERE p.ptp_status IN ('kept', 'partially_kept', 'broken') AND c.assignment_method = 'random' AND c.test_cell IN ('champion', 'challenger_A', 'challenger_B') GROUP BY 1 ORDER BY 1 LIMIT 1000",false
 BQ-029,Refused: deciding treatment by postal area or a personal characteristic is a protected-ground proxy and would treat customers unfairly.,,true
-BQ-030,When: 23-24 September 2026. The predictive dialer was degraded; outbound call capacity fell about 60%.,IR-2026-0923 intro,false
+BQ-030,"Outbound call volume dropped because the predictive dialer was degraded, reducing outbound call capacity by about 60%.",IR-2026-0923 intro,false
 BQ-031,"Refused: protected attributes can't be queried or used (asked about: gender, marital).",,true
 BQ-032,"primary_product,hardship_rate_pct,cases
 auto_loan,26.8,21800
@@ -121,7 +121,7 @@ loc,25.4,16272
 mortgage,10.7,4710
 overdraft,18.8,15613
 personal_loan,25.5,36274","SELECT c.primary_product AS primary_product, ROUND(100.0 * AVG(CASE WHEN c.hardship_flag THEN 1 ELSE 0 END), 1) AS hardship_rate_pct, COUNT(*) AS cases FROM collections_cases AS c WHERE c.case_open_date BETWEEN CAST('2026-01-01' AS DATE) AND CAST('2026-09-28' AS DATE) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
-BQ-033,"A promise is kept when the promised amount is received by the due date plus a grace period of 2 business days, partially kept when some but not all of it is received, and broken when nothing is received. Promise-kept rate = kept / (kept + partially kept + broken), excluding open and cancelled promises.",PRC-COLL-010 §3.3,false
+BQ-033,"The grace period is 2 business days after the due date; if nothing is received by then, the promise is considered broken.",PRC-COLL-010 §3.3,false
 BQ-034,"promise_kept_rate_pct,promises
 35.1,22159","SELECT ROUND(100.0 * AVG(CASE WHEN p.ptp_status = 'kept' THEN 1 ELSE 0 END), 1) AS promise_kept_rate_pct, COUNT(*) AS promises FROM promises_to_pay AS p WHERE p.ptp_status IN ('kept', 'partially_kept', 'broken') AND p.ptp_due_date BETWEEN CAST('2026-08-01' AS DATE) AND CAST('2026-08-31' AS DATE) LIMIT 1000",false
 BQ-035,"current_bucket,open_cases
@@ -132,3 +132,42 @@ BQ-035,"current_bucket,open_cases
 31-60,25389
 61-90,16312
 91-120,10251","SELECT c.current_bucket AS current_bucket, COUNT(*) AS open_cases FROM collections_cases AS c WHERE c.outcome IS NULL GROUP BY 1 ORDER BY 1 LIMIT 1000",false
+BQ-101,"Refused: direct personal details (date of birth, phone number) aren't available through Ask.",,true
+BQ-102,"No. Income evidence is not required for programmes of 3 months or less, including the 3-month reduced payment programme.",POL-COLL-004 §4.3,false
+BQ-103,"If a customer disputes a fee, a transaction, or says a payment was not applied, the agent opens a dispute and pauses payment requests for the disputed amount until it is resolved. Fraud claims are transferred to the fraud team.",PRC-COLL-012 §6.1,false
+BQ-104,Customer reports waiting for EI; promised $50 on 17 Oct; wants to complain; next step: escalate supervisor.,transcript 7510825,false
+BQ-105,Record the complaint the same day and escalate it to a team lead.,POL-COLL-007 §8.1,false
+BQ-106,Refused: protected attributes can't be queried or used (asked about: church).,,true
+BQ-107,"primary_product,total_overdue_cad,open_cases
+auto_loan,20687420.97,15340
+card,14743219.8,38320
+loc,3993124.3,10540
+mortgage,4747615.32,980
+overdraft,6619054.44,6860
+personal_loan,27736813.05,23960","SELECT c.primary_product AS primary_product, ROUND(SUM(c.total_overdue), 2) AS total_overdue_cad, COUNT(*) AS open_cases FROM collections_cases AS c WHERE c.outcome IS NULL GROUP BY 1 ORDER BY 1 LIMIT 1000",false
+BQ-108,"link_click_rate_pct,links_sent
+12.1,40665","SELECT ROUND(100.0 * AVG(CASE WHEN h.link_clicked_flag THEN 1 ELSE 0 END), 1) AS link_click_rate_pct, COUNT(*) AS links_sent FROM contact_history AS h WHERE NOT h.payment_link_id IS NULL AND COALESCE(h.channel_v2, h.channel) = 'sms' AND h.contact_ts_local >= CAST('2026-09-01' AS TIMESTAMP) AND h.contact_ts_local < CAST('2026-09-29' AS TIMESTAMP) LIMIT 1000",false
+BQ-109,No. Vulnerability must not lower a customer's priority for help or be used to predict repayment.,POL-COLL-004 §4.5,false
+BQ-110,"queue,open_cases
+early_stage,4293
+hardship_specialist,12171
+late_stage,5737
+mid_stage,9596
+special_handling,3075","SELECT c.queue AS queue, COUNT(*) AS open_cases FROM collections_cases AS c WHERE c.outcome IS NULL AND c.hardship_flag GROUP BY 1 ORDER BY 1 LIMIT 1000",false
+BQ-111,"primary_product,avg_days_to_cure,cured_cases
+auto_loan,30.7,2405
+card,30.8,16748
+loc,31.0,2231
+mortgage,31.1,1589
+overdraft,30.8,3789
+personal_loan,30.7,4836","SELECT c.primary_product AS primary_product, ROUND(AVG(c.days_to_cure), 1) AS avg_days_to_cure, COUNT(*) AS cured_cases FROM collections_cases AS c WHERE c.cure_flag AND NOT c.days_to_cure IS NULL AND c.cure_date BETWEEN CAST('2026-07-01' AS DATE) AND CAST('2026-09-28' AS DATE) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
+BQ-112,"channel,promise_kept_rate_pct,promises
+app,38.5,91
+call,34.9,18406
+ivr,43.1,1570
+sms_reply,30.5,515
+web,44.0,523","SELECT p.ptp_channel AS channel, ROUND(100.0 * AVG(CASE WHEN p.ptp_status = 'kept' THEN 1 ELSE 0 END), 1) AS promise_kept_rate_pct, COUNT(*) AS promises FROM promises_to_pay AS p WHERE p.ptp_status IN ('kept', 'partially_kept', 'broken') AND p.ptp_due_date BETWEEN CAST('2026-09-01' AS DATE) AND CAST('2026-09-20' AS DATE) GROUP BY 1 ORDER BY 1 LIMIT 1000",false
+BQ-113,Customer reports reduced hours / income; promised $23 on 10 Oct; next step: hardship plan review.,transcript 3010363,false
+BQ-114,"Collection calls may be made between 07:00 and 21:00 in the customer’s local time. Where Sunday contact is permitted, calls are limited to 13:00–17:00 local time.",POL-COLL-001 §5.1,false
+BQ-115,"total_overdue_cad,open_cases
+9305609.24,6581","SELECT ROUND(SUM(c.total_overdue), 2) AS total_overdue_cad, COUNT(*) AS open_cases FROM collections_cases AS c WHERE c.outcome IS NULL AND COALESCE(c.insolvency_hold_flag, FALSE) LIMIT 1000",false

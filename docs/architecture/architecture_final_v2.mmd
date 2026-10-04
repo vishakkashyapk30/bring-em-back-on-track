@@ -1,0 +1,76 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ffffff', 'primaryBorderColor': '#000000', 'primaryTextColor': '#000000', 'lineColor': '#000000', 'clusterBkg': '#ffffff', 'clusterBorder': '#000000', 'tertiaryColor': '#ffffff', 'fontFamily': 'Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+  subgraph L1["1. Data product factory"]
+    direction LR
+    src[("31 source tables")] --> raw["Raw files"] --> clean["Cleaned records"] --> match["Identity match<br/>exact keys, then scored matching<br/>(no LLM)"]
+    match -- "confident" --> tests["Contract tests,<br/>then atomic publish"]
+    match -- "unsure pairs" --> steward(["Data steward reviews"]) --> tests
+    tests --> gold[("Gold C360<br/>one record per customer")]
+    gold ~~~ t1["Tech: DuckDB, dbt, Python"]
+  end
+
+  subgraph L2["2. Insight and NLP"]
+    direction TB
+    q["Question"] --> role["Role check and refusal rules"]
+    role --> pick["Certified metric chosen<br/>(rules, or an optional LLM from a closed list)"]
+    pick --> sqlg["SQL compiler and guard<br/>read-only role views"]
+    role --> rag["Policy search<br/>BM25 with document precedence"]
+    sqlg --> ans["Answer with SQL and sources,<br/>or a refusal with the reason"]
+    rag --> ans
+    ans --> views["Analyst and hardship views<br/>map, scorecard, review board"]
+    asst["Assistant<br/>proposes only, links to the real screen"] -.-> ans
+    views ~~~ t2["Tech: semantic compiler, sqlglot, BM25, optional LLM"]
+  end
+
+  subgraph L3["3. Feature store"]
+    direction TB
+    reg["Feature registry<br/>one definition per feature"] --> sqlf["SQL features<br/>payday, employer, stress, friction"]
+    reg --> txt["Text and voice features<br/>rules, call-level only"]
+    sqlf --> pg["Proxy gate"]
+    txt --> pg
+    pg --> off[("Offline store<br/>as of the promise date")]
+    pg --> on[("Online store<br/>as of now")]
+    off --> par["Nightly parity check"]
+    on --> par
+    par ~~~ t3["Tech: dbt, Parquet, DuckDB"]
+  end
+
+  subgraph L4["4. Models and decisioning"]
+    direction TB
+    ctx[("Features and case context")] --> gate["Policy gate"]
+    gate --> latch["Hardship latch"]
+    latch --> risk["Break-risk model<br/>blended with the bank's v2.1 score"]
+    risk --> lad["Treatment ladder"]
+    lad --> expl["Plain-English reason and what-if"]
+    expl --> agent(["Agent approves, edits or overrides"])
+    lad --> batch["Reminder batches<br/>2% sample checked first"]
+    batch --> lead(["Team lead approves"])
+    tr[("Call transcript")] --> sum["Summary draft"] --> schk["Schema check"] --> asum(["Agent approves"])
+    elig["Eligibility rules"] --> sim["Plan simulator"] --> spec(["Specialist decides, lowers the flag only with a reason"])
+    track["Track, inbox and watchlist"]
+    agent ~~~ t4["Tech: LightGBM, TreeSHAP, FastAPI"]
+    lead ~~~ t4
+    asum ~~~ t4
+    spec ~~~ t4
+    track ~~~ t4
+  end
+
+  subgraph X["Across all layers"]
+    direction LR
+    ops[("Operational store, SQLite<br/>approvals, overrides, append-only audit log")]
+    gov["Governance<br/>role access, protected attributes excluded,<br/>proxy and outcome fairness tests, monitoring"]
+    llm["Language model, three tiers<br/>paid API, then local Ollama, then rules (default offline)"]
+  end
+
+  L1 --> L2
+  L1 --> L3
+  L1 --> L4
+  agent --> ops
+  lead --> ops
+  asum --> ops
+  spec --> ops
+
+  style t1 fill:none,stroke:none
+  style t2 fill:none,stroke:none
+  style t3 fill:none,stroke:none
+  style t4 fill:none,stroke:none

@@ -69,6 +69,8 @@ At 19:00 IST the organisers release extra benchmark questions. The submission CS
 4. Read the new rows. If a number answer looks wrong, fix the system (the metric registry in `semantic/registry.py` or the refusal rules in `nlq/refusal.py`), add the question to `eval/probe/questions.csv`, and rerun. Do not edit the CSV by hand.
 5. Commit the CSV before 21:00.
 
+Done on 4 Oct: the extra questions arrived at 18:30 IST and the submitted CSV was produced with `LLM_PROVIDER=openai` (gpt-6-luna). Results, fixes and the rules-only comparison are in [`benchmark_results.md`](benchmark_results.md).
+
 Rehearsed on 4 Oct with a semicolon-delimited file, a column named `question`, a duplicate id and a request for national IDs: all handled.
 
 ## Language model for Ask (optional)
