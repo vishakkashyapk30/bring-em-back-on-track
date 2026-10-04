@@ -242,10 +242,12 @@ def batches(status: str = "pending", team_id: str | None = None) -> dict:
     items = []
     for r in rows:
         ids, sample = json.loads(r["items_json"]), json.loads(r["sample_json"] or "[]")
-        # batch ids end with the team ID (which itself contains dashes): B-<date>-<channel>-<treatment>-<team>
-        parts = r["batch_id"].split("-", 4)
-        team = parts[4] if len(parts) > 4 else ""
-        if team_id and team != team_id:
+        # batch ids end with the team ID (which itself contains dashes): B-<date>-<channel>-<treatment>-<team>, or
+        # B-<date>-PLAYBOOK-<proposal>-<team> for batches made from an approved playbook
+        bid = r["batch_id"]
+        parts = bid.split("-", 5 if "-PLAYBOOK-" in bid else 4)
+        team = parts[-1] if len(parts) > 4 else ""
+        if team_id and team != team_id and not bid.endswith(f"-{team_id}"):
             continue
         s = []
         if q is not None:
@@ -253,7 +255,7 @@ def batches(status: str = "pending", team_id: str | None = None) -> dict:
             s = [
                 {
                     "case_id": x.case_id,
-                    "name": x.name,
+                    "name": x["name"],
                     "product": x["product"],
                     "dpd": int(x.dpd),
                     "p_break": _clean(x.p_break),

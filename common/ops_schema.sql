@@ -89,3 +89,17 @@ CREATE TABLE IF NOT EXISTS identity_reviews (
     reviewer_id   TEXT,
     ts            TEXT
 );
+
+-- Saved watchlist: subjects a person follows (docs/inbox_and_watchlist.md). Pins and unpins are audited.
+-- seen_state_json holds the facts at the last look, so "what changed since you last looked" is a read-only diff.
+CREATE TABLE IF NOT EXISTS watchlist (
+    watch_id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id       TEXT NOT NULL,
+    kind          TEXT NOT NULL,   -- customer | case | agent | employer | cohort | data_product | identity
+    subject_id    TEXT NOT NULL,
+    label         TEXT,
+    created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+    last_seen_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+    seen_state_json TEXT,
+    UNIQUE (user_id, kind, subject_id)
+);

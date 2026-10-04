@@ -175,6 +175,18 @@ def approve(proposal_id: str, user_id: str, role: str, team_id: str | None = Non
         raise KeyError(proposal_id)
     if p["status"] != PENDING:
         raise ValueError(f"This proposal has already been dealt with ({p['status']})")
+    if p["playbook"] == "strategy_test":  # an analyst's test proposal (api/services/track.py): no customers, no batch
+        audit_id = audit.record(user_id, role, "playbook_approve", "playbook_proposal", proposal_id,
+                                {"proposal_id": proposal_id, "kind": p["kind"], "note": note},
+                                {"batch_id": None, "contacts_anyone": False})
+        with ops() as con:
+            con.execute("UPDATE playbook_proposals SET status='approved', decided_by=?, decision_note=?, "
+                        "decided_ts=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE proposal_id=?",
+                        (user_id, note, proposal_id))
+        return {"proposal_id": proposal_id, "status": "approved", "batch_id": "", "batch_status": "none", "items": 0,
+                "sample_size": 0, "audit_id": audit_id,
+                "note": ("Approved. The strategy team sets up the randomised test; no batch is created and nobody "
+                         "is contacted.")}
     from decisioning.nba import sample_size
 
     items = sorted({str(i) for i in (p["payload"].get("customer_ids") or [p["subject_id"]])})
