@@ -17,7 +17,7 @@ A collections platform on the synthetic Maple Bank dataset, with four layers wor
 
 **The demo video** is a tour of as much of the website as fits in 5 minutes. It signs in as each of the five personas in turn and shows their screens on the real dataset: the agent's queue, customer page and next best action with approve, change and override; the hardship board and plan simulator; Ask with its SQL, sources and a refusal; Track and the inbox; batch approvals and the stress test; and the data quality, fairness, monitoring and audit pages.
 
-**The pitch deck** follows one synthetic customer, **J. Tyler** (`G-JAT7827`, case `CS-2026-672507`), from start to finish. His records are spread across five source systems, and the platform joins them into one customer view. An agent sees why he is in the queue and what to do next, and approves it, and the choice lands in the audit log. Following one person shows the difference better than a list of features: the same customer who would get a generic reminder call today gets a safe next step that a person has approved and the system can explain. To see him in the app, open `http://localhost:8080/customers/G-JAT7827` after `docker compose up --build`.
+**The pitch deck** explains the business problem, the product and its novel features in 10 slides: the problem for collections teams, one architecture picture with the capabilities tagged on it, what is new for hardship and vulnerable customers, for analysts and team leads, and for agents, how a decision is made, why it can be trusted, and the business impact. Every number in it comes from the reports and documents in this repository.
 
 ## What is new, and where to see it
 
@@ -255,7 +255,7 @@ Details are in [`docs/ai_tools.md`](docs/ai_tools.md).
 
 ## Where each layer's required item is
 
-The repository is [vishakkashyapk30/bring-em-back-on-track](https://github.com/vishakkashyapk30/bring-em-back-on-track) (private; the organisers are collaborators). Sign in at `/login` as one of the five personas: collections agent, hardship specialist, team lead, strategy analyst or data steward. The customer the deck follows is J. Tyler, `G-JAT7827`.
+The repository is [vishakkashyapk30/bring-em-back-on-track](https://github.com/vishakkashyapk30/bring-em-back-on-track) (private; the organisers are collaborators). Sign in at `/login` as one of the five personas: collections agent, hardship specialist, team lead, strategy analyst or data steward.
 
 | Layer | Must show (official) | Where in the code | Where in the app | Evidence |
 |---|---|---|---|---|
@@ -288,7 +288,7 @@ SPEC_ADAPTER=tests_spec.adapter_impl:make_adapter uv run pytest tests_spec   # i
 | 4 | Data quality report | Summarised in this README (see "Data quality") and also in the repo, in full, as [`docs/data_quality_report.md`](docs/data_quality_report.md) |
 | 5 | Benchmark answers (35 release questions and the 15 extra ones) | [`deliverables/benchmark_answers.csv`](deliverables/benchmark_answers.csv). Results are summarised in this README (see "Benchmark results") and in full in [`docs/benchmark_results.md`](docs/benchmark_results.md) |
 | 6 | Demo video (under 5 minutes) | [Google Drive: demo video](https://drive.google.com/open?id=16DMe4Y6hV0HE1jRjvSuVD1PzzK8QfiOQ). A tour of as many features across the website as fit in 5 minutes, signed in as each persona (see "The demo video and the pitch deck") |
-| 7 | Pitch deck (10 slides, PDF) | [Google Drive: pitch deck PDF](https://drive.google.com/open?id=1yN4p9IidXRo8o6ANz9HOaakeGGNMr6mZ). It follows one customer, J. Tyler, end to end. |
+| 7 | Pitch deck (10 slides, PDF) | [Google Drive: pitch deck PDF](https://drive.google.com/open?id=1yN4p9IidXRo8o6ANz9HOaakeGGNMr6mZ). It covers the problem, the product, the novel features, trust and the business impact. |
 
 ## Repository layout
 
