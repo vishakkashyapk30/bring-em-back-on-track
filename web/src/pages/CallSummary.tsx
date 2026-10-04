@@ -7,6 +7,7 @@ import { useCallSummary, useTranscript } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
 import { SectionTag } from "@/components/SectionTag";
+import { RecordingCard } from "@/components/RecordingCard";
 import { QueryState } from "@/components/States";
 import { TranscriptBubbles } from "@/components/TranscriptBubbles";
 
@@ -47,7 +48,10 @@ export default function CallSummary() {
             </Card>
           )}
         </QueryState>
-        <QueryState q={t}><TranscriptBubbles turns={t.data?.turns ?? []} /></QueryState>
+        <div className="space-y-6">
+          <RecordingCard contactId={contactId} />
+          <QueryState q={t}><TranscriptBubbles turns={t.data?.turns ?? []} /></QueryState>
+        </div>
       </div>
     </>
   );
