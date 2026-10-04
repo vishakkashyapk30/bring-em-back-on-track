@@ -25,7 +25,7 @@ export function BubbleMap({ items, label }: { items: MapItem[]; label: string })
   const ink = cssVar("--color-map-stroke");
   return (
     <div>
-      <MapContainer center={[52, -90]} zoom={4} className="h-[520px] w-full rounded-[var(--radius-lg)]" scrollWheelZoom={false}>
+      <MapContainer center={[52, -90]} zoom={4} className="h-[520px] w-full rounded-[var(--radius-lg)] border border-grey-300/70" scrollWheelZoom={false}>
         <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
         {items.map((p) => (
           <CircleMarker key={p.fsa} center={[p.lat, p.lon]} radius={4 + 14 * Math.sqrt(p.customers / maxN)}

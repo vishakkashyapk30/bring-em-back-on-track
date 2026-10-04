@@ -12,12 +12,14 @@ export function ExplainAccordion({ items, defaultOpen = 0 }: { items: { title: s
         const isOpen = open === i;
         const id = `${base}-${i}`;
         return (
-          <li key={it.title} className={clsx("transition-colors", isOpen ? "bg-brand-50" : "bg-white")}>
+          <li key={it.title} className={clsx("transition-colors", isOpen ? "bg-cream/70" : "bg-white")}>
             <button type="button" aria-expanded={isOpen} aria-controls={id} onClick={() => setOpen(isOpen ? null : i)}
-              className="flex w-full items-center gap-3 bg-transparent px-4 py-3 text-left transition-colors hover:bg-grey-100/70">
+              className="flex w-full items-start gap-3 bg-transparent sm:items-center px-4 py-3 text-left transition-colors hover:bg-grey-100/70">
               <span className="w-6 font-[family-name:var(--font-display)] text-sm font-semibold text-muted tabular">{String(i + 1).padStart(2, "0")}</span>
-              <span className="flex-1 text-[15px] font-medium">{it.title}</span>
-              {it.meta}
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                <span className="text-[15px] font-medium">{it.title}</span>
+                {it.meta && <span className="min-w-0 [&_*]:whitespace-normal">{it.meta}</span>}
+              </span>
               <ChevronDown size={18} aria-hidden className={clsx("text-muted transition-transform duration-200", isOpen && "rotate-180")} />
             </button>
             <div id={id} className="reveal" data-open={isOpen}>

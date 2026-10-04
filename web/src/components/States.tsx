@@ -15,8 +15,8 @@ export function Skeleton({ lines = 3 }: { lines?: number }) {
 
 export function EmptyState({ title, detail, action }: { title: string; detail?: string; action?: ReactNode }) {
   return (
-    <Card variant="grey" className="flex flex-col items-center gap-2 text-center">
-      <Inbox aria-hidden /> <p className="m-0 font-medium">{title}</p>
+    <Card variant="grey" className="flex flex-col items-center gap-1.5 py-8 text-center">
+      <Inbox size={20} aria-hidden className="text-muted" /> <p className="m-0 font-medium">{title}</p>
       {detail && <p className="m-0 text-muted">{detail}</p>}
       {action}
     </Card>
@@ -71,4 +71,9 @@ export function SampleBadge() {
       <FlaskConical size={11} aria-hidden /> Sample data
     </span>
   );
+}
+
+/** Source and caveat lines under a table or chart: one style everywhere. */
+export function Footnote({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <p className={`mb-0 mt-3 max-w-4xl text-[13px] leading-relaxed text-muted ${className}`}>{children}</p>;
 }

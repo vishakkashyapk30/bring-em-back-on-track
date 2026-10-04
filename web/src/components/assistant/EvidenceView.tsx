@@ -10,6 +10,10 @@ export const hasEvidence = (e?: Evidence | null) =>
   !!e && !!((e.columns?.length && e.rows?.length) || e.kv?.length || e.text || e.links?.length);
 
 const ROWS_SHOWN = 8;
+const ID = /^[A-Z]{1,4}-[A-Z0-9-]+$/;
+const SNAKE = /^[a-z]+(_[a-z0-9]+)+(\b.*)?$/;
+/** Table cell text: codes like "specialist_referral" read as words, IDs never wrap. */
+const show = (v: unknown) => (typeof v === "string" && SNAKE.test(v) ? v.replace(/_/g, " ") : cell(v));
 
 /** The real numbers behind a step: a table, key values, a text or SQL block, and links to the screen. */
 export function EvidenceView({ evidence: e, dense = false }: { evidence?: Evidence | null; dense?: boolean }) {
@@ -17,7 +21,7 @@ export function EvidenceView({ evidence: e, dense = false }: { evidence?: Eviden
   if (!hasEvidence(e) || !e) return null;
   const rows = e.rows ?? [];
   const shown = all ? rows : rows.slice(0, ROWS_SHOWN);
-  const th = "whitespace-nowrap px-3 py-2 text-left text-[12px] font-semibold uppercase tracking-wide text-muted";
+  const th = "whitespace-nowrap px-3 py-2 text-left text-[13px] font-semibold text-ink";
   return (
     <div className="flex flex-col gap-3 text-[14px]">
       {e.kv && e.kv.length > 0 && (
@@ -34,12 +38,12 @@ export function EvidenceView({ evidence: e, dense = false }: { evidence?: Eviden
         <div>
           <div className="overflow-x-auto rounded-[var(--radius-md)] border border-grey-300/70 bg-white" tabIndex={0} role="region" aria-label="Evidence table, scrolls sideways">
             <table className="w-full border-collapse">
-              <thead className="bg-grey-100"><tr>{e.columns.map((c) => <th key={c} scope="col" className={th}>{c}</th>)}</tr></thead>
+              <thead className="bg-white shadow-[inset_0_-2px_0_var(--color-ink)]"><tr>{e.columns.map((c) => <th key={c} scope="col" className={th}>{c}</th>)}</tr></thead>
               <tbody>
                 {shown.map((r, i) => (
                   <tr key={i} className="border-t border-grey-300/50">
                     {r.map((v, j) => (
-                      <td key={j} className={`px-3 py-2 align-top ${typeof v === "number" ? "text-right tabular-nums" : "min-w-[8rem]"}`}>{cell(v)}</td>
+                      <td key={j} className={`px-3 py-2 align-top ${typeof v === "number" ? "text-right tabular-nums" : typeof v === "string" && ID.test(v) ? "whitespace-nowrap font-mono text-[13px]" : "min-w-[8rem]"}`}>{show(v)}</td>
                     ))}
                   </tr>
                 ))}

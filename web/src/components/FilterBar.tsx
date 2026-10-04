@@ -7,14 +7,14 @@ export type Chip = { id: string; label: string; count?: number };
 /** Filters as plain text with an underline on the active one and a live count. Real buttons with aria-pressed. */
 export function FilterChips({ chips, value, onChange, label }: { chips: Chip[]; value: string; onChange: (id: string) => void; label: string }) {
   return (
-    <div role="group" aria-label={label} className="flex flex-wrap gap-x-5 gap-y-1">
+    <div role="group" aria-label={label} className="-mx-1 flex gap-x-5 gap-y-1 overflow-x-auto px-1 [scrollbar-width:none] sm:flex-wrap">
       {chips.map((c) => {
         const on = c.id === value;
         const empty = c.count === 0 && !on;
         return (
           <button key={c.id} type="button" aria-pressed={on} disabled={empty} onClick={() => onChange(c.id)}
             className={clsx(
-              "inline-flex h-9 items-baseline gap-1.5 border-b-2 pb-1 pt-1.5 text-[14.5px] transition-colors",
+              "inline-flex h-9 shrink-0 items-baseline gap-1.5 whitespace-nowrap border-b-2 pb-1 pt-1.5 text-[14.5px] transition-colors",
               on ? "border-brand font-semibold text-ink" : "border-transparent font-medium text-ink/70 hover:border-grey-300 hover:text-ink",
               empty && "cursor-not-allowed opacity-40 hover:border-transparent hover:text-ink/70",
             )}>
@@ -55,5 +55,5 @@ export function SortSelect({ value, onChange, options }: { value: string; onChan
 
 /** One consistent toolbar row: filters on the left, search and sort on the right. */
 export function Toolbar({ left, right }: { left?: ReactNode; right?: ReactNode }) {
-  return <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">{<div>{left}</div>}<div className="flex flex-wrap items-center gap-3">{right}</div></div>;
+  return <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">{<div className="min-w-0 max-w-full">{left}</div>}<div className="flex flex-wrap items-center gap-3">{right}</div></div>;
 }

@@ -73,7 +73,7 @@ export function NbaCard({ proposal, sample = false }: { proposal: NbaProposal; s
         <span className="text-[14px] font-semibold text-brand">Suggested next step</span>
         {sample && <SampleBadge />}
       </div>
-      <h3 className="mb-3 mt-1 text-[22px] leading-snug">{ex.recommendation}</h3>
+      <h3 className="mb-3 mt-1 text-[1.25rem] leading-snug">{ex.recommendation}</h3>
 
       <ul className="mb-5 mt-0 flex list-none flex-wrap gap-x-5 gap-y-1 p-0 text-[13.5px] text-muted">
         {proposal.status === "deferred" && <li className="inline-flex items-center gap-1.5"><CalendarClock size={15} aria-hidden /> {proposal.deferred_reason ?? "Moved to tomorrow"}</li>}

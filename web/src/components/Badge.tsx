@@ -36,7 +36,7 @@ const icons: Partial<Record<BadgeKind, ReactNode>> = {
 /** Fixed-meaning labels. Colour is never the only signal: hardship etc. always carry an icon and text. */
 export function Badge({ kind, children }: { kind: BadgeKind; children: ReactNode }) {
   return (
-    <span className={clsx("inline-flex items-center gap-1.5 text-[14px] font-semibold", styles[kind])}>
+    <span className={clsx("inline-flex items-center gap-1.5 whitespace-nowrap font-[family-name:var(--font-sans)] text-[14px] font-semibold", styles[kind])}>
       {icons[kind]}
       {children}
     </span>

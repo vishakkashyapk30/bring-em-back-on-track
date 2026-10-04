@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { useEligibility, useSimulate } from "@/api/hooks";
 
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Card } from "./Card";
+import { EmptyState } from "./States";
 
 const cad = (n: unknown, d = 0) => (n == null ? "n/a" : Number(n).toLocaleString("en-CA", { style: "currency", currency: "CAD", maximumFractionDigits: d }));
 const months = (n: unknown) => (n == null ? "more than 50 years" : `${n} months`);
@@ -34,9 +36,14 @@ export function SimulatorPanel({ caseId, initialProgram }: { caseId: string; ini
   const share = r?.payment_share_of_surplus;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
-      <Card variant="grey">
-        <h3 className="mt-0">Plan</h3>
+    <>
+    <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[14px]">
+      <span className="text-muted">Case</span><span className="font-mono font-semibold">{caseId}</span>
+      <Link to="/hardship/simulator/start" className="text-[13.5px] font-medium">Change case</Link>
+    </div>
+    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[360px_minmax(0,1fr)]">
+      <Card>
+        <h3 className="mb-3 mt-0">Plan</h3>
         <label className="block text-[14.5px]">Start from a program
           <select value={program} onChange={(e) => setProgram(e.target.value)} className="mt-1 block h-10 w-full rounded-[var(--radius-md)] border border-grey-300 bg-white px-2">
             <option value="">Set the levers by hand</option>
@@ -65,35 +72,36 @@ export function SimulatorPanel({ caseId, initialProgram }: { caseId: string; ini
               <span className="text-muted">Balance {cad(d.inputs?.balance)} at {(d.inputs?.apr * 100).toFixed(2)}% · payment now {cad(d.inputs?.payment_now)}</span>
             </Card>
             <Card>
-              <p className="m-0 text-sm text-muted">New payment vs monthly surplus</p>
-              <p className="m-0 mt-1 text-3xl tabular">{cad(r.new_payment)}{r.surplus != null && <span className="text-muted"> / {cad(r.surplus)}</span>}</p>
+              <p className="m-0 text-[13.5px] text-muted">New payment vs monthly surplus</p>
+              <p className="m-0 mt-1 font-[family-name:var(--font-display)] text-[1.75rem] font-semibold leading-tight tabular">{cad(r.new_payment)}{r.surplus != null && <span className="text-muted"> / {cad(r.surplus)}</span>}</p>
               <p className="m-0 mt-1 text-[14px]">
                 {r.surplus == null ? "No surplus estimate for this customer." : r.surplus <= 0 ? "Cash flow is negative on average, so any payment stretches the household." : share != null ? `${Math.round(share * 100)}% of the estimated surplus` : ""}
               </p>
             </Card>
             <Card>
-              <p className="m-0 text-sm text-muted">Time to pay off and total interest</p>
-              <p className="m-0 mt-1 text-3xl tabular">{r.months_to_clear == null ? "50+ years" : `${r.months_to_clear} mo`} · {cad(r.total_interest)}</p>
+              <p className="m-0 text-[13.5px] text-muted">Time to pay off and total interest</p>
+              <p className="m-0 mt-1 font-[family-name:var(--font-display)] text-[1.75rem] font-semibold leading-tight tabular">{r.months_to_clear == null ? "50+ years" : `${r.months_to_clear} mo`} · {cad(r.total_interest)}</p>
               <p className="m-0 mt-1 text-[14px] text-muted">Today: {months(r.months_to_clear_current)} · {cad(r.total_interest_current)}</p>
             </Card>
             <Card>
-              <p className="m-0 text-sm text-muted">Bank impact vs doing nothing (present value)</p>
-              <p className="m-0 mt-1 text-3xl tabular">{r.bank_impact_vs_status_quo > 0 ? "+" : ""}{cad(r.bank_impact_vs_status_quo)}</p>
+              <p className="m-0 text-[13.5px] text-muted">Bank impact vs doing nothing (present value)</p>
+              <p className="m-0 mt-1 font-[family-name:var(--font-display)] text-[1.75rem] font-semibold leading-tight tabular">{r.bank_impact_vs_status_quo > 0 ? "+" : ""}{cad(r.bank_impact_vs_status_quo)}</p>
             </Card>
             <Card>
-              <p className="m-0 text-sm text-muted">Similar plans that held</p>
+              <p className="m-0 text-[13.5px] text-muted">Similar plans that held</p>
               {r.hold_rate_similar ? (<>
-                <p className="m-0 mt-1 text-3xl tabular">{Math.round(r.hold_rate_similar.value * 100)}%</p>
+                <p className="m-0 mt-1 font-[family-name:var(--font-display)] text-[1.75rem] font-semibold leading-tight tabular">{Math.round(r.hold_rate_similar.value * 100)}%</p>
                 <Badge kind="observed">{r.hold_rate_similar.label} · {r.hold_rate_similar.n} finished plans</Badge>
               </>) : <p className="m-0 mt-1 text-[14.5px] text-muted">No finished plans for this kind of program to compare with.</p>}
             </Card>
-            <Card variant="grey" className="md:col-span-2 text-sm">
+            <Card variant="grey" className="md:col-span-2 text-[13.5px]">
               <b>Assumptions (not in the data):</b> {Math.round(d.assumptions.annual_discount_rate * 100)}% discount rate, {Math.round(d.assumptions.lgd * 100)}% loss given default.
               <ul className="mb-0 mt-1 pl-5">{(d.notes ?? []).map((n: string) => <li key={n}>{n}</li>)}</ul>
             </Card>
           </div>
-        ) : <Card variant="grey">Pick a program or move the levers, then run a scenario to see what it does to the customer and to the bank.</Card>}
+        ) : <EmptyState title="No scenario yet" detail="Pick a program or move the levers, then run a scenario to see what it does to the customer and to the bank." />}
       </div>
     </div>
+    </>
   );
 }

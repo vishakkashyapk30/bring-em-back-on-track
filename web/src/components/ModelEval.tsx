@@ -23,9 +23,9 @@ export function ModelEval() {
   const muted = css("--color-muted") || "#5f6170";
   return (
     <QueryState q={q}>
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-2">
         <Card>
-          <h3>Head-to-head on the same test promises</h3>
+          <h3 className="mt-0">Head-to-head on the same test promises</h3>
           <p className="text-[13.5px] text-muted">{h.ours?.n?.toLocaleString?.() ?? "n/a"} promises due Jul to Sep 2026 that the bank's v2.1 also scored. Trained on promises made before Apr 2026; the blend was fitted on Apr to Jun.</p>
           <table className="w-full text-[14px]">
             <thead><tr className="text-left text-[13.5px] font-semibold text-muted">
@@ -48,7 +48,7 @@ export function ModelEval() {
           <p className="mb-0 mt-3 text-[13px] text-muted">Higher AUC and lift are better; lower Brier is better. Our model alone does not beat the bank's on ranking; the blend beats both, so the blend is used.</p>
         </Card>
         <Card>
-          <h3>Is the blend's risk honest?</h3>
+          <h3 className="mt-0">Is the blend's risk honest?</h3>
           <p className="text-[13.5px] text-muted">Predicted break rate against what actually happened, in 10 bins. On the diagonal means the stated risk matches reality.</p>
           <div className="h-[240px]" role="img" aria-label="Reliability chart: predicted versus observed break rate for the blend">
             <ResponsiveContainer width="100%" height="100%">

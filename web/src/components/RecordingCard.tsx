@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AudioLines, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import { api, post } from "@/api/client";
 import { Badge } from "@/components/Badge";
@@ -22,12 +22,12 @@ export function RecordingCard({ contactId }: { contactId: string }) {
   const draft = useMutation({ mutationFn: () => post<VoiceDraft>(`/voice/${contactId}/draft`) });
   if (info.isLoading || info.isError) return null;
   const v = info.data;
-  if (!v?.available) return <Card><p className="m-0 text-sm text-muted">There is no recording for this call.</p></Card>;
+  if (!v?.available) return <Card><p className="m-0 text-[14px] text-muted">There is no recording for this call.</p></Card>;
   const m = v.measures!;
   const d = draft.data;
   return (
     <Card>
-      <h3 className="mt-0 flex items-center gap-2"><AudioLines size={18} aria-hidden /> Recording</h3>
+      <h3 className="mb-3 mt-0">Recording</h3>
       <audio controls preload="none" src={v.audio_url} className="mb-3 w-full">Your browser can't play this recording.</audio>
       <dl className="m-0 mb-3 grid grid-cols-2 gap-x-6 gap-y-1 text-sm sm:grid-cols-3">
         {([["Length", sec(m.duration_sec)], ["Dead air", sec(m.dead_air_sec)], ["Hold music", sec(m.hold_music_sec)],

@@ -14,7 +14,7 @@ export function EligibilityList({ programs }: { programs: Program[] }) {
           <ul className="m-0 mt-1 list-none space-y-1 p-0 text-sm">
             {p.rules.map((r) => (
               <li key={r.rule} className="flex items-center gap-2">
-                {r.passed ? <Check size={14} className="text-teal" aria-label="passed" /> : <X size={14} className="text-danger" aria-label="failed" />}
+                {r.passed ? <Check size={14} className="shrink-0 text-teal" aria-label="passed" /> : <X size={14} className="shrink-0 text-danger" aria-label="failed" />}
                 {r.rule}: {String(r.value)} (limit {String(r.limit)})
               </li>
             ))}

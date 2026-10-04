@@ -78,9 +78,8 @@ export function AssistantDrawer() {
       <div ref={panel} role="dialog" aria-modal="true" aria-labelledby="assistant-h"
         className="absolute right-0 top-0 flex h-full w-full max-w-[520px] flex-col border-l border-grey-300 bg-cream shadow-[var(--shadow-raised)]">
         <header className="flex items-start gap-3 border-b border-grey-300/70 bg-white px-5 py-4">
-          <Sparkles size={22} aria-hidden className="mt-1 shrink-0 text-brand" />
           <div className="min-w-0 flex-1">
-            <h2 id="assistant-h" className="m-0 font-[family-name:var(--font-display)] text-[26px] font-semibold leading-tight">Assistant</h2>
+            <h2 id="assistant-h" className="m-0 text-[1.5rem] leading-tight">Assistant</h2>
             <p className="m-0 text-[14px] text-muted">{me.data?.display_name}, {ROLE_LABEL[role] ?? role}. Works with no language model.</p>
           </div>
           <button type="button" onClick={close} aria-label="Close the assistant" data-autofocus
@@ -104,7 +103,7 @@ export function AssistantDrawer() {
           </div>
 
           <section aria-labelledby="goals-h">
-            <h3 id="goals-h" className="m-0 mb-2 text-[13px] font-semibold uppercase tracking-wide text-muted">Or pick a goal</h3>
+            <h3 id="goals-h" className="m-0 mb-2 font-[family-name:var(--font-sans)] text-[13px] font-semibold text-muted">Or pick a goal</h3>
             {sugg.isLoading ? <p role="status" className="m-0 text-[14px] text-muted">Loading goals for your role...</p>
               : sugg.isError ? <p className="m-0 text-[14px] text-muted">Goals could not load. You can still type your own below.</p>
               : (
@@ -112,7 +111,7 @@ export function AssistantDrawer() {
                   {sugg.data?.goals.map((g) => (
                     <li key={g.label}>
                       <button type="button" disabled={run.isPending} title={g.goal} onClick={() => { setGoal(g.goal); start(g.goal); }}
-                        className="rounded-full border border-grey-300 bg-white px-3.5 py-1.5 text-left text-[14px] text-ink transition-colors hover:border-ink/40 hover:bg-grey-100 disabled:opacity-50">{g.label}</button>
+                        className="rounded-[var(--radius-md)] border border-grey-300 bg-white px-3 py-1.5 text-left text-[14px] text-ink transition-colors hover:border-ink/40 hover:bg-grey-100 disabled:opacity-50">{g.label}</button>
                     </li>
                   ))}
                 </ul>
@@ -120,11 +119,11 @@ export function AssistantDrawer() {
           </section>
 
           <form onSubmit={(e) => { e.preventDefault(); if (goal.trim()) start(goal.trim()); }}>
-            <label htmlFor="assistant-goal" className="mb-1.5 block text-[13px] font-semibold uppercase tracking-wide text-muted">Or say what you need</label>
+            <label htmlFor="assistant-goal" className="mb-1.5 block text-[13px] font-semibold text-muted">Or say what you need</label>
             <div className="flex gap-2">
               <input id="assistant-goal" value={goal} onChange={(e) => setGoal(e.target.value)} maxLength={500} placeholder="For example: is this promise safe before payday?"
-                className="h-10 min-w-0 flex-1 rounded-[var(--radius-md)] border border-grey-300 bg-white px-3 text-[15px]" />
-              <Button type="submit" variant="dark" disabled={run.isPending || !goal.trim()}>Run</Button>
+                className="h-10 min-w-0 flex-1 rounded-[var(--radius-md)] border border-grey-300 bg-white px-3 text-[15px] outline-none focus:border-brand/50 focus:shadow-[var(--shadow-focus)]" />
+              <Button type="submit" disabled={run.isPending || !goal.trim()}>Run</Button>
             </div>
           </form>
 

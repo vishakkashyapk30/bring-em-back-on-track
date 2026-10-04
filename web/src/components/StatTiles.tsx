@@ -8,11 +8,11 @@ export function StatTiles({ items }: { items: Stat[] }) {
   return (
     <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((s) => (
-        <Card key={s.label} className="flex flex-col gap-1">
-          <span className="text-sm text-muted">{s.label}</span>
-          <span className="text-3xl font-medium tabular">{s.value}</span>
+        <Card key={s.label} className="flex h-full flex-col gap-1">
+          <span className="text-[13.5px] text-muted">{s.label}</span>
+          <span className="font-[family-name:var(--font-display)] text-[2rem] font-semibold leading-tight tabular">{s.value}</span>
           {s.note && (
-            <span className={`text-sm ${s.status === "bad" ? "text-danger" : s.status === "warn" ? "text-amber" : s.status === "ok" ? "text-teal" : "text-muted"}`}>
+            <span className={`text-[13px] ${s.status === "bad" ? "text-danger" : s.status === "warn" ? "text-amber" : s.status === "ok" ? "text-teal" : "text-muted"}`}>
               {s.note}
             </span>
           )}

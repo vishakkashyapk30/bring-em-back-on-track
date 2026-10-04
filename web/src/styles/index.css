@@ -16,10 +16,11 @@
   h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: 0; line-height: 1.15; margin: 0 0 0.5rem; }
   p { margin: 0 0 0.75rem; }
   p:last-child { margin-bottom: 0; }
+  /* One type scale: page title, section title, card title, small label. */
   h1 { font-size: 2.25rem; }
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.25rem; }
-  h4 { font-size: 1.0625rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.0625rem; }
+  h4 { font-size: 0.9375rem; }
   a { color: var(--color-brand); text-decoration: none; }
   a:hover { text-decoration: underline; text-underline-offset: 3px; }
   code, pre, .font-mono { font-family: var(--font-mono); }

@@ -77,7 +77,7 @@ function Flow({ flow }: { flow: PublicFlow }) {
         <svg ref={svg} viewBox={`0 0 ${W} ${H}`} className={`block h-auto w-full min-w-[860px] ${inView ? "" : "vz-paused"}`} role="group"
           aria-label="Flow of last night's open cases through the policy gate, the break-risk band, the treatment and the review step. The same numbers are in the table below.">
           {cols.map((c, i) => (
-            <text key={c} x={colX(i)} y={14} fontSize={12} fontWeight={600} letterSpacing={0.6} style={{ fill: "var(--color-muted)", textTransform: "uppercase" }}
+            <text key={c} x={colX(i)} y={14} fontSize={12} fontWeight={600} style={{ fill: "var(--color-muted)" }}
               >{c}</text>
           ))}
           <g transform={`translate(0 ${TOP})`}>
@@ -132,7 +132,7 @@ function Flow({ flow }: { flow: PublicFlow }) {
         {node ? (
           <div className="grid gap-x-8 gap-y-3 md:grid-cols-[minmax(0,1.1fr)_1fr_1fr]">
             <div>
-              <div className="text-[12.5px] font-semibold uppercase tracking-wide text-muted">{cols[node.col]}</div>
+              <div className="text-[13px] font-semibold text-muted">{cols[node.col]}</div>
               <div className="font-[family-name:var(--font-display)] text-[24px] font-semibold leading-tight">{node.label}</div>
               <div className="tabular"><strong>{fmtInt(node.value)}</strong> cases, {pct(node.value, flow.total)} of all open cases</div>
               {node.top && (
@@ -169,7 +169,7 @@ function FlowList({ title, links, pick, label, total }: { title: string; links: 
   if (!links.length) return <div />;
   return (
     <div>
-      <div className="text-[12.5px] font-semibold uppercase tracking-wide text-muted">{title}</div>
+      <div className="text-[13px] font-semibold text-muted">{title}</div>
       <ul className="m-0 mt-1 list-none p-0">
         {[...links].sort((a, b) => b.value - a.value).map((l) => (
           <li key={l[pick]} className="flex justify-between gap-3 py-0.5">
