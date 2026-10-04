@@ -13,14 +13,14 @@ export default function Demo() {
   return (
     <>
       <SectionTag as="h1" subtitle="Pick a persona and we sign you in, no password. Every customer here is synthetic. Nothing is sent to anyone.">Watch a day in the product</SectionTag>
-      <ul className="m-0 list-none divide-y divide-grey-300 overflow-hidden rounded-[var(--radius-md)] border border-grey-300 bg-white p-0">
+      <ul className="m-0 list-none divide-y divide-grey-300/70 overflow-hidden rounded-[var(--radius-lg)] border border-grey-300/70 bg-white p-0">
         {DEMO_PERSONAS.map(({ role, title, icon: Icon, story, sees }) => {
           const busy = login.isPending && login.variables === role;
           return (
-            <li key={role} className="grid items-center gap-x-8 gap-y-3 px-5 py-5 transition-colors hover:bg-grey-100 md:grid-cols-[260px_minmax(0,1fr)_150px]">
+            <li key={role} className="grid items-center gap-x-8 gap-y-3 px-5 py-5 transition-colors hover:bg-cream/60 md:grid-cols-[260px_minmax(0,1fr)_150px]">
               <div className="flex items-center gap-3">
-                <Icon size={22} aria-hidden className="shrink-0 text-ink" />
-                <h2 className="m-0 font-[family-name:var(--font-display)] text-[1.5rem] font-semibold leading-tight">{title}</h2>
+                <Icon size={20} aria-hidden className="shrink-0 text-muted" />
+                <h2 className="m-0 text-[1.25rem] leading-tight">{title}</h2>
               </div>
               <div className="min-w-0">
                 <p className="m-0 text-[15px] leading-snug">{story}</p>
@@ -28,7 +28,7 @@ export default function Demo() {
               </div>
               <button type="button" disabled={login.isPending} aria-label={`Start the ${title} demo`}
                 onClick={() => login.mutate(role, { onSuccess: () => nav(demoPath(role)) })}
-                className="inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-md)] bg-brand px-4 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-[var(--shadow-focus)] disabled:opacity-70">
+                className="inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-md)] border border-grey-300 bg-white px-4 text-[15px] font-medium text-ink transition-colors hover:border-ink/40 hover:bg-grey-100 focus-visible:shadow-[var(--shadow-focus)] disabled:opacity-70">
                 Start demo
                 {busy ? <Loader2 size={16} className="animate-spin" aria-label="Signing in" /> : <ArrowRight size={16} aria-hidden />}
               </button>

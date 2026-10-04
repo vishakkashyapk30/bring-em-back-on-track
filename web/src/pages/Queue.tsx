@@ -19,7 +19,7 @@ const money = (n?: number) => (n == null ? "" : n.toLocaleString("en-CA", { styl
 
 function Risk({ it }: { it: QueueItem }) {
   if (it.p_break == null || !it.risk_band) return <span className="text-muted">No promise to score</span>;
-  return <span className="tabular">{BAND[it.risk_band as keyof typeof BAND] ?? it.risk_band}<span className="ml-1.5 text-[12.5px] text-muted">{Math.round(it.p_break * 100)}%</span></span>;
+  return <span className="whitespace-nowrap tabular">{BAND[it.risk_band as keyof typeof BAND] ?? it.risk_band}<span className="ml-1.5 text-[12.5px] text-muted">{Math.round(it.p_break * 100)}%</span></span>;
 }
 
 function Status({ it }: { it: QueueItem }) {
@@ -86,18 +86,34 @@ export default function Queue() {
             action={filtered ? <Button size="sm" onClick={() => { setText(""); setSp({}, { replace: true }); }}>Clear filters</Button> : undefined} />
         ) : (
           <div className="overflow-hidden rounded-[var(--radius-md)] border border-grey-300 bg-white">
-            <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] text-left text-[14.5px]">
-              <thead className="shadow-[inset_0_-2px_0_var(--color-ink)]">
+            <ul className="m-0 list-none divide-y divide-grey-300/60 p-0 md:hidden" aria-label="Cases">
+              {items.map((it) => (
+                <li key={it.case_id}>
+                  <button type="button" onClick={() => nav(`/customers/${it.golden_id}`)} className="block w-full bg-transparent px-4 py-3 text-left transition-colors hover:bg-brand-50">
+                    <div className="flex items-baseline justify-between gap-3"><span className="font-medium">{it.name}</span><span className="tabular text-[14px]">{money(it.overdue)}</span></div>
+                    <div className="text-[13px] text-muted">{productLabel(it.product)} · {it.dpd} days late · <Risk it={it} /></div>
+                    <div className="mt-1 text-[14px] font-medium">{actionLabel(it.action)}</div>
+                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+                      {it.hardship_flag && it.hardship_flag !== "none" && <Badge kind="hardship">Hardship</Badge>}
+                      {it.vulnerable && <Badge kind="vulnerable">Vulnerable</Badge>}
+                      <Status it={it} />
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="hidden max-h-[max(420px,calc(100vh-330px))] overflow-auto md:block">
+            <table className="w-full min-w-[880px] border-collapse text-left text-[14px]">
+              <thead className="sticky top-0 z-10 bg-white shadow-[inset_0_-2px_0_var(--color-ink)]">
                 <tr>
-                  {([["Customer", "name"], ["Past due", "overdue"], ["What to do and why", "priority"], ["Break risk", "risk"], ["", ""], ["", ""]] as const).map(([h, key], i) => (
-                    <th key={i} scope="col" aria-sort={key && key === sort ? "descending" : "none"} className="px-5 py-3.5 text-[14px] font-semibold text-ink">
+                  {([["Customer", "name", "w-[22%]"], ["Past due", "overdue", "w-[9%] text-right"], ["What to do and why", "priority", ""], ["Break risk", "risk", "w-[12%]"], ["Flags", "", "w-[15%]"], ["", "", "w-10"]] as const).map(([h, key, w], i) => (
+                    <th key={i} scope="col" aria-sort={key && key === sort ? "descending" : "none"} className={`whitespace-nowrap px-4 py-3 text-[13.5px] font-semibold text-ink ${w}`}>
                       {key ? (
                         <button type="button" onClick={() => set("sort", key, "priority")} title={`Sort by ${h.toLowerCase()}`}
                           className="inline-flex items-center gap-1.5 bg-transparent transition-colors hover:text-brand">
                           {h}{key === sort ? <ArrowDown size={13} aria-hidden /> : <ArrowUpDown size={13} aria-hidden className="opacity-40" />}
                         </button>
-                      ) : h}
+                      ) : h ? h : <span className="sr-only">Open</span>}
                     </th>
                   ))}
                 </tr>
@@ -109,22 +125,22 @@ export default function Queue() {
                   return (
                     <tr key={it.case_id} tabIndex={0} onClick={open} onKeyDown={(e) => { if (e.key === "Enter") open(); }}
                       className="group cursor-pointer border-t border-grey-300/60 outline-none transition-colors even:bg-cream/60 hover:bg-brand-50 focus-visible:bg-brand-50">
-                      <td className="px-5 py-3.5">
+                      <td className="px-4 py-3 align-top">
                         <div className="font-medium">{it.name}</div>
-                        <div className="text-[13.5px] text-muted">{productLabel(it.product)} · {it.dpd} days late</div>
+                        <div className="whitespace-nowrap text-[13px] text-muted">{productLabel(it.product)} · {it.dpd} days late</div>
                       </td>
-                      <td className="px-5 py-3.5 tabular">{money(it.overdue)}</td>
-                      <td className="max-w-[520px] px-5 py-3.5">
+                      <td className="whitespace-nowrap px-4 py-3 text-right align-top tabular">{money(it.overdue)}</td>
+                      <td className="px-4 py-3 align-top">
                         <div className="font-medium">{actionLabel(it.action)}{when && <span className="font-normal text-muted"> · {when}</span>}</div>
-                        {it.headline && <div className="text-[14px] text-muted">{it.headline}</div>}
+                        {it.headline && <div className="text-[13.5px] text-muted">{it.headline}</div>}
                       </td>
-                      <td className="px-5 py-3.5"><Risk it={it} /></td>
-                      <td className="px-5 py-3.5"><div className="flex flex-wrap gap-x-3 gap-y-1">
+                      <td className="px-4 py-3 align-top"><Risk it={it} /></td>
+                      <td className="px-4 py-3 align-top"><div className="flex flex-wrap gap-x-3 gap-y-1">
                         {it.hardship_flag && it.hardship_flag !== "none" && <Badge kind="hardship">Hardship</Badge>}
                         {it.vulnerable && <Badge kind="vulnerable">Vulnerable</Badge>}
                         <Status it={it} />
                       </div></td>
-                      <td className="px-5 py-3.5 text-right"><ChevronRight size={17} aria-hidden className="inline text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-brand" /></td>
+                      <td className="px-4 py-3 text-right align-top"><ChevronRight size={17} aria-hidden className="inline text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-brand" /></td>
                     </tr>
                   );
                 })}

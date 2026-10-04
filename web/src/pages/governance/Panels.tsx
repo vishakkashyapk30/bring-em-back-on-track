@@ -6,13 +6,16 @@ import { Card } from "@/components/Card";
 import { DataTable } from "@/components/DataTable";
 import { ModelEval } from "@/components/ModelEval";
 import { StatTiles } from "@/components/StatTiles";
-import { QueryState } from "@/components/States";
+import { SectionTag } from "@/components/SectionTag";
+import { Footnote, QueryState } from "@/components/States";
+import { PageTabs } from "@/components/Tabs";
 
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const n = (v: unknown) => {
   const x = typeof v === "string" && v.trim() !== "" && !Number.isNaN(Number(v)) ? Number(v) : v;
   return typeof x === "number" ? x.toLocaleString() : String(x ?? "n/a");
 };
+const title = (v: unknown) => (typeof v === "string" && v ? v.charAt(0).toUpperCase() + v.slice(1) : String(v ?? ""));
 const pct = (v: unknown, d = 1) => (typeof v === "number" ? `${(v * 100).toFixed(d)}%` : "n/a");
 
 /** Data quality report (deliverable 4): every issue with records affected and how it was handled. */
@@ -31,14 +34,20 @@ export function Quality() {
         { label: "Issues found", value: n(issues.length), note: "with records affected and handling" },
         { label: "Contract tests", value: `${passed} / ${tests.length}`, note: passed === tests.length ? "all passing" : "failures block publish", status: passed === tests.length ? "ok" : "bad" },
       ]} />
-      <h2 className="text-xl">Issues found</h2>
-      <DataTable searchable="Search issues" columns={["Issue", "Table(s)", "Records affected", "How we handled it"]}
-        rows={issues.map((i) => [i.issue, i.tables, i.records_affected, i.handled])}
-        render={(v, col) => (col === "Records affected" ? <span className="tabular">{n(v)}</span> : String(v ?? ""))} />
-      <h2 className="mt-8 text-xl">Contract tests (gold.c360_customer)</h2>
-      <DataTable columns={["Test", "Status", "Failing rows"]} rows={tests.map((t) => [t.test, t.status, t.failures])}
-        render={(v, col) => (col === "Status" ? <Badge kind={v === "pass" ? "ok" : "danger"}>{String(v)}</Badge> : String(v ?? ""))} />
-      <p className="text-sm text-muted">Generated {d.generated_at ?? "n/a"} by governance/quality_report.py. Full report: docs/data_quality_report.md.</p>
+      <PageTabs variant="segmented" label="Data quality sections" param="view" tabs={[{ id: "issues", label: "Issues found", count: issues.length }, { id: "tests", label: "Contract tests", count: tests.length }]}>
+        {(view) => view === "issues" ? (
+          <DataTable searchable="Search issues" columns={["Issue", "Table(s)", "Records affected", "How we handled it"]}
+            rows={issues.map((i) => [i.issue, i.tables, i.records_affected, i.handled])}
+            render={(v, col) => (col === "Records affected" ? <span className="tabular">{n(v)}</span> : String(v ?? ""))} />
+        ) : (
+          <>
+            <p className="mb-3 mt-0 text-[13.5px] text-muted">Tests on <code>gold.c360_customer</code>. A failure blocks the nightly publish.</p>
+            <DataTable columns={["Test", "Status", "Failing rows"]} rows={tests.map((t) => [t.test, t.status, t.failures])}
+              render={(v, col) => (col === "Status" ? <Badge kind={v === "pass" ? "ok" : "danger"}>{v === "pass" ? "Pass" : "Fail"}</Badge> : col === "Test" ? <code className="text-[13px]">{String(v)}</code> : String(v ?? ""))} />
+          </>
+        )}
+      </PageTabs>
+      <Footnote>Generated {d.generated_at ?? "n/a"} by governance/quality_report.py. Full report: docs/data_quality_report.md.</Footnote>
     </QueryState>
   );
 }
@@ -59,7 +68,7 @@ export function Benchmark() {
       ]} />
       <DataTable searchable="Search questions" filters={[{ id: "dev", label: "Dev split", test: (r) => r[1] === "dev" }, { id: "refused", label: "Refused", test: (r) => r[3] === "yes" }, { id: "sql", label: "Answered with SQL", test: (r) => String(r[2]).includes("sql") }]} columns={["Question", "Split", "Answered as", "Refused", "Dev score", "Latency"]}
         rows={items.map((i) => [i.question_id, i.split, i.kind?.replace("_", " "), i.refused ? "yes" : "no", i.score ?? "hidden", `${i.latency_ms} ms`])} />
-      <p className="text-sm text-muted">The submission file is deliverables/benchmark_answers.csv, produced by the system as it is (make benchmark).</p>
+      <Footnote>The submission file is deliverables/benchmark_answers.csv, produced by the system as it is (make benchmark).</Footnote>
     </QueryState>
   );
 }
@@ -79,10 +88,16 @@ export function Monitoring() {
         { label: "Feature parity", value: par.sampled ? `${par.mismatched_rows} mismatches` : "n/a", note: par.sampled ? `${par.sampled} online rows × ${par.columns_checked} columns recomputed` : "", status: par.ok ? "ok" : "bad" },
         { label: "Benchmark (dev)", value: d.benchmark?.dev_mean_score?.toFixed?.(3) ?? "n/a", note: `${n(d.benchmark?.questions)} questions` },
       ]} />
-      <h2 className="text-xl">Text features vs 500 labelled transcripts</h2>
-      <DataTable columns={["Field", "Accuracy"]} rows={Object.entries(tx).map(([k, v]) => [k.replace(/_/g, " "), pct(v)])} />
-      <h2 className="mt-8 text-xl">Promise-break model</h2>
+      <SectionTag>Promise-break model</SectionTag>
       <ModelEval />
+      <SectionTag className="mt-8" subtitle="How often the rules that read call notes agree with 500 transcripts labelled by hand.">Text features</SectionTag>
+      <Card>
+        <dl className="m-0 grid gap-x-8 text-[14px] sm:grid-cols-2 lg:grid-cols-3">
+          {Object.entries(tx).map(([k, v]) => (
+            <div key={k} className="flex justify-between gap-4 border-b border-grey-300/60 py-2"><dt>{k.replace(/_/g, " ")}</dt><dd className="m-0 font-medium tabular">{pct(v)}</dd></div>
+          ))}
+        </dl>
+      </Card>
     </QueryState>
   );
 }
@@ -93,22 +108,27 @@ export function Contract() {
   const d: Json = q.data ?? {};
   return (
     <QueryState q={q}>
-      <Card className="mb-6">
-        <h2 className="mt-0 text-xl">{d.product} <span className="font-mono text-base text-muted">{d.contract_id} v{d.version}</span> <Badge kind="neutral">{d.status}</Badge></h2>
-        <dl className="m-0 grid gap-x-6 gap-y-2 text-sm md:grid-cols-[180px_1fr]">
-          {[["Owner", d.owner], ["Steward", d.steward], ["Policy approver", d.policy_approver], ["Grain", d.grain], ["Refresh", d.refresh], ["Freshness SLA", d.freshness_sla], ["Retention", d.retention], ["Based on", d.based_on]].map(([k, v]) => (
-            <Fragment key={String(k)}><dt className="font-medium">{k}</dt><dd className="m-0">{String(v ?? "")}</dd></Fragment>
-          ))}
-        </dl>
-      </Card>
-      <h2 className="text-xl">Schema</h2>
-      <DataTable columns={["Column", "Type", "PII class", "Source rule"]} rows={(d.schema ?? []).map((c: Json) => [c.name, c.type, c.pii_class, c.source_rule])} />
-      <h2 className="mt-8 text-xl">Quality rules</h2>
-      <DataTable columns={["#", "Rule", "Severity"]} rows={(d.quality_rules ?? []).map((r: Json) => [r.id, r.rule, r.severity])} />
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <Card><h3 className="mt-0">Allowed uses</h3><ul className="mb-0">{(d.allowed_uses ?? []).map((u: string) => <li key={u}>{u}</li>)}</ul></Card>
-        <Card><h3 className="mt-0">Not allowed</h3><ul className="mb-0">{(d.not_allowed ?? []).map((u: string) => <li key={u}>{u}</li>)}</ul></Card>
+      <div className="mb-6 grid gap-6 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <h2 className="mb-3 mt-0 flex flex-wrap items-baseline gap-x-3 text-[1.0625rem]"><span className="font-mono">{d.product}</span> <span className="font-mono text-[13.5px] font-normal text-muted">{d.contract_id} v{d.version}</span> <Badge kind="neutral">{title(d.status)}</Badge></h2>
+          <dl className="m-0 grid gap-x-6 gap-y-1.5 text-[14px] md:grid-cols-[160px_1fr]">
+            {[["Owner", d.owner], ["Steward", d.steward], ["Policy approver", d.policy_approver], ["Grain", d.grain], ["Refresh", d.refresh], ["Freshness SLA", d.freshness_sla], ["Retention", d.retention], ["Based on", d.based_on]].map(([k, v]) => (
+              <Fragment key={String(k)}><dt className="text-muted">{k}</dt><dd className="m-0">{String(v ?? "")}</dd></Fragment>
+            ))}
+          </dl>
+        </Card>
+        <Card className="h-full">
+          <h3 className="mb-1.5 mt-0">Allowed uses</h3>
+          <ul className="mb-4 mt-0 space-y-0.5 pl-5 text-[14px]">{(d.allowed_uses ?? []).map((u: string) => <li key={u}>{u}</li>)}</ul>
+          <h3 className="mb-1.5 mt-0">Not allowed</h3>
+          <ul className="m-0 space-y-0.5 pl-5 text-[14px]">{(d.not_allowed ?? []).map((u: string) => <li key={u}>{u}</li>)}</ul>
+        </Card>
       </div>
+      <PageTabs variant="segmented" label="Contract sections" param="view" tabs={[{ id: "schema", label: "Schema", count: (d.schema ?? []).length }, { id: "rules", label: "Quality rules", count: (d.quality_rules ?? []).length }]}>
+        {(view) => view === "schema"
+          ? <DataTable columns={["Column", "Type", "PII class", "Source rule"]} rows={(d.schema ?? []).map((c: Json) => [c.name, c.type, c.pii_class, c.source_rule])} render={(v, col) => (col === "Column" ? <code className="text-[13px]">{String(v)}</code> : String(v ?? ""))} />
+          : <DataTable columns={["#", "Rule", "Severity"]} rows={(d.quality_rules ?? []).map((r: Json) => [r.id, r.rule, r.severity])} render={(v, col) => (col === "Severity" ? (v === "error" ? <Badge kind="danger">Error</Badge> : <Badge kind="neutral">Warning</Badge>) : String(v ?? ""))} />}
+      </PageTabs>
     </QueryState>
   );
 }
@@ -144,13 +164,17 @@ export function Fairness() {
             { label: "Test promises audited", value: n(d.outcome?.promises), note: `${d.outcome?.test_period}, ${n(o.customers)} customers` },
             { label: "Groups for review", value: String(review.filter((r) => !r.includes("predicts")).length), note: "a person looks and explains", status: review.length ? "warn" : "ok" },
           ]} />
-          <h2 className="text-xl">Proxy test</h2>
-          <p className="text-[14px] text-muted">For each group of features, a simple model tries to predict each protected attribute from that group alone ({n(d.proxy.customers)} customers, 5-fold cross-validation). AUC above {d.proxy.threshold} sends the group to review; it is never an automatic drop.</p>
+          <PageTabs variant="segmented" label="Fairness tests" param="view" tabs={[{ id: "outcome", label: "Outcome test" }, { id: "proxy", label: "Proxy test" }]}>
+            {(view) => view === "proxy" ? (
+              <>
+          <p className="mb-3 mt-0 max-w-4xl text-[14px] text-muted">For each group of features, a simple model tries to predict each protected attribute from that group alone ({n(d.proxy.customers)} customers, 5-fold cross-validation). AUC above {d.proxy.threshold} sends the group to review; it is never an automatic drop.</p>
           <DataTable columns={["Feature group", "Features", "Highest AUC", "Predicts best", "Decision"]}
             rows={proxy.map((g) => [g.group.replace(/_/g, " "), g.n_features, g.max_auc.toFixed(3), ATTR_LABEL[g.worst_attribute] ?? g.worst_attribute, g.decision])}
             render={(v, c) => (c === "Decision" ? <Badge kind={v === "keep" ? "ok" : "danger"}>{v === "keep" ? "Keep" : "Review"}</Badge> : String(v ?? "n/a"))} />
-          <h2 className="mt-8 text-xl">Outcome test</h2>
-          <p className="text-[14px] text-muted">On the {n(d.outcome?.promises)} promises due {d.outcome?.test_period}, by group: how often the promise was broken, how the score compared, and how often the group was flagged high risk (score of {d.outcome?.thresholds?.flag_at} or more). Overall the score runs {Math.abs(o.calibration_gap * 100).toFixed(1)} points {o.calibration_gap < 0 ? "below" : "above"} reality, so a group is flagged for review only when its gap differs from that by more than {d.outcome?.thresholds?.calibration_gap * 100} points, or its flag rate is outside {d.outcome?.thresholds?.flag_ratio?.[0]}x to {d.outcome?.thresholds?.flag_ratio?.[1]}x of everyone's.</p>
+              </>
+            ) : (
+              <>
+          <p className="mb-3 mt-0 max-w-4xl text-[14px] text-muted">On the {n(d.outcome?.promises)} promises due {d.outcome?.test_period}, by group: how often the promise was broken, how the score compared, and how often the group was flagged high risk (score of {d.outcome?.thresholds?.flag_at} or more). Overall the score runs {Math.abs(o.calibration_gap * 100).toFixed(1)} points {o.calibration_gap < 0 ? "below" : "above"} reality, so a group is flagged for review only when its gap differs from that by more than {d.outcome?.thresholds?.calibration_gap * 100} points, or its flag rate is outside {d.outcome?.thresholds?.flag_ratio?.[0]}x to {d.outcome?.thresholds?.flag_ratio?.[1]}x of everyone's.</p>
           <div className="mb-4 flex flex-wrap gap-x-5 gap-y-1" role="group" aria-label="Protected attribute">
             {attrs.map((a) => (
               <button key={a.attribute} type="button" aria-pressed={cur?.attribute === a.attribute} onClick={() => setAttr(a.attribute)}
@@ -161,10 +185,10 @@ export function Fairness() {
           </div>
           {cur && (
             <DataTable columns={["Group", "Promises", "Broke", "Predicted", "Excess gap", "Flagged", "vs all", "Caught", "False alarms", "Calls / 30d", "Status"]}
-              rows={cur.groups.map((r: Json) => [r.group, r.promises, pct(r.break_rate), pct(r.predicted), signed(r.excess_gap), pct(r.flag_rate), r.flag_ratio == null ? "n/a" : `${r.flag_ratio.toFixed(2)}x`, pct(r.tpr), pct(r.fpr), r.attempts_30d.toFixed(1), r.status])}
+              rows={cur.groups.map((r: Json) => [String(r.group).replace(/_/g, " "), n(r.promises), pct(r.break_rate), pct(r.predicted), signed(r.excess_gap), pct(r.flag_rate), r.flag_ratio == null ? "n/a" : `${r.flag_ratio.toFixed(2)}x`, pct(r.tpr), pct(r.fpr), r.attempts_30d.toFixed(1), r.status])}
               render={(v, c) => (c === "Status" ? <Badge kind={v === "ok" ? "ok" : v === "review" ? "danger" : "neutral"}>{v === "ok" ? "OK" : v === "review" ? "Review" : "Low volume"}</Badge> : String(v ?? "n/a"))} />
           )}
-          {cur?.suppressed_groups > 0 && <p className="mt-2 text-[13px] text-muted">{cur.suppressed_groups} group(s) with fewer than 10 customers are hidden.</p>}
+          {cur?.suppressed_groups > 0 && <Footnote>{cur.suppressed_groups} group(s) with fewer than 10 customers are hidden.</Footnote>}
           {review.some((r) => r.startsWith("vulnerability_type")) && (
             <Card variant="grey" className="mt-6">
               <h3 className="mt-0">What we found, and what it means</h3>
@@ -172,7 +196,10 @@ export function Fairness() {
               <p className="mb-0">This is acceptable only because a higher break risk never raises pressure: the policy gate runs first, vulnerable and hardship customers get gentler treatment, and risk only decides whether to add a reminder or a person's follow-up. The review is to confirm that in the decisions once Layer 4 produces them, and to recalibrate by segment if the gap persists.</p>
             </Card>
           )}
-          <p className="mt-4 text-[13px] text-muted">{d.note} Next-best-action rates by group (pressure actions, contact rates, overrides) are added when Layer 4 decisions exist for the test period.</p>
+              </>
+            )}
+          </PageTabs>
+          <Footnote className="mt-4">{d.note} Next-best-action rates by group (pressure actions, contact rates, overrides) are added when Layer 4 decisions exist for the test period.</Footnote>
         </>
       )}
     </QueryState>

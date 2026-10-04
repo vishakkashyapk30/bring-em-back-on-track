@@ -12,6 +12,7 @@ import { HoldingsTable } from "@/components/HoldingsTable";
 import { IdentityLineage } from "@/components/IdentityLineage";
 import { NbaCard } from "@/components/NbaCard";
 import { QueryState, SampleBadge, Skeleton } from "@/components/States";
+import { PageTabs } from "@/components/Tabs";
 import { Timeline } from "@/components/Timeline";
 
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -42,8 +43,8 @@ export default function Customer() {
 
       <CustomerHeader d={d} pastDue={pastDue} />
 
-      <div className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <div className="min-w-0 space-y-8">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="min-w-0 space-y-6">
           <section aria-label="Next best action">
             {caseId ? (
               <QueryState q={nba} banner={false}>{nba.data && <NbaCard proposal={nba.data} sample={!!nba.data.meta?.fixture} />}</QueryState>
@@ -52,29 +53,29 @@ export default function Customer() {
             )}
           </section>
 
-          <section aria-labelledby="holdings-h">
-            <SectionTitle id="holdings-h" title="Products" note={`${holdings.length} accounts · ${cad(pastDue)} past due`} />
-            <HoldingsTable holdings={holdings as never[]} />
-          </section>
-
-          <section aria-labelledby="timeline-h">
-            <SectionTitle id="timeline-h" title="Contact history" note="Newest first. Open a call that has a recording to see its summary." />
-            <Card><QueryState q={tl}><Timeline items={tl.data?.items ?? []} /></QueryState></Card>
-          </section>
+          <div>
+            <PageTabs label="Customer details" param="view" tabs={[
+              { id: "history", label: "Contact history", count: tl.data?.items?.length },
+              { id: "products", label: "Products", count: holdings.length },
+            ]}>
+              {(view) => view === "products" ? (
+                <section aria-label="Products">
+                  <p className="mb-3 mt-0 text-[13.5px] text-muted">{holdings.length} accounts · {cad(pastDue)} past due</p>
+                  <HoldingsTable holdings={holdings as never[]} />
+                </section>
+              ) : (
+                <section aria-label="Contact history">
+                  <p className="mb-3 mt-0 text-[13.5px] text-muted">Newest first. Open a call that has a recording to see its summary.</p>
+                  <Card className="max-h-[440px] overflow-y-auto" tabIndex={0} aria-label="Contact history, scrollable"><QueryState q={tl}><Timeline items={tl.data?.items ?? []} /></QueryState></Card>
+                </section>
+              )}
+            </PageTabs>
+          </div>
         </div>
 
         <SidePanel goldenId={goldenId} caseId={caseId} />
       </div>
     </QueryState>
-  );
-}
-
-function SectionTitle({ id, title: t, note }: { id: string; title: string; note?: string }) {
-  return (
-    <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-      <h2 id={id} className="m-0 text-[18px]">{t}</h2>
-      {note && <span className="text-[13px] text-muted">{note}</span>}
-    </div>
   );
 }
 
@@ -90,7 +91,7 @@ function CustomerHeader({ d, pastDue }: { d: Json; pastDue: number }) {
         <span aria-hidden className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--radius-md)] bg-ink font-[family-name:var(--font-display)] text-[22px] font-semibold text-white">{initials}</span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <h1 className="m-0 text-[26px] leading-tight">{d.display_name}</h1>
+            <h1 className="m-0 text-[1.75rem] leading-tight">{d.display_name}</h1>
             <button type="button" onClick={copy} title="Copy this ID" className="inline-flex items-center gap-1.5 font-mono text-[13px] text-muted transition-colors hover:text-ink">
               {d.golden_id} <Copy size={12} aria-hidden />
             </button>
@@ -107,7 +108,7 @@ function CustomerHeader({ d, pastDue }: { d: Json; pastDue: number }) {
             {b.risk?.score != null && <span title="The bank's general collections risk score. It is separate from the chance that a promise breaks, shown in the next best action below."><Badge kind="neutral">Bank risk score: {String(b.risk.band).replace("_", " ")} ({b.risk.score})</Badge></span>}
           </div>
         </div>
-        <dl className="m-0 grid shrink-0 grid-cols-3 gap-6 text-right">
+        <dl className="m-0 grid w-full shrink-0 grid-cols-3 gap-4 sm:w-auto sm:gap-6 sm:text-right">
           <Figure label="Past due" value={cad(pastDue)} />
           <Figure label="Days past due" value={d.max_dpd ?? "n/a"} />
           <Figure label="Open case" value={d.open_case_id ?? "none"} mono />
@@ -166,7 +167,7 @@ function SidePanel({ goldenId, caseId }: { goldenId: string; caseId?: string }) 
                 tab === id ? "border-brand text-brand" : "border-transparent text-muted hover:text-ink")}>{label}</button>
           ))}
         </div>
-        <div key={tab} role="tabpanel" className="fade-in p-5">
+        <div key={tab} role="tabpanel" className="fade-in p-5 lg:max-h-[calc(100vh-170px)] lg:overflow-y-auto">
           {tab === "assist" && <AssistTab />}
           {tab === "eligibility" && <EligibilityTab caseId={caseId} />}
           {tab === "promise" && <PromiseTab caseId={caseId} />}
@@ -215,7 +216,7 @@ function EligibilityTab({ caseId }: { caseId?: string }) {
   const e = useEligibility(caseId);
   return (
     <QueryState q={e} banner={false}>
-      <div className="mb-3 flex items-center justify-between"><span className="text-[13.5px] text-muted">Hardship programmes this case qualifies for</span>{e.data?.meta?.fixture && <SampleBadge />}</div>
+      <div className="mb-3 flex items-center justify-between"><span className="text-[13.5px] text-muted">Hardship programs this case qualifies for</span>{e.data?.meta?.fixture && <SampleBadge />}</div>
       <EligibilityList programs={e.data?.programs ?? []} />
     </QueryState>
   );

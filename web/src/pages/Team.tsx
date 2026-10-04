@@ -5,7 +5,9 @@ import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
 import { DataTable } from "@/components/DataTable";
 import { SectionTag } from "@/components/SectionTag";
-import { QueryState } from "@/components/States";
+import { Footnote, QueryState } from "@/components/States";
+import { PageTabs } from "@/components/Tabs";
+import { usePlaybooks } from "@/api/ops";
 import { Playbooks } from "@/components/Playbooks";
 
 import { Button } from "@/components/Button";
@@ -14,34 +16,57 @@ import { productLabel } from "@/lib/labels";
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const p1 = (v: unknown) => (v == null ? "n/a" : `${v}%`);
 
-/** Team lead: strategy scorecard (S4, real data), agent roster (real), batch approvals (Layer 4). */
+/** Team lead: one page, five tabs so each part fits on a screen: strategy scorecard (real data), agent roster
+ * (real), batch approvals, playbooks and the capacity stress test. */
 export default function Team() {
   const sc = useGet("scorecard", "/scorecard");
   const ag = useGet("agents", "/team/agents");
+  const batches = useGet("batches", "/batches");
+  const plays = usePlaybooks();
+  const nBatches = (batches.data?.items ?? []).length;
+  const nPlays = (plays.data?.items ?? []).filter((p) => p.status === "pending_approval").length;
   return (
-    <div className="space-y-10">
-      <section>
-        <SectionTag as="h1" subtitle="Only cases opened at least 30 days before the snapshot are counted. Compare strategies within the same stage, not across stages.">Strategy scorecard</SectionTag>
-        <QueryState q={sc}>
-          <DataTable searchable="Search strategies" columns={["Stage", "Strategy", "Randomised cases", "30-day cure (randomised)", "All cases", "30-day cure (all)", "Cost per cure", "Complaints / 1,000"]}
-            rows={(sc.data?.items ?? []).map((r: Json) => [r.stage, r.strategy_code, r.randomised_cases, p1(r.cure_rate_30d_randomised), r.all_cases, p1(r.cure_rate_30d_all), r.cost_per_cure_cad == null ? "n/a" : `$${r.cost_per_cure_cad}`, r.complaints_per_1000_cases])}
-            render={(v, col) => (col === "30-day cure (randomised)" ? <span>{String(v)} <Badge kind="causal">causal</Badge></span> : col === "30-day cure (all)" ? <span>{String(v)} <Badge kind="observed">observed</Badge></span> : String(v ?? ""))} />
-          <Card variant="grey" className="mt-3 text-sm">{sc.data?.note}</Card>
-        </QueryState>
-      </section>
-      <section>
-        <SectionTag>Agents</SectionTag>
-        <QueryState q={ag}>
-          <DataTable searchable="Search agents" filters={[{ id: "hs", label: "Hardship-skilled", test: (r) => r[4] === true || r[4] === "true" || r[4] === 1 }, { id: "vc", label: "Vulnerable-certified", test: (r) => r[5] === "yes" }]} columns={["Agent", "Name", "Site", "Team", "Hardship skill", "Vulnerable-certified", "Case load", "PTP kept (90d)", "Cure (90d)"]}
-            rows={(ag.data?.items ?? []).map((a: Json) => [a.agent_id, a.name, a.site, a.team_id, a.skill_hardship, a.vulnerable_customer_certified ? "yes" : "no", `${a.current_case_load} / ${a.max_concurrent_cases}`, a.ptp_kept_rate_90d, a.cure_rate_90d])} />
-        </QueryState>
-      </section>
-      <section><SectionTag subtitle="Routine text and email reminders go out together, once you've looked over a 2% sample.">Batch approvals</SectionTag><Batches /></section>
-      <section><SectionTag subtitle="Suggested by the employer radar, the weather map and the outage shield. Approving creates a batch for the usual sample check. Nothing is sent.">Playbooks waiting for you</SectionTag><Playbooks /></section>
-      <section><SectionTag subtitle="See what happens to today's plan if a channel goes down or some agents are out.">Capacity stress test</SectionTag><StressTest /></section>
-    </div>
+    <>
+      <SectionTag as="h1" subtitle="Approve batches and playbooks, compare strategies, and see your agents and today's capacity.">Team</SectionTag>
+      <PageTabs label="Team sections" tabs={[
+        { id: "batches", label: "Batch approvals", count: batches.data ? nBatches : undefined },
+        { id: "playbooks", label: "Playbooks", count: plays.data ? nPlays : undefined },
+        { id: "scorecard", label: "Strategy scorecard" },
+        { id: "agents", label: "Agents", count: ag.data?.items?.length },
+        { id: "stress", label: "Stress test" },
+      ]}>
+        {(tab) => (
+          <>
+            {tab === "batches" && <section aria-label="Batch approvals"><Intro>Routine text and email reminders go out together, once you've looked over a 2% sample.</Intro><Batches /></section>}
+            {tab === "playbooks" && <section aria-label="Playbooks"><Intro>Suggested by the employer radar, the weather map and the outage shield. Approving creates a batch for the usual sample check. Nothing is sent.</Intro><Playbooks /></section>}
+            {tab === "scorecard" && (
+              <section aria-label="Strategy scorecard">
+                <Intro>Only cases opened at least 30 days before the snapshot are counted. Compare strategies within the same stage, not across stages.</Intro>
+                <QueryState q={sc}>
+                  <DataTable searchable="Search strategies" columns={["Stage", "Strategy", "Randomised cases", "30-day cure (randomised)", "All cases", "30-day cure (all)", "Cost per cure", "Complaints / 1,000"]}
+                    rows={(sc.data?.items ?? []).map((r: Json) => [r.stage, r.strategy_code, r.randomised_cases, p1(r.cure_rate_30d_randomised), r.all_cases, p1(r.cure_rate_30d_all), r.cost_per_cure_cad == null ? "n/a" : `$${r.cost_per_cure_cad}`, r.complaints_per_1000_cases])}
+                    render={(v, col) => (col === "30-day cure (randomised)" ? <span className="whitespace-nowrap">{String(v)} <Badge kind="causal">causal</Badge></span> : col === "30-day cure (all)" ? <span className="whitespace-nowrap">{String(v)} <Badge kind="observed">observed</Badge></span> : col === "Strategy" ? <span className="whitespace-nowrap">{String(v)}</span> : typeof v === "number" ? v.toLocaleString() : String(v ?? ""))} />
+                  <Footnote>{sc.data?.note}</Footnote>
+                </QueryState>
+              </section>
+            )}
+            {tab === "agents" && (
+              <section aria-label="Agents">
+                                <QueryState q={ag}>
+                  <DataTable searchable="Search agents" filters={[{ id: "hs", label: "Hardship-skilled", test: (r) => r[4] === true || r[4] === "true" || r[4] === 1 }, { id: "vc", label: "Vulnerable-certified", test: (r) => r[5] === "yes" }]} columns={["Agent", "Name", "Site", "Team", "Hardship skill", "Vulnerable-certified", "Case load", "PTP kept (90d)", "Cure (90d)"]}
+                    rows={(ag.data?.items ?? []).map((a: Json) => [a.agent_id, a.name, a.site, a.team_id, a.skill_hardship, a.vulnerable_customer_certified ? "yes" : "no", `${a.current_case_load} / ${a.max_concurrent_cases}`, a.ptp_kept_rate_90d, a.cure_rate_90d])} />
+                </QueryState>
+              </section>
+            )}
+            {tab === "stress" && <section aria-label="Stress test"><Intro>See what happens to today's plan if a channel goes down or some agents are out.</Intro><StressTest /></section>}
+          </>
+        )}
+      </PageTabs>
+    </>
   );
 }
+
+const Intro = ({ children }: { children: React.ReactNode }) => <p className="mb-4 mt-0 max-w-3xl text-[14px] text-muted">{children}</p>;
 
 const TREATMENT: Record<string, string> = { reminder: "Reminders", payment_link: "Payment links", plan_offer: "Plan offers", specialist_referral: "Specialist referrals" };
 const CHANNEL: Record<string, string> = { sms: "text", email: "email", push: "app message", call: "call", letter: "letter" };
@@ -52,7 +77,7 @@ function Batches() {
   const items: Json[] = q.data?.items ?? [];
   return (
     <QueryState q={q} empty={items.length === 0}>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {items.map((b) => (
           <Card key={b.batch_id}>
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -62,10 +87,12 @@ function Batches() {
               </div>
               <Button variant="primary" disabled={approve.isPending} onClick={() => approve.mutate(b.batch_id)}>Approve {b.count.toLocaleString()}</Button>
             </div>
-            <details className="mt-3">
-              <summary className="cursor-pointer text-[14px] font-medium">Sampled cases</summary>
+            <details className="group mt-3">
+              <summary className="cursor-pointer text-[14px] font-medium text-brand">Show the sampled cases</summary>
+              <div className="mt-3">
               <DataTable bare columns={["Customer", "Product", "Days past due", "Break risk", "Why"]}
                 rows={(b.sample ?? []).map((s: Json) => [s.name, productLabel(String(s.product)), s.dpd, s.p_break == null ? "n/a" : `${Math.round(s.p_break * 100)}%`, s.headline])} />
+              </div>
             </details>
           </Card>
         ))}
@@ -83,7 +110,7 @@ function StressTest() {
     <Card>
       <div className="flex flex-wrap items-end gap-4">
         <label className="text-[14.5px]">A channel is down
-          <select value={channel} onChange={(e) => setChannel(e.target.value)} className="mt-1 block h-10 rounded-[var(--radius-md)] border border-grey-300 bg-white px-2">
+          <select value={channel} onChange={(e) => setChannel(e.target.value)} className="mt-1 block h-10 w-48 rounded-[var(--radius-md)] border border-grey-300 bg-white px-2">
             <option value="">None</option>
             {Object.entries(CHANNEL).filter(([k]) => k !== "letter").map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>

@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 import { useEligibility, useFlag, useGet } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
 import { Button } from "@/components/Button";
-import { Card } from "@/components/Card";
 import { DataTable } from "@/components/DataTable";
-import { QueryState } from "@/components/States";
+import { Footnote, QueryState } from "@/components/States";
 import { productLabel } from "@/lib/labels";
 
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -25,7 +24,7 @@ function ReasonDialog({ open, title, onClose, onSubmit }: { open: boolean; title
       <form onSubmit={(e) => { e.preventDefault(); if (reason.trim()) onSubmit(reason.trim()); }}>
         <h3 className="mt-0">{title}</h3>
         <label className="block text-sm">Reason (required, saved to the audit log)
-          <textarea value={reason} onChange={(e) => setReason(e.target.value)} rows={3} className="mt-1 block w-full rounded-[var(--radius-md)] border border-ink p-2" />
+          <textarea value={reason} onChange={(e) => setReason(e.target.value)} rows={3} className="mt-1 block w-full rounded-[var(--radius-md)] border border-grey-300 p-2 outline-none focus:border-brand/50 focus:shadow-[var(--shadow-focus)]" />
         </label>
         <div className="mt-4 flex justify-end gap-2">
           <Button onClick={onClose}>Cancel</Button>
@@ -89,10 +88,10 @@ export function Board() {
           if (col === "") {
             const i = v as Json;
             return (
-              <span className="inline-flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <Link to={`/customers/${i.golden_id}`} className="mr-1 text-[14px] font-medium">Open</Link>
-                <Button size="sm" variant="primary" disabled={flag.isPending} onClick={() => setConfirming(i)}>Confirm</Button>
-                <Button size="sm" onClick={() => setClearing(i)}>Not hardship</Button>
+                <Button size="sm" disabled={flag.isPending} onClick={() => setConfirming(i)}>Confirm</Button>
+                <Button size="sm" variant="ghost" onClick={() => setClearing(i)}>Not hardship</Button>
               </span>
             );
           }
@@ -125,7 +124,7 @@ export function Missed() {
         rows={items.map((i) => [i.name, productLabel(String(i.product)), i.overdue, i.dpd, i.eligible_programs.map((p: Json) => p.program_name).join(", "), i])}
         render={(v, col) => {
           if (col === "Past due") return cad(v);
-          if (col === "") { const i = v as Json; return <Link to={`/hardship/simulator/${i.case_id}?program=${i.eligible_programs[0]?.program_id}`} className="font-medium">Try in simulator</Link>; }
+          if (col === "") { const i = v as Json; return <Link to={`/hardship/simulator/${i.case_id}?program=${i.eligible_programs[0]?.program_id}`} className="whitespace-nowrap font-medium">Try in simulator</Link>; }
           return String(v ?? "n/a");
         }}
       />
@@ -145,7 +144,7 @@ export function Overrides() {
         columns={["Agent", "Program", "Offers made while not eligible", "Of which the NBA had recommended"]}
         rows={items.map((i) => [`${i.agent_name ?? i.agent_id} (${i.agent_id})`, i.program_id, i.count, i.nba_recommended])}
       />
-      <Card variant="grey" className="mt-3 text-sm">A high count is a prompt for a coaching conversation, not a verdict: some overrides are right and the audit log holds the reason.</Card>
+      <Footnote>A high count is a prompt for a coaching conversation, not a verdict: some overrides are right and the audit log holds the reason.</Footnote>
     </QueryState>
   );
 }

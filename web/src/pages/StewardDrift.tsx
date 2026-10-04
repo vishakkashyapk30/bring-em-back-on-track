@@ -11,7 +11,7 @@ import { EmptyState, QueryState } from "@/components/States";
 const STATUS: Record<string, string> = { pending_engineer_approval: "Waiting for your approval", approved: "Approved, waiting for an engineer" };
 
 function Side({ title, children }: { title: string; children: React.ReactNode }) {
-  return <div className="min-w-0"><h4 className="m-0 text-[13px] font-semibold uppercase tracking-wide text-muted">{title}</h4><div className="mt-1 space-y-1 text-[14.5px]">{children}</div></div>;
+  return <div className="min-w-0"><h3 className="m-0 font-[family-name:var(--font-sans)] text-[13px] font-semibold text-muted">{title}</h3><div className="mt-1 space-y-1 text-[14.5px]">{children}</div></div>;
 }
 
 /** Data steward: schema changes found in a load, with the drafted fix. The app never applies the fix. */
@@ -35,7 +35,7 @@ export default function StewardDrift() {
                   <Card>
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div className="min-w-0">
-                        <h2 className="m-0 text-[1.15rem]">{f.table}</h2>
+                        <h2 className="m-0 font-mono text-[1.0625rem] font-semibold">{f.table}</h2>
                         <p className="m-0 text-[14px] text-muted">{c.event_description ?? f.description}{c.event_id ? ` (${c.event_id})` : ""}</p>
                       </div>
                       <Badge kind={pending ? "hardship" : "ok"}>{STATUS[f.status] ?? f.status}</Badge>
@@ -58,8 +58,8 @@ export default function StewardDrift() {
                       <p className="mb-0 mt-4 text-[14px]"><span className="text-muted">Biggest change in empty values: </span>
                         {nulls.map(([k, v], i) => <span key={k}>{i > 0 && ", "}<code>{k}</code> {pts(v)}</span>)}</p>
                     )}
-                    <h3 className="mb-1 mt-5 text-[14px]">Drafted fix</h3>
-                    <pre className="m-0 overflow-x-auto rounded-[var(--radius-md)] bg-navy p-4 font-mono text-sm leading-relaxed text-white" tabIndex={0} aria-label={`Drafted fix for ${f.table}`}><code>{f.diff}</code></pre>
+                    <h3 className="mb-1.5 mt-5 font-[family-name:var(--font-sans)] text-[13px] font-semibold text-muted">Drafted fix</h3>
+                    <pre className="m-0 overflow-x-auto rounded-[var(--radius-md)] bg-navy p-4 font-mono text-[13px] leading-relaxed text-white" tabIndex={0} aria-label={`Drafted fix for ${f.table}`}><code>{f.diff}</code></pre>
                     <div className="mt-4 flex justify-end">
                       <Button variant="primary" disabled={!pending} onClick={() => setOpen(f)}>{pending ? "Approve fix" : "Fix approved"}</Button>
                     </div>

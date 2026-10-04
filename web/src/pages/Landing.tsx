@@ -90,7 +90,7 @@ function Section({ id, title, text, items, cols, label, tinted = false }: {
   return (
     <section id={id} className={`scroll-mt-20 border-t border-grey-300/70 ${tinted ? "bg-white" : ""}`}>
       <div className="mx-auto max-w-[1680px] px-5 py-14 md:px-10">
-        <SectionTag subtitle={text}>{title}</SectionTag>
+        <SectionTag large subtitle={text}>{title}</SectionTag>
         <ol className={`m-0 mt-6 grid list-none gap-4 p-0 ${cols}`}>
           {items.map((it, i) => (
             <li key={it.title}>
@@ -127,7 +127,7 @@ function SignedInHome({ me }: { me: Session }) {
   return (
     <div className="mx-auto max-w-[1680px] px-5 py-10 md:px-10">
       <SectionTag as="h1" subtitle={<>{ROLE_LABEL[me.role] ?? me.role}. {ROLE_BLURB[me.role]}</>}
-        actions={<div className="flex flex-wrap gap-2">
+        actions={<div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
           <Link to={`/demo/${me.role}`} className={`${LINK_BTN} border-grey-300 bg-white text-ink hover:border-ink/40 hover:bg-grey-100`}>Watch my demo</Link>
           <Link to={firstScreen(me.role)} className={`${LINK_BTN} border-transparent bg-brand text-white hover:bg-brand-700`}>Open my workspace <ArrowRight size={17} aria-hidden /></Link>
         </div>}>
@@ -135,10 +135,10 @@ function SignedInHome({ me }: { me: Session }) {
       </SectionTag>
 
       {summary.data && (
-        <Card className="mb-8 grid gap-y-5 p-5 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-grey-300/70" role="group" aria-label="Live numbers from the pipeline">
+        <Card className="mb-8 grid grid-cols-2 gap-x-4 gap-y-5 p-5 lg:grid-cols-4 lg:divide-x lg:divide-grey-300/70" role="group" aria-label="Live numbers from the pipeline">
           {statItems(summary.data).map((s) => (
             <div key={s.label} className="lg:px-6 lg:first:pl-0">
-              <div className="font-[family-name:var(--font-display)] text-[2rem] font-semibold leading-none tabular">{s.value}</div>
+              <div className="font-[family-name:var(--font-display)] text-[1.625rem] font-semibold leading-none tabular sm:text-[2rem]">{s.value}</div>
               <div className="mt-1.5 text-[14px] text-muted">{s.label}</div>
             </div>
           ))}

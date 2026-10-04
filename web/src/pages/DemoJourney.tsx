@@ -30,18 +30,18 @@ function Stage({ stage, journey }: { stage: JourneyStage; journey: Journey }) {
       {showWho && journey.customer && (
         <Suspense fallback={<Skeleton lines={4} />}>
           <section aria-label={`How the records for ${journey.customer.name} were matched`}>
-            <h3 className="m-0 mb-2 text-[13px] font-semibold uppercase tracking-wide text-muted">One customer, built from several records</h3>
+            <h3 className="m-0 mb-2 font-[family-name:var(--font-sans)] text-[13px] font-semibold text-muted">One customer, built from several records</h3>
             <IdentityConstellation goldenId={journey.customer.golden_id} height={320} />
           </section>
         </Suspense>
       )}
       <div className="rounded-[var(--radius-md)] bg-grey-100 p-4">
-        <h3 className="m-0 font-[family-name:var(--font-display)] text-[20px] font-semibold">Why it matters</h3>
+        <h3 className="m-0 text-[1.0625rem]">Why it matters</h3>
         <p className="m-0 mt-1 text-[15px] leading-relaxed">{stage.why_it_matters}</p>
       </div>
       {stage.human_step && (
-        <div role="note" className="rounded-[var(--radius-md)] border-2 border-brand bg-brand-50 p-4">
-          <h3 className="m-0 flex items-center gap-2 font-[family-name:var(--font-display)] text-[20px] font-semibold"><UserCheck size={20} aria-hidden className="text-brand" />A person decides here</h3>
+        <div role="note" className="rounded-[var(--radius-md)] border border-grey-300/70 border-l-4 border-l-brand bg-white p-4">
+          <h3 className="m-0 flex items-center gap-2 text-[1.0625rem]"><UserCheck size={18} aria-hidden className="text-brand" />A person decides here</h3>
           <p className="m-0 mt-1 text-[15px] leading-relaxed">{stage.human_step}</p>
         </div>
       )}
@@ -112,10 +112,10 @@ export default function DemoJourney() {
     const other = me.data ? ROLE_LABEL[me.data.role] : null;
     return (
       <div className="mx-auto max-w-[640px] py-6">
-        <Card className="space-y-3 p-6">
+        <Card className="flex flex-col gap-3 p-6">
           <h1 className="m-0 text-[1.5rem]">{other ? `Switch to ${label}?` : `Sign in as ${label} to watch`}</h1>
           <p className="m-0 text-[15px] text-muted">{other ? `You are signed in as ${other}. This demo shows the ${label.toLowerCase()}'s day, so we need to switch.` : "The demo uses the live system, so it needs a session. No password is needed."}</p>
-          <div className="flex gap-3">
+          <div className="mt-1 flex flex-wrap gap-3">
             <Button variant="primary" disabled={login.isPending} onClick={() => login.mutate(persona)}>{other ? `Switch to ${label}` : `Sign in as ${label}`}</Button>
             <Link to="/demo" className="inline-flex h-10 items-center px-2 font-semibold text-brand underline-offset-4 hover:underline">Pick someone else</Link>
           </div>
@@ -160,7 +160,7 @@ export default function DemoJourney() {
 
         <Card className="min-w-0 p-5 md:p-7" aria-labelledby="stage-h">
           <p role="status" className="sr-only">{stageLabel(idx, total)}: {title}</p>
-          <h2 id="stage-h" className="m-0 mb-4 text-[1.5rem]">{title}</h2>
+          <h2 id="stage-h" className="m-0 mb-4 text-[1.25rem]">{title}</h2>
           {last ? <Recap journey={journey} onAssistant={() => open(journey.customer ? { caseId: journey.customer.case_id, goldenId: journey.customer.golden_id, label: `${journey.customer.name} (${journey.customer.case_id})` } : undefined)} />
             : stage && <Stage key={stage.id} stage={stage} journey={journey} />}
           <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-grey-300/70 pt-5">
