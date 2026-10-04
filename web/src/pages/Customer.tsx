@@ -108,7 +108,7 @@ function CustomerHeader({ d, pastDue }: { d: Json; pastDue: number }) {
   return (
     <Card hard className="overflow-hidden p-0">
       <div className="flex flex-wrap items-start gap-5 p-6">
-        <span aria-hidden className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--radius-md)] bg-ink font-[family-name:var(--font-display)] text-[22px] font-semibold text-white">{initials}</span>
+        <span aria-hidden className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--radius-md)] bg-brand font-[family-name:var(--font-display)] text-[22px] font-semibold text-white">{initials}</span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <h1 className="m-0 text-[1.75rem] leading-tight">{d.display_name}</h1>

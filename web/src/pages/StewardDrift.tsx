@@ -59,7 +59,7 @@ export default function StewardDrift() {
                         {nulls.map(([k, v], i) => <span key={k}>{i > 0 && ", "}<code>{k}</code> {pts(v)}</span>)}</p>
                     )}
                     <h3 className="mb-1.5 mt-5 font-[family-name:var(--font-sans)] text-[13px] font-semibold text-muted">Drafted fix</h3>
-                    <pre className="m-0 overflow-x-auto rounded-[var(--radius-md)] bg-navy p-4 font-mono text-[13px] leading-relaxed text-white" tabIndex={0} aria-label={`Drafted fix for ${f.table}`}><code>{f.diff}</code></pre>
+                    <pre className="m-0 overflow-x-auto rounded-[var(--radius-md)] border border-grey-300/70 bg-cream p-4 font-mono text-[13px] leading-relaxed text-ink" tabIndex={0} aria-label={`Drafted fix for ${f.table}`}><code>{f.diff}</code></pre>
                     <div className="mt-4 flex justify-end">
                       <Button variant="primary" disabled={!pending} onClick={() => setOpen(f)}>{pending ? "Approve fix" : "Fix approved"}</Button>
                     </div>

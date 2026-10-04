@@ -5,7 +5,7 @@ type Variant = "grey" | "brand" | "dark" | "plain";
 const fills: Record<Variant, string> = {
   grey: "bg-grey-100 text-ink border-transparent",
   brand: "bg-brand text-white border-transparent",
-  dark: "bg-navy text-white border-transparent",
+  dark: "bg-cream text-ink border-transparent",
   plain: "bg-white text-ink border-grey-300/70",
 };
 

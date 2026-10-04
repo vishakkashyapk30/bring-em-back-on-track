@@ -36,7 +36,7 @@ export function ModeSwitch({ className }: { className?: string }) {
   const opt = (value: AnswerMode, label: string, icon: JSX.Element, disabled = false, title?: string) => (
     <button type="button" aria-pressed={effective === value} disabled={disabled} title={title} onClick={() => setMode(value)}
       className={clsx("inline-flex h-8 items-center gap-1.5 rounded-[7px] px-3 text-[14px] font-medium transition-colors",
-        effective === value ? "bg-ink text-white" : "text-muted hover:text-ink", disabled && "cursor-not-allowed opacity-50 hover:text-muted")}>
+        effective === value ? "bg-brand text-white" : "text-muted hover:text-ink", disabled && "cursor-not-allowed opacity-50 hover:text-muted")}>
       {icon}{label}
     </button>
   );

@@ -55,7 +55,7 @@ export function PageTabs({ tabs, label, param = "tab", variant = "underline", ch
             <button key={t.id} ref={(el) => { refs.current[i] = el; }} type="button" role="tab" id={`tab-${t.id}`} aria-selected={sel}
               aria-controls={`panel-${t.id}`} tabIndex={sel ? 0 : -1} onClick={() => pick(t.id)} onKeyDown={(e) => onKey(e, i)}
               className={variant === "segmented"
-                ? clsx("inline-flex h-8 shrink-0 items-center whitespace-nowrap rounded-[var(--radius-sm)] px-3 text-[14px] font-medium transition-colors", sel ? "bg-ink text-white" : "text-muted hover:text-ink")
+                ? clsx("inline-flex h-8 shrink-0 items-center whitespace-nowrap rounded-[var(--radius-sm)] px-3 text-[14px] font-medium transition-colors", sel ? "bg-brand text-white" : "text-muted hover:text-ink")
                 : clsx(base, "bg-transparent", sel ? on : off)}>
               {t.label}{t.count != null && <span className={clsx("ml-1.5 tabular text-[12.5px] font-normal", sel && variant === "segmented" ? "text-white/75" : "text-muted")}>{t.count.toLocaleString()}</span>}
             </button>
@@ -73,7 +73,7 @@ export function Segmented<T extends string>({ value, options, onChange, label }:
     <div role="group" aria-label={label} className="inline-flex max-w-full rounded-[var(--radius-md)] border border-grey-300/70 bg-white p-1">
       {options.map(([v, text]) => (
         <button key={v} type="button" aria-pressed={value === v} onClick={() => onChange(v)}
-          className={clsx("h-8 shrink-0 whitespace-nowrap rounded-[var(--radius-sm)] px-3 text-[14px] font-medium transition-colors", value === v ? "bg-ink text-white" : "text-muted hover:text-ink")}>{text}</button>
+          className={clsx("h-8 shrink-0 whitespace-nowrap rounded-[var(--radius-sm)] px-3 text-[14px] font-medium transition-colors", value === v ? "bg-brand text-white" : "text-muted hover:text-ink")}>{text}</button>
       ))}
     </div>
   );

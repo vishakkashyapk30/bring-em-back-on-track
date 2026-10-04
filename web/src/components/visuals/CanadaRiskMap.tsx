@@ -240,17 +240,17 @@ function Loaded({ map }: { map: PublicMap }) {
             </svg>
 
             {tip && !postal && (
-              <div className="pointer-events-none absolute z-10 w-[230px] -translate-x-1/2 rounded-[var(--radius-md)] bg-ink px-3 py-2 text-[13px] leading-snug text-white shadow-[var(--shadow-raised)]"
+              <div className="pointer-events-none absolute z-10 w-[230px] -translate-x-1/2 rounded-[var(--radius-md)] bg-white border border-grey-300 shadow-md px-3 py-2 text-[13px] leading-snug text-ink shadow-[var(--shadow-raised)]"
                 style={{ left: `${Math.min(88, Math.max(12, (tip.p.x / W) * 100))}%`, top: `${Math.max(2, ((tip.p.y - tip.p.r) / H) * 100 - 2)}%`, transform: "translate(-50%, -100%)" }}>
                 <div className="font-semibold">{tip.p.name}</div>
                 <div>{fmtValue(tip.v, metric.unit)} · {versus(tip.v, national, metric.unit)}</div>
-                <div className="text-white/70">{fmtInt(tip.n)} customers{tip.top ? ` · mostly: ${tip.top}` : ""}</div>
+                <div className="text-muted">{fmtInt(tip.n)} customers{tip.top ? ` · mostly: ${tip.top}` : ""}</div>
               </div>
             )}
             {postal && hoverFsa && (() => {
               const d = dots.find((x) => x.fsa === hoverFsa)!;
               return (
-                <div className="pointer-events-none absolute z-10 rounded-[var(--radius-md)] bg-ink px-3 py-2 text-[13px] leading-snug text-white shadow-[var(--shadow-raised)]"
+                <div className="pointer-events-none absolute z-10 rounded-[var(--radius-md)] bg-white border border-grey-300 shadow-md px-3 py-2 text-[13px] leading-snug text-ink shadow-[var(--shadow-raised)]"
                   style={{ left: `${(d.x / W) * 100}%`, top: `${((d.y - d.r) / H) * 100}%`, transform: "translate(-50%, calc(-100% - 6px))" }}>
                   <div className="font-semibold">Postal area {d.fsa}, {d.province}</div>
                   <div>{fmtValue(d.value, metric.unit)} · {fmtInt(d.n)} customers</div>
@@ -291,7 +291,7 @@ function Loaded({ map }: { map: PublicMap }) {
           <Segmented label="Map detail" value={postal ? "postal" : "province"} onChange={(v) => { setPostal(v === "postal"); setTable(false); setPlaying(false); }}
             options={[["province", "Provinces"], ["postal", "Postal areas"]]} />
           <button type="button" aria-pressed={table} onClick={() => setTable((t) => !t)}
-            className={`inline-flex h-10 cursor-pointer items-center gap-2 rounded-[var(--radius-md)] border border-grey-300/70 px-3 text-[14px] font-medium ${table ? "bg-ink text-white" : "bg-white text-ink hover:bg-grey-100"}`}>
+            className={`inline-flex h-10 cursor-pointer items-center gap-2 rounded-[var(--radius-md)] border border-grey-300/70 px-3 text-[14px] font-medium ${table ? "bg-white border border-grey-300 shadow-md text-ink" : "bg-white text-ink hover:bg-grey-100"}`}>
             <Table2 size={15} aria-hidden /> {table ? "View as map" : "View as table"}
           </button>
         </div>

@@ -10,6 +10,7 @@ vi.mock("@/components/visuals/CanadaRiskMap", () => ({ CanadaRiskMap: () => <div
 vi.mock("@/components/visuals/DecisionFlow", () => ({ DecisionFlow: () => <div data-testid="flow" /> }));
 vi.mock("@/components/visuals/IdentityConstellation", () => ({ IdentityConstellation: () => <div data-testid="constellation" /> }));
 vi.mock("@/components/Globe", () => ({ Globe: () => <div data-testid="globe" /> }));
+vi.mock("@/components/story/StoryScene", () => ({ default: () => <div data-testid="story" /> }));
 
 import Landing, { firstScreen, statItems } from "./Landing";
 
@@ -27,6 +28,26 @@ describe("landing page gating", () => {
     expect(screen.queryByTestId("flow")).toBeNull();
     expect(screen.queryByTestId("constellation")).toBeNull();
     expect(document.body.textContent).not.toMatch(/1,001,072|86,044/);
+  });
+
+  it("signed out with WebGL: the scroll story keeps the same headline and calls to action, still with no data", async () => {
+    const proto = HTMLCanvasElement.prototype as unknown as { getContext: unknown };
+    const original = proto.getContext;
+    vi.stubGlobal("WebGLRenderingContext", function WebGLRenderingContext() {});
+    proto.getContext = () => ({ getExtension: () => null });
+    try {
+      wrap();
+      expect(await screen.findByTestId("story")).toBeTruthy();
+      expect(screen.queryByTestId("globe")).toBeNull();
+      expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Help customers get back on track.");
+      expect(screen.getAllByRole("link", { name: /Sign in as a persona/ })[0].getAttribute("href")).toBe("/login");
+      expect(screen.getByRole("link", { name: "Watch the demo" }).getAttribute("href")).toBe("/demo");
+      expect(screen.queryByTestId("map")).toBeNull();
+      expect(document.body.textContent).not.toMatch(/1,001,072|86,044/);
+    } finally {
+      proto.getContext = original;
+      vi.unstubAllGlobals();
+    }
   });
 
   it("while the session loads nothing from the data is mounted", () => {

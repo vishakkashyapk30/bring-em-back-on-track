@@ -58,7 +58,7 @@ export function EvidenceView({ evidence: e, dense = false }: { evidence?: Eviden
         </div>
       )}
       {e.text && (
-        <pre tabIndex={0} aria-label="Detail text" className="m-0 max-h-64 overflow-auto whitespace-pre-wrap break-words rounded-[var(--radius-md)] bg-navy p-3 font-mono text-[12.5px] leading-relaxed text-white">{e.text}</pre>
+        <pre tabIndex={0} aria-label="Detail text" className="m-0 max-h-64 overflow-auto whitespace-pre-wrap break-words rounded-[var(--radius-md)] bg-cream p-3 font-mono text-[12.5px] leading-relaxed text-ink">{e.text}</pre>
       )}
       {e.links && e.links.length > 0 && (
         <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0">
