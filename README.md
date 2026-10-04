@@ -13,9 +13,11 @@ A collections platform on the synthetic Maple Bank dataset, with four layers wor
 
 **Judges:** the deliverables are listed in "Deliverables" below, and "Where each layer's required item is" maps every must-show item to the code, the screen and the evidence. The rest of the documentation is indexed in [`docs/README.md`](docs/README.md).
 
-## One customer, end to end
+## The demo video and the pitch deck
 
-The demo video and the pitch deck both follow one synthetic customer, **J. Tyler** (`G-JAT7827`, case `CS-2026-672507`), from start to finish. His records are spread across five source systems, and the platform joins them into one customer view. An agent sees why he is in the queue and what to do next, and approves it. A hardship specialist then tries a plan for him without saving anything, and every step lands in the audit log. Following one person shows the difference better than a list of features: the same customer who would get a generic reminder call today gets a safe next step that a person has approved and the system can explain. To follow along in the app, open `http://localhost:8080/customers/G-JAT7827` after `docker compose up --build`.
+**The demo video** is a tour of as much of the website as fits in 5 minutes. It signs in as each of the five personas in turn and shows their screens on the real dataset: the agent's queue, customer page and next best action with approve, change and override; the hardship board and plan simulator; Ask with its SQL, sources and a refusal; Track and the inbox; batch approvals and the stress test; and the data quality, fairness, monitoring and audit pages.
+
+**The pitch deck** follows one synthetic customer, **J. Tyler** (`G-JAT7827`, case `CS-2026-672507`), from start to finish. His records are spread across five source systems, and the platform joins them into one customer view. An agent sees why he is in the queue and what to do next, and approves it, and the choice lands in the audit log. Following one person shows the difference better than a list of features: the same customer who would get a generic reminder call today gets a safe next step that a person has approved and the system can explain. To see him in the app, open `http://localhost:8080/customers/G-JAT7827` after `docker compose up --build`.
 
 ## What is new, and where to see it
 
@@ -253,7 +255,7 @@ Details are in [`docs/ai_tools.md`](docs/ai_tools.md).
 
 ## Where each layer's required item is
 
-The repository is [vishakkashyapk30/bring-em-back-on-track](https://github.com/vishakkashyapk30/bring-em-back-on-track) (private; the organisers are collaborators). Sign in at `/login` as one of the five personas: collections agent, hardship specialist, team lead, strategy analyst or data steward. The demo customer in the video and the deck is J. Tyler, `G-JAT7827`.
+The repository is [vishakkashyapk30/bring-em-back-on-track](https://github.com/vishakkashyapk30/bring-em-back-on-track) (private; the organisers are collaborators). Sign in at `/login` as one of the five personas: collections agent, hardship specialist, team lead, strategy analyst or data steward. The customer the deck follows is J. Tyler, `G-JAT7827`.
 
 | Layer | Must show (official) | Where in the code | Where in the app | Evidence |
 |---|---|---|---|---|
@@ -285,8 +287,8 @@ SPEC_ADAPTER=tests_spec.adapter_impl:make_adapter uv run pytest tests_spec   # i
 | 3 | Data contract (golden C360, based on DC-COLL-001) | Shown in full in this README (see "Data contract") and also in the repo as [`docs/contracts/c360_customer.v1.yaml`](docs/contracts/c360_customer.v1.yaml) |
 | 4 | Data quality report | Summarised in this README (see "Data quality") and also in the repo, in full, as [`docs/data_quality_report.md`](docs/data_quality_report.md) |
 | 5 | Benchmark answers (35 release questions and the 15 extra ones) | [`deliverables/benchmark_answers.csv`](deliverables/benchmark_answers.csv). Results are summarised in this README (see "Benchmark results") and in full in [`docs/benchmark_results.md`](docs/benchmark_results.md) |
-| 6 | Demo video (5 minutes) | Google Drive link: to be added. It follows one customer, J. Tyler, end to end (see "One customer, end to end") |
-| 7 | Pitch deck (10 slides, PDF) | Google Drive link: to be added. It follows the same customer, J. Tyler. The PDF is also in the repo root: [`back-on-track-deck.pdf`](back-on-track-deck.pdf) |
+| 6 | Demo video (5 minutes) | Google Drive link: to be added. A tour of as many features across the website as fit in 5 minutes, signed in as each persona (see "The demo video and the pitch deck") |
+| 7 | Pitch deck (10 slides, PDF) | Google Drive link: to be added. It follows one customer, J. Tyler, end to end. The PDF is also in the repo root: [`back-on-track-deck.pdf`](back-on-track-deck.pdf) |
 
 ## Repository layout
 
