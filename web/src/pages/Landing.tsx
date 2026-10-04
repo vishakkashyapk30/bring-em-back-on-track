@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useMe } from "@/api/hooks";
@@ -7,6 +7,7 @@ import type { Session } from "@/api/types";
 import { usePublicSummary, type PublicSummary } from "@/api/visuals";
 import { Card } from "@/components/Card";
 import { SectionTag } from "@/components/SectionTag";
+import { Segmented } from "@/components/Tabs";
 import { Skeleton } from "@/components/States";
 import { DecisionFlow } from "@/components/visuals/DecisionFlow";
 import { Hero } from "@/components/visuals/Hero";
@@ -121,6 +122,7 @@ export function statItems(s: PublicSummary): { value: string; label: string }[] 
 
 function SignedInHome({ me }: { me: Session }) {
   const summary = usePublicSummary(true);
+  const [view, setView] = useState<"map" | "flow" | "customer">("map");
   const name = me.display_name || me.user_id;
   return (
     <div className="mx-auto max-w-[1680px] px-5 py-10 md:px-10">
@@ -143,16 +145,16 @@ function SignedInHome({ me }: { me: Session }) {
         </Card>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-12">
-        <div className="min-w-0 lg:col-span-7">
-          <Suspense fallback={<div role="status" aria-label="Loading" className="skeleton h-[520px] w-full rounded-[var(--radius-lg)]" />}><CanadaRiskMap /></Suspense>
-        </div>
-        <div className="min-w-0 lg:col-span-5">
+      <div className="mb-4 max-w-full overflow-x-auto [scrollbar-width:none]"><Segmented label="What to look at" value={view} onChange={setView}
+        options={[["map", "Where promises break"], ["flow", "Last night's decisions"], ["customer", "One customer"]]} /></div>
+      <div key={view} className="fade-in">
+        {view === "map" && <Suspense fallback={<div role="status" aria-label="Loading" className="skeleton h-[520px] w-full rounded-[var(--radius-lg)]" />}><CanadaRiskMap /></Suspense>}
+        {view === "flow" && <DecisionFlow />}
+        {view === "customer" && (
           <Suspense fallback={<div role="status" aria-label="Loading" className="skeleton h-[400px] w-full rounded-[var(--radius-lg)]" />}>
-            <IdentityConstellation goldenId="sample" height={440} framed />
+            <IdentityConstellation goldenId="sample" height={420} framed />
           </Suspense>
-        </div>
-        <div className="min-w-0 lg:col-span-12"><DecisionFlow /></div>
+        )}
       </div>
     </div>
   );

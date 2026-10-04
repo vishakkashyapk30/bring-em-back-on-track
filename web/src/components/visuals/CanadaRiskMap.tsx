@@ -158,7 +158,7 @@ function Loaded({ map }: { map: PublicMap }) {
   return (
     <MapFrame takeaway={mapTakeaway(map, metricId, monthIdx)}>
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
-        <div>
+        <div className="min-w-0 max-w-full">
           <div className="max-w-full overflow-x-auto [&_button]:whitespace-nowrap">
           <Segmented label="What the map shows" value={metricId} onChange={(id) => { setMetric(id); setPlaying(false); }}
             options={METRIC_ORDER.filter((id) => map.metrics[id]).map((id) => [id, METRIC_SHORT[id]] as [MetricId, string])} />
@@ -199,7 +199,7 @@ function Loaded({ map }: { map: PublicMap }) {
           </div>
         ) : (
           <div className="relative mx-auto max-w-[880px]">
-            <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="group" aria-label={`Map of Canada: ${METRIC_SHORT[metricId]} by ${postal ? "postal area" : "province"}. Use the table view for the same numbers as text.`}>
+            <svg viewBox={`0 0 ${W} ${H}`} className="mx-auto block h-auto max-h-[430px] w-full" role="group" aria-label={`Map of Canada: ${METRIC_SHORT[metricId]} by ${postal ? "postal area" : "province"}. Use the table view for the same numbers as text.`}>
               <path d={USA_D} fill="var(--color-grey-100)" stroke="var(--color-grey-300)" strokeWidth={0.6} aria-hidden />
               <path d={CANADA_D} fill="var(--color-cream)" stroke="var(--color-muted)" strokeOpacity={0.55} strokeWidth={0.9} strokeLinejoin="round" aria-hidden />
               {postal ? (

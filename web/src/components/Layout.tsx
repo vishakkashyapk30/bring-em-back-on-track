@@ -68,7 +68,7 @@ export function Layout() {
                   <div className="text-[15px] font-semibold">{me.data?.display_name}</div>
                   <div className="text-[13px] text-muted">{ROLE_LABEL[me.data?.role ?? ""]}</div>
                 </div>
-                <button type="button" onClick={signOut} className="ml-3 whitespace-nowrap border-l border-grey-300 py-2 pl-4 text-[14.5px] sm:ml-6 sm:pl-6 font-semibold text-brand underline-offset-4 hover:underline">
+                <button type="button" onClick={signOut} className="ml-3 hidden whitespace-nowrap border-l border-grey-300 py-2 pl-4 text-[14.5px] font-semibold text-brand underline-offset-4 hover:underline sm:ml-6 sm:inline sm:pl-6">
                   Switch role
                 </button>
               </>
@@ -85,6 +85,11 @@ export function Layout() {
             {(signedIn ? links.map((n) => [n.to, n.label]) : PUBLIC_LINKS).map(([to, label]) => (
               <Link key={to} to={to} onClick={() => setOpen(false)} className="block rounded-[var(--radius-md)] px-3 py-2 text-ink no-underline hover:bg-grey-100">{label}</Link>
             ))}
+            {signedIn && (
+              <button type="button" onClick={() => { setOpen(false); signOut(); }} className="block w-full rounded-[var(--radius-md)] px-3 py-2 text-left font-semibold text-brand hover:bg-grey-100 sm:hidden">
+                Switch role
+              </button>
+            )}
           </nav>
         )}
       </header>

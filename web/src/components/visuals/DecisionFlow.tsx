@@ -153,11 +153,14 @@ function Flow({ flow }: { flow: PublicFlow }) {
         )}
       </div>
 
-      <table className="sr-only">
-        <caption>Cases moving from one step to the next</caption>
-        <thead><tr><th scope="col">From</th><th scope="col">To</th><th scope="col">Cases</th></tr></thead>
-        <tbody>{flow.links.map((l) => <tr key={linkKey(l)}><td>{label(l.source)}</td><td>{label(l.target)}</td><td>{fmtInt(l.value)}</td></tr>)}</tbody>
-      </table>
+      {/* The wrapper is the screen-reader-only box: an absolutely positioned table would stretch the page below the footer. */}
+      <div className="sr-only">
+        <table>
+          <caption>Cases moving from one step to the next</caption>
+          <thead><tr><th scope="col">From</th><th scope="col">To</th><th scope="col">Cases</th></tr></thead>
+          <tbody>{flow.links.map((l) => <tr key={linkKey(l)}><td>{label(l.source)}</td><td>{label(l.target)}</td><td>{fmtInt(l.value)}</td></tr>)}</tbody>
+        </table>
+      </div>
     </Frame>
   );
 }

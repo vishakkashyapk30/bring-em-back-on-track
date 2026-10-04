@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { toast } from "sonner";
 
 import { post } from "@/api/client";
 import { useGet } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
+import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { SectionTag } from "@/components/SectionTag";
 import { QueryState } from "@/components/States";
@@ -24,7 +26,9 @@ export default function StewardIdentity() {
     onSuccess: (_r, v) => { qc.invalidateQueries({ queryKey: ["audit"] }); toast.success(`Verdict saved: ${v.verdict.replace("_", " ")}`, { description: `Pair ${v.id}, applied on the next identity run.` }); },
     onError: () => toast.error("Couldn't save the verdict"),
   });
-  const items: Pair[] = q.data?.items ?? [];
+  const all: Pair[] = q.data?.items ?? [];
+  const [shown, setShown] = useState(8);
+  const items = all.slice(0, shown);
   return (
     <>
       <SectionTag as="h1" subtitle={`${(q.data?.total ?? 0).toLocaleString()} possible matches need a human look. Only link two records when you're sure, because a wrong link is worse than a missing one.`}>Identity review</SectionTag>
@@ -55,6 +59,12 @@ export default function StewardIdentity() {
           );
         })}
       </QueryState>
+      {all.length > shown && (
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={() => setShown(shown + 8)}>Show more</Button>
+          <span className="text-sm text-muted">Showing {shown} of {all.length.toLocaleString()} loaded pairs</span>
+        </div>
+      )}
     </>
   );
 }

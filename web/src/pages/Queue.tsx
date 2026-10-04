@@ -13,7 +13,7 @@ import { actionLabel, productLabel, windowLabel } from "@/lib/labels";
 
 const BAND = { low: "Low", medium: "Medium", high: "High", very_high: "Very high" } as const;
 const SORTS: [string, string][] = [["priority", "Priority"], ["risk", "Break risk"], ["overdue", "Amount past due"], ["dpd", "Days past due"], ["name", "Name"]];
-const PAGE = 50;
+const PAGE = 15;
 
 const money = (n?: number) => (n == null ? "" : n.toLocaleString("en-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 }));
 

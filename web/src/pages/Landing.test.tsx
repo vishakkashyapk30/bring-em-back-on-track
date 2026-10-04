@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -41,8 +41,12 @@ describe("landing page gating", () => {
     expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Hello, M. Cochran");
     expect(screen.getByRole("link", { name: /Open my workspace/ }).getAttribute("href")).toBe("/queue");
     expect(screen.getByRole("link", { name: "Watch my demo" }).getAttribute("href")).toBe("/demo/agent");
+    // one picture at a time, so the home fits on a screen
     expect(await screen.findByTestId("map")).toBeTruthy();
+    expect(screen.queryByTestId("flow")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Last night's decisions" }));
     expect(screen.getByTestId("flow")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "One customer" }));
     expect(await screen.findByTestId("constellation")).toBeTruthy();
     expect(screen.getByText("1,001,072")).toBeTruthy();
   });

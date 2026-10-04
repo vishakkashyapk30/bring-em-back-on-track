@@ -30,12 +30,12 @@ export default function Login() {
         </ul>
       </div>
       <div className="space-y-3">
-        {PERSONAS.map(({ role, title, home, blurb, icon: Icon }) => {
+        {PERSONAS.map(({ role, title, blurb, icon: Icon }) => {
           const busy = login.isPending && login.variables === role;
           return (
             <div key={role} className="rounded-[var(--radius-md)] border border-grey-300 bg-white transition-colors hover:border-ink">
               <button type="button" disabled={login.isPending}
-                onClick={() => login.mutate(role, { onSuccess: () => nav(home) })}
+                onClick={() => login.mutate(role, { onSuccess: () => nav("/", { replace: true }) })}
                 className="group flex w-full items-center gap-4 rounded-[var(--radius-md)] p-4 text-left disabled:opacity-70">
                 <Icon size={24} aria-hidden className="shrink-0 text-brand" />
                 <span className="min-w-0 flex-1">

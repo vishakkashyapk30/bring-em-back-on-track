@@ -25,15 +25,15 @@ export default function Features() {
     <>
       <SectionTag as="h1" subtitle="Each feature is defined once and used the same way for training and for live scoring.">Feature store</SectionTag>
       <StatTiles items={[
-        { label: "Features", value: String(f.length), note: `${by("sql")} from structured data · ${by("rule")} from text` },
+        { label: "Features", value: String(f.length), note: `${by("sql")} from structured data · ${by("ai")} from text · ${by("voice")} from voice` },
         { label: "Training ↔ live parity", value: p.sampled ? `${p.mismatched_rows} mismatches` : "n/a", note: p.sampled ? `${p.sampled} rows × ${p.columns_checked} columns recomputed` : "", status: p.ok ? "ok" : undefined },
         { label: "Text-feature accuracy", value: "99.6%", note: "hardship, on 500 labelled transcripts" },
-        { label: "LLM-built features", value: String(by("llm")), note: "offline rules by default; an LLM is optional" },
+        { label: "Text and voice features", value: String(by("ai") + by("voice")), note: "read by rules by default; a language model is optional" },
       ]} />
       <QueryState q={q}>
-        <DataTable searchable="Search features" filters={[{ id: "rule", label: "Rule-built", test: (r) => r[5] === "rule" }, { id: "sql", label: "SQL", test: (r) => r[5] === "sql" }, { id: "llm", label: "LLM", test: (r) => r[5] === "llm" }]} columns={["Feature", "Entity", "Type", "Source", "Available from", "Built by"]}
+        <DataTable searchable="Search features" filters={[{ id: "sql", label: "SQL", test: (r) => r[5] === "sql" }, { id: "ai", label: "Text", test: (r) => r[5] === "ai" }, { id: "voice", label: "Voice", test: (r) => r[5] === "voice" }]} columns={["Feature", "Entity", "Type", "Source", "Available from", "Built by"]}
           rows={f.map((x) => [x.name, x.entity, x.type, (x.source as string[]).join(", "), x.available_ts, x.built_by])}
-          render={(v, col) => (col === "Built by" ? <Badge kind={v === "llm" ? "llm" : v === "rule" ? "model-estimate" : "sql"}>{String(v)}</Badge> : col === "Feature" ? <code>{String(v)}</code> : String(v ?? ""))} />
+          render={(v, col) => (col === "Built by" ? <Badge kind={v === "ai" || v === "voice" ? "model-estimate" : "sql"}>{v === "ai" ? "text" : String(v)}</Badge> : col === "Feature" ? <code>{String(v)}</code> : String(v ?? ""))} />
       </QueryState>
       <h2 className="mt-10 text-xl">Live feature vector</h2>
       <form className="mb-4 flex gap-2" onSubmit={(e) => { e.preventDefault(); setLookup(gid.trim()); }}>
