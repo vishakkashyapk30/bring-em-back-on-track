@@ -6,6 +6,7 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-do
 
 import { post } from "@/api/client";
 import { useMe } from "@/api/hooks";
+import { useInboxCounts } from "@/api/inbox";
 import { NAV } from "@/lib/session";
 
 import { AssistantDrawer, AssistantLauncher } from "./assistant/AssistantDrawer";
@@ -28,6 +29,8 @@ export function Layout() {
   const [open, setOpen] = useState(false);
   const signedIn = !!me.data;
   const links = [...NAV.filter((n) => me.data && n.roles.includes(me.data.role)), ...(me.data ? [{ to: `/demo/${me.data.role}`, label: "My demo", roles: [] }] : [])];
+  const inboxTotal = useInboxCounts(signedIn).data?.total;
+  if (me.data) links.splice(links.length - 1, 0, { to: "/inbox", label: "Inbox", roles: [] }); // before "My demo"
   const fullBleed = loc.pathname === "/";
 
   const signOut = async () => {
@@ -42,19 +45,19 @@ export function Layout() {
     <div className="flex min-h-screen flex-col">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2">Skip to content</a>
       <header className="sticky top-0 z-40 border-b border-grey-300/70 bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
-        <div className="mx-auto flex h-[72px] w-full max-w-[1680px] items-center gap-3 px-4 sm:gap-8 sm:px-5 md:px-10">
+        <div className="mx-auto flex h-[72px] w-full max-w-[1680px] items-center gap-3 px-4 sm:gap-4 sm:px-5 md:px-8 xl:gap-8 2xl:px-10">
           <Link to="/" aria-label="back-on-track.ai, home page" className="flex min-h-10 shrink-0 items-center gap-2.5 text-ink no-underline hover:no-underline">
             <img src="/favicon.svg" alt="" width={28} height={28} />
             <span className="font-[family-name:var(--font-display)] text-[22px] sm:text-[26px] font-semibold leading-none">back-on-track<span className="text-brand">.ai</span></span>
           </Link>
 
-          <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+          <nav aria-label="Main" className={clsx("hidden items-center gap-0.5 xl:gap-1", signedIn ? "xl:flex" : "md:flex")}>
             {signedIn
               ? links.map((n) => (
                   <NavLink key={n.to} to={n.to} className={({ isActive }) => clsx(
-                    "relative rounded-[var(--radius-md)] px-4 py-2.5 text-[16px] font-medium no-underline transition-colors hover:no-underline",
+                    "relative whitespace-nowrap rounded-[var(--radius-md)] px-2.5 py-2.5 text-[15px] font-medium no-underline transition-colors hover:no-underline xl:px-3.5 2xl:px-4 2xl:text-[16px]",
                     isActive ? "text-brand" : "text-ink/75 hover:bg-grey-100 hover:text-ink")}>
-                    {({ isActive }) => (<>{n.label}{isActive && <span aria-hidden className="absolute inset-x-4 -bottom-[13px] h-0.5 rounded-full bg-brand" />}</>)}
+                    {({ isActive }) => (<>{n.label}{n.to === "/inbox" && <NavCount n={inboxTotal} />}{isActive && <span aria-hidden className="absolute inset-x-2.5 -bottom-[13px] xl:inset-x-3.5 2xl:inset-x-4 h-0.5 rounded-full bg-brand" />}</>)}
                   </NavLink>))
               : PUBLIC_LINKS.map(([to, label]) => (
                   <Link key={to} to={to} className="rounded-[var(--radius-md)] px-4 py-2.5 text-[16px] font-medium text-ink/75 no-underline transition-colors hover:bg-grey-100 hover:text-ink hover:no-underline">{label}</Link>))}
@@ -64,29 +67,29 @@ export function Layout() {
             {signedIn ? (
               <>
                 <AssistantLauncher />
-                <div className="hidden leading-tight sm:block">
+                <div className="hidden leading-tight min-[1500px]:block">
                   <div className="text-[15px] font-semibold">{me.data?.display_name}</div>
                   <div className="text-[13px] text-muted">{ROLE_LABEL[me.data?.role ?? ""]}</div>
                 </div>
-                <button type="button" onClick={signOut} className="ml-3 hidden whitespace-nowrap border-l border-grey-300 py-2 pl-4 text-[14.5px] font-semibold text-brand underline-offset-4 hover:underline sm:ml-6 sm:inline sm:pl-6">
+                <button type="button" onClick={signOut} title={`Signed in as ${me.data?.display_name}, ${ROLE_LABEL[me.data?.role ?? ""]}`} className="ml-3 hidden whitespace-nowrap py-2 text-[14.5px] font-semibold text-brand underline-offset-4 hover:underline xl:inline min-[1500px]:ml-6 min-[1500px]:border-l min-[1500px]:border-grey-300 min-[1500px]:pl-6">
                   Switch role
                 </button>
               </>
             ) : (
               <Link to="/login" className="inline-flex h-10 items-center whitespace-nowrap rounded-[var(--radius-md)] bg-brand px-4 sm:px-5 text-[15px] font-medium text-white no-underline transition-colors hover:bg-brand-700 hover:no-underline">Sign in</Link>
             )}
-            <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-sm)] md:hidden" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+            <button type="button" className={`inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-sm)] ${signedIn ? "xl:hidden" : "md:hidden"}`} aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
               {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
         {open && (
-          <nav aria-label="Mobile" className="fade-in border-t border-grey-300/70 bg-white px-5 py-2 md:hidden">
-            {(signedIn ? links.map((n) => [n.to, n.label]) : PUBLIC_LINKS).map(([to, label]) => (
+          <nav aria-label="Mobile" className={`fade-in border-t border-grey-300/70 bg-white px-5 py-2 ${signedIn ? "xl:hidden" : "md:hidden"}`}>
+            {(signedIn ? links.map((n) => [n.to, n.to === "/inbox" && inboxTotal ? `${n.label} (${inboxTotal})` : n.label]) : PUBLIC_LINKS).map(([to, label]) => (
               <Link key={to} to={to} onClick={() => setOpen(false)} className="block rounded-[var(--radius-md)] px-3 py-2 text-ink no-underline hover:bg-grey-100">{label}</Link>
             ))}
             {signedIn && (
-              <button type="button" onClick={() => { setOpen(false); signOut(); }} className="block w-full rounded-[var(--radius-md)] px-3 py-2 text-left font-semibold text-brand hover:bg-grey-100 sm:hidden">
+              <button type="button" onClick={() => { setOpen(false); signOut(); }} className="block w-full rounded-[var(--radius-md)] px-3 py-2 text-left font-semibold text-brand hover:bg-grey-100">
                 Switch role
               </button>
             )}
@@ -110,5 +113,15 @@ export function Layout() {
       {signedIn && <AssistantDrawer key={me.data?.role} />}
     </div>
     </AssistantProvider>
+  );
+}
+
+/** Count badge on the Inbox nav item; read out as "N waiting". */
+function NavCount({ n }: { n?: number }) {
+  if (!n) return null;
+  return (
+    <span className="ml-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-brand px-1.5 text-[12px] font-semibold leading-5 text-white tabular">
+      <span aria-hidden>{n > 99 ? "99+" : n}</span><span className="sr-only">, {n} waiting</span>
+    </span>
   );
 }

@@ -25,3 +25,7 @@ pipeline/.user.yml
 CLAUDE.md
 plan.md
 progress.md
+
+# Pitch deck: only the final PDF (back-on-track-deck.pdf) is tracked; its sources and the editable copy stay local
+deliverables/deck/
+back-on-track-deck.pptx

@@ -20,7 +20,7 @@ export function AssistantLauncher() {
   return (
     <button ref={launcherRef} type="button" onClick={() => open()} aria-haspopup="dialog" aria-expanded={isOpen}
       className="mr-3 inline-flex h-10 items-center gap-2 rounded-[var(--radius-md)] border border-grey-300 bg-white px-3 text-[15px] font-medium text-ink transition-colors hover:border-ink/40 hover:bg-grey-100 sm:px-4">
-      <Sparkles size={17} aria-hidden className="text-brand" /><span className="hidden sm:inline">Assistant</span><span className="sr-only sm:hidden">Assistant</span>
+      <Sparkles size={17} aria-hidden className="text-brand" /><span className="hidden min-[1400px]:inline">Assistant</span><span className="sr-only min-[1400px]:hidden">Assistant</span>
     </button>
   );
 }
@@ -74,7 +74,7 @@ export function AssistantDrawer() {
   const err = run.error as { reason?: string; status?: number } | null;
   return (
     <div className="fixed inset-0 z-50" onKeyDown={onKey}>
-      <div className="fade-in absolute inset-0 bg-ink/35" onClick={close} aria-hidden />
+      <div className="fade-in absolute inset-0 bg-cream/75 backdrop-blur-[2px]" onClick={close} aria-hidden />
       <div ref={panel} role="dialog" aria-modal="true" aria-labelledby="assistant-h"
         className="absolute right-0 top-0 flex h-full w-full max-w-[520px] flex-col border-l border-grey-300 bg-cream shadow-[var(--shadow-raised)]">
         <header className="flex items-start gap-3 border-b border-grey-300/70 bg-white px-5 py-4">
