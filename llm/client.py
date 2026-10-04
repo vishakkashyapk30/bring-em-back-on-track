@@ -30,6 +30,14 @@ HERE = Path(__file__).resolve().parent
 def _provider(name: str) -> Provider:
     if name == "offline":
         return OfflineProvider()
+    if name == "openai":
+        from llm.providers.openai import OpenAIProvider
+
+        return OpenAIProvider()
+    if name == "anthropic":
+        from llm.providers.anthropic import AnthropicProvider
+
+        return AnthropicProvider()
     if name == "gemini":
         from llm.providers.gemini import GeminiProvider
 
@@ -43,6 +51,27 @@ def _provider(name: str) -> Provider:
 
         return OllamaProvider()
     raise ValueError(f"Unknown LLM_PROVIDER '{name}'")
+
+
+_down: dict[str, float] = {}  # provider -> time until which it is skipped after a failure (circuit breaker)
+DOWN_FOR_S = 90.0
+
+
+def chain(primary: str) -> list[str]:
+    """Providers to try in order: the configured one (the paid API in production), then LLM_FALLBACK (a local model,
+    ollama by default), then offline rules, which always answer. `offline` alone stays offline."""
+    s = get_settings()
+    if primary == "offline":
+        return ["offline"]
+    out = [primary]
+    for extra in (s.llm_fallback or "").replace(" ", "").split(","):
+        if extra and extra not in out and extra != "offline":
+            out.append(extra)
+    return [*out, "offline"]
+
+
+def _is_down(name: str) -> bool:
+    return _down.get(name, 0.0) > time.time()
 
 
 def load_prompt(prompt_id: str, version: int) -> str:
@@ -72,17 +101,24 @@ def complete_json(
         return json.loads(cache.read_text())
 
     t0 = time.perf_counter()
-    try:
-        prov = _provider(name)
-        out = prov.complete_json(prompt_id, prompt, inputs, schema)
-    except ProviderUnavailable as e:
-        log.warning("LLM provider %s unavailable (%s); falling back to offline", name, e)
-        prov = _provider("offline")
-        out = prov.complete_json(prompt_id, prompt, inputs, schema)
+    prov, out = None, None
+    for cand in chain(name):
+        if cand != "offline" and _is_down(cand):
+            continue
+        try:
+            prov = _provider(cand)
+            out = prov.complete_json(prompt_id, prompt, inputs, schema)
+            break
+        except (ProviderUnavailable, ValueError) as e:  # unreachable, quota, or unusable output: next in the chain
+            if cand == "offline":
+                raise
+            _down[cand] = time.time() + DOWN_FOR_S
+            log.warning("LLM provider %s unavailable (%s); trying the next one", cand, e)
     _check_required(out, schema)
     out = {**out, "_meta": {"provider": prov.name, "prompt_id": prompt_id, "version": version}}
     log.info("llm %s v%s via %s in %.0f ms", prompt_id, version, prov.name, (time.perf_counter() - t0) * 1e3)
 
-    cache.parent.mkdir(parents=True, exist_ok=True)
-    cache.write_text(json.dumps(out, default=str))
+    if prov.name == name or name == "offline":  # an answer from a fallback is not cached under the primary's key
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(out, default=str))
     return out

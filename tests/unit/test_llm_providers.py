@@ -53,3 +53,37 @@ def test_deepseek_parses_a_reply(monkeypatch):
     monkeypatch.setattr(get_settings(), "deepseek_api_key", "k")
     _mock(monkeypatch, lambda req: httpx.Response(200, json={"choices": [{"message": {"content": '{"a": "ok"}'}}]}))
     assert DeepSeekProvider().complete_json("x", "p", {}, SCHEMA) == {"a": "ok"}
+
+
+def test_chain_order_and_circuit_breaker(monkeypatch, tmp_path):
+    from common.config import get_settings
+    from llm import client
+    from llm.providers.base import ProviderUnavailable
+
+    monkeypatch.setenv("LLM_FALLBACK", "ollama")
+    monkeypatch.setenv("LLM_CACHE_DIR", str(tmp_path))
+    get_settings.cache_clear()
+    assert client.chain("gemini") == ["gemini", "ollama", "offline"]
+    assert client.chain("offline") == ["offline"]
+
+    calls: list[str] = []
+
+    class Fake:
+        def __init__(self, name, fail):
+            self.name, self.fail = name, fail
+
+        def complete_json(self, prompt_id, prompt, inputs, schema):
+            calls.append(self.name)
+            if self.fail:
+                raise ProviderUnavailable("down")
+            return {"insight": "ok", "numbers_used": []}
+
+    monkeypatch.setattr(client, "_provider",
+                        lambda n: Fake(n, n == "gemini") if n != "offline" else client.OfflineProvider())
+    client._down.clear()
+    out = client.complete_json("ask_insight", 1, {"q": 1}, "ask_insight", provider="gemini")
+    assert out["_meta"]["provider"] == "ollama" and calls == ["gemini", "ollama"]
+    client.complete_json("ask_insight", 1, {"q": 2}, "ask_insight", provider="gemini")
+    assert calls == ["gemini", "ollama", "ollama"]  # the primary is skipped while it is marked down
+    client._down.clear()
+    get_settings.cache_clear()

@@ -32,12 +32,20 @@ class Settings(BaseSettings):
     hardship_review_business_days: int = 5  # D11, TBC policy
 
     # LLM (D13): offline is the default and must always work
-    llm_provider: str = "offline"  # offline | gemini | deepseek | ollama
+    llm_provider: str = "offline"  # offline | openai | anthropic | gemini | deepseek | ollama (the primary)
+    llm_fallback: str = "ollama"  # tried when the primary is down or over quota; then the deterministic rules
     gemini_api_key: str | None = None
     gemini_model: str = "gemini-2.5-flash"
+    llm_min_interval_sec: float = 6.5  # spacing between cloud calls; 6.5 s keeps the free Gemini tier under 10 a minute
     deepseek_api_key: str | None = None
     deepseek_model: str = "deepseek-chat"
     deepseek_base_url: str = "https://api.deepseek.com"
+    openai_api_key: str | None = None
+    openai_model: str = "gpt-6-luna"
+    openai_base_url: str = "https://api.openai.com/v1"
+    anthropic_api_key: str | None = None
+    anthropic_model: str = "claude-haiku-4-5-20251001"
+    anthropic_base_url: str = "https://api.anthropic.com"
     ollama_host: str = "http://localhost:11434"
     ollama_model: str = "TBC"
     llm_cache_dir: Path = ROOT / "data" / "llm_cache"

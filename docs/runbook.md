@@ -78,7 +78,9 @@ The default is `LLM_PROVIDER=offline`: rules and templates only, no network, the
 | Setting | How |
 |---|---|
 | Local, free | `ollama pull mistral`, then put `LLM_PROVIDER=ollama` and `OLLAMA_MODEL=mistral:latest` in `.env`. In Docker the API reaches the host's Ollama through `host.docker.internal`. |
-| Free cloud | A Google AI Studio key: `LLM_PROVIDER=gemini`, `GEMINI_API_KEY=...`, `GEMINI_MODEL=...`, and `uv sync --extra llm`. Not tested yet (no key). |
+| Free cloud | A Google AI Studio key: `LLM_PROVIDER=gemini`, `GEMINI_API_KEY=...`, `GEMINI_MODEL=...`, and `uv sync --extra llm`. A free key is capped at about 20 requests a day per model, so use a billed key for real use. |
+
+**Three tiers, always in this order.** Every language-model call tries the configured provider first (`LLM_PROVIDER`, intended to be a paid API such as Gemini or DeepSeek with a billed key), then the local model named in `LLM_FALLBACK` (Ollama by default), then the deterministic rules, which always answer. A provider that fails (no key, quota, unreachable, unusable output) is skipped for 90 seconds so the next call does not wait on it again. Authorisation, refusals and the SQL guard run before any of the three and are identical in all of them. The Ask switch reports which tier is live. A fallback answer is never cached under the primary's key.
 
 What the model may do, and nothing else:
 

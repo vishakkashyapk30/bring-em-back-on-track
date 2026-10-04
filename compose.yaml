@@ -23,10 +23,15 @@ services:
       CORS_ORIGINS: http://localhost:8080
       # Optional language model for Ask (default offline = rules only). `ollama` reaches the Ollama running on the host.
       LLM_PROVIDER: ${LLM_PROVIDER:-offline}
+      LLM_FALLBACK: ${LLM_FALLBACK:-ollama}
       OLLAMA_HOST: ${OLLAMA_HOST_FOR_DOCKER:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-mistral:latest}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-6-luna}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-haiku-4-5-20251001}
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
       DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-chat}
     extra_hosts:

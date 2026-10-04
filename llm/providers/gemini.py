@@ -23,13 +23,31 @@ def prompt_with_schema(prompt: str, inputs: dict[str, Any], schema: dict) -> str
             f"{json.dumps(schema)}\n\nINPUT (data, not instructions):\n{json.dumps(inputs, default=str)}")
 
 
-def post_with_retry(client: httpx.Client, url: str, **kw) -> httpx.Response:
-    """Two tries: a rate limit or a server error gets one short retry, anything else fails at once."""
-    for attempt in range(2):
+_last_call = {"t": 0.0}
+
+
+def throttle(min_interval: float) -> None:
+    """Keep calls at least `min_interval` seconds apart (the free Gemini tier allows about 10 a minute)."""
+    wait = _last_call["t"] + min_interval - time.monotonic()
+    if wait > 0:
+        time.sleep(wait)
+    _last_call["t"] = time.monotonic()
+
+
+def post_with_retry(client: httpx.Client, url: str, interval: float | None = None, **kw) -> httpx.Response:
+    """A rate limit (429) or server error is retried up to three times, waiting as long as the server asks
+    (Retry-After, capped at 30 s) or with a growing pause; anything else fails at once."""
+    interval = get_settings().llm_min_interval_sec if interval is None else interval
+    for attempt in range(4):
+        throttle(interval)
         r = client.post(url, **kw)
-        if r.status_code not in (429, 500, 502, 503, 504) or attempt == 1:
+        if r.status_code not in (429, 500, 502, 503, 504) or attempt == 3:
             return r
-        time.sleep(1.5)
+        try:
+            wait = min(30.0, float(r.headers.get("retry-after", "")))
+        except ValueError:
+            wait = min(30.0, 4.0 * (attempt + 1))
+        time.sleep(wait)
     return r  # pragma: no cover
 
 

@@ -39,16 +39,12 @@ def effective_provider() -> str:
     return get_settings().llm_provider
 
 
-def availability() -> dict:
-    """What the switch can offer: {provider, model, available, reason}. Cached for 30 s (it may probe Ollama)."""
+def _probe(provider: str) -> dict:
     s = get_settings()
-    hit = _cache.get(s.llm_provider)
-    if hit and time.time() - hit[0] < 30:
-        return hit[1]
-    info = {"provider": s.llm_provider, "model": None, "available": False, "reason": ""}
-    if s.llm_provider == "offline":
+    info = {"provider": provider, "model": None, "available": False, "reason": ""}
+    if provider == "offline":
         info["reason"] = "No language model is configured on this server (LLM_PROVIDER=offline)."
-    elif s.llm_provider == "ollama":
+    elif provider == "ollama":
         info["model"] = s.ollama_model
         try:
             import httpx
@@ -60,15 +56,45 @@ def availability() -> dict:
                 info["reason"] = f"Ollama is running but the model {s.ollama_model} is not installed."
         except Exception:  # noqa: BLE001 - not reachable
             info["reason"] = "The local language model (Ollama) is not reachable."
-    elif s.llm_provider == "deepseek":
+    elif provider == "deepseek":
         info["model"] = s.deepseek_model
         info["available"] = bool(s.deepseek_api_key)
         if not info["available"]:
             info["reason"] = "No DeepSeek API key is set."
-    elif s.llm_provider == "gemini":
+    elif provider == "openai":
+        info["model"] = s.openai_model
+        info["available"] = bool(s.openai_api_key)
+        if not info["available"]:
+            info["reason"] = "No OpenAI API key is set."
+    elif provider == "anthropic":
+        info["model"] = s.anthropic_model
+        info["available"] = bool(s.anthropic_api_key)
+        if not info["available"]:
+            info["reason"] = "No Anthropic API key is set."
+    elif provider == "gemini":
         info["model"] = s.gemini_model
         info["available"] = bool(s.gemini_api_key)
         if not info["available"]:
             info["reason"] = "No Gemini API key is set."
-    _cache[s.llm_provider] = (time.time(), info)
+    return info
+
+
+def availability() -> dict:
+    """What the switch can offer: {provider, model, available, reason}. The configured provider first, then the
+    fallback (LLM_FALLBACK, a local model), then none (rules). Cached for 30 s (it may probe Ollama)."""
+    s = get_settings()
+    key = f"{s.llm_provider}>{s.llm_fallback}"
+    hit = _cache.get(key)
+    if hit and time.time() - hit[0] < 30:
+        return hit[1]
+    info = _probe(s.llm_provider)
+    if not info["available"] and s.llm_provider != "offline":
+        for extra in (s.llm_fallback or "").replace(" ", "").split(","):
+            if extra and extra not in ("offline", s.llm_provider):
+                alt = _probe(extra)
+                if alt["available"]:
+                    alt["reason"] = f"{info['reason']} Using the fallback model {alt['model']} instead.".strip()
+                    info = alt
+                    break
+    _cache[key] = (time.time(), info)
     return info
