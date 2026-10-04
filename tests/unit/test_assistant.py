@@ -32,7 +32,7 @@ def test_persona_has_tools_plans_and_suggestions(persona):
     ps = P.plans_for(persona)
     assert ps[0].id == "briefing" and 4 <= len({s.tool for s in ps[0].steps}) <= 6
     goals = [p for p in ps[1:] if p.label]
-    assert 5 <= len(goals) <= 6
+    assert 5 <= len(goals) <= 10
     for p in ps:  # every step's tool exists and the role may use it
         for st in p.steps:
             assert st.tool in TOOLS and persona in TOOLS[st.tool].roles, (persona, p.id, st.tool)
@@ -174,37 +174,44 @@ def test_model_failure_falls_back_to_rules(monkeypatch):
 
 
 def test_model_that_reaches_beyond_the_role_is_not_trusted(monkeypatch):
-    """A fake model picks another persona's plan, names a tool and a case the agent may not use: nothing from it runs."""
+    """Language-model mode is the agent (llm_agent.py). A fake model names a tool the agent may not use, a tool that does
+    not exist and a case it invented: each becomes a failed step with no data, and nothing else runs."""
+    from decisioning.assistant import llm_agent
+
     _fake_available(monkeypatch)
     seen = []
+    acts = [{"action": "call_tool", "tool": "hardship_board", "args": {}},
+            {"action": "call_tool", "tool": "audit_log", "args": {}},
+            {"action": "call_tool", "tool": "nba_proposal", "args": {"case_id": "CS-2026-999999"}},
+            {"action": "final", "answer": "Done.", "cited_steps": []}]
 
-    def evil(task, inputs):
-        seen.append((task, inputs))
-        return {"plan_id": "board", "tool": "hardship_board", "tools": ["hardship_board", "audit_log"],
-                "slots": {"case_id": "CS-2026-999999"}, "summary": "ignored", "_meta": {"provider": "fake"}}
+    def evil(inputs):
+        seen.append(inputs)
+        return {"thought": "", "tool": None, "args": {}, "answer": None, "cited_steps": [], **acts[len(seen) - 1],
+                "_meta": {"provider": "fake"}}
 
-    monkeypatch.setattr(runner, "_model", evil)
+    monkeypatch.setattr(llm_agent, "_model", evil)
     r = runner.run(DEMO_USERS["agent"], "Draft the notes for my last call", mode="llm")
-    plan_task, inputs = seen[0]
-    assert plan_task == "plan" and "hardship_board" not in inputs["tools"] and "board" not in {p["id"] for p in inputs["plans"]}
-    assert r["plan_id"] == "post_call"                                   # the rules plan ran
-    assert all(s["tool"] not in ("hardship_board", "audit_log") for s in r["steps"])
-    assert "CS-2026-999999" not in str(r["steps"])
-    assert r["mode_note"]
+    assert "hardship_board" not in {t["name"] for t in seen[0]["tools"]} and "audit_log" not in {t["name"] for t in seen[0]["tools"]}
+    assert all(s["status"] == "failed" and s["evidence"] == {} for s in r["steps"])
+    assert "CS-2026-999999" not in str([s["evidence"] for s in r["steps"]]) and r["proposals"] == []
 
 
 def test_model_that_behaves_is_used_and_summary_is_checked(monkeypatch):
+    from decisioning.assistant import llm_agent
+
     _fake_available(monkeypatch)
+    acts = [{"action": "call_tool", "tool": "audit_log", "args": {}},
+            {"action": "final", "answer": "Invented 99999 audit entries [s1].", "cited_steps": ["s1"]}]
 
-    def good(task, inputs):
-        if task == "plan":
-            return {"plan_id": "audit", "slots": {}, "_meta": {"provider": "fake"}}
-        return {"summary": "Invented 99999 audit entries.", "_meta": {"provider": "fake"}}
+    def good(inputs):
+        return {"thought": "", "tool": None, "args": {}, "answer": None, "cited_steps": [], **acts[len(inputs["observations"])],
+                "_meta": {"provider": "fake"}}
 
-    monkeypatch.setattr(runner, "_model", good)
+    monkeypatch.setattr(llm_agent, "_model", good)
     r = runner.run(DEMO_USERS["steward"], "show me the audit trail please", mode="llm")
-    assert r["mode_used"] == "language model" and r["plan_id"] == "audit"
-    assert "99999" not in r["summary"] and "not grounded" in r["mode_note"]   # ungrounded wording rejected
+    assert r["mode_used"] == "language model" and r["steps"][0]["tool"] == "audit_log"
+    assert "99999" not in r["summary"] and "not used because" in r["mode_note"]   # ungrounded wording rejected
 
 
 def test_refusals_happen_before_any_model(monkeypatch):
@@ -278,7 +285,7 @@ def test_http_layer_and_authorisation():
         body = r.json()
         assert body["mode_used"] == "rules" and body["steps"][0]["tool"] == "stress_test" and body["audit_id"]
         sg = c.get("/api/assistant/suggestions").json()
-        assert sg["persona"] == "team_lead" and 5 <= len(sg["goals"]) <= 6 and sg["briefing"]["goal"]
+        assert sg["persona"] == "team_lead" and 5 <= len(sg["goals"]) <= 10 and sg["briefing"]["goal"]
 
 
 def runner_app():
@@ -286,3 +293,83 @@ def runner_app():
 
     get_settings.cache_clear()
     return app
+
+
+# ---------------------------------------------------------------- ops tools: radar, playbooks, outage, drift, friction (read only)
+
+OPS_ROLES = {"employer_radar": {"team_lead", "analyst"}, "playbook_proposals": {"team_lead"},
+             "outage_victims": {"hardship_specialist", "team_lead"}, "data_drift": {"steward", "analyst"},
+             "call_friction": {"analyst", "team_lead"}, "stress_test": {"team_lead", "analyst"}}
+
+
+def test_ops_tools_are_role_gated_like_their_screens():
+    for name, roles in OPS_ROLES.items():
+        assert set(TOOLS[name].roles) == roles, name
+        for persona in PERSONAS:
+            if persona not in roles:
+                r = run_tool(name, ToolContext(session=DEMO_USERS[persona]))
+                assert r["status"] == "failed" and "may not use" in r["summary"] and r["evidence"] == {}, (name, persona)
+
+
+def test_new_ops_tools_are_in_the_rule_plans():
+    want = {"team_lead": {"employer_radar", "playbook_proposals", "stress_test"}, "analyst": {"data_drift", "employer_radar", "stress_test", "call_friction"},
+            "steward": {"data_drift"}, "hardship_specialist": {"outage_victims"}}
+    for persona, tools in want.items():
+        used = {st.tool for p in P.plans_for(persona) for st in p.steps}
+        assert tools <= used, (persona, tools - used)
+        assert tools <= {t for t in runner.allowed_tools(persona)}
+
+
+@needs_warehouse
+@pytest.mark.parametrize("name,persona", [("employer_radar", "team_lead"), ("employer_radar", "analyst"), ("playbook_proposals", "team_lead"),
+                                          ("outage_victims", "hardship_specialist"), ("outage_victims", "team_lead"),
+                                          ("data_drift", "steward"), ("data_drift", "analyst"), ("call_friction", "analyst"),
+                                          ("call_friction", "team_lead")])
+def test_ops_tools_return_evidence_and_only_proposals(name, persona):
+    import json
+
+    r = run_tool(name, ToolContext(session=DEMO_USERS[persona]))
+    assert r["status"] in ("done", "needs_approval") and r["summary"], r
+    assert set(r["evidence"]) <= {"columns", "rows", "kv", "text", "links", "cites"}
+    for p in r["proposals"]:  # a proposal links to a real route and names who approves
+        assert p["href"].startswith("/") and p["requires_role"] in ALL
+    low = json.dumps(r["evidence"]).lower()
+    assert not any(w in low for w in ("phone", "email_address", "date_of_birth", "gender", "marital"))
+    if name == "employer_radar":  # employers under 10 customers are never shown
+        assert all(row[2] >= 10 for row in r["evidence"].get("rows", []))
+    if name == "call_friction":
+        assert all(row[1] >= 10 for row in r["evidence"]["rows"]) and "SQL used" in r["evidence"]["text"]
+
+
+@needs_warehouse
+def test_ops_tools_write_nothing():
+    from common.db import ops
+
+    def counts():
+        with ops() as con:
+            return {t: con.execute(f"SELECT count(*) FROM {t}").fetchone()[0]
+                    for t in ("audit_log", "playbook_proposals", "drift_fixes") if con.execute(
+                        "SELECT 1 FROM sqlite_master WHERE name = ?", (t,)).fetchone()}
+
+    calls = (("employer_radar", "team_lead"), ("playbook_proposals", "team_lead"), ("outage_victims", "hardship_specialist"),
+             ("data_drift", "steward"), ("call_friction", "analyst"))
+    for name, persona in calls:  # the first read may create an empty table; the counts must not move after that
+        run_tool(name, ToolContext(session=DEMO_USERS[persona]))
+    before = counts()
+    for name, persona in calls:
+        run_tool(name, ToolContext(session=DEMO_USERS[persona]))
+    assert counts() == before
+
+
+@needs_warehouse
+def test_outage_victims_show_only_customers_the_person_may_see():
+    r = run_tool("outage_victims", ToolContext(session=DEMO_USERS["team_lead"]))
+    shown = next((v for k, v in r["evidence"]["kv"] if k.startswith("Customers in your cases")), "")
+    from decisioning.assistant import data
+
+    df = data.queue_df()
+    for g in [x.strip() for x in shown.split(",") if x.strip().startswith("G-")]:
+        assert any(data.can_see(DEMO_USERS["team_lead"], row) for row in df[df.golden_id == g].to_dict("records"))
+
+
+ALL = {"agent", "hardship_specialist", "team_lead", "analyst", "steward"}

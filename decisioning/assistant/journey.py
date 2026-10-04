@@ -107,6 +107,8 @@ def _stages(persona: str, c: dict | None) -> tuple[str, str, list[dict]]:
                    "Shows whether the plan is affordable before it is offered.", "simulator"),
             _stage("approver", "Approver level", "Whether the plan is within agent limits or needs a higher approver.", f"/hardship/simulator/{cid}",
                    "Plans beyond limits must go to the right approver.", "simulator"),
+            _stage("outage", "Outage victims", "Customers whose payment fell in the payment outage, with the fee reversals and holds proposed.", "/hardship/board",
+                   "People hurt by a bank fault should not be chased; the list is a candidate list a person approves.", "outage_victims"),
             _stage("decide", "Confirm or lower the flag, with a reason", "Confirm hardship (link a program) or lower the flag with a written reason.", "/hardship/board",
                    "The flag is a latch: models and rules can raise it, only a person can lower it, with a reason on the audit log.", None,
                    human="Confirm or lower the flag on the board and write the reason."),
@@ -118,6 +120,8 @@ def _stages(persona: str, c: dict | None) -> tuple[str, str, list[dict]]:
                    "A sample check keeps volume approval safe without reading every case.", "batch_queue"),
             _stage("stress", "Stress test: dialer down", "Re-runs the allocator without calls and shows which actions slip; the same test works for SMS (ask the assistant).", "/team",
                    "Plan cover before the outage, not after.", "stress_test", {"channel": "call"}),
+            _stage("radar", "Employer radar and playbooks", "Employers whose customers pay late together, and the playbooks waiting for you.", "/map",
+                   "Early outreach to customers not yet behind, approved by you; a radar, not a layoff detector.", "employer_radar"),
             _stage("guardrails", "Override rate and guardrails", "Overrides, and pressure on hardship customers, which must be zero.", "/team",
                    "Guardrails you can see are guardrails you can defend.", "guardrails"),
             _stage("agents", "Team load", "Who is near capacity.", "/team", "Capacity decides what slips first.", "team_agents"),
@@ -136,6 +140,8 @@ def _stages(persona: str, c: dict | None) -> tuple[str, str, list[dict]]:
                    "Shows where outreach struggles, without exposing individuals.", "geo_map"),
             _stage("scorecard", "Scorecard, honest about causality", "Randomised cells are causal; the rest is observed.", "/team",
                    "Prevents a wrong conclusion from observational data.", "scorecard"),
+            _stage("friction", "Call friction", "How often calls show overtalk, holds or long silence, by stage; call-level only.", "/ask",
+                   "Shows where conversations stall without scoring any customer or agent.", "call_friction"),
             _stage("refused", "A refused question", "Ranking customers by citizenship is refused, always.", "/ask",
                    "Protected attributes never drive a decision, list or ranking.", "guardrail_check", {"question": Q_REFUSED}),
             _stage("model", "Model card", "The promise-break model against the bank's v2.1 on the same promises.", "/governance/monitoring",
@@ -151,6 +157,8 @@ def _stages(persona: str, c: dict | None) -> tuple[str, str, list[dict]]:
         _stage("quality", "Data quality report", "Issues found and how each is handled.", "/governance/quality", "Known issues are documented, not hidden.", "data_quality"),
         _stage("contracts", "Contract tests", "From the last build.", "/governance/contract", "A failed contract blocks publishing.", "contract_tests"),
         _stage("parity", "Feature parity", "Training and serving features must agree.", "/governance/monitoring", "Prevents silent model drift from skew.", "feature_parity"),
+        _stage("drift", "Schema drift", "Tables that changed shape after a release, with the drafted fix.", "/steward/drift",
+               "A silent rename breaks features; the fix is drafted and you approve it.", "data_drift"),
         _stage("monitoring", "Freshness", "Against the 26-hour contract.", "/governance/monitoring", "Stale data carries a warning.", "monitoring"),
         _stage("audit", "Audit log", "Append-only record of every write and assistant run.", "/governance/audit", "Accountability for every customer-affecting step.", "audit_log"),
     ])
@@ -196,6 +204,7 @@ def prewarm() -> None:
             if get_settings().warehouse_path.exists():
                 sample_customer()
                 run_tool("stress_test", _ctx("team_lead", None), {"channel": "call"})
+                run_tool("employer_radar", _ctx("team_lead", None))
         except Exception:  # noqa: BLE001 - warming is best effort
             pass
 

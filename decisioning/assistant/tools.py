@@ -340,7 +340,7 @@ def identity_lineage(ctx: ToolContext) -> ToolResult:
     g = _golden(ctx) if ctx.role != "steward" else (ctx.golden_id or ctx.facts.get("default_golden"))
     if not g:
         raise ToolSkip("No customer selected, so this step was skipped.")
-    _access("golden", g, ctx)
+    _access("lineage", g, ctx)  # stewards: lineage only; everyone else follows the row scope
     i = c360.identity(g)
     if i is None:
         raise ToolSkip(f"No identity links for {g}.")
@@ -554,7 +554,7 @@ def policy_answer(ctx: ToolContext, question: str | None = None) -> ToolResult:
         raise ToolSkip("That is a numbers question, not a policy question. Use the metric tool.")
     cites = [{"doc_id": c.get("doc_id", ""), "section": str(c.get("section", ""))} for c in (a.citations or [])][:5]
     ev = {"text": a.answer, "kv": kv([("Question", q), ("Answered by", a.answered_by), ("Sources", a.sql_or_sources[:200])]),
-          "links": [link("Ask more", "/ask")]}
+          "links": [link("Ask more", "/ask")], "cites": list(a.citations or [])}
     res = ToolResult("Policy answer found with citations." if cites else "Policy answer found.", ev, cites=cites)
     res.findings.append("Policy: " + a.answer.split("\n")[0][:240])
     return res
@@ -576,7 +576,7 @@ def metric_question(ctx: ToolContext, question: str | None = None) -> ToolResult
     ev = {**table(a.columns, rows), "text": "SQL used:\n" + a.sql_or_sources,
           "kv": kv([("Question", q), ("Metric", a.chips.get("metric")), ("Rows", len(a.rows)), ("Answered by", a.answered_by),
                     ("Data built", a.freshness)] + [("Caveat", c) for c in a.caveats[:3]]),
-          "links": [link("Open Ask", "/ask")]}
+          "links": [link("Open Ask", "/ask")], "cites": list(a.citations or [])}
     res = ToolResult(f"{len(a.rows)} row(s) from the certified {a.chips.get('metric')} definition; the SQL is shown.", ev)
     if rows and a.columns:
         r0 = rows[0]
@@ -674,19 +674,28 @@ def override_report(ctx: ToolContext) -> ToolResult:
 
 @tool("simulator", "Hardship plan simulator: new payment, months to clear, interest, share of surplus and the approver level. Saves nothing.",
       ("hardship_specialist",))
-def simulator(ctx: ToolContext, program_id: str | None = None) -> ToolResult:
+def simulator(ctx: ToolContext, program_id: str | None = None, payment_cut_pct: float | None = None,
+              term_extension_months: int | None = None) -> ToolResult:
     from decisioning import simulator as sim
 
     cid = _case(ctx)
     pid = program_id or ctx.slots.get("program_id") or ctx.facts.get("program_id")
     levers = {"program_id": pid} if pid else {"term_extension_months": 6}
+    if payment_cut_pct is not None or term_extension_months is not None:  # explicit levers (the agent may set them)
+        cut = float(payment_cut_pct) / 100 if payment_cut_pct is not None and payment_cut_pct > 1 else payment_cut_pct
+        levers = {k: v for k, v in (("program_id", pid), ("payment_reduction_pct", cut),
+                                    ("term_extension_months", term_extension_months)) if v is not None}
     out = sim.simulate(cid, levers)
     if out is None:
         raise ToolSkip(f"No open case {cid}.")
     if out.get("error"):
         raise ToolSkip(out["error"])
     r, i = out["results"], out["inputs"]
-    ev = {"kv": kv([("Case", cid), ("Program", pid or "free-form: 6-month term extension"), ("Balance", money(i["balance"])),
+    what = pid or "free-form: 6-month term extension"
+    if payment_cut_pct is not None or term_extension_months is not None:
+        what = ", ".join(x for x in (pid, f"{levers['payment_reduction_pct'] * 100:.0f}% payment cut" if levers.get("payment_reduction_pct") else None,
+                                     f"{term_extension_months}-month extension" if term_extension_months else None) if x)
+    ev = {"kv": kv([("Case", cid), ("Program", what), ("Balance", money(i["balance"])),
                     ("Payment now", money(i["payment_now"])), ("New payment", money(r["new_payment"])),
                     ("Months to clear", f'{r["months_to_clear_current"]} now, {r["months_to_clear"]} with the plan'),
                     ("Total interest", f'{money(r["total_interest_current"])} now, {money(r["total_interest"])} with the plan'),
@@ -696,7 +705,7 @@ def simulator(ctx: ToolContext, program_id: str | None = None) -> ToolResult:
           "text": "\n".join(out["notes"][:2]), "links": [link("Open the simulator", f"/hardship/simulator/{cid}")]}
     res = ToolResult(f"New payment {money(r['new_payment'])} (from {money(i['payment_now'])}); clears in {r['months_to_clear']} months; approver: {out['approver_level'].replace('_', ' ')}.",
                      ev, facts={"approver": out["approver_level"]})
-    res.findings.append(f"Simulated {pid or 'a 6-month extension'} for {cid}: payment {money(i['payment_now'])} to {money(r['new_payment'])}, approver {out['approver_level'].replace('_', ' ')}.")
+    res.findings.append(f"Simulated {what if what != 'free-form: 6-month term extension' else 'a 6-month extension'} for {cid}: payment {money(i['payment_now'])} to {money(r['new_payment'])}, approver {out['approver_level'].replace('_', ' ')}.")
     role = out["approver_level"] if out["approver_level"] in ALL_ROLES else "hardship_specialist"
     res.proposals.append(proposal(
         f"plan-{cid}", f"Offer {pid or 'the simulated plan'} on {cid}",
@@ -988,3 +997,115 @@ def audit_log(ctx: ToolContext, limit: int = 12) -> ToolResult:
                       "text": "The log is append-only: the database refuses updates and deletes.", "links": [link("Open the audit log", "/governance/audit")]})
     res.findings.append("Every customer-affecting write and every assistant run is recorded in the append-only audit log.")
     return res
+
+
+# ---------------------------------------------------------------- open questions and interaction search (used by the agent)
+
+def _answer_evidence(a, q: str) -> dict:
+    ev: dict[str, Any] = {"text": a.answer + (("\nSQL used:\n" + a.sql_or_sources) if a.kind == "metric" and a.sql_or_sources else ""),
+                          "kv": kv([("Question", q), ("Answered as", a.kind.replace("_", " ")), ("Answered by", a.answered_by),
+                                    ("Rows", len(a.rows) if a.rows else None), ("Data built", a.freshness)]
+                                   + [("Caveat", c) for c in (a.caveats or [])[:3]]),
+                          "links": [link("Open Ask", "/ask")], "cites": list(a.citations or [])}
+    if a.columns and a.rows:
+        ev.update(table(list(a.columns), [list(r) for r in a.rows[:12]]))
+    return ev
+
+
+@tool("ask_data", "Ask a question in plain words. Certified metrics first (SQL shown), then the policy documents; "
+      "stays inside your Ask scope (agents: policy and their own cases only; no protected attributes).", ALL_ROLES)
+def ask_data(ctx: ToolContext, question: str | None = None) -> ToolResult:
+    q = (question or ctx.slots.get("question") or "").strip()
+    if not q:
+        raise ToolSkip("No question was given, so this step was skipped.")
+    a = _ask(ctx, q)
+    if a.refused:
+        return ToolResult(_refused(a.refusal_reason), {"text": a.refusal_reason or "", "kv": kv([("Question", q)])},
+                          findings=[f"The question was refused: {a.refusal_reason}"])
+    cites = [{"doc_id": str(c.get("doc_id", "")), "section": str(c.get("section", ""))} for c in (a.citations or [])
+             if isinstance(c, dict) and c.get("doc_id")][:5]
+    n = len(a.rows or [])
+    summary = (f"{n} row(s) answer the question ({a.kind.replace('_', ' ')}, {a.answered_by}); the SQL is shown." if a.kind == "metric"
+               else f"Answered as a {a.kind.replace('_', ' ')} question ({a.answered_by}).")
+    res = ToolResult(summary, _answer_evidence(a, q), cites=cites)
+    if a.kind == "metric" and a.rows and a.columns:
+        res.findings.append("First row: " + ", ".join(f"{c} {_j(v)}" for c, v in zip(a.columns, a.rows[0], strict=False)) + ".")
+    elif a.answer:
+        res.findings.append(a.answer.split("\n")[0][:240])
+    return res
+
+
+def _interactions_available() -> bool:
+    import importlib.util
+
+    try:
+        return importlib.util.find_spec("rag.interactions") is not None
+    except (ImportError, ValueError):
+        return False
+
+
+def _get(x: Any, *names: str) -> Any:
+    for n in names:
+        v = x.get(n) if isinstance(x, dict) else getattr(x, n, None)
+        if v not in (None, "", []):
+            return v
+    return None
+
+
+def search_interactions(ctx: ToolContext, question: str | None = None, case_id: str | None = None,
+                        golden_id: str | None = None) -> ToolResult:
+    """Search agent notes, call transcripts and voice speech-to-text, always access-filtered (rag.interactions)."""
+    from api.services.ask_access import scope_for
+    from common.ask_scope import use_scope
+    from rag import interactions
+
+    q = (question or ctx.slots.get("question") or "").strip()
+    if not q:
+        raise ToolSkip("No search words were given, so this step was skipped.")
+    for kind, ident in (("case", case_id), ("golden", golden_id)):
+        if ident:
+            _access(kind, ident, ctx)
+    if case_id:
+        row = data.case_row(case_id)
+        if row is not None and not data.can_see(ctx.session, row):
+            raise ToolDenied(f"{case_id} is outside your scope.")
+    sess = ctx.session
+    scope = scope_for(ctx.role, sess.user_id, sess.team_id)
+    with use_scope(scope), use_mode(ctx.mode):
+        out = interactions.answer(q, scope, case_id=case_id, golden_id=golden_id, k=8)
+    if _get(out, "refused"):
+        reason = _get(out, "refusal_reason", "reason", "answer") or "outside scope"
+        return ToolResult(_refused(str(reason)), {"text": str(reason), "kv": kv([("Search", q)])})
+    raw = list(_get(out, "citations", "hits", "results") or [])
+
+    def visible(c: Any) -> bool:  # defence in depth: an agent or team lead never gets another person's case
+        cid = _get(c, "case_id")
+        if ctx.role not in ("agent", "team_lead"):
+            return True
+        return bool(cid) and (scope.case_allowed is None or scope.case_allowed(str(cid)))
+
+    hits = [c if isinstance(c, dict) else dict(vars(c)) for c in raw if visible(c)][:8]
+    text = str(_get(out, "answer", "text") or "")
+    rows = [[_get(h, "source", "kind") or "", _get(h, "case_id") or "", _get(h, "doc_id", "id") or "",
+             _get(h, "turn_index") if _get(h, "turn_index") is not None else "", str(_get(h, "quote", "text", "snippet") or "")[:160]]
+            for h in hits]
+    ev = {**table(["Source", "Case", "Document", "Turn", "Quote"], rows), "text": text[:1200],
+          "kv": kv([("Search", q), ("Case", case_id), ("Customer", golden_id), ("Matches shown", len(hits))]), "cites": hits}
+    cites = [{"doc_id": str(_get(h, "doc_id", "id") or ""), "section": f"turn {_get(h, 'turn_index')}" if _get(h, "turn_index") is not None
+              else str(_get(h, "source") or "")} for h in hits if _get(h, "doc_id", "id")]
+    if not hits and not text:
+        return ToolResult("No notes, calls or voice transcripts you may see match the search.", ev)
+    res = ToolResult(f"{len(hits)} matching passage(s) in notes, call transcripts and voice transcripts you may see.", ev, cites=cites)
+    if text:
+        res.findings.append(text.split("\n")[0][:240])
+    return res
+
+
+if _interactions_available():  # the tool exists only once the interaction index module is installed
+    tool("search_interactions", "Search agent notes, call transcripts and voice speech-to-text for the cases you may see "
+         "(quotes with their source). Give search words, and a case or customer ID when you have one.",
+         ("agent", "hardship_specialist", "team_lead"))(search_interactions)
+
+
+# registers employer_radar, playbook_proposals, outage_victims, data_drift and call_friction
+from decisioning.assistant import tools_ops  # noqa: E402,F401

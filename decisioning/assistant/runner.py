@@ -1,6 +1,7 @@
 # ruff: noqa: E501
-"""Runs one assistant request: pick a plan (rules, or a language model limited to the closed list), call the tools,
-collect findings and proposals, word the summary and audit the run. The plan and the tools always come from code."""
+"""Runs one assistant request. Rules mode: pick a plan from the closed list, call its tools, collect findings and
+proposals, word the summary and audit the run. Language-model mode: the agent in llm_agent.py chooses the tools and
+writes a grounded answer under the same authorisation; on any problem the rules run instead and mode_note says why."""
 
 from __future__ import annotations
 
@@ -103,7 +104,7 @@ def validate_plan_output(out: dict, persona: str, goal: str, extra_text: str = "
 
         from api import access
 
-        for k, fn in (("case_id", access.case), ("golden_id", access.golden)):
+        for k, fn in (("case_id", access.case), ("golden_id", access.lineage)):
             if k in slots:
                 try:
                     fn(session, slots[k])
@@ -173,7 +174,6 @@ def run(session: Session, goal: str | None = None, case_id: str | None = None, g
     rule_slots = P.extract_slots(goal)
     case_id = case_id or rule_slots.get("case_id")
     golden_id = golden_id or rule_slots.get("golden_id")
-    request_text = f"{case_id or ''} {golden_id or ''}"
 
     # which mode runs
     want_model = mode == "llm" or (mode is None and get_settings().llm_provider != "offline")
@@ -199,25 +199,20 @@ def run(session: Session, goal: str | None = None, case_id: str | None = None, g
         plan = P.get_plan(persona, "refused") or _guardrail_plan(persona)
         recognised = True
     elif want_model and goal:
+        # language-model mode is agentic: the model chooses the tools, in order, and writes a grounded answer
+        # (decisioning/assistant/llm_agent.py). Any problem there runs the rules below and says why.
+        from decisioning.assistant import llm_agent
+
         try:
             with llm_mode.use_mode(mode):
-                out = _model("plan", {"persona": persona, "goal": goal,
-                                      "plans": [{"id": p.id, "title": p.title, "description": p.description} for p in allowed_plans(persona)],
-                                      "tools": sorted(allowed_tools(persona))})
-            if out.get("_meta", {}).get("provider") == "offline":
-                mode_note = "The language model was not reachable. Ran with rules instead."
-            else:
-                picked = validate_plan_output(out, persona, goal, request_text, session)
-                if picked is None:
-                    mode_note = "The language model's plan was not valid, so rules chose the plan."
-                else:
-                    plan = P.get_plan(persona, picked[0]) or plan
-                    slots = {**slots, **picked[1]}
-                    recognised = True
-                    used_model = True
+                return llm_agent.run(session, goal, case_id, golden_id, mode)
+        except llm_agent.AgentFallback as e:
+            mode_note = f"{e} Ran with rules instead."
+            want_model = False
         except Exception as e:  # noqa: BLE001 - any model problem falls back to rules
-            log.warning("assistant plan via model failed: %s", e)
+            log.warning("assistant agent failed: %s", e)
             mode_note = "The language model could not be used. Ran with rules instead."
+            want_model = False
 
     if plan.id == "briefing":
         slots.pop("question", None)  # "give me my briefing" is not a question for a metric or policy tool
@@ -284,7 +279,14 @@ def run(session: Session, goal: str | None = None, case_id: str | None = None, g
     return {"persona": persona, "goal": goal or "briefing", "plan_id": plan.id, "mode_used": "language model" if used_model else "rules",
             "mode_note": mode_note, "plan": plan_out, "steps": steps, "findings": findings, "proposals": prop_list,
             "summary": summary, "audit_id": audit_id,
-            "case_id": ctx.case_id, "golden_id": ctx.golden_id}
+            "case_id": ctx.case_id, "golden_id": ctx.golden_id,
+            "citations": _citations(steps), "model_turns": 0, "stop_reason": "rules"}
+
+
+def _citations(steps: list[dict]) -> list[dict]:
+    from decisioning.assistant.llm_agent import collect_citations
+
+    return collect_citations(steps)
 
 
 def _guardrail_plan(persona: str) -> P.Plan:
