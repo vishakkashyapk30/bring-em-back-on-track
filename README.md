@@ -287,8 +287,8 @@ SPEC_ADAPTER=tests_spec.adapter_impl:make_adapter uv run pytest tests_spec   # i
 | 3 | Data contract (golden C360, based on DC-COLL-001) | Shown in full in this README (see "Data contract") and also in the repo as [`docs/contracts/c360_customer.v1.yaml`](docs/contracts/c360_customer.v1.yaml) |
 | 4 | Data quality report | Summarised in this README (see "Data quality") and also in the repo, in full, as [`docs/data_quality_report.md`](docs/data_quality_report.md) |
 | 5 | Benchmark answers (35 release questions and the 15 extra ones) | [`deliverables/benchmark_answers.csv`](deliverables/benchmark_answers.csv). Results are summarised in this README (see "Benchmark results") and in full in [`docs/benchmark_results.md`](docs/benchmark_results.md) |
-| 6 | Demo video (5 minutes) | Google Drive link: to be added. A tour of as many features across the website as fit in 5 minutes, signed in as each persona (see "The demo video and the pitch deck") |
-| 7 | Pitch deck (10 slides, PDF) | Google Drive link: to be added. It follows one customer, J. Tyler, end to end. The PDF is also in the repo root: [`back-on-track-deck.pdf`](back-on-track-deck.pdf) |
+| 6 | Demo video (under 5 minutes) | [Google Drive: demo video](https://drive.google.com/open?id=16DMe4Y6hV0HE1jRjvSuVD1PzzK8QfiOQ). A tour of as many features across the website as fit in 5 minutes, signed in as each persona (see "The demo video and the pitch deck") |
+| 7 | Pitch deck (10 slides, PDF) | [Google Drive: pitch deck PDF](https://drive.google.com/open?id=1yN4p9IidXRo8o6ANz9HOaakeGGNMr6mZ). It follows one customer, J. Tyler, end to end. |
 
 ## Repository layout
 
