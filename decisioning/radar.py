@@ -5,7 +5,7 @@ Gap plus new EI is called 'layoff_like'; a gap without EI is called 'payroll_del
 known incident is shown beside the pattern. It is a radar, not a layoff detector: no field says a person lost a job.
 
 Rules and arithmetic only, so it works with LLM_PROVIDER=offline and needs no model. It computes on any data and says
-"no cluster" when there is none. On the real release it finds none (docs/profiling_decisions.md section 1: 7.3% of
+"no cluster" when there is none. On the real release it finds none (docs/profiling/profiling_decisions.md section 1: 7.3% of
 Windsor-Essex manufacturing deposits are late against 7.8% elsewhere), which is the honest answer, not an error.
 
 Two entry points share one classifier:

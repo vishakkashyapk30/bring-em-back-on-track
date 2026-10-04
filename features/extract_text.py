@@ -3,7 +3,7 @@ and agent note, and write features.transcript_features and features.note_feature
 
 Each row carries `available_ts` = when the feature could first be known (call end; note last edit, else note time),
 so training joins only see text that existed at decision time. Accuracy against the release's 500 public labels
-each for transcripts and notes: eval/eval_text_rules.py (transcripts) and docs/feature_store.md.
+each for transcripts and notes: eval/eval_text_rules.py (transcripts) and docs/reference/feature_store.md.
 
 Run: `python -m features.extract_text` (part of `make features`).
 """

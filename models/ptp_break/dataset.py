@@ -63,7 +63,7 @@ CATEGORICAL = [
     "case_product",
     "last_stated_delay_reason",
 ]
-# Excluded on purpose (leakage or no information), see docs/model_card_ptp_break.md:
+# Excluded on purpose (leakage or no information), see docs/reference/model_card_ptp_break.md:
 # - ptp_amount and ptp_to_overdue_ratio: in this data the promised amount looks back-filled after the outcome.
 #   69% of kept promises are for the full overdue amount but only 0.3% of still-open promises are (about 26%
 #   expected from the same cohort mix). With them the model scores a fake 0.95 AUC.

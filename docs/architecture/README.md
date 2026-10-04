@@ -1,6 +1,6 @@
 # Architecture (build phase)
 
-Deliverable 2 is the final diagram: [`architecture.png`](architecture.png) and [`architecture.pdf`](architecture.pdf) in this folder (also `architecture.svg`). It shows what the build actually runs and is drawn by `make_diagram.py` (`python3 docs/architecture/make_diagram.py`, needs Chrome for the export). The design-phase diagram is `../design/diagrams/architecture_v1.png`. This page is the written reference. Design rationale: [`../design_changes.md`](../design_changes.md).
+Deliverable 2 is the final diagram: [`architecture.png`](architecture.png) and [`architecture.pdf`](architecture.pdf) in this folder (also `architecture.svg`). It shows what the build actually runs and is drawn by `make_diagram.py` (`python3 docs/architecture/make_diagram.py`, needs Chrome for the export). The design-phase diagram is `../design/diagrams/architecture_v1.png`. A plain black and white version in the same four-part layout, for comparing the two, is [`architecture_final_v2.png`](architecture_final_v2.png), the final architecture diagram, drawn from the Mermaid source [`architecture_final_v2.mmd`](architecture_final_v2.mmd) with layer 1 laid out horizontally (render with `npx @mermaid-js/mermaid-cli -i architecture_final_v2.mmd -o architecture_final_v2.png -b white -s 3`). The first vertical draft is kept as [`architecture_final.png`](architecture_final.png). This page is the written reference. Design rationale: [`../design_changes.md`](../design_changes.md).
 
 ## Logical view: four layers, one use case
 

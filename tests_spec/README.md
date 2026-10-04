@@ -4,7 +4,7 @@ This is a black-box pytest suite written **only** from the requirements: the org
 
 Written by a separate agent that was given only the brief and the design docs (decision D18 in
 [`docs/design_changes.md`](../docs/design_changes.md)). Its open questions were settled in
-[`docs/profiling_decisions.md`](../docs/profiling_decisions.md) §3.
+[`docs/profiling/profiling_decisions.md`](../docs/profiling/profiling_decisions.md) §3.
 
 ```
 tests_spec/

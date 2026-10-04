@@ -1,4 +1,4 @@
-// "Waiting for you" inbox and the saved watchlist (docs/inbox_and_watchlist.md). Read-only inbox; pins are audited.
+// "Waiting for you" inbox and the saved watchlist (docs/reference/track_inbox_watchlist.md). Read-only inbox; pins are audited.
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

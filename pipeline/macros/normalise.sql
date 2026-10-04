@@ -1,4 +1,4 @@
-{# Identity normalisation shared by every source (docs/profiling_decisions.md §2). #}
+{# Identity normalisation shared by every source (docs/profiling/profiling_decisions.md §2). #}
 
 {# Upper-case, strip accents, keep letters and spaces only. #}
 {% macro norm_text(x) -%}

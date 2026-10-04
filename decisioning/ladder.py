@@ -1,7 +1,7 @@
 # ruff: noqa: E501
 """Treatment ladder (rules). Phase 1 NBA = rules informed by risk, not uplift (D2).
 
-Order (first match wins, as settled in docs/profiling_decisions.md), after the policy gate has removed what must not be done:
+Order (first match wins, as settled in docs/profiling/profiling_decisions.md), after the policy gate has removed what must not be done:
  1. Hardship or vulnerability: specialist referral (never pressure), or no contact while an agreed hardship plan runs.
  2. A promise just broke and the customer's pay is late: a plan offer (help before nudging).
  3. 31+ days past due and high risk: a call from an agent.

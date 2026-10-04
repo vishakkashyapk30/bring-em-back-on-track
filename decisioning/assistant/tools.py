@@ -876,7 +876,7 @@ def model_card(ctx: ToolContext) -> ToolResult:
     res = ToolResult(f"Blend AUC {h['blend']['auc']} vs bank v2.1 {h['bank_v2_1']['auc']} on the same {h['ours']['n']:,} test promises; decision: {m['decision']}.",
                      {**table(["Model", "AUC", "Brier", "Lift top 10%", "Promises"], rows),
                       "kv": kv([("Model", m["model"]), ("Test period", m["split"]["test"]), ("Decision", m["decision"]), ("Fallback", m["fallback"])]),
-                      "text": "Full card: docs/model_card_ptp_break.md", "links": [link("Open monitoring", "/governance/monitoring")]},
+                      "text": "Full card: docs/reference/model_card_ptp_break.md", "links": [link("Open monitoring", "/governance/monitoring")]},
                      cites=[{"doc_id": "model_card_ptp_break", "section": "Performance"}])
     res.findings.append(f"On the same test promises the blended model reaches AUC {h['blend']['auc']} against {h['bank_v2_1']['auc']} for the bank's v2.1; scores are labelled model estimates.")
     return res

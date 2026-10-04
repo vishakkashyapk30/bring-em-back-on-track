@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS identity_reviews (
     ts            TEXT
 );
 
--- Saved watchlist: subjects a person follows (docs/inbox_and_watchlist.md). Pins and unpins are audited.
+-- Saved watchlist: subjects a person follows (docs/reference/track_inbox_watchlist.md). Pins and unpins are audited.
 -- seen_state_json holds the facts at the last look, so "what changed since you last looked" is a read-only diff.
 CREATE TABLE IF NOT EXISTS watchlist (
     watch_id      INTEGER PRIMARY KEY AUTOINCREMENT,

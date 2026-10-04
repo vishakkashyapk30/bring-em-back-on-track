@@ -1,5 +1,5 @@
 # ruff: noqa: E501
-"""Track: each persona follows ONE subject over time (docs/track.md).
+"""Track: each persona follows ONE subject over time (docs/reference/track_inbox_watchlist.md).
 
 * Agent: one of their own customers (a case assigned to them) -> one chronological timeline across accounts, cases,
   promises, contacts, notes, calls and recordings, hardship flag events, NBA decisions and post-call summaries.
@@ -186,7 +186,7 @@ def authorize(s: Session, kind: str, id_: str) -> None:
     if kind == "customer":
         if not GOLDEN.match(id_):
             raise _deny("That is not a golden customer ID.", 422)
-        access.golden(s, id_)  # agent: a case assigned to them; specialist: the hardship row rule (docs/row_scope.md)
+        access.golden(s, id_)  # agent: a case assigned to them; specialist: the hardship row rule (docs/reference/row_scope.md)
     elif kind == "identity":
         if not GOLDEN.match(id_):
             raise _deny("That is not a golden customer ID.", 422)

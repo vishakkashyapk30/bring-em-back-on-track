@@ -18,7 +18,7 @@ ROLES = ["agent", "hardship_specialist", "team_lead", "analyst", "data_steward"]
 
 # capability -> role -> allowed?   (source in the comment)
 MATRIX: dict[str, dict[str, bool | None]] = {
-    # V1 §6 table: "Agent approves or overrides". Settled by the build team, see docs/profiling_decisions.md:
+    # V1 §6 table: "Agent approves or overrides". Settled by the build team, see docs/profiling/profiling_decisions.md:
     # a hardship specialist may approve; a team lead approves batches only, not single items.
     "approve_own_nba": {"agent": True, "hardship_specialist": True, "team_lead": False, "analyst": False, "data_steward": False},
     # V1 §6 table: "team lead approves batches"

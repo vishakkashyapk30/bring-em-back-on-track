@@ -636,7 +636,7 @@ class Layer123Adapter(NbaMixin, HardshipMixin, SpecAdapterBase):
 
     def employer_radar(self, observations, ops_events=()):
         raise NotImplementedError("S1 employer radar deliberately not built: profiling found no employer or regional "
-                                  "cluster (docs/profiling_decisions.md §1, design_changes.md #20)")
+                                  "cluster (docs/profiling/profiling_decisions.md §1, design_changes.md #20)")
 
     def weather_map(self, observations):
         # NI S2: one bubble per FSA, computed by SQL (shown), areas under the suppression threshold hidden.

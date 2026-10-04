@@ -2,7 +2,7 @@
 """'Waiting for you': one list per persona of every pending human review across the system.
 
 Read-only. Each source reads the same store the real screen reads (ops.db tables, the nightly queue file, the
-warehouse, reports/), applies the persona's row scope (docs/row_scope.md) and links to the screen where the person
+warehouse, reports/), applies the persona's row scope (docs/reference/row_scope.md) and links to the screen where the person
 acts. Nothing here approves anything: approval logic stays in the existing routes.
 
 A source that does not exist in the code, or cannot be read right now (no warehouse loaded, no queue built), is

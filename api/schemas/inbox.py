@@ -1,5 +1,5 @@
 """'Waiting for you' inbox: every pending human review for the signed-in person, read-only, with a link to the screen
-where they act on it (docs/inbox_and_watchlist.md)."""
+where they act on it (docs/reference/track_inbox_watchlist.md)."""
 
 from __future__ import annotations
 

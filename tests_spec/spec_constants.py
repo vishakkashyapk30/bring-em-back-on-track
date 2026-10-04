@@ -92,7 +92,7 @@ EXAMPLE_CONTACT_CAP_7D = 3
 # without naming channels. We test calls only. TBC.
 HOURS_RULE_CHANNELS: frozenset[str] = frozenset({"call"})
 # Is the end of the permitted window exclusive (20:00 is outside)? Not stated. TBC.
-PERMITTED_WINDOW_END_EXCLUSIVE: bool | None = True  # settled by the build team, see docs/profiling_decisions.md
+PERMITTED_WINDOW_END_EXCLUSIVE: bool | None = True  # settled by the build team, see docs/profiling/profiling_decisions.md
 PERMITTED_WINDOW_START_INCLUSIVE: bool | None = True  # "Call 8am-8pm" reads as 08:00 allowed.
 # V1: "never Sundays or holidays". v2: "off Sundays unless sunday_contact_permitted".
 # V1 is primary, so the flag does NOT unlock Sundays. Contradiction logged in OPEN_QUESTIONS.
@@ -152,9 +152,9 @@ HARDSHIP_SOURCES = ("agent_coded", "customer_form", "model", "llm_flag")  # NI H
 # Who may confirm (-> clear): "A specialist confirms it by linking a program."
 HARDSHIP_CONFIRMING_ROLES = frozenset({"hardship_specialist"})
 # Can a front-line agent (a person) lower the flag? "Only a person can lower it". The role is TBC.
-AGENT_MAY_LOWER_HARDSHIP: bool | None = False  # settled by the build team, see docs/profiling_decisions.md
+AGENT_MAY_LOWER_HARDSHIP: bool | None = False  # settled by the build team, see docs/profiling/profiling_decisions.md
 # Can a team lead confirm hardship? Not stated. TBC.
-TEAM_LEAD_MAY_CONFIRM_HARDSHIP: bool | None = False  # settled by the build team, see docs/profiling_decisions.md
+TEAM_LEAD_MAY_CONFIRM_HARDSHIP: bool | None = False  # settled by the build team, see docs/profiling/profiling_decisions.md
 
 # ---------------------------------------------------------------------------
 # Eligibility boundaries (V1 §6 UC3; v2 §6 UC3). All TBC.
@@ -162,7 +162,7 @@ TEAM_LEAD_MAY_CONFIRM_HARDSHIP: bool | None = False  # settled by the build team
 MAX_DPD_INCLUSIVE: bool | None = True  # dpd == max_dpd is eligible? TBC.
 MIN_MONTHS_ON_BOOK_INCLUSIVE: bool | None = True  # mob == min is eligible? TBC.
 # max_uses_12m: is a customer with uses == max still eligible? Our reading: no (max reached). TBC.
-USES_EQUAL_TO_MAX_IS_ELIGIBLE: bool | None = False  # settled by the build team, see docs/profiling_decisions.md
+USES_EQUAL_TO_MAX_IS_ELIGIBLE: bool | None = False  # settled by the build team, see docs/profiling/profiling_decisions.md
 BROKEN_PLAN_LOOKBACK_DAYS = 90  # `excludes_broken_plan_90d`.
 ELIGIBILITY_RULE_NAMES = (
     "max_dpd",
@@ -187,9 +187,9 @@ CURE_WINDOW_DAYS = 30
 # ---------------------------------------------------------------------------
 # SQL guard (V1 §4 step 3; v2 §4 step 4)
 # ---------------------------------------------------------------------------
-MAX_SQL_ROW_LIMIT: int | None = 1000  # settled by the build team, see docs/profiling_decisions.md
+MAX_SQL_ROW_LIMIT: int | None = 1000  # settled by the build team, see docs/profiling/profiling_decisions.md
 # Is `SELECT *` refused outright, or expanded to allowlisted columns? Not stated. TBC.
-SELECT_STAR_REFUSED: bool | None = True  # settled by the build team, see docs/profiling_decisions.md
+SELECT_STAR_REFUSED: bool | None = True  # settled by the build team, see docs/profiling/profiling_decisions.md
 
 # ---------------------------------------------------------------------------
 # Feature store (V1 §5)

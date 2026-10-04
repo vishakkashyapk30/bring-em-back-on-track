@@ -225,7 +225,7 @@ def main() -> None:
     p = s.reports_dir / "fairness_nba.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(rep, indent=2, default=str))
-    doc = s.reports_dir.parent / "docs" / "fairness_nba.md"
+    doc = s.reports_dir.parent / "docs" / "reference" / "fairness_nba.md"
     doc.write_text(_md(rep))
     print(f"wrote {p} and {doc}: {len(rep['review_items'])} flagged groups, "
           f"{rep['design_claim']['violations']} design-claim violations")

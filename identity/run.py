@@ -1,6 +1,6 @@
 """`make identity`: resolve every source system's customer key to one golden ID.
 
-Passes (docs/profiling_decisions.md §2):
+Passes (docs/profiling/profiling_decisions.md §2):
   1. CRM clusters: shared national_id_hash, duplicate_of_crm_id (cannot-link on conflicting national IDs).
   2. Accounts -> CRM: majority vote over the valid CRM IDs in account_monthly_snapshot (fixes mistyped IDs).
   3. Source keys (cards, lending, core-banking CIF) -> golden ID: majority of their linked accounts; all accounts

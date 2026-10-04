@@ -2,7 +2,7 @@
 
 Agents work only the cases assigned to them (assigned_agent_id), team leads the cases of their team. Hardship
 specialists open only cases on the hardship board, flagged hardship or vulnerable, or assigned to them or their team
-(rule below, docs/row_scope.md). Stewards never open an individual customer's record, calls or notes (identity lineage
+(rule below, docs/reference/row_scope.md). Stewards never open an individual customer's record, calls or notes (identity lineage
 is a separate route, `lineage`). Analysts see aggregates only and are refused by the role check before reaching
 here. Applies to reads and writes alike, in every answer mode. When the app serves sample data (no warehouse)
 nothing is enforced.
@@ -28,7 +28,7 @@ def _deny(what: str, session: Session | None = None) -> HTTPException:
     return HTTPException(403, detail={"reason": f"This {what} is not assigned to you."})
 
 
-# Row scope for hardship specialists (decided from the data model, see docs/row_scope.md). A case is open to a
+# Row scope for hardship specialists (decided from the data model, see docs/reference/row_scope.md). A case is open to a
 # hardship specialist when ANY of these holds:
 #   1. it is assigned to them (collections_cases.assigned_agent_id) or to their team (assigned_team);
 #   2. the case itself is flagged hardship (hardship_flag) or vulnerable (vulnerable_customer_flag);

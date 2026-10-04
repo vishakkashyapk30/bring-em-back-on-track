@@ -1,4 +1,4 @@
-"""Track: each persona follows one subject over time (api/services/track.py, docs/track.md).
+"""Track: each persona follows one subject over time (api/services/track.py, docs/reference/track_inbox_watchlist.md).
 
 Authorisation runs before any data is read: the role decides which kinds of subject it may track, and the row scope
 (api/access.py) decides which customers. Reads use the read-only warehouse. The only write here is an analyst's

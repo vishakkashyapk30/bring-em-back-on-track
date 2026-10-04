@@ -58,7 +58,7 @@ DELAY_OTHER = [
     ("travel", re.compile(r"travel+ing|en voyage|je voyageais", re.I)),
     ("refuses", re.compile(r"not paying (that|it)|won'?t pay|ne paierai pas", re.I)),
 ]
-ASR_CONFIDENCE_MIN = 0.80  # v2 rule (settled by the build team, docs/profiling_decisions.md section 3)
+ASR_CONFIDENCE_MIN = 0.80  # v2 rule (settled by the build team, docs/profiling/profiling_decisions.md section 3)
 MONTHS = {m: i for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
 MONTHS_FR = {"janv": 1, "févr": 2, "mars": 3, "avr": 4, "mai": 5, "juin": 6, "juil": 7, "août": 8, "sept": 9, "oct": 10, "nov": 11, "déc": 12}
 

@@ -1,7 +1,7 @@
 """Profiling of the Maple Bank release (bronze Parquet). Reproduces the numbers behind the build decisions.
 
-Run: `make profile` (needs `make bronze` first). Writes reports/profile/profile.json and docs/profiling_report.md.
-Decisions taken from these numbers are recorded in docs/profiling_decisions.md.
+Run: `make profile` (needs `make bronze` first). Writes reports/profile/profile.json and docs/profiling/profiling_report.md.
+Decisions taken from these numbers are recorded in docs/profiling/profiling_decisions.md.
 """
 
 from __future__ import annotations
@@ -120,7 +120,7 @@ def main() -> None:
         print(f"{key:24s} {len(rows):5d} rows")
     (s.reports_dir / "profile").mkdir(parents=True, exist_ok=True)
     (s.reports_dir / "profile" / "profile.json").write_text(json.dumps(results, indent=2))
-    (ROOT / "docs" / "profiling_report.md").write_text("\n".join(md))
+    (ROOT / "docs" / "profiling" / "profiling_report.md").write_text("\n".join(md))
 
 
 if __name__ == "__main__":

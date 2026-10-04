@@ -50,8 +50,8 @@ ROUTERS = (public, auth, queue, customers, nba, ask, assist, assistant, demo, ca
            governance, steward, playbooks, drift, voice)
 for r in ROUTERS:
     app.include_router(r.router, prefix="/api")
-app.include_router(importlib.import_module("api.routers.track").router, prefix="/api")  # Track (docs/track.md)
-for r in (importlib.import_module(f"api.routers.{m}") for m in ("inbox", "watchlist")):  # docs/inbox_and_watchlist.md
+app.include_router(importlib.import_module("api.routers.track").router, prefix="/api")  # Track (docs/reference/track_inbox_watchlist.md)
+for r in (importlib.import_module(f"api.routers.{m}") for m in ("inbox", "watchlist")):  # docs/reference/track_inbox_watchlist.md
     app.include_router(r.router, prefix="/api")
 
 

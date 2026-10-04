@@ -33,7 +33,7 @@ def scope_for(role: str, user_id: str | None, team_id: str | None) -> AskScope:
         return AskScope(allow_metrics=True, user_id=user_id, role=role, case_allowed=team,
                         case_denied_reason="Refused: you can only open call summaries for cases on your team.")
     if role == "hardship_specialist":
-        # Same row rule as the API (api/access.py, docs/row_scope.md): board, flagged hardship or vulnerable, or
+        # Same row rule as the API (api/access.py, docs/reference/row_scope.md): board, flagged hardship or vulnerable, or
         # assigned to you or your team. Decided here, before the call is read, in rules and language-model mode alike.
         def specialist(case_id: str) -> bool:
             from api import access

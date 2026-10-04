@@ -8,7 +8,7 @@ What is used from the recordings (the optional 2,000-call voice pack, synthetic 
   goes through the same rule extractor as the released transcripts (features/text_rules.py): one definition.
 - **Call-level measures** of the line, never of the person: duration, dead air, hold music, noise level, packet loss and
   clipping (from `voice_samples`). Speaker acoustics (pitch, energy, speaking rate, filler rate, accent region) are NEVER
-  read: they can stand in for protected traits (V1 section 5, docs/model_card_ptp_break.md). `CALL_LEVEL` is the whole
+  read: they can stand in for protected traits (V1 section 5, docs/reference/model_card_ptp_break.md). `CALL_LEVEL` is the whole
   allow-list and `assert_call_level` fails if anything else is requested.
 
 Run: `python -m features.voice transcribe --n 300 --model small` (writes data/features/voice_asr.parquet, the turns in
