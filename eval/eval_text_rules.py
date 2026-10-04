@@ -42,6 +42,10 @@ def main() -> None:
         hits["cease_request"] += str(f["cease_request"]).lower() == lab["label_cease_request"]
         hits["next_step"] += f["next_step"] == lab["label_next_step"]
         hits["ptp_mentioned"] += str(f["ptp"] is not None).lower() == lab["label_ptp_mentioned"]
+        hits["stated_delay_reason"] += (f["stated_delay_reason"] or "") == lab["label_stated_delay_reason"]
+        want = lab["label_ptp_intent_strength"]
+        hits["ptp_intent_strength"] += (f["ptp_intent_strength"] is None and want == "") or (
+            f["ptp_intent_strength"] is not None and want != "" and abs(f["ptp_intent_strength"] - float(want)) < 1e-6)
         s = summary(f)
         ok = s.lower() == lab["label_summary_gold"].lower()
         hits["summary_exact"] += ok

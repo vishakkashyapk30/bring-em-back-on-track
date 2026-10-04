@@ -11,5 +11,5 @@ router = APIRouter(tags=["features"])
 def catalog(s=Depends(require({Role.analyst, Role.steward}))):
     """Live: generated from features/registry.yaml."""
     specs = load_registry()
-    return {"count": len(specs), "llm_count": sum(x.built_by == "llm" for x in specs),
+    return {"count": len(specs), "llm_count": sum(x.built_by == "ai" for x in specs),
             "features": [x.model_dump() for x in specs]}

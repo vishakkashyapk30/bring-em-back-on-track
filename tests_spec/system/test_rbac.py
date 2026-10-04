@@ -18,20 +18,21 @@ ROLES = ["agent", "hardship_specialist", "team_lead", "analyst", "data_steward"]
 
 # capability -> role -> allowed?   (source in the comment)
 MATRIX: dict[str, dict[str, bool | None]] = {
-    # V1 §6 table: "Agent approves or overrides" (team lead approval of single items: TBC)
-    "approve_own_nba": {"agent": True, "hardship_specialist": None, "team_lead": None, "analyst": False, "data_steward": False},
+    # V1 §6 table: "Agent approves or overrides". Settled by the build team, see docs/profiling_decisions.md:
+    # a hardship specialist may approve; a team lead approves batches only, not single items.
+    "approve_own_nba": {"agent": True, "hardship_specialist": True, "team_lead": False, "analyst": False, "data_steward": False},
     # V1 §6 table: "team lead approves batches"
     "approve_batch": {"agent": False, "hardship_specialist": False, "team_lead": True, "analyst": False, "data_steward": False},
     # V1 §3 pass 3: "a data steward decides"
     "decide_identity_review": {"agent": False, "hardship_specialist": False, "team_lead": False, "analyst": False, "data_steward": True},
-    # V1 §6 UC3: "A specialist can try ..." (agent / team lead: TBC)
-    "simulate_plan": {"agent": None, "hardship_specialist": True, "team_lead": None, "analyst": False, "data_steward": False},
+    # V1 §6 UC3: "A specialist can try ...". Settled by the build team: only the specialist runs the simulator.
+    "simulate_plan": {"agent": False, "hardship_specialist": True, "team_lead": False, "analyst": False, "data_steward": False},
     # V1 §10 latch: a specialist confirms by linking a program
     "confirm_hardship": {"agent": False, "hardship_specialist": True, "team_lead": C.TEAM_LEAD_MAY_CONFIRM_HARDSHIP, "analyst": False, "data_steward": False},
     # V1 §3 S3: "an engineer approves it" (steward = Collections Data Engineering lead, V1 Part 3)
     "approve_drift_fix": {"agent": False, "hardship_specialist": False, "team_lead": False, "analyst": False, "data_steward": True},
-    # V1 §6 playbooks "wait for a team lead's approval"
-    "approve_playbook": {"agent": False, "hardship_specialist": None, "team_lead": True, "analyst": False, "data_steward": False},
+    # V1 §6 playbooks "wait for a team lead's approval". Settled by the build team: team lead only.
+    "approve_playbook": {"agent": False, "hardship_specialist": False, "team_lead": True, "analyst": False, "data_steward": False},
 }
 
 

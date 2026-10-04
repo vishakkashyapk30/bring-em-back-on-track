@@ -32,6 +32,7 @@ REASON_PHRASE = {
     "disaster_evacuation": "evacuation (disaster)", "ei_waiting": "waiting for EI",
 }
 TIGHT = re.compile(r"budget has been (really )?tight|money is tight|finances are tight|things are hard this month|i'?m struggling|difficile financièrement|budget (est )?serré|c'est dur ce mois", re.I)
+TIGHT_EN = re.compile(r"budget has been|money is tight|finances are tight|things are hard|struggling", re.I)
 DISPUTE_LATE_FEE = re.compile(r"late fee|frais de retard", re.I)
 DISPUTE_BILLING = re.compile(r"statement is wrong|don'?t add up|billing error|relevé.{0,20}(faux|erron)", re.I)
 DISPUTE_NOT_APPLIED = re.compile(r"payment and it wasn'?t applied|wasn'?t applied|not applied|n'a pas été appliqué", re.I)
@@ -43,6 +44,21 @@ CEASE = re.compile(r"(please )?stop calling me\b(?!.{0,5}every day)|don'?t call 
 FINAL_DEMAND = re.compile(r"final demand|mise en demeure", re.I)
 # The amount must start at a number boundary: a greedy prefix used to swallow leading digits ("280.00 $" -> 0.00).
 CONFIRM_PTP = re.compile(r"(?:confirm|confirmer|\bnote|\bnoting)[^$]{0,40}\$?\s?(?<![\d,.])([\d,]+(?:\.\d{1,2})?)\s?(?:\$|dollars)?\s(?:on|le)\s([A-Za-zéû]+\.?\s?\d{1,2}(?:st|nd|rd|th)?|\d{1,2}(?:er)?\s[A-Za-zéû]+)", re.I)
+# Promise firmness (V1 section 5 ptp_intent_strength). The gold labels use two levels: 0.85 for a plain commitment
+# ("I can pay $200 the 24th") and 0.45 for a hedged one ("I'll try to pay $64 next payday").
+HEDGE = re.compile(r"\b(i'?ll|i will|i'?m going to|i am going to|i'?d) (try|attempt)\b|\btry(ing)? to pay\b|\bhopefully\b|"
+                   r"\bmaybe\b|\bi might\b|\bif i can\b|\bi'?ll see\b|\bprobably\b|\bi guess\b|j'?essaie|j'?essaierai|"
+                   r"\bpeut-être\b|\bj'espère\b|\bje vais essayer\b", re.I)
+PROMISE_SAY = re.compile(r"\b(pay|payer|paie|paierai|send|envoyer)\b[^.?!]{0,40}\d|\d[^.?!]{0,30}\b(dollars|\$)", re.I)
+HARDHEDGE_LEVELS = {"firm": 0.85, "hedged": 0.45}
+DELAY_OTHER = [
+    ("forgot", re.compile(r"forgot|oublié", re.I)),
+    ("payroll_timing", re.compile(r"pay (it )?(after )?my (next )?pay(day)?\b(?! (comes|is))|après ma prochaine paie|waiting (for )?(my )?pay(day|check)", re.I)),
+    ("bank_error", re.compile(r"problem with my bank|problème avec mon virement|bank (transfer )?(error|problem)", re.I)),
+    ("travel", re.compile(r"travel+ing|en voyage|je voyageais", re.I)),
+    ("refuses", re.compile(r"not paying (that|it)|won'?t pay|ne paierai pas", re.I)),
+]
+ASR_CONFIDENCE_MIN = 0.80  # v2 rule (settled by the build team, docs/profiling_decisions.md section 3)
 MONTHS = {m: i for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
 MONTHS_FR = {"janv": 1, "févr": 2, "mars": 3, "avr": 4, "mai": 5, "juin": 6, "juil": 7, "août": 8, "sept": 9, "oct": 10, "nov": 11, "déc": 12}
 
@@ -71,8 +87,29 @@ def _parse_month_day(s: str, call_date: date | None) -> date | None:
     return d
 
 
-def extract(turns: list[dict], call_date: date | None = None, ptp_record: dict | None = None) -> dict:
-    """Structured fields from a redacted transcript (or a note as one 'customer' turn)."""
+def promise_firmness(turns: list[dict]) -> float | None:
+    """0.85 (firm) or 0.45 (hedged) from the customer's own promise turns; None when the customer made none."""
+    said = [t.get("text", "") for t in turns if t.get("speaker") == "customer" and PROMISE_SAY.search(t.get("text", ""))]
+    if not said:
+        return None
+    return HARDHEDGE_LEVELS["hedged" if any(HEDGE.search(x) for x in said) else "firm"]
+
+
+def low_confidence(asr_confidence_avg: float | None, threshold: float = ASR_CONFIDENCE_MIN) -> bool:
+    """Poor recordings count as missing (V1 section 5; v2 rule: asr_confidence_avg below 0.80)."""
+    return asr_confidence_avg is not None and asr_confidence_avg < threshold
+
+
+def extract(turns: list[dict], call_date: date | None = None, ptp_record: dict | None = None,
+            asr_confidence_avg: float | None = None) -> dict:
+    """Structured fields from a redacted transcript (or a note as one 'customer' turn). With a low ASR confidence
+    the text features are marked missing (None) instead of guessed, and `low_confidence` is True."""
+    if low_confidence(asr_confidence_avg):
+        return {"hardship": None, "hardship_reason": None, "stated_delay_reason": None, "dispute": None,
+                "dispute_type": None, "complaint": None, "cease_request": None, "ptp": None, "ptp_intent_strength": None,
+                "next_step": "call_back", "low_confidence": True,
+                "cites": {k: [] for k in ("hardship_signal", "stated_delay_reason", "dispute_signal", "complaint",
+                                          "cease_request", "promise", "next_steps")}}
     cust, agent = _text(turns, "customer"), _text(turns, "agent")
     reason = next((name for name, p in REASONS if p.search(cust)), None)
     tight = bool(TIGHT.search(cust))
@@ -106,8 +143,8 @@ def extract(turns: list[dict], call_date: date | None = None, ptp_record: dict |
     else:
         next_step = "call_back"
     hardship = "clear" if reason else ("possible" if tight else "none")
-    stated = ("dispute" if dispute_type else "reduced_income" if (reason in ("reduced_income", "job_loss") or tight)
-              else None)
+    stated = ("dispute" if dispute_type else "reduced_income" if (reason in ("reduced_income", "job_loss", "ei_waiting") or (tight and TIGHT_EN.search(cust)))
+              else "other" if (reason or tight) else next((n for n, p in DELAY_OTHER if p.search(cust)), None))
     # Turn citations: the turns whose text fired each rule (turn_index, or position for a note).
     ev_hard = _cite(turns, dict(REASONS)[reason], "customer") if reason else (
         _cite(turns, TIGHT, "customer") if tight else [])
@@ -127,7 +164,8 @@ def extract(turns: list[dict], call_date: date | None = None, ptp_record: dict |
     return {"hardship": hardship, "hardship_reason": reason, "stated_delay_reason": stated,
             "dispute": dispute_type is not None, "dispute_type": dispute_type, "complaint": complaint,
             "cease_request": cease, "ptp": {"amount": amount, "date": due.isoformat() if isinstance(due, date) else due}
-            if amount is not None else None, "next_step": next_step, "cites": cites}
+            if amount is not None else None, "ptp_intent_strength": promise_firmness(turns) if amount is not None else None,
+            "next_step": next_step, "low_confidence": False, "cites": cites}
 
 
 DISPUTE_PATTERNS = {"fraud": DISPUTE_FRAUD, "payment_not_applied": DISPUTE_NOT_APPLIED, "late_fee": DISPUTE_LATE_FEE,
@@ -152,6 +190,8 @@ def _fmt_date(d: str | date | None) -> str | None:
 
 def summary(fields: dict) -> str:
     """Gold-template summary from extracted fields."""
+    if fields.get("low_confidence"):
+        return "Poor recording quality; text signals not extracted; next step: call back."
     parts = []
     if fields.get("hardship_reason"):
         parts.append(f"Customer reports {REASON_PHRASE[fields['hardship_reason']]}")
@@ -181,4 +221,4 @@ def extract_offline(inputs: dict) -> dict:
     turns = inputs.get("turns") or [{"speaker": "customer", "text": inputs.get("text", "")}]
     f = extract(turns)
     return {"hardship_signal": f["hardship"], "stated_delay_reason": f["stated_delay_reason"],
-            "ptp_intent_strength": None, "dispute_signal": f["dispute"], "evidence": [], **f}
+            "dispute_signal": f["dispute"], "evidence": [], **f}

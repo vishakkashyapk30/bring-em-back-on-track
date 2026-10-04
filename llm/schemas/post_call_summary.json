@@ -1,9 +1,9 @@
 {"type": "object", "required": ["summary", "promise", "signals", "next_steps"],
  "properties": {
   "summary": {"type": "object", "properties": {"text": {"type": "string"}, "turns": {"type": "array", "items": {"type": "integer"}}}},
-  "promise": {"type": ["object", "null"], "properties": {"amount": {"type": ["number", "null"]}, "date": {"type": ["string", "null"]}, "ptp_intent_strength": {"type": ["number", "null"]}, "turns": {"type": "array", "items": {"type": "integer"}}}},
+  "promise": {"type": ["object", "null"], "properties": {"amount": {"type": ["number", "null"]}, "date": {"type": ["string", "null"]}, "ptp_intent_strength": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "recorded": {"type": ["object", "null"]}, "in_transcript": {"type": ["object", "null"]}, "mismatch": {"type": "boolean"}, "turns": {"type": "array", "items": {"type": "integer"}}}},
   "signals": {"type": "object", "properties": {
-    "hardship_signal": {"enum": ["none", "possible", "clear"]}, "stated_delay_reason": {"type": ["string", "null"]},
+    "hardship_signal": {"enum": ["none", "possible", "clear", null]}, "low_confidence": {"type": "boolean"}, "stated_delay_reason": {"type": ["string", "null"]},
     "dispute_signal": {"type": "boolean"}, "complaint_cue": {"type": "boolean"}, "vulnerability_cue": {"type": "boolean"},
     "turns": {"type": "array", "items": {"type": "integer"}}}},
   "next_steps": {"type": "array", "items": {"type": "object", "properties": {"text": {"type": "string"}, "turns": {"type": "array", "items": {"type": "integer"}}}}}}}
