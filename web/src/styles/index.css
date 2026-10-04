@@ -70,3 +70,16 @@ a, button, input, select, textarea { transition-timing-function: var(--ease-out)
 dialog[open] { animation: dialog-in 220ms var(--ease-out) both; }
 dialog::backdrop { background: rgb(25 26 35 / 0.35); backdrop-filter: blur(2px); animation: fade-in 200ms ease-out both; }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+/* Touch targets: at least 40px on phones, tablets and any coarse pointer. Table cell links and sort headers
+ * grow in height only; the small remove buttons on chips get an invisible hit area instead of a bigger look. */
+@media (max-width: 767px), (pointer: coarse) {
+  button:not([aria-label^="Remove"]), [role="tab"], select, input:not([type="checkbox"], [type="radio"], [type="range"]) { min-height: 40px; }
+  button:not([aria-label^="Remove"]), [role="tab"] { min-width: 40px; }
+  summary { padding-block: 0.6rem; }
+  td a, td button { display: inline-flex; align-items: center; min-height: 40px; min-width: 40px; }
+  button[aria-label^="Remove"] { position: relative; }
+  button[aria-label^="Remove"]::after { content: ""; position: absolute; inset: -13px; }
+  html .leaflet-touch .leaflet-bar a, .leaflet-bar a { width: 40px; height: 40px; line-height: 40px; }
+  header a[aria-label$="home page"] { min-height: 40px; }
+}

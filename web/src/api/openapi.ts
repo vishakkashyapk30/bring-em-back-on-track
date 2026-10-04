@@ -4,6 +4,83 @@
  */
 
 export interface paths {
+    "/api/public/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Summary */
+        get: operations["summary_api_public_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/map": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Public Map
+         * @description Province and postal-area risk numbers for the landing map: all four metrics, last 12 months, one payload.
+         */
+        get: operations["public_map_api_public_map_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/flow": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Public Flow
+         * @description Counts at each step of last night's decision run. Empty (available=false) if the plan is not built.
+         */
+        get: operations["public_flow_api_public_flow_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/sample-customer": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Public Sample Customer
+         * @description One anonymous customer: source systems, match confidences and the proposed next action. No identifiers.
+         */
+        get: operations["public_sample_customer_api_public_sample_customer_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/auth/session": {
         parameters: {
             query?: never;
@@ -64,7 +141,7 @@ export interface paths {
         };
         /**
          * Get Queue
-         * @description Today's NBA queue. Real: decisioning.nba.build_queue(date) filtered to the agent/team.
+         * @description Today's NBA queue for the signed-in person (agent: own cases; lead: the team; specialist: hardship cases).
          */
         get: operations["get_queue_api_queue_get"];
         put?: never;
@@ -118,7 +195,7 @@ export interface paths {
         };
         /**
          * Customer
-         * @description C360: header badges, holdings, identity & lineage, freshness. Agents: own cases only (TODO).
+         * @description C360: header badges, holdings, consent, hardship and freshness, from gold.c360_customer / c360_account.
          */
         get: operations["customer_api_customers__golden_id__get"];
         put?: never;
@@ -153,7 +230,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Identity */
+        /**
+         * Identity
+         * @description Every source key linked to this golden ID, with method and confidence (identity.identity_xref).
+         *     Open to stewards (lineage only); other roles follow their row scope.
+         */
         get: operations["identity_api_customers__golden_id__identity_get"];
         put?: never;
         post?: never;
@@ -170,7 +251,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Online Vector */
+        /**
+         * Online Vector
+         * @description The customer's online feature vector (features.f_customer_online), same definitions as training.
+         */
         get: operations["online_vector_api_features_online__golden_id__get"];
         put?: never;
         post?: never;
@@ -189,7 +273,7 @@ export interface paths {
         };
         /**
          * Proposal
-         * @description Proposed action + full explanation + alternatives (decisioning.nba.propose).
+         * @description Proposed action + full explanation + alternatives (decisioning.nba.propose), recomputed live.
          */
         get: operations["proposal_api_nba__case_id__get"];
         put?: never;
@@ -211,7 +295,7 @@ export interface paths {
         put?: never;
         /**
          * Decide
-         * @description Approve / edit / override. Override needs a reason code. TODO(WS-F): write nba_decisions row.
+         * @description Approve / edit / override. Override needs a reason code; an edit carries the action the person chose.
          */
         post: operations["decide_api_nba__case_id__decision_post"];
         delete?: never;
@@ -231,7 +315,7 @@ export interface paths {
         put?: never;
         /**
          * What If
-         * @description A2 promise what-if; response must carry label 'model estimate, not cause and effect'.
+         * @description A2 promise what-if; response carries the label 'model estimate, not cause and effect'. Saves nothing.
          */
         post: operations["what_if_api_nba_what_if_post"];
         delete?: never;
@@ -247,8 +331,31 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Eligibility */
+        /**
+         * Eligibility
+         * @description Every program for the case's product, checked rule by rule. Rules decide, never an LLM.
+         */
         get: operations["eligibility_api_eligibility__case_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/ask/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Suggestions
+         * @description Example questions that work for the signed-in persona.
+         */
+        get: operations["suggestions_api_ask_suggestions_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -268,7 +375,7 @@ export interface paths {
         put?: never;
         /**
          * Ask
-         * @description Real: nlq.pipeline.ask(question, role, user_id). Refusal check already live.
+         * @description Collections Ask (Layer 2): refusals, cited policy answers, call summaries, certified-metric SQL.
          */
         post: operations["ask_api_ask_post"];
         delete?: never;
@@ -288,7 +395,7 @@ export interface paths {
         put?: never;
         /**
          * Policy
-         * @description Cited policy answer or refusal (decisioning.assist.policy_answer).
+         * @description Cited policy answer or refusal: current documents only, ranked by authority (rag/).
          */
         post: operations["policy_api_assist_policy_post"];
         delete?: never;
@@ -314,6 +421,69 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/assistant/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Suggestions
+         * @description The goals that work for the signed-in persona; each one is checked by tests/unit/test_assistant.py.
+         */
+        get: operations["suggestions_api_assistant_suggestions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/assistant/run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Run
+         * @description Plan (rules) or let a language model choose the tools (agent), call real tools, show every step with its
+         *     evidence and sources, and propose actions a person approves in the existing screens. Read-only: the assistant never
+         *     changes customer data or contacts anyone. Every run is audited.
+         */
+        post: operations["run_api_assistant_run_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/demo/journey/{persona}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Journey
+         * @description The guided demo for the signed-in persona: one customer's decision journey with live
+         *     evidence from the real tools. A person can only open the journey for their own role.
+         */
+        get: operations["journey_api_demo_journey__persona__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/calls/{contact_id}/summary": {
         parameters: {
             query?: never;
@@ -323,7 +493,7 @@ export interface paths {
         };
         /**
          * Summary
-         * @description Post-call draft with turn citations + promise mismatch flag (decisioning.post_call.draft).
+         * @description Post-call draft (rule extraction validated on 500 labelled transcripts) + promise check against the record.
          */
         get: operations["summary_api_calls__contact_id__summary_get"];
         put?: never;
@@ -343,7 +513,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Approve */
+        /**
+         * Approve
+         * @description The agent approves (optionally edited) notes; only approved values are saved. Audited.
+         */
         post: operations["approve_api_calls__contact_id__summary_approve_post"];
         delete?: never;
         options?: never;
@@ -392,7 +565,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Board */
+        /**
+         * Board
+         * @description Customers flagged 'possible' waiting for a person to confirm or clear, oldest overdue first.
+         */
         get: operations["board_api_hardship_board_get"];
         put?: never;
         post?: never;
@@ -409,7 +585,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Missed */
+        /**
+         * Missed
+         * @description H3 list. Default is newest first; `sort` and `dir` are allowlisted (anything else is a 422).
+         */
         get: operations["missed_api_hardship_missed_offers_get"];
         put?: never;
         post?: never;
@@ -497,7 +676,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Bubble Map */
+        /**
+         * Bubble Map
+         * @description S2 weather map: metric by postal area (FSA centroid), areas under 10 customers suppressed.
+         */
         get: operations["bubble_map_api_map_get"];
         put?: never;
         post?: never;
@@ -588,7 +770,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Quality */
+        /**
+         * Quality
+         * @description Data quality report (deliverable 4): regenerate with `make quality`.
+         */
         get: operations["quality_api_governance_quality_get"];
         put?: never;
         post?: never;
@@ -605,8 +790,48 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Benchmark */
+        /**
+         * Benchmark
+         * @description Benchmark run (deliverable 5): regenerate with `make benchmark`.
+         */
         get: operations["benchmark_api_governance_benchmark_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/governance/model": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Model
+         * @description Promise-break model evaluation (reports/model_eval.json): head-to-head vs the bank's v2.1, calibration.
+         */
+        get: operations["model_api_governance_model_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/governance/features/parity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Parity */
+        get: operations["parity_api_governance_features_parity_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -639,8 +864,33 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Fairness */
+        /**
+         * Fairness
+         * @description Fairness audit (reports/fairness.json): proxy test and outcome test by group, aggregates only.
+         *     Regenerate with `python -m governance.fairness.report` (or `make jobs TASK=fairness`).
+         */
         get: operations["fairness_api_governance_fairness_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/governance/fairness/nba": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Fairness Nba
+         * @description NBA decision fairness by group (reports/fairness_nba.json), aggregates only.
+         *     Regenerate with `python -m governance.fairness.nba_rates`.
+         */
+        get: operations["fairness_nba_api_governance_fairness_nba_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -690,7 +940,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Queue */
+        /**
+         * Queue
+         * @description Grey-band identity candidates (identity.review_queue), masked for the steward.
+         */
         get: operations["queue_api_steward_identity_queue_get"];
         put?: never;
         post?: never;
@@ -709,8 +962,166 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Verdict */
+        /**
+         * Verdict
+         * @description Record the steward's verdict (applied on the next identity run). Audited.
+         */
         post: operations["verdict_api_steward_identity__pair_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/radar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Employer Radar
+         * @description Weekly employer radar from the real warehouse (employers under 10 customers hidden). Says 'no cluster' when
+         *     there is none. A radar, not a layoff detector.
+         */
+        get: operations["employer_radar_api_radar_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/playbooks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Proposals
+         * @description Playbook proposals (employer radar, outage shield, regional). They wait for a team lead.
+         */
+        get: operations["proposals_api_playbooks_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/playbooks/{proposal_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Approve
+         * @description Approve one proposal: audited, creates a batch for the usual sample check, contacts nobody.
+         */
+        post: operations["approve_api_playbooks__proposal_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/drift": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Telemetry
+         * @description Detected changes (from ops_events releases and feed issues on the real warehouse) and the drafted fixes.
+         */
+        get: operations["telemetry_api_drift_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/drift/{fix_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve */
+        post: operations["approve_api_drift__fix_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/voice/{contact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Measures
+         * @description Does this call have a recording, and what are the line's call-level measures.
+         */
+        get: operations["measures_api_voice__contact_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/voice/{contact_id}/audio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Audio */
+        get: operations["audio_api_voice__contact_id__audio_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/voice/{contact_id}/draft": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Draft
+         * @description Speech to text from the recording, then the same post-call draft as for a transcript. Nothing is saved.
+         */
+        post: operations["draft_api_voice__contact_id__draft_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -745,6 +1156,13 @@ export interface components {
             window?: components["schemas"]["TimeBand"] | null;
             /** Program Id */
             program_id?: string | null;
+            /** Scheduled At */
+            scheduled_at?: string | null;
+        };
+        /** ApproveIn */
+        ApproveIn: {
+            /** Note */
+            note?: string | null;
         };
         /** AskIn */
         AskIn: {
@@ -754,6 +1172,8 @@ export interface components {
             chips?: {
                 [key: string]: unknown;
             } | null;
+            /** Mode */
+            mode?: string | null;
         };
         /** AskResponse */
         AskResponse: {
@@ -775,8 +1195,22 @@ export interface components {
             preflight?: components["schemas"]["Preflight"] | null;
             /** Sources */
             sources?: string[];
+            /** Citations */
+            citations?: {
+                [key: string]: unknown;
+            }[];
+            /** Freshness */
+            freshness?: string | null;
             /** Followups */
             followups?: string[];
+            /**
+             * Answered By
+             * @default rules
+             * @enum {string}
+             */
+            answered_by: "rules" | "language model";
+            /** Mode Note */
+            mode_note?: string | null;
             /**
              * Refused
              * @default false
@@ -785,11 +1219,98 @@ export interface components {
             /** Refusal Reason */
             refusal_reason?: string | null;
         };
+        /** AssistantRunIn */
+        AssistantRunIn: {
+            /** Goal */
+            goal?: string | null;
+            /** Case Id */
+            case_id?: string | null;
+            /** Golden Id */
+            golden_id?: string | null;
+            /** Mode */
+            mode?: ("rules" | "llm") | null;
+        };
+        /**
+         * AssistantRunOut
+         * @description The run, plus the agent's extras. `citations` is the Sources block: {kind: step, step_id, tool, label} for each
+         *     cited step, then the sources under them: policy {doc_id, section, quote}, interaction {source, doc_id, turn_index,
+         *     quote, ...}, sql {ref, tables}, document {doc_id, section} and data {ref}, each with its step_id.
+         */
+        AssistantRunOut: {
+            /** Persona */
+            persona: string;
+            /** Goal */
+            goal: string;
+            /**
+             * Mode Used
+             * @enum {string}
+             */
+            mode_used: "rules" | "language model";
+            /** Mode Note */
+            mode_note?: string | null;
+            /** Plan */
+            plan: components["schemas"]["PlanStep"][];
+            /** Steps */
+            steps: components["schemas"]["RunStep"][];
+            /** Findings */
+            findings: string[];
+            /** Proposals */
+            proposals: components["schemas"]["Proposal"][];
+            /** Summary */
+            summary: string;
+            /** Audit Id */
+            audit_id?: number | null;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Case Id */
+            case_id?: string | null;
+            /** Golden Id */
+            golden_id?: string | null;
+            /**
+             * Citations
+             * @default []
+             */
+            citations: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Model Turns
+             * @default 0
+             */
+            model_turns: number;
+            /** Tool Calls */
+            tool_calls?: number | null;
+            /** Stop Reason */
+            stop_reason?: string | null;
+            /** Grounded */
+            grounded?: boolean | null;
+            /**
+             * Emphasis
+             * @default []
+             */
+            emphasis: string[];
+            /**
+             * Trace
+             * @default []
+             */
+            trace: {
+                [key: string]: unknown;
+            }[];
+            /** Elapsed Ms */
+            elapsed_ms?: number | null;
+        };
         /**
          * Channel
          * @enum {string}
          */
         Channel: "call" | "sms" | "email" | "push" | "letter";
+        /** Cite */
+        Cite: {
+            /** Doc Id */
+            doc_id: string;
+            /** Section */
+            section: string;
+        };
         /** DecisionIn */
         DecisionIn: {
             /**
@@ -803,6 +1324,42 @@ export interface components {
             /** Note */
             note?: string | null;
         };
+        /** DriftApproved */
+        DriftApproved: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok: boolean;
+            /** Audit Id */
+            audit_id: number;
+            /** Fix Id */
+            fix_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Applied
+             * @default false
+             */
+            applied: boolean;
+            /** Note */
+            note: string;
+        };
+        /** Evidence */
+        Evidence: {
+            /** Columns */
+            columns?: string[] | null;
+            /** Rows */
+            rows?: unknown[][] | null;
+            /** Kv */
+            kv?: string[][] | null;
+            /** Text */
+            text?: string | null;
+            /** Links */
+            links?: {
+                [key: string]: string;
+            }[] | null;
+        };
         /** Filter */
         Filter: {
             /** Field */
@@ -815,6 +1372,13 @@ export interface components {
             op: "=" | "!=" | ">" | ">=" | "<" | "<=" | "in" | "between" | "like";
             /** Value */
             value?: unknown;
+        };
+        /** Goal */
+        Goal: {
+            /** Label */
+            label: string;
+            /** Goal */
+            goal: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -841,12 +1405,94 @@ export interface components {
              */
             verdict: "link" | "no_link" | "unsure";
         };
+        /** Journey */
+        Journey: {
+            /** Persona */
+            persona: string;
+            /** Title */
+            title: string;
+            /** Intro */
+            intro: string;
+            customer?: components["schemas"]["JourneyCustomer"] | null;
+            /** Stages */
+            stages: components["schemas"]["JourneyStage"][];
+        };
+        /** JourneyCustomer */
+        JourneyCustomer: {
+            /** Golden Id */
+            golden_id: string;
+            /** Case Id */
+            case_id: string;
+            /** Name */
+            name: string;
+        };
+        /** JourneyStage */
+        JourneyStage: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Narrative */
+            narrative: string;
+            /** Screen */
+            screen: string;
+            /** Tool */
+            tool?: string | null;
+            /** Tool Args */
+            tool_args?: {
+                [key: string]: unknown;
+            } | null;
+            /** Why It Matters */
+            why_it_matters: string;
+            evidence?: components["schemas"]["Evidence"];
+            /** Human Step */
+            human_step?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Summary */
+            summary?: string | null;
+            /** Ms */
+            ms?: number | null;
+        };
+        /** PlanStep */
+        PlanStep: {
+            /** Id */
+            id: string;
+            /** Tool */
+            tool: string;
+            /** Title */
+            title: string;
+            /** Why */
+            why: string;
+        };
+        /** PlaybookApproved */
+        PlaybookApproved: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok: boolean;
+            /** Audit Id */
+            audit_id: number;
+            /** Proposal Id */
+            proposal_id: string;
+            /** Status */
+            status: string;
+            /** Batch Id */
+            batch_id: string;
+            /** Batch Status */
+            batch_status: string;
+            /** Note */
+            note: string;
+        };
         /** PolicyQuestionIn */
         PolicyQuestionIn: {
             /** Question */
             question: string;
             /** Case Id */
             case_id?: string | null;
+            /** Mode */
+            mode?: string | null;
         };
         /** Preflight */
         Preflight: {
@@ -858,6 +1504,21 @@ export interface components {
             }[];
             /** Default Filters */
             default_filters?: string[];
+        };
+        /** Proposal */
+        Proposal: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Detail */
+            detail: string;
+            /** Kind */
+            kind: string;
+            /** Href */
+            href: string;
+            /** Requires Role */
+            requires_role: string;
         };
         /** QueryTokens */
         QueryTokens: {
@@ -890,6 +1551,47 @@ export interface components {
          * @enum {string}
          */
         Role: "agent" | "hardship_specialist" | "team_lead" | "analyst" | "steward";
+        /** RunEvidence */
+        RunEvidence: {
+            /** Columns */
+            columns?: string[] | null;
+            /** Rows */
+            rows?: unknown[][] | null;
+            /** Kv */
+            kv?: string[][] | null;
+            /** Text */
+            text?: string | null;
+            /** Links */
+            links?: {
+                [key: string]: string;
+            }[] | null;
+            /** Cites */
+            cites?: {
+                [key: string]: unknown;
+            }[] | null;
+        };
+        /** RunStep */
+        RunStep: {
+            /** Id */
+            id: string;
+            /** Tool */
+            tool: string;
+            /** Title */
+            title: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "done" | "skipped" | "failed" | "needs_approval";
+            /** Ms */
+            ms: number;
+            /** Summary */
+            summary: string;
+            /** @default {} */
+            evidence: components["schemas"]["RunEvidence"];
+            /** Cites */
+            cites?: components["schemas"]["Cite"][] | null;
+        };
         /** Session */
         Session: {
             /** User Id */
@@ -933,6 +1635,14 @@ export interface components {
             channel?: string | null;
             /** Agents Pct */
             agents_pct?: number | null;
+        };
+        /** Suggestions */
+        Suggestions: {
+            /** Persona */
+            persona: string;
+            briefing: components["schemas"]["Goal"];
+            /** Goals */
+            goals: components["schemas"]["Goal"][];
         };
         /**
          * TimeBand
@@ -998,6 +1708,138 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    summary_api_public_summary_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    public_map_api_public_map_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    public_flow_api_public_flow_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    public_sample_customer_api_public_sample_customer_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     login_api_auth_session_post: {
         parameters: {
             query: {
@@ -1086,6 +1928,11 @@ export interface operations {
         parameters: {
             query?: {
                 date?: string | null;
+                view?: string;
+                sort?: string;
+                q?: string;
+                offset?: number;
+                limit?: number;
             };
             header?: never;
             path?: never;
@@ -1167,7 +2014,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["WriteResult"];
                 };
             };
             /** @description Validation Error */
@@ -1453,6 +2300,37 @@ export interface operations {
             };
         };
     };
+    suggestions_api_ask_suggestions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     ask_api_ask_post: {
         parameters: {
             query?: never;
@@ -1556,6 +2434,105 @@ export interface operations {
             };
         };
     };
+    suggestions_api_assistant_suggestions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Suggestions"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    run_api_assistant_run_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssistantRunIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssistantRunOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    journey_api_demo_journey__persona__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                persona: string;
+            };
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Journey"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     summary_api_calls__contact_id__summary_get: {
         parameters: {
             query?: never;
@@ -1614,7 +2591,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["WriteResult"];
                 };
             };
             /** @description Validation Error */
@@ -1731,7 +2708,10 @@ export interface operations {
     };
     missed_api_hardship_missed_offers_get: {
         parameters: {
-            query?: never;
+            query?: {
+                sort?: "newest" | "days_late" | "exposure" | "days_since_flag" | "program";
+                dir?: ("asc" | "desc") | null;
+            };
             header?: never;
             path?: never;
             cookie?: {
@@ -2118,6 +3098,68 @@ export interface operations {
             };
         };
     };
+    model_api_governance_model_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    parity_api_governance_features_parity_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     monitoring_api_governance_monitoring_get: {
         parameters: {
             query?: never;
@@ -2150,6 +3192,37 @@ export interface operations {
         };
     };
     fairness_api_governance_fairness_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    fairness_nba_api_governance_fairness_nba_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -2298,7 +3371,281 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    "application/json": components["schemas"]["WriteResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    employer_radar_api_radar_get: {
+        parameters: {
+            query?: {
+                week?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    proposals_api_playbooks_get: {
+        parameters: {
+            query?: {
+                status?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    approve_api_playbooks__proposal_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                proposal_id: string;
+            };
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ApproveIn"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlaybookApproved"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    telemetry_api_drift_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    approve_api_drift__fix_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                fix_id: string;
+            };
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ApproveIn"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DriftApproved"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    measures_api_voice__contact_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contact_id: string;
+            };
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    audio_api_voice__contact_id__audio_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contact_id: string;
+            };
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    draft_api_voice__contact_id__draft_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contact_id: string;
+            };
+            cookie?: {
+                c360_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Validation Error */

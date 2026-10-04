@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import type { AssistantRun, RunStep, StepStatus } from "@/api/assistant";
 import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
+import { Sources } from "@/components/Sources";
 
 import { EvidenceToggle } from "./EvidenceView";
 import { REVEAL_GAP_MS, ROLE_LABEL, statusLabel, visibleSteps } from "./helpers";
@@ -95,6 +96,7 @@ export function RunView({ run, onNavigate }: { run: AssistantRun; onNavigate?: (
             </section>
           )}
           <p className="fade-in m-0 rounded-[var(--radius-md)] border-l-4 border-l-brand bg-grey-100 p-3 text-[14.5px]"><span className="font-semibold">In short: </span>{run.summary}</p>
+          <Sources citations={run.citations} />
           <section aria-labelledby="prop-h" className="fade-in">
             <h3 id="prop-h" className="m-0 mb-1.5 font-[family-name:var(--font-display)] text-[20px] font-semibold">For you to approve</h3>
             {run.proposals.length === 0 ? (

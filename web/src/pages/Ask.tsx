@@ -1,3 +1,4 @@
+import { Sources } from "@/components/Sources";
 import { AlertTriangle, ArrowRight, Loader2, Search } from "lucide-react";
 import { useState } from "react";
 
@@ -28,6 +29,11 @@ const heading = (c: string) => { const t = c.replace(/_pct$/, " (%)").replace(/_
 const cellText = (v: unknown) => (typeof v === "number" ? (Number.isInteger(v) ? v.toLocaleString("en-CA") : String(v))
   : typeof v === "string" && /^[a-z]+(_[a-z0-9]+)+$/.test(v) ? v.replace(/_/g, " ") : String(v ?? "n/a"));
 
+/** One line per quoted note or call when the answer strings several together. */
+export const insightParts = (s: string): string[] => s.split(/(?<=["\u201d])\s+(?=(?:Agent note|Call|Note|Voicemail)\b)/).filter(Boolean);
+/** Drop the internal "sql:" and "table:" prefixes and repeats from the source list. */
+export const cleanSources = (s?: string[]): string[] => [...new Set((s ?? []).map((x) => x.replace(/^(sql|table):\s*/i, "")))];
+
 export default function Ask() {
   const [q, setQ] = useState("");
   const ask = useAsk();
@@ -36,6 +42,9 @@ export default function Ask() {
   const sugg = useAskSuggestions();
   const run = (question: string, m: "rules" | "llm" = mode) => ask.mutate({ question, mode: m });
   const r = ask.data;
+  const hasCitations = (r?.citations ?? []).some((c) => c && Object.keys(c).length > 0);
+  // policy and note answers have no table: skip the empty "Nothing to show" card when sources carry the evidence
+  const textAnswer = !!r && (r.rows ?? []).length === 0 && hasCitations && !!r.insight;
   const freshness = (r as { freshness?: string | null } | undefined)?.freshness;
   return (
     <>
@@ -84,20 +93,23 @@ export default function Ask() {
           <ChipEditor chips={chipsFrom(r.chips)} />
           <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_440px]">
             <div className="min-w-0 space-y-4">
-              <DataTable columns={(r.columns ?? []).map(heading)} rows={r.rows ?? []} render={(v) => cellText(v)} />
-              {r.insight && <Card><Badge kind="llm">Insight · from these rows only</Badge><p className="mb-0 mt-1">{r.insight}</p></Card>}
+              {textAnswer ? null : <DataTable columns={(r.columns ?? []).map(heading)} rows={r.rows ?? []} render={(v) => cellText(v)} />}
+              {r.insight && <Card><Badge kind="llm">Insight · from these rows only</Badge>{insightParts(r.insight).map((s, i) => <p key={i} className="mb-0 mt-1">{s}</p>)}</Card>}
             </div>
             <div className="min-w-0 space-y-4">
+              {(r.sql || !hasCitations || freshness || (r.preflight?.incidents ?? []).length > 0 || (r.caveats ?? []).length > 0) && (
               <details className="rounded-[var(--radius-lg)] border border-grey-300/70 bg-white p-4" open>
                 <summary className="cursor-pointer font-medium">How I got this</summary>
                 <div className="mt-3 space-y-2">
                   {r.sql && <SqlBlock sql={r.sql} source={r.sql_source} />}
-                  <p className="m-0 text-[13.5px]">Data products: {(r.sources ?? []).join(", ")}</p>
+                  {!hasCitations && <p className="m-0 text-[13.5px]">Data products: {cleanSources(r.sources).join(", ")}</p>}
                   {freshness && <p className="m-0 text-[13.5px]">Data built {new Date(freshness).toLocaleString()}, snapshot 28 Sep 2026.</p>}
                   {(r.preflight?.incidents ?? []).map((i, n) => <p key={n} className="m-0 flex items-start gap-1.5 text-[13.5px] text-amber"><AlertTriangle size={14} aria-hidden className="mt-[3px] shrink-0" /><span>{String(i.event_id ?? "")}: {String(i.text ?? "")}</span></p>)}
                   {(r.caveats ?? []).map((c) => <p key={c} className="m-0 text-[13.5px] text-muted">{c}</p>)}
                 </div>
               </details>
+              )}
+              <Sources citations={r.citations} level={2} />
               {(r.followups ?? []).length > 0 && (
                 <Card className="p-0">
                   <p className="m-0 border-b border-grey-300/70 px-4 py-2.5 text-[13.5px] text-muted">You could also ask</p>

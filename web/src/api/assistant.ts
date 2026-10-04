@@ -17,6 +17,8 @@ export type AssistantRun = {
   persona: string; goal: string; mode_used: "rules" | "language model"; mode_note?: string | null;
   plan: PlanStep[]; steps: RunStep[]; findings: string[]; proposals: Proposal[]; summary: string;
   audit_id?: number | null; case_id?: string | null; golden_id?: string | null;
+  citations?: Record<string, unknown>[]; grounded?: boolean | null; model_turns?: number; tool_calls?: number | null;
+  stop_reason?: string | null;
 };
 export type Goal = { label: string; goal: string };
 export type Suggestions = { persona: string; briefing: Goal; goals: Goal[] };

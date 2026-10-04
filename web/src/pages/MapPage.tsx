@@ -43,7 +43,7 @@ function WeatherMap() {
         <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_440px]">
           <BubbleMap items={items} label={q.data?.label ?? "Value"} />
           <section aria-labelledby="top-h">
-            <SectionTag as="h3" id="top-h">Highest 15 areas</SectionTag>
+            <SectionTag as="h2" id="top-h">Highest 15 areas</SectionTag>
             <DataTable maxHeight="482px" columns={["FSA", "City", "Prov.", "Customers", "Rate"]}
               rows={top.map((r) => [r.fsa, r.city, r.province, r.customers, `${(r.value * 100).toFixed(1)}%`])} />
           </section>

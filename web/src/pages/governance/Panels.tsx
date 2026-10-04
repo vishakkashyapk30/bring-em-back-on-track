@@ -80,8 +80,25 @@ export function Monitoring() {
   const par: Json = d.feature_parity ?? {};
   const tx: Json = d.text_features ?? {};
   const fresh = d.freshness_hours;
+  const g: Json = d.guardrails ?? {};
+  const zero = (v: unknown) => (v === 0 ? "ok" : "bad") as "ok" | "bad";
   return (
     <QueryState q={q}>
+      {d.guardrails && (
+        <>
+          <SectionTag subtitle="Three counters must stay at zero. Agents' overrides above 25% go to a review.">Guardrails and overrides</SectionTag>
+          <StatTiles items={[
+            { label: "Override rate", value: (g.decisions_reviewed ?? 0) < 20 ? `${n(g.overrides)} of ${n(g.decisions_reviewed)}` : pct(g.override_rate), note: g.override_rate == null ? "No decisions yet" : g.override_review_triggered ? `Above ${pct(g.override_review_threshold, 0)}: review (${n(g.overrides)} of ${n(g.decisions_reviewed)})` : `${n(g.overrides)} of ${n(g.decisions_reviewed)} decisions`, status: g.override_review_triggered ? "warn" : "ok" },
+            { label: "Pressure while in hardship", value: n(g.pressure_on_hardship_count), note: "Must be 0", status: zero(g.pressure_on_hardship_count) },
+            { label: "Contact cap breaches", value: n(g.contact_cap_breach_count), note: "Must be 0", status: zero(g.contact_cap_breach_count) },
+            { label: "Calls outside hours", value: n(g.out_of_hours_contact_count), note: "Must be 0", status: zero(g.out_of_hours_contact_count) },
+            { label: "Complaints per 1,000 contacts", value: g.complaints?.per_1000 == null ? "n/a" : String(g.complaints.per_1000), note: g.complaints?.contacts ? `${n(g.complaints.complaints)} in ${n(g.complaints.contacts)} outbound contacts` : "" },
+            { label: "Refusals", value: n(g.refusal_count), note: "Questions and actions turned down" },
+            { label: "Hardship recall", value: pct(g.hardship_recall), note: "On the hand-labelled call sample" },
+            { label: "Score drift (PSI)", value: g.psi == null ? "n/a" : String(g.psi), note: g.psi == null ? "Not computed yet" : "" },
+          ]} />
+        </>
+      )}
       <StatTiles items={[
         { label: "Data freshness", value: fresh == null ? "n/a" : `${fresh} h`, note: `SLA ${d.freshness_sla_hours ?? 26} h`, status: fresh != null && fresh > (d.freshness_sla_hours ?? 26) ? "bad" : "ok" },
         { label: "Contract tests", value: `${d.contract_tests?.passed ?? 0} / ${d.contract_tests?.total ?? 0}`, status: d.contract_tests?.passed === d.contract_tests?.total ? "ok" : "bad", note: "gold.c360_customer" },
@@ -144,6 +161,8 @@ const signed = (v: unknown) => (typeof v === "number" ? `${v > 0 ? "+" : ""}${(v
  * score treat groups the same once it meets real outcomes (outcome test). Aggregates only; small groups hidden. */
 export function Fairness() {
   const q = useGet("fairness", "/governance/fairness");
+  const nq = useGet("fairness-nba", "/governance/fairness/nba");
+  const nba: Json = nq.data ?? {};
   const d: Json = q.data ?? {};
   const live = d.proxy && !Array.isArray(d.proxy);
   const proxy: Json[] = live ? d.proxy.groups ?? [] : [];
@@ -152,6 +171,8 @@ export function Fairness() {
   const cur = attrs.find((a) => a.attribute === attr) ?? attrs[0];
   const review: string[] = d.review_items ?? [];
   const o: Json = d.outcome?.overall ?? {};
+  const modelReviews = review.filter((r) => !r.includes("predicts")).length;
+  const nbaReviews = (nba.attributes ?? []).flatMap((a: Json) => a.groups ?? []).filter((g: Json) => g.status === "review" && !g.by_design).length;
   return (
     <QueryState q={q}>
       {!live ? (
@@ -162,10 +183,10 @@ export function Fairness() {
             { label: "Feature groups tested", value: String(proxy.length), note: `${proxy.filter((g) => g.decision === "review").length} above the ${d.proxy.threshold} AUC line`, status: proxy.some((g) => g.decision === "review") ? "warn" : "ok" },
             { label: "Highest proxy AUC", value: Math.max(...proxy.map((g) => g.max_auc)).toFixed(3), note: "0.5 means no signal; line is 0.65", status: "ok" },
             { label: "Test promises audited", value: n(d.outcome?.promises), note: `${d.outcome?.test_period}, ${n(o.customers)} customers` },
-            { label: "Groups for review", value: String(review.filter((r) => !r.includes("predicts")).length), note: "a person looks and explains", status: review.length ? "warn" : "ok" },
+            { label: "Groups for review", value: String(modelReviews + nbaReviews), note: `${modelReviews} in the promise score, ${nbaReviews} in NBA decisions (by-design groups not counted)`, status: modelReviews + nbaReviews ? "warn" : "ok" },
           ]} />
-          <PageTabs variant="segmented" label="Fairness tests" param="view" tabs={[{ id: "outcome", label: "Outcome test" }, { id: "proxy", label: "Proxy test" }]}>
-            {(view) => view === "proxy" ? (
+          <PageTabs variant="segmented" label="Fairness tests" param="view" tabs={[{ id: "outcome", label: "Outcome test" }, { id: "proxy", label: "Proxy test" }, { id: "nba", label: "NBA decisions" }]}>
+            {(view) => view === "nba" ? <NbaFairness d={nba} loading={nq.isLoading} /> : view === "proxy" ? (
               <>
           <p className="mb-3 mt-0 max-w-4xl text-[14px] text-muted">For each group of features, a simple model tries to predict each protected attribute from that group alone ({n(d.proxy.customers)} customers, 5-fold cross-validation). AUC above {d.proxy.threshold} sends the group to review; it is never an automatic drop.</p>
           <DataTable columns={["Feature group", "Features", "Highest AUC", "Predicts best", "Decision"]}
@@ -191,7 +212,7 @@ export function Fairness() {
           {cur?.suppressed_groups > 0 && <Footnote>{cur.suppressed_groups} group(s) with fewer than 10 customers are hidden.</Footnote>}
           {review.some((r) => r.startsWith("vulnerability_type")) && (
             <Card variant="grey" className="mt-6">
-              <h3 className="mt-0">What we found, and what it means</h3>
+              <h2 className="mt-0 text-[18px]">What we found, and what it means</h2>
               <p className="mb-2">Customers with a recorded vulnerability break more promises than others (about 72 to 75% against 63%) and the score flags them more often. That follows reality, but the score under-predicts their breaks by a further 3 to 4 points and gives them more false alarms.</p>
               <p className="mb-0">This is acceptable only because a higher break risk never raises pressure: the policy gate runs first, vulnerable and hardship customers get gentler treatment, and risk only decides whether to add a reminder or a person's follow-up. The review is to confirm that in the decisions once Layer 4 produces them, and to recalibrate by segment if the gap persists.</p>
             </Card>
@@ -199,10 +220,51 @@ export function Fairness() {
               </>
             )}
           </PageTabs>
-          <Footnote className="mt-4">{d.note} Next-best-action rates by group (pressure actions, contact rates, overrides) are added when Layer 4 decisions exist for the test period.</Footnote>
+          <Footnote className="mt-4">{d.note}</Footnote>
         </>
       )}
     </QueryState>
+  );
+}
+
+/** Next-best-action decisions by group: does the queue treat groups the same way, and does higher risk ever raise
+ * pressure for a hardship or vulnerable customer. Aggregates only. */
+function NbaFairness({ d, loading }: { d: Json; loading: boolean }) {
+  const [attr, setAttr] = useState("vulnerability_type");
+  if (!d.design_claim) {
+    return loading ? null : <Card variant="grey">The NBA fairness report has not been run yet. Run <code>python -m governance.fairness.nba_rates</code>.</Card>;
+  }
+  const c: Json = d.design_claim;
+  const attrs: Json[] = d.attributes ?? [];
+  const cur = attrs.find((a) => a.attribute === attr) ?? attrs[0];
+  const o: Json = d.overall ?? {};
+  const nByDesign = attrs.flatMap((a: Json) => a.groups ?? []).filter((g: Json) => g.status === "review" && g.by_design).length;
+  const x = (v: unknown) => (typeof v === "number" ? `${v.toFixed(2)}x` : "n/a");
+  return (
+    <>
+      <StatTiles items={[
+        { label: "Design claim", value: c.holds ? "Holds" : "Broken", note: `${n(c.violations)} violations in ${n(c.care_cases)} hardship or vulnerable cases`, status: c.holds ? "ok" : "bad" },
+        { label: "Pressure given to them", value: n(c.pressure_among_care), note: c.counterfactual_checked == null ? "not re-decided" : `re-decided at risk ${d.thresholds?.counterfactual_risk?.join(" and ")}: ${n(c.counterfactual_violations)} raised`, status: c.pressure_among_care === 0 ? "ok" : "bad" },
+        { label: "Cases decided", value: n(d.meta?.cases), note: `${n(d.meta?.scheduled)} scheduled, plan date ${d.meta?.plan_date}` },
+        { label: "Groups flagged", value: String(d.review_items?.length ?? 0), note: `${nByDesign} by design; outside ${d.thresholds?.ratio?.[0]}x to ${d.thresholds?.ratio?.[1]}x of overall`, status: d.review_items?.length ? "warn" : "ok" },
+      ]} />
+      <p className="mb-3 mt-0 max-w-4xl text-[14px] text-muted">By group, how the current queue treats {n(o.cases)} open cases: how often each group gets a pressure action (reminder or payment link), any contact, no contact, or a route to a person. A group of {d.thresholds?.min_group} cases or more is flagged when a rate is outside {d.thresholds?.ratio?.[0]}x to {d.thresholds?.ratio?.[1]}x of the overall rate (shown as "vs all" for pressure). Overall: pressure {pct(o.pressure_rate)}, contact {pct(o.contact_rate)}, routed {pct(o.routing_rate)}.</p>
+      <div className="mb-4 flex flex-wrap gap-x-5 gap-y-1" role="group" aria-label="Protected attribute">
+        {attrs.map((a) => (
+          <button key={a.attribute} type="button" aria-pressed={cur?.attribute === a.attribute} onClick={() => setAttr(a.attribute)}
+            className={`h-9 border-b-2 pb-1 pt-1.5 text-[14.5px] transition-colors ${cur?.attribute === a.attribute ? "border-brand font-semibold text-ink" : "border-transparent font-medium text-ink/70 hover:border-grey-300 hover:text-ink"}`}>
+            {ATTR_LABEL[a.attribute] ?? a.attribute}{a.reviews > 0 && <span className="ml-1.5 text-brand-700" aria-label={`${a.reviews} flagged`}>•</span>}
+          </button>
+        ))}
+      </div>
+      {cur && (
+        <DataTable columns={["Group", "Cases", "Pressure", "vs all", "Contact", "No contact", "Routed", "Mean risk", "Mean value", "Status"]}
+          rows={cur.groups.map((r: Json) => [String(r.group).replace(/_/g, " "), n(r.cases), pct(r.pressure_rate), x(r.ratios?.pressure_rate), pct(r.contact_rate), pct(r.no_contact_rate), pct(r.routing_rate), r.mean_risk == null ? "n/a" : r.mean_risk.toFixed(2), r.mean_value.toFixed(0), r.status === "review" && r.by_design ? "by design" : r.status])}
+          render={(v, col) => (col === "Status" ? <Badge kind={v === "ok" || v === "by design" ? "ok" : v === "review" ? "danger" : "neutral"}>{v === "ok" ? "OK" : v === "review" ? "Review" : v === "by design" ? "By design" : "Low volume"}</Badge> : String(v ?? "n/a"))} />
+      )}
+      {cur?.suppressed_groups > 0 && <Footnote>{cur.suppressed_groups} group(s) with fewer than 10 customers are hidden.</Footnote>}
+      <Footnote className="mt-4">{d.note}</Footnote>
+    </>
   );
 }
 

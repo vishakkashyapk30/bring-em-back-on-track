@@ -5,6 +5,7 @@ import { useEligibility, useFlag, useGet } from "@/api/hooks";
 import { Badge } from "@/components/Badge";
 import { Button } from "@/components/Button";
 import { DataTable } from "@/components/DataTable";
+import { SortControl, type Dir } from "@/components/SortControl";
 import { Footnote, QueryState } from "@/components/States";
 import { productLabel } from "@/lib/labels";
 
@@ -109,15 +110,20 @@ export function Board() {
   );
 }
 
+const MISSED_SORTS: [string, string][] = [["newest", "Newest flag"], ["days_late", "Days past due"], ["exposure", "Amount past due"], ["days_since_flag", "Days since flag"], ["program", "Program"]];
+
 /** Customers with hardship signs and no program offered, where an agent-level program fits. */
 export function Missed() {
-  const q = useGet("hmissed", "/hardship/missed-offers");
+  const [sort, setSort] = useState("newest");
+  const [dir, setDir] = useState<Dir>("desc");
+  const q = useGet("hmissed", `/hardship/missed-offers?sort=${sort}&dir=${dir}`);
   const items: Json[] = q.data?.items ?? [];
   const products = [...new Set(items.map((i) => productLabel(String(i.product))))].sort();
   return (
     <QueryState q={q} empty={items.length === 0}>
       <p className="mt-0 text-[14.5px] text-muted">{q.data?.note}</p>
       <DataTable
+        actions={<SortControl value={sort} dir={dir} options={MISSED_SORTS} onChange={(v) => { setSort(v); setDir(v === "program" ? "asc" : "desc"); }} onDir={setDir} />}
         searchable="Customer or program"
         filters={products.map((p) => ({ id: p, label: p, test: (r: unknown[]) => r[1] === p }))}
         columns={["Customer", "Product", "Past due", "Days past due", "Programs that fit", ""]}

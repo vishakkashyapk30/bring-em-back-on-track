@@ -26,7 +26,7 @@ export function Hero() {
           <Link to="/demo" className={`${btn} border-ink bg-cream text-ink hover:bg-ink hover:text-white`}>Watch the demo</Link>
         </div>
       </div>
-      <a href="#how" className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1 text-[11px] font-medium tracking-[0.25em] text-muted no-underline hover:text-ink hover:no-underline">
+      <a href="#how" className="absolute bottom-3 left-1/2 z-10 flex min-h-10 -translate-x-1/2 justify-center flex-col items-center gap-1 text-[11px] font-medium tracking-[0.25em] text-muted no-underline hover:text-ink hover:no-underline">
         SCROLL <ArrowDown size={14} aria-hidden />
       </a>
     </section>

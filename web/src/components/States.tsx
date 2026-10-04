@@ -5,7 +5,7 @@ import { Card } from "./Card";
 
 export function Skeleton({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="space-y-3" aria-busy="true" aria-label="Loading">
+    <div className="space-y-3" role="status" aria-busy="true" aria-label="Loading">
       {Array.from({ length: lines }).map((_, i) => (
         <div key={i} className="skeleton h-3.5 rounded-full" style={{ width: `${92 - ((i * 13) % 35)}%` }} />
       ))}

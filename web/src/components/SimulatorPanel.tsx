@@ -39,11 +39,11 @@ export function SimulatorPanel({ caseId, initialProgram }: { caseId: string; ini
     <>
     <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[14px]">
       <span className="text-muted">Case</span><span className="font-mono font-semibold">{caseId}</span>
-      <Link to="/hardship/simulator/start" className="text-[13.5px] font-medium">Change case</Link>
+      <Link to="/hardship/simulator/start" className="inline-flex min-h-10 items-center text-[13.5px] font-medium">Change case</Link>
     </div>
     <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[360px_minmax(0,1fr)]">
       <Card>
-        <h3 className="mb-3 mt-0">Plan</h3>
+        <h2 className="mb-3 mt-0 text-[1.0625rem]">Plan</h2>
         <label className="block text-[14.5px]">Start from a program
           <select value={program} onChange={(e) => setProgram(e.target.value)} className="mt-1 block h-10 w-full rounded-[var(--radius-md)] border border-grey-300 bg-white px-2">
             <option value="">Set the levers by hand</option>

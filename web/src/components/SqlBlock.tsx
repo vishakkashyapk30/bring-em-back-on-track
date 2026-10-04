@@ -14,7 +14,7 @@ export function SqlBlock({ sql, source }: { sql: string; source?: "semantic" | "
           <Copy size={13} aria-hidden /> Copy
         </button>
       </div>
-      <pre className="m-0 overflow-x-auto font-mono text-[13px] leading-relaxed"><code>{sql}</code></pre>
+      <pre className="m-0 overflow-x-auto whitespace-pre-wrap break-words font-mono text-[13px] leading-relaxed"><code>{sql}</code></pre>
     </div>
   );
 }

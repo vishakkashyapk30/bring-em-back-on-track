@@ -80,7 +80,7 @@ export function AssistantDrawer() {
         <header className="flex items-start gap-3 border-b border-grey-300/70 bg-white px-5 py-4">
           <div className="min-w-0 flex-1">
             <h2 id="assistant-h" className="m-0 text-[1.5rem] leading-tight">Assistant</h2>
-            <p className="m-0 text-[14px] text-muted">{me.data?.display_name}, {ROLE_LABEL[role] ?? role}. Works with no language model.</p>
+            <p className="m-0 text-[14px] text-muted">{me.data?.display_name}, {ROLE_LABEL[role] ?? role}. Runs on rules; a language model helps when it is on.</p>
           </div>
           <button type="button" onClick={close} aria-label="Close the assistant" data-autofocus
             className="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] text-ink hover:bg-grey-100"><X size={20} aria-hidden /></button>

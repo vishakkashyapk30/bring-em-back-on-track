@@ -43,7 +43,7 @@ export function Layout() {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2">Skip to content</a>
       <header className="sticky top-0 z-40 border-b border-grey-300/70 bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
         <div className="mx-auto flex h-[72px] w-full max-w-[1680px] items-center gap-3 px-4 sm:gap-8 sm:px-5 md:px-10">
-          <Link to="/" aria-label="back-on-track.ai, home page" className="flex shrink-0 items-center gap-2.5 text-ink no-underline hover:no-underline">
+          <Link to="/" aria-label="back-on-track.ai, home page" className="flex min-h-10 shrink-0 items-center gap-2.5 text-ink no-underline hover:no-underline">
             <img src="/favicon.svg" alt="" width={28} height={28} />
             <span className="font-[family-name:var(--font-display)] text-[22px] sm:text-[26px] font-semibold leading-none">back-on-track<span className="text-brand">.ai</span></span>
           </Link>
@@ -75,7 +75,7 @@ export function Layout() {
             ) : (
               <Link to="/login" className="inline-flex h-10 items-center whitespace-nowrap rounded-[var(--radius-md)] bg-brand px-4 sm:px-5 text-[15px] font-medium text-white no-underline transition-colors hover:bg-brand-700 hover:no-underline">Sign in</Link>
             )}
-            <button type="button" className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] md:hidden" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+            <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-sm)] md:hidden" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
               {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>

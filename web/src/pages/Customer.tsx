@@ -11,7 +11,7 @@ import { EligibilityList } from "@/components/EligibilityList";
 import { HoldingsTable } from "@/components/HoldingsTable";
 import { IdentityLineage } from "@/components/IdentityLineage";
 import { NbaCard } from "@/components/NbaCard";
-import { QueryState, SampleBadge, Skeleton } from "@/components/States";
+import { ErrorState, QueryState, SampleBadge, Skeleton } from "@/components/States";
 import { PageTabs } from "@/components/Tabs";
 import { Timeline } from "@/components/Timeline";
 
@@ -34,10 +34,11 @@ export default function Customer() {
   const pastDue = holdings.reduce((a, h) => a + (Number(h.overdue) || 0), 0);
 
   if (c.isLoading) return <div className="space-y-6"><Skeleton lines={4} /><Skeleton lines={8} /></div>;
+  if ((c.error as { forbidden?: boolean } | null)?.forbidden) return <Refused goldenId={goldenId} reason={(c.error as { reason?: string }).reason} />;
 
   return (
     <QueryState q={c}>
-      <Link to="/queue" className="mb-4 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-muted no-underline hover:text-ink hover:no-underline">
+      <Link to="/queue" className="mb-4 inline-flex min-h-10 items-center gap-1.5 text-[13.5px] font-medium text-muted no-underline hover:text-ink hover:no-underline">
         <ArrowLeft size={15} aria-hidden /> Today's queue
       </Link>
 
@@ -76,6 +77,25 @@ export default function Customer() {
         <SidePanel goldenId={goldenId} caseId={caseId} />
       </div>
     </QueryState>
+  );
+}
+
+/** The role may not open this customer (row scope). Stewards still get the identity lineage; nobody else sees more. */
+function Refused({ goldenId, reason }: { goldenId: string; reason?: string }) {
+  const ident = useIdentity(goldenId);
+  return (
+    <div className="space-y-6">
+      <Link to="/" className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-muted no-underline hover:text-ink hover:no-underline">
+        <ArrowLeft size={15} aria-hidden /> Home
+      </Link>
+      <ErrorState forbidden title="You can't open this customer" detail={reason} />
+      {ident.data && (
+        <Card>
+          <h2 className="mb-3 mt-0 text-[1.0625rem]">Identity lineage</h2>
+          <IdentityLineage data={ident.data as never} />
+        </Card>
+      )}
+    </div>
   );
 }
 
