@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from api.deps import live_data, require, stub
@@ -33,8 +35,17 @@ def board(s=Depends(require(SPECIALIST))):
 
 
 @router.get("/hardship/missed-offers")
-def missed(s=Depends(require(SPECIALIST))):
-    return hardship_svc.missed_offers() if live_data() else stub("missed_offers")
+def missed(
+    sort: Literal["newest", "days_late", "exposure", "days_since_flag", "program"] = "newest",
+    dir: Literal["asc", "desc"] | None = None,
+    s=Depends(require(SPECIALIST)),
+):
+    """H3 list. Default is newest first; `sort` and `dir` are allowlisted (anything else is a 422)."""
+    if not live_data():
+        out = dict(stub("missed_offers"))
+        out["items"] = hardship_svc.sort_missed(out.get("items", []), sort, dir)
+        return out
+    return hardship_svc.missed_offers(sort=sort, direction=dir)
 
 
 @router.get("/hardship/overrides")
