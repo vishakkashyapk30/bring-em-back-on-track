@@ -1,0 +1,279 @@
+{
+ "transcript_id": "2510346",
+ "contact_id": "CT-2602343",
+ "call_recording_id": "REC-2510346",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-993645",
+ "crm_customer_id": "MAM-5045",
+ "agent_id": "AG-3384",
+ "call_start_ts": "2026-08-21 20:04:44",
+ "call_end_ts": "2026-08-21 20:06:34",
+ "duration_sec": 110,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.839,
+ "wer_estimate": 0.164,
+ "diarization_confidence": 0.924,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.24,
+ "agent_talk_ratio": 0.586,
+ "silence_ratio": 0.175,
+ "overtalk_count": 1,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/2510346.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 2.4,
+   "end_sec": 10.2,
+   "text": "Hi, this is Jordan calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.761,
+   "sentiment_score": 0.812,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 10.46,
+   "end_sec": 13.35,
+   "text": "May I speak with Martin Moore?",
+   "asr_confidence": 0.829,
+   "sentiment_score": 0.222,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 13.76,
+   "end_sec": 15.01,
+   "text": "Speaking.",
+   "asr_confidence": 0.856,
+   "sentiment_score": 0.229,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 15.61,
+   "end_sec": 20.36,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.884,
+   "sentiment_score": -0.438,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 20.72,
+   "end_sec": 22.67,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.81,
+   "sentiment_score": -0.306,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 23.4,
+   "end_sec": 28.32,
+   "text": "Thanks. Can I also confirm the email we have on file?",
+   "asr_confidence": 0.883,
+   "sentiment_score": 0.02,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "customer",
+   "start_sec": 28.76,
+   "end_sec": 31.1,
+   "text": "Sure, that's the write one.",
+   "asr_confidence": 0.858,
+   "sentiment_score": 0.004,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "agent",
+   "start_sec": 31.46,
+   "end_sec": 37.24,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.915,
+   "sentiment_score": 0.316,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 38.4,
+   "end_sec": 42.38,
+   "text": "Let me just up your account. One moment please.",
+   "asr_confidence": 0.901,
+   "sentiment_score": 0.516,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "customer",
+   "start_sec": 42.99,
+   "end_sec": 43.88,
+   "text": "Okay.",
+   "asr_confidence": 0.843,
+   "sentiment_score": 0.513,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "agent",
+   "start_sec": 44.33,
+   "end_sec": 47.55,
+   "text": "Thanks for waiting, I have it here.",
+   "asr_confidence": 0.888,
+   "sentiment_score": 0.59,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "agent",
+   "start_sec": 48.14,
+   "end_sec": 51.73,
+   "text": "The amount past due today is $275.52.",
+   "asr_confidence": 0.84,
+   "sentiment_score": 0.556,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "customer",
+   "start_sec": 52.51,
+   "end_sec": 59.41,
+   "text": "I'm not able to pay that right now. I lost my job at work in May.",
+   "asr_confidence": 0.861,
+   "sentiment_score": 0.09,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "customer",
+   "start_sec": 60.5,
+   "end_sec": 62.64,
+   "text": "It's a hard time.",
+   "asr_confidence": 0.849,
+   "sentiment_score": 0.13,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "customer",
+   "start_sec": 62.86,
+   "end_sec": 66.81,
+   "text": "I'm only bringing home about $450 a month now.",
+   "asr_confidence": 0.769,
+   "sentiment_score": -0.024,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "agent",
+   "start_sec": 68.01,
+   "end_sec": 72.19,
+   "text": "I understand, but the full amount is still due.",
+   "asr_confidence": 0.815,
+   "sentiment_score": 0.367,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 17,
+   "speaker": "customer",
+   "start_sec": 73.16,
+   "end_sec": 76.51,
+   "text": "I'll try to pay $265 Aug 30.",
+   "asr_confidence": 0.906,
+   "sentiment_score": 0.253,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 18,
+   "speaker": "agent",
+   "start_sec": 77.22,
+   "end_sec": 84.27,
+   "text": "Just to confirm, a payment of $265.00 on August 30. I'll send you a payment link.",
+   "asr_confidence": 0.917,
+   "sentiment_score": -0.239,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 19,
+   "speaker": "agent",
+   "start_sec": 85.46,
+   "end_sec": 89.44,
+   "text": "you be paying through the app or online banking?",
+   "asr_confidence": 0.76,
+   "sentiment_score": 0.025,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 20,
+   "speaker": "customer",
+   "start_sec": 90.53,
+   "end_sec": 92.36,
+   "text": "Through the app.",
+   "asr_confidence": 0.807,
+   "sentiment_score": 0.129,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 21,
+   "speaker": "agent",
+   "start_sec": 93.18,
+   "end_sec": 93.93,
+   "text": "Perfect.",
+   "asr_confidence": 0.774,
+   "sentiment_score": 0.588,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 22,
+   "speaker": "agent",
+   "start_sec": 94.7,
+   "end_sec": 99.37,
+   "text": "Is there anything else I can help you with today?",
+   "asr_confidence": 0.81,
+   "sentiment_score": 0.317,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 23,
+   "speaker": "customer",
+   "start_sec": 100.3,
+   "end_sec": 102.07,
+   "text": "No, that's all.",
+   "asr_confidence": 0.792,
+   "sentiment_score": 0.703,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 24,
+   "speaker": "agent",
+   "start_sec": 102.46,
+   "end_sec": 109.32,
+   "text": "Thank you for your time today. You'll receive a confirmation by text. Have a good evening.",
+   "asr_confidence": 0.802,
+   "sentiment_score": 0.101,
+   "redacted_spans": []
+  }
+ ]
+}

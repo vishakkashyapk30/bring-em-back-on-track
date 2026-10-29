@@ -7,7 +7,6 @@ from __future__ import annotations
 import json
 import logging
 import pickle
-from pathlib import Path
 
 import lightgbm as lgb
 import numpy as np
@@ -19,7 +18,7 @@ from common.config import get_settings
 from models.ptp_break.dataset import CATEGORICAL, DROPPED_BY_PROXY_GATE, FEATURES, NUMERIC, build_dataset
 
 log = logging.getLogger("ptp_break")
-ART = Path(__file__).resolve().parent / "artefacts"
+ART = get_settings().artefacts_dir
 # More of these can never LOWER the risk (keeps the model sensible and explainable).
 MONOTONE_UP = {
     "prior_broken_ptp_count",
@@ -93,16 +92,55 @@ def reliability(y: np.ndarray, p: np.ndarray, bins: int = 10) -> list[dict]:
     return out
 
 
+SAMPLE_MIN_BANK = 30  # sample mode only: fewest bank v2.1 scored promises needed for the head-to-head and blend
+
+
+def _save_ours_only(booster, iso, raw_te, p_te, y_te, te, tr, ca, mono) -> None:
+    """Sample mode with too few bank-scored promises: write the artefacts and report without the head-to-head."""
+    report = {
+        "model": "ptp_break ours (LightGBM, monotone, isotonic-calibrated)",
+        "sample_mode_note": "Sample data: too few promises carry a bank v2.1 score, head-to-head and blend skipped.",
+        "split": {"rows": {"train": len(tr), "calibration": len(ca), "test": len(te)}},
+        "best_iteration": int(booster.best_iteration),
+        "test_all": metrics(y_te, p_te),
+        "head_to_head": {"note": "skipped on the sample", "ours": metrics(y_te, p_te)},
+        "decision": "use ours",
+        "fallback": FALLBACK,
+    }
+    _write_artefacts(booster, iso, None, tr, report)
+
+
+def _write_artefacts(booster, iso, blender, tr, report) -> None:
+    ART.mkdir(parents=True, exist_ok=True)
+    booster.save_model(str(ART / "ptp_break.txt"), num_iteration=booster.best_iteration)
+    with open(ART / "calibrator.pkl", "wb") as f:
+        pickle.dump(iso, f)
+    with open(ART / "blender.pkl", "wb") as f:
+        pickle.dump(blender, f)
+    cats = {c: list(tr[c].cat.categories) for c in CATEGORICAL}
+    (ART / "meta.json").write_text(
+        json.dumps(
+            {"features": FEATURES, "categorical": CATEGORICAL, "categories": cats, "decision": report["decision"]},
+            indent=2,
+        )
+    )
+    rp = get_settings().reports_dir / "model_eval.json"
+    rp.parent.mkdir(parents=True, exist_ok=True)
+    rp.write_text(json.dumps(report, indent=2))
+
+
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+    sample = get_settings().is_sample
     df = build_dataset()
     tr, ca, te = (df[df.split == s] for s in ("train", "calib", "test"))
     log.info("rows train=%d calib=%d test=%d", len(tr), len(ca), len(te))
     mono = [1 if f in MONOTONE_UP else 0 for f in FEATURES]
+    params = {**PARAMS, **({"min_child_samples": 20} if sample else {})}  # sample mode: 100 is too coarse
     dtr = lgb.Dataset(tr[FEATURES], tr.label_broken, categorical_feature=CATEGORICAL, free_raw_data=False)
     dca = lgb.Dataset(ca[FEATURES], ca.label_broken, categorical_feature=CATEGORICAL, reference=dtr)
     booster = lgb.train(
-        {**PARAMS, "monotone_constraints": mono},
+        {**params, "monotone_constraints": mono},
         dtr,
         num_boost_round=2000,
         valid_sets=[dca],
@@ -119,6 +157,11 @@ def main() -> None:
     # Champion/challenger blend: the bank's v2.1 score + our model, two weights fitted on the calibration period
     # (Apr-Jun 2026, where v2.1 exists) and judged on Jul-Sep. Logit inputs; simple and explainable.
     ca_b = ca[ca.v21_score.notna()]
+    if sample and (both.sum() < SAMPLE_MIN_BANK or len(ca_b) < SAMPLE_MIN_BANK or ca_b.label_broken.nunique() < 2):
+        print(f"NOTE (sample data): only {int(both.sum())} test and {len(ca_b)} calibration promises have a bank v2.1 "
+              "score, so the head-to-head and blend are skipped; our model alone is saved (decision: use ours).")
+        _save_ours_only(booster, iso, raw_te, p_te, y_te, te, tr, ca, mono)
+        return
     blender = LogisticRegression().fit(
         blend_x(ca_b.v21_score.to_numpy(), raw_ca[ca.v21_score.notna().to_numpy()]), ca_b.label_broken
     )
@@ -176,23 +219,8 @@ def main() -> None:
             f"Test AUC {o['auc']} is implausibly high: check the features for leakage before using this model."
         )
 
-    ART.mkdir(parents=True, exist_ok=True)
-    booster.save_model(str(ART / "ptp_break.txt"), num_iteration=booster.best_iteration)
-    with open(ART / "calibrator.pkl", "wb") as f:
-        pickle.dump(iso, f)
-    with open(ART / "blender.pkl", "wb") as f:
-        pickle.dump(blender, f)
-    cats = {c: list(tr[c].cat.categories) for c in CATEGORICAL}
-    (ART / "meta.json").write_text(
-        json.dumps(
-            {"features": FEATURES, "categorical": CATEGORICAL, "categories": cats, "decision": report["decision"]},
-            indent=2,
-        )
-    )
     report["fallback"] = FALLBACK
-    rp = get_settings().reports_dir / "model_eval.json"
-    rp.parent.mkdir(parents=True, exist_ok=True)
-    rp.write_text(json.dumps(report, indent=2))
+    _write_artefacts(booster, iso, blender, tr, report)
     print(json.dumps({k: report[k] for k in ("head_to_head", "decision")}, indent=2))
 
 

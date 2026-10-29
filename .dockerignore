@@ -9,9 +9,7 @@ data
 reports
 models/ptp_break/artefacts/*
 web
-docs/brief
 docs/design
-docs/reviews
 deliverables
 pipeline/target
 pipeline/logs

@@ -61,7 +61,7 @@ addopts = "-m 'not todo' -q"
 [tool.ruff]
 line-length = 120
 target-version = "py312"
-extend-exclude = ["web", "data", "pipeline/target", "pipeline/dbt_packages", "docs/design", "docs/brief", "docs/data_dictionary", "docs/reviews"]
+extend-exclude = ["web", "data", "pipeline/target", "pipeline/dbt_packages", "docs/design", "docs/data_dictionary", "docs/reviews"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]

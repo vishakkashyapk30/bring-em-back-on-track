@@ -1,0 +1,169 @@
+{
+ "transcript_id": "4010136",
+ "contact_id": "CT-4071539",
+ "call_recording_id": "REC-4010136",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-688268",
+ "crm_customer_id": "MIG-8988",
+ "agent_id": "AG-4437",
+ "call_start_ts": "2026-05-20 18:11:31",
+ "call_end_ts": "2026-05-20 18:12:35",
+ "duration_sec": 64,
+ "direction": "inbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.903,
+ "wer_estimate": 0.099,
+ "diarization_confidence": 0.968,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.147,
+ "agent_talk_ratio": 0.677,
+ "silence_ratio": 0.176,
+ "overtalk_count": 2,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/05/4010136.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 1.61,
+   "end_sec": 9.17,
+   "text": "Hi, this is Alex calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.895,
+   "sentiment_score": -0.021,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 9.89,
+   "end_sec": 13.06,
+   "text": "May I speak with Michael Gao?",
+   "asr_confidence": 0.908,
+   "sentiment_score": 0.26,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 14.16,
+   "end_sec": 15.04,
+   "text": "Speaking.",
+   "asr_confidence": 0.904,
+   "sentiment_score": 0.217,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 15.54,
+   "end_sec": 20.54,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.876,
+   "sentiment_score": -0.685,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 21.41,
+   "end_sec": 23.1,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.922,
+   "sentiment_score": 0.226,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 23.48,
+   "end_sec": 29.26,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.87,
+   "sentiment_score": 0.026,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "agent",
+   "start_sec": 29.79,
+   "end_sec": 33.17,
+   "text": "The amount past due today is $293.53.",
+   "asr_confidence": 0.873,
+   "sentiment_score": 0.08,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "customer",
+   "start_sec": 33.37,
+   "end_sec": 35.21,
+   "text": "I'll sort it out.",
+   "asr_confidence": 0.927,
+   "sentiment_score": 0.58,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "customer",
+   "start_sec": 36.35,
+   "end_sec": 39.89,
+   "text": "I'll try to pay $294 the 5th.",
+   "asr_confidence": 0.884,
+   "sentiment_score": 0.361,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "agent",
+   "start_sec": 41.08,
+   "end_sec": 47.77,
+   "text": "Just to confirm, a payment of $293.53 on June 5. I'll send you a payment link.",
+   "asr_confidence": 0.934,
+   "sentiment_score": -0.034,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "agent",
+   "start_sec": 48.25,
+   "end_sec": 53.0,
+   "text": "Is there anything else I can help you with today?",
+   "asr_confidence": 0.926,
+   "sentiment_score": 0.555,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "customer",
+   "start_sec": 53.77,
+   "end_sec": 55.26,
+   "text": "No, that's all.",
+   "asr_confidence": 0.88,
+   "sentiment_score": 0.503,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "agent",
+   "start_sec": 56.39,
+   "end_sec": 63.37,
+   "text": "Thank you for your time today. You'll receive a confirmation by text. Have a good evening.",
+   "asr_confidence": 0.946,
+   "sentiment_score": 0.256,
+   "redacted_spans": []
+  }
+ ]
+}

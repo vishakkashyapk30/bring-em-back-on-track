@@ -1,0 +1,53 @@
+{
+ "transcript_id": "9011019",
+ "contact_id": "CT-9096383",
+ "call_recording_id": "REC-9011019",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-719558",
+ "crm_customer_id": "DON-8398",
+ "agent_id": "AG-9052",
+ "call_start_ts": "2026-08-12 14:13:19",
+ "call_end_ts": "2026-08-12 14:13:35",
+ "duration_sec": 16,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.88,
+ "wer_estimate": 0.123,
+ "diarization_confidence": 0.884,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.679,
+ "silence_ratio": 0.321,
+ "overtalk_count": 0,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/9011019.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 0.83,
+   "end_sec": 4.17,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.912,
+   "sentiment_score": 0.145,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 4.48,
+   "end_sec": 15.34,
+   "text": "Hi, this message is for Dorothy. This is Sam from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.848,
+   "sentiment_score": 0.485,
+   "redacted_spans": []
+  }
+ ]
+}

@@ -22,7 +22,7 @@ from common.config import get_settings
 from features.text_rules import extract
 
 log = logging.getLogger("extract_text")
-FILES = get_settings().raw_dir / "maple_collections_release" / "files"
+FILES = get_settings().release_dir / "files"
 
 
 _TEXT_COLS = ["available_ts", "hardship_signal", "hardship_reason", "stated_delay_reason", "dispute_signal",

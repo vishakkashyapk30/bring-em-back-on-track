@@ -3,12 +3,14 @@
 set -euo pipefail
 cd /app
 
-LIVE="${WAREHOUSE_PATH:-/app/data/warehouse.duckdb}"
+# DATA_SOURCE=sample: the committed sample (data/sample); every output goes under data/sample_build.
+if [ "${DATA_SOURCE:-}" = "sample" ]; then DATA=/app/data/sample_build; else DATA=/app/data; fi
+LIVE="${WAREHOUSE_PATH:-$DATA/warehouse.duckdb}"
 # Same file name in a separate folder: dbt hard-codes the database name (= file stem) into views, so the
 # build file must be called warehouse.duckdb too, or the views break after the swap.
-BUILD="/app/data/building/warehouse.duckdb"
+BUILD="$DATA/building/warehouse.duckdb"
 
-dbt_() { (cd pipeline && C360_DATA_DIR=/app/data C360_WAREHOUSE="${C360_WAREHOUSE:-$LIVE}" dbt "$@" --profiles-dir .); }
+dbt_() { (cd pipeline && C360_DATA_DIR=$DATA C360_WAREHOUSE="${C360_WAREHOUSE:-$LIVE}" dbt "$@" --profiles-dir .); }
 
 nightly() {
   # Build into a separate file, test, then atomically publish (DuckDB single-writer rule).
@@ -18,7 +20,8 @@ nightly() {
   dbt_ run --select silver
   python -m identity.run
   dbt_ build --select gold          # contract tests: a failure stops here, nothing is published
-  mkdir -p /app/reports && cp pipeline/target/run_results.json /app/reports/contract_tests.json
+  if [ "${DATA_SOURCE:-}" = "sample" ]; then REPORTS="$DATA/reports"; else REPORTS=/app/reports; fi
+  mkdir -p "$REPORTS" && cp pipeline/target/run_results.json "$REPORTS/contract_tests.json"
   python -m features.extract_text
   dbt_ run --select features
   python -m features.build_offline
@@ -30,6 +33,14 @@ nightly() {
   python -m governance.quality_report
   python -m eval.run_benchmark
   python -m pipeline.publish "$BUILD" "$LIVE"
+  if [ "${DATA_SOURCE:-}" = "sample" ]; then
+    # The sample has no separate nightly for these: score the open promises, build the NBA queue and the search index
+    # against the published warehouse, so the app has everything on the first start.
+    export WAREHOUSE_PATH="$LIVE" C360_WAREHOUSE="$LIVE"
+    python -m models.ptp_break.score || echo "promise scoring not available; the NBA queue uses the bank v2.1 scores"
+    python -m decisioning.nba
+    python -m rag.ingest
+  fi
 }
 
 case "${1:-help}" in

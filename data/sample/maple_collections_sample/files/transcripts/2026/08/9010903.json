@@ -1,0 +1,53 @@
+{
+ "transcript_id": "9010903",
+ "contact_id": "CT-9096230",
+ "call_recording_id": "REC-9010903",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-225938",
+ "crm_customer_id": "BRM-2858",
+ "agent_id": "AG-8854",
+ "call_start_ts": "2026-08-12 09:29:54",
+ "call_end_ts": "2026-08-12 09:30:11",
+ "duration_sec": 17,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.886,
+ "wer_estimate": 0.087,
+ "diarization_confidence": 0.96,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.633,
+ "silence_ratio": 0.367,
+ "overtalk_count": 2,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/9010903.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 1.76,
+   "end_sec": 5.08,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.884,
+   "sentiment_score": -0.245,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 5.3,
+   "end_sec": 16.06,
+   "text": "Hi, this message is for Bridget. This is Jamie from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.888,
+   "sentiment_score": -0.019,
+   "redacted_spans": []
+  }
+ ]
+}

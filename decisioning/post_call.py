@@ -35,7 +35,7 @@ def summarise(contact_id: str | None = None, case_id: str | None = None) -> dict
     if not row:
         return None
     tid, cid, case, start, path, lang, amount, due, asr = row
-    turns = json.loads((get_settings().raw_dir / "maple_collections_release" / "files" / path).read_text())["turns"]
+    turns = json.loads((get_settings().release_dir / "files" / path).read_text())["turns"]
     record = {"amount": amount, "date": due.isoformat() if hasattr(due, "isoformat") else due} if amount else None
     call_date = start.date() if hasattr(start, "date") else date.fromisoformat(str(start)[:10])
     d = draft_from_turns(turns, call_date, record, asr)

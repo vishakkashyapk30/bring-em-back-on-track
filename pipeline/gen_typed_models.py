@@ -36,7 +36,7 @@ def expr(col: dict) -> str:
 
 
 def main() -> None:
-    schema = json.loads((get_settings().raw_dir / "maple_collections_release" / "schema" / "schema.json").read_text())
+    schema = json.loads((get_settings().release_dir / "schema" / "schema.json").read_text())
     OUT.mkdir(parents=True, exist_ok=True)
     for table, spec in schema.items():
         cols = ",\n    ".join(expr(c) for c in spec["columns"])

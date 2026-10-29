@@ -1,0 +1,249 @@
+{
+ "transcript_id": "6010466",
+ "contact_id": "CT-6050287",
+ "call_recording_id": "REC-6010466",
+ "voice_sample_id": null,
+ "case_id": "CS-2025-530312",
+ "crm_customer_id": "SUT-9392",
+ "agent_id": "AG-9332",
+ "call_start_ts": "2025-08-05 16:02:26",
+ "call_end_ts": "2025-08-05 16:04:05",
+ "duration_sec": 99,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.858,
+ "wer_estimate": 0.146,
+ "diarization_confidence": 0.926,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.205,
+ "agent_talk_ratio": 0.63,
+ "silence_ratio": 0.165,
+ "overtalk_count": 1,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2025/08/6010466.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 2.61,
+   "end_sec": 9.8,
+   "text": "Bonjour, ici Luc de la Banque Maple. Cet appel peut être enregistré à des fins de qualité.",
+   "asr_confidence": 0.821,
+   "sentiment_score": 0.51,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 10.25,
+   "end_sec": 12.85,
+   "text": "Puis-je parler à Susanne Thériault?",
+   "asr_confidence": 0.835,
+   "sentiment_score": 0.954,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 13.12,
+   "end_sec": 14.44,
+   "text": "C'est moi.",
+   "asr_confidence": 0.904,
+   "sentiment_score": -0.589,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 14.91,
+   "end_sec": 18.81,
+   "text": "Avant de continuer, pouvez-vous confirmer votre date de naissance?",
+   "asr_confidence": 0.81,
+   "sentiment_score": -0.053,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 19.39,
+   "end_sec": 21.04,
+   "text": "Oui, c'est [PII].",
+   "asr_confidence": 0.89,
+   "sentiment_score": -0.918,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 21.76,
+   "end_sec": 25.66,
+   "text": "Merci. Est-ce toujours le meilleur numéro pour vous joindre?",
+   "asr_confidence": 0.916,
+   "sentiment_score": 0.465,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "customer",
+   "start_sec": 26.69,
+   "end_sec": 29.09,
+   "text": "Oui, c'est mon cellulaire.",
+   "asr_confidence": 0.884,
+   "sentiment_score": -0.88,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "agent",
+   "start_sec": 29.37,
+   "end_sec": 35.69,
+   "text": "Merci. J'appelle au sujet de votre compte à la Banque Maple, qui est en retard.",
+   "asr_confidence": 0.839,
+   "sentiment_score": -0.185,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 35.91,
+   "end_sec": 39.9,
+   "text": "Je regarde votre dossier, un instant s'il vous plaît.",
+   "asr_confidence": 0.841,
+   "sentiment_score": 0.052,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "customer",
+   "start_sec": 41.03,
+   "end_sec": 41.86,
+   "text": "D'accord.",
+   "asr_confidence": 0.862,
+   "sentiment_score": -0.714,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "agent",
+   "start_sec": 42.37,
+   "end_sec": 45.37,
+   "text": "Merci de patienter, je l'ai ici.",
+   "asr_confidence": 0.906,
+   "sentiment_score": 0.092,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "agent",
+   "start_sec": 45.91,
+   "end_sec": 50.27,
+   "text": "Le montant en souffrance aujourd'hui est de 167.31 $.",
+   "asr_confidence": 0.913,
+   "sentiment_score": 0.981,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "customer",
+   "start_sec": 50.94,
+   "end_sec": 58.06,
+   "text": "Je ne peux pas tout payer. J'ai été hospitalisé le mois dernier, je n'avais pas de revenu.",
+   "asr_confidence": 0.814,
+   "sentiment_score": -0.746,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "agent",
+   "start_sec": 59.14,
+   "end_sec": 66.37,
+   "text": "Je suis désolé. Nous avons des options, comme un paiement réduit pendant trois mois. Voulez-vous qu'on regarde ça?",
+   "asr_confidence": 0.871,
+   "sentiment_score": 0.743,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "customer",
+   "start_sec": 66.65,
+   "end_sec": 68.35,
+   "text": "Oui, ça aiderait.",
+   "asr_confidence": 0.787,
+   "sentiment_score": -1,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "agent",
+   "start_sec": 69.02,
+   "end_sec": 74.75,
+   "text": "Pour ça, j'ai besoin de revoir votre budget. sont vos principales dépenses fixes?",
+   "asr_confidence": 0.818,
+   "sentiment_score": 0.935,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 17,
+   "speaker": "customer",
+   "start_sec": 75.77,
+   "end_sec": 78.21,
+   "text": "le loyer, l'épicerie et l'auto.",
+   "asr_confidence": 0.845,
+   "sentiment_score": -0.783,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 18,
+   "speaker": "agent",
+   "start_sec": 78.82,
+   "end_sec": 83.26,
+   "text": "C'est noté. L'équipe des difficultés financières va faire le suivi.",
+   "asr_confidence": 0.848,
+   "sentiment_score": 0.314,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 19,
+   "speaker": "customer",
+   "start_sec": 83.81,
+   "end_sec": 86.68,
+   "text": "Je peux payer 60$ 26 août.",
+   "asr_confidence": 0.803,
+   "sentiment_score": -0.422,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 20,
+   "speaker": "agent",
+   "start_sec": 87.42,
+   "end_sec": 91.94,
+   "text": "Pour confirmer, un paiement de 60.00 $ le 26 août.",
+   "asr_confidence": 0.923,
+   "sentiment_score": 0.155,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 21,
+   "speaker": "agent",
+   "start_sec": 92.45,
+   "end_sec": 97.64,
+   "text": "Merci pour votre temps. Vous recevrez une confirmation par texto. Bonne soirée.",
+   "asr_confidence": 0.893,
+   "sentiment_score": 0.575,
+   "redacted_spans": []
+  }
+ ]
+}

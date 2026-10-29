@@ -5,9 +5,23 @@ set -euo pipefail
 cd /app
 RAW=/app/data/raw
 REL="$RAW/maple_collections_release"
-LIVE="${WAREHOUSE_PATH:-/app/data/warehouse.duckdb}"
 
-if [ ! -f "$REL/README.md" ]; then
+if [ "${DATA_SOURCE:-}" = "sample" ]; then
+  # No download: the small sample committed under data/sample (tools/make_sample.py). Everything it builds goes under
+  # data/sample_build, so a full-data warehouse next to it is never touched.
+  LIVE="${WAREHOUSE_PATH:-/app/data/sample_build/warehouse.duckdb}"
+  if [ ! -f /app/data/sample/maple_collections_sample/README.md ]; then
+    echo "[bootstrap] DATA_SOURCE=sample but data/sample/maple_collections_sample is missing: run 'git checkout data/sample'"
+    exit 1
+  fi
+  echo "[bootstrap] using the committed sample (data/sample), no download"
+else
+  LIVE="${WAREHOUSE_PATH:-/app/data/warehouse.duckdb}"
+fi
+
+if [ "${DATA_SOURCE:-}" = "sample" ]; then
+  :
+elif [ ! -f "$REL/README.md" ]; then
   echo "[bootstrap] dataset not found in data/raw: downloading the release from Hugging Face (~2.3 GB)"
   python - <<'PY'
 import zipfile
@@ -30,5 +44,5 @@ if [ -f "$LIVE" ] && [ "${REBUILD:-0}" != "1" ]; then
   exit 0
 fi
 
-echo "[bootstrap] building the warehouse (bronze, silver, identity, gold + contract tests, features, reports): ~5 min"
+echo "[bootstrap] building the warehouse (bronze, silver, identity, gold + contract tests, features, reports): ~5 min (~1 min on the sample)"
 exec jobs nightly

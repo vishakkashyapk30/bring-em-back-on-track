@@ -1,0 +1,249 @@
+{
+ "transcript_id": "6010558",
+ "contact_id": "CT-6016367",
+ "call_recording_id": "REC-6010558",
+ "voice_sample_id": null,
+ "case_id": "CS-2021-228612",
+ "crm_customer_id": "THW-8992",
+ "agent_id": "AG-4443",
+ "call_start_ts": "2021-11-05 13:47:50",
+ "call_end_ts": "2021-11-05 13:50:16",
+ "duration_sec": 146,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.929,
+ "wer_estimate": 0.071,
+ "diarization_confidence": 0.888,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.114,
+ "agent_talk_ratio": 0.406,
+ "silence_ratio": 0.48,
+ "overtalk_count": 3,
+ "hold_count": 1,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2021/11/6010558.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 1.38,
+   "end_sec": 8.83,
+   "text": "Hi, this is Jordan calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.918,
+   "sentiment_score": 0.16,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 9.65,
+   "end_sec": 12.56,
+   "text": "May I speak with Thomas Ware?",
+   "asr_confidence": 0.938,
+   "sentiment_score": 0.286,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 13.03,
+   "end_sec": 14.23,
+   "text": "Speaking.",
+   "asr_confidence": 0.912,
+   "sentiment_score": -0.681,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 15.33,
+   "end_sec": 20.03,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.913,
+   "sentiment_score": 0.2,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 76.19,
+   "end_sec": 77.8,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.96,
+   "sentiment_score": -0.986,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 78.97,
+   "end_sec": 84.77,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.895,
+   "sentiment_score": 0.178,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "agent",
+   "start_sec": 85.17,
+   "end_sec": 89.85,
+   "text": "Let me just pull up your account. One moment please.",
+   "asr_confidence": 0.916,
+   "sentiment_score": 0.447,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "customer",
+   "start_sec": 90.26,
+   "end_sec": 91.46,
+   "text": "Okay.",
+   "asr_confidence": 0.943,
+   "sentiment_score": -0.85,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 91.84,
+   "end_sec": 94.75,
+   "text": "Thanks for waiting, have it here.",
+   "asr_confidence": 0.939,
+   "sentiment_score": 0.349,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "agent",
+   "start_sec": 95.51,
+   "end_sec": 98.59,
+   "text": "The amount past due today is $24.75.",
+   "asr_confidence": 0.964,
+   "sentiment_score": 0.054,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "customer",
+   "start_sec": 98.83,
+   "end_sec": 101.85,
+   "text": "I don't agree with that charge.",
+   "asr_confidence": 0.939,
+   "sentiment_score": -0.237,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "customer",
+   "start_sec": 102.1,
+   "end_sec": 106.21,
+   "text": "I already made a payment and it wasn't applied.",
+   "asr_confidence": 0.953,
+   "sentiment_score": -0.728,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "agent",
+   "start_sec": 106.69,
+   "end_sec": 111.05,
+   "text": "I understand. I'll note that the file have it reviewed.",
+   "asr_confidence": 0.931,
+   "sentiment_score": 0.398,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "customer",
+   "start_sec": 111.42,
+   "end_sec": 113.75,
+   "text": "I can pay 25 Friday.",
+   "asr_confidence": 0.962,
+   "sentiment_score": -0.377,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "agent",
+   "start_sec": 114.75,
+   "end_sec": 121.35,
+   "text": "Just to confirm, a payment of $24.75 on November 12. I'll send you a payment link.",
+   "asr_confidence": 0.904,
+   "sentiment_score": -0.022,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "agent",
+   "start_sec": 121.85,
+   "end_sec": 126.13,
+   "text": "Will be paying through the app or online banking?",
+   "asr_confidence": 0.909,
+   "sentiment_score": 0.053,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 17,
+   "speaker": "customer",
+   "start_sec": 127.01,
+   "end_sec": 128.47,
+   "text": "Through the app.",
+   "asr_confidence": 0.899,
+   "sentiment_score": -0.391,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 18,
+   "speaker": "agent",
+   "start_sec": 129.49,
+   "end_sec": 130.75,
+   "text": "Perfect.",
+   "asr_confidence": 0.935,
+   "sentiment_score": 0.626,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 19,
+   "speaker": "agent",
+   "start_sec": 131.1,
+   "end_sec": 135.3,
+   "text": "Is there anything else I can help you with today?",
+   "asr_confidence": 0.916,
+   "sentiment_score": -0.475,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 20,
+   "speaker": "customer",
+   "start_sec": 135.69,
+   "end_sec": 137.45,
+   "text": "No, that's all.",
+   "asr_confidence": 0.951,
+   "sentiment_score": -0.495,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 21,
+   "speaker": "agent",
+   "start_sec": 138.05,
+   "end_sec": 145.03,
+   "text": "Thank you for your time today. You'll receive a confirmation by text. Have a good evening.",
+   "asr_confidence": 0.91,
+   "sentiment_score": -0.144,
+   "redacted_spans": []
+  }
+ ]
+}

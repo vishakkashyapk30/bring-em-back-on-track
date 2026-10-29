@@ -1,0 +1,53 @@
+{
+ "transcript_id": "1511045",
+ "contact_id": "CT-1617372",
+ "call_recording_id": "REC-1511045",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-281023",
+ "crm_customer_id": "CAD-8043",
+ "agent_id": "AG-9662",
+ "call_start_ts": "2026-09-16 17:07:02",
+ "call_end_ts": "2026-09-16 17:07:17",
+ "duration_sec": 15,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.904,
+ "wer_estimate": 0.108,
+ "diarization_confidence": 0.944,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.501,
+ "silence_ratio": 0.499,
+ "overtalk_count": 0,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/09/1511045.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 2.34,
+   "end_sec": 5.59,
+   "text": "Veuillez laisser votre message après le bip.",
+   "asr_confidence": 0.943,
+   "sentiment_score": 0.794,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 6.57,
+   "end_sec": 14.08,
+   "text": "Bonjour, ce message est pour Catherine. Ici Marie de la Banque Maple. Veuillez nous rappeler au 1-800-555-0199. Merci.",
+   "asr_confidence": 0.865,
+   "sentiment_score": 0.406,
+   "redacted_spans": []
+  }
+ ]
+}

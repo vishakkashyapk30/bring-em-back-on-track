@@ -7,7 +7,7 @@ The submission file is [`deliverables/benchmark_answers.csv`](../deliverables/be
 The submission run uses Ask with the language model switched on (`LLM_PROVIDER=openai`, model `gpt-6-luna`, run on 4 Oct at about 18:55 IST):
 
 ```bash
-LLM_PROVIDER=openai uv run python -m eval.run_benchmark --questions benchmark_questions_extra.csv
+LLM_PROVIDER=openai uv run python -m eval.run_benchmark --questions <extra_questions.csv>
 ```
 
 The model never writes the numbers. Refusal rules, access checks and the SQL guard run before any model is called. Metric questions compile to SQL from the certified metric definitions in `semantic/registry.py`, so the numbers are the same with or without the model. The model is used in three places: it words policy answers from the quoted sections (each quote is checked against the document), it picks a certified metric for questions the rules do not recognise, and it writes guarded, read-only SQL for data questions no certified metric covers. In the final run, 12 of the 50 answers differ from the rules-only run. All 12 are policy answers worded by the model, and every number and refusal is identical.

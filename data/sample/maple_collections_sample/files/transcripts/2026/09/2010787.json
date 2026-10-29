@@ -1,0 +1,219 @@
+{
+ "transcript_id": "2010787",
+ "contact_id": "CT-2119169",
+ "call_recording_id": "REC-2010787",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-266324",
+ "crm_customer_id": "ALF-9564",
+ "agent_id": "AG-2051",
+ "call_start_ts": "2026-09-17 13:09:52",
+ "call_end_ts": "2026-09-17 13:11:17",
+ "duration_sec": 85,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.783,
+ "wer_estimate": 0.22,
+ "diarization_confidence": 0.943,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.193,
+ "agent_talk_ratio": 0.648,
+ "silence_ratio": 0.159,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/09/2010787.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 1.09,
+   "end_sec": 8.1,
+   "text": "Bonjour, ici Marie de la Banque Maple. Cet appel peut être enregistré à des fins de qualité.",
+   "asr_confidence": 0.766,
+   "sentiment_score": 0.491,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 8.69,
+   "end_sec": 11.42,
+   "text": "Puis-je parler a Alexis Fortier?",
+   "asr_confidence": 0.728,
+   "sentiment_score": -0.229,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 12.28,
+   "end_sec": 13.46,
+   "text": "C'est moi.",
+   "asr_confidence": 0.802,
+   "sentiment_score": -0.398,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 14.16,
+   "end_sec": 18.43,
+   "text": "Avant de continuer, pouvez-vous confirmer votre date de naissance?",
+   "asr_confidence": 0.88,
+   "sentiment_score": -0.478,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 19.45,
+   "end_sec": 20.92,
+   "text": "Oui, c'est [PII].",
+   "asr_confidence": 0.855,
+   "sentiment_score": 0.246,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 21.34,
+   "end_sec": 24.93,
+   "text": "Merci. Est-ce toujours le meilleur numéro pour vous",
+   "asr_confidence": 0.834,
+   "sentiment_score": -0.06,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "customer",
+   "start_sec": 25.5,
+   "end_sec": 27.48,
+   "text": "Oui, c'est cellulaire.",
+   "asr_confidence": 0.693,
+   "sentiment_score": 0.422,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "agent",
+   "start_sec": 28.44,
+   "end_sec": 35.0,
+   "text": "Merci. J'appelle au sujet de votre compte à la Banque Maple, qui est en retard.",
+   "asr_confidence": 0.733,
+   "sentiment_score": 0.343,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 35.52,
+   "end_sec": 39.43,
+   "text": "Le montant en souffrance aujourd'hui est de 601.02 $.",
+   "asr_confidence": 0.704,
+   "sentiment_score": -0.078,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "customer",
+   "start_sec": 40.3,
+   "end_sec": 45.85,
+   "text": "Je ne peux pas tout payer. Je suis en arrêt maladie depuis juin.",
+   "asr_confidence": 0.783,
+   "sentiment_score": 0.045,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "agent",
+   "start_sec": 46.17,
+   "end_sec": 53.94,
+   "text": "Je suis désolé. Nous avons des options, comme un paiement réduit pendant trois mois. Voulez-vous qu'on regarde ça?",
+   "asr_confidence": 0.71,
+   "sentiment_score": 0.346,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "customer",
+   "start_sec": 54.93,
+   "end_sec": 56.63,
+   "text": "Oui, ça aiderait.",
+   "asr_confidence": 0.838,
+   "sentiment_score": -0.094,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "agent",
+   "start_sec": 57.64,
+   "end_sec": 63.21,
+   "text": "Pour ça, j'ai besoin de revoir votre budget. Quelles sont principales dépenses fixes?",
+   "asr_confidence": 0.784,
+   "sentiment_score": 0.402,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "customer",
+   "start_sec": 63.47,
+   "end_sec": 66.3,
+   "text": "Surtout le loyer, l'épicerie et l'auto.",
+   "asr_confidence": 0.734,
+   "sentiment_score": 0.586,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "agent",
+   "start_sec": 66.86,
+   "end_sec": 70.89,
+   "text": "C'est noté. L'équipe des difficultés financières faire le suivi.",
+   "asr_confidence": 0.76,
+   "sentiment_score": -0.138,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "agent",
+   "start_sec": 71.91,
+   "end_sec": 76.38,
+   "text": "Y a-t-il autre chose que je faire pour vous aujourd'hui?",
+   "asr_confidence": 0.795,
+   "sentiment_score": 0.237,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 17,
+   "speaker": "customer",
+   "start_sec": 76.73,
+   "end_sec": 78.42,
+   "text": "Non, c'est tout.",
+   "asr_confidence": 0.851,
+   "sentiment_score": 0.193,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 18,
+   "speaker": "agent",
+   "start_sec": 79.5,
+   "end_sec": 84.68,
+   "text": "Merci pour votre temps. Vous recevrez une confirmation par texto. Bonne soirée.",
+   "asr_confidence": 0.835,
+   "sentiment_score": -0.268,
+   "redacted_spans": []
+  }
+ ]
+}

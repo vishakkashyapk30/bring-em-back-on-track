@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """S1 employer shock radar: weekly per employer_key with at least 10 customers: payroll-gap count, new EI count,
 average payroll_amount_change_pct against the employer's own history and its industry_naics2 peers.
 

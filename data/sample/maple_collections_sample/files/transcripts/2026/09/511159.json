@@ -1,0 +1,53 @@
+{
+ "transcript_id": "511159",
+ "contact_id": "CT-0618940",
+ "call_recording_id": "REC-511159",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-584281",
+ "crm_customer_id": "DAS-1281",
+ "agent_id": "AG-8767",
+ "call_start_ts": "2026-09-17 16:31:33",
+ "call_end_ts": "2026-09-17 16:31:49",
+ "duration_sec": 16,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.818,
+ "wer_estimate": 0.185,
+ "diarization_confidence": 0.943,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.646,
+ "silence_ratio": 0.354,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/09/511159.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 1.33,
+   "end_sec": 4.48,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.753,
+   "sentiment_score": 0.476,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 4.77,
+   "end_sec": 15.11,
+   "text": "Hi, this message is for David. This is Taylor from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.883,
+   "sentiment_score": 0.618,
+   "redacted_spans": []
+  }
+ ]
+}

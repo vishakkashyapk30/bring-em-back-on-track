@@ -1,0 +1,239 @@
+{
+ "transcript_id": "2510485",
+ "contact_id": "CT-2606951",
+ "call_recording_id": "REC-2510485",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-727205",
+ "crm_customer_id": "MIB-1085",
+ "agent_id": "AG-4869",
+ "call_start_ts": "2026-08-29 16:25:26",
+ "call_end_ts": "2026-08-29 16:27:34",
+ "duration_sec": 128,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.827,
+ "wer_estimate": 0.174,
+ "diarization_confidence": 0.883,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.166,
+ "agent_talk_ratio": 0.536,
+ "silence_ratio": 0.298,
+ "overtalk_count": 3,
+ "hold_count": 1,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/2510485.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 2.67,
+   "end_sec": 10.49,
+   "text": "Hi, this is Chris calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.789,
+   "sentiment_score": -0.383,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 11.29,
+   "end_sec": 13.78,
+   "text": "I speak with Michael Bailey?",
+   "asr_confidence": 0.773,
+   "sentiment_score": 0.485,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 14.02,
+   "end_sec": 15.13,
+   "text": "Speaking.",
+   "asr_confidence": 0.91,
+   "sentiment_score": -0.214,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 15.91,
+   "end_sec": 20.47,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.804,
+   "sentiment_score": 0.175,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 20.86,
+   "end_sec": 22.9,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.898,
+   "sentiment_score": 0.223,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 23.46,
+   "end_sec": 29.47,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.748,
+   "sentiment_score": -0.1,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "agent",
+   "start_sec": 30.1,
+   "end_sec": 34.65,
+   "text": "Let me just pull up your account. One moment please.",
+   "asr_confidence": 0.808,
+   "sentiment_score": 0.139,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "customer",
+   "start_sec": 35.16,
+   "end_sec": 36.23,
+   "text": "Okay.",
+   "asr_confidence": 0.771,
+   "sentiment_score": -0.127,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 36.84,
+   "end_sec": 39.94,
+   "text": "Thanks for waiting, I have it here.",
+   "asr_confidence": 0.848,
+   "sentiment_score": 0.299,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "agent",
+   "start_sec": 40.91,
+   "end_sec": 44.5,
+   "text": "The amount past due today is $736.92.",
+   "asr_confidence": 0.869,
+   "sentiment_score": -0.103,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "customer",
+   "start_sec": 45.07,
+   "end_sec": 50.71,
+   "text": "Honestly, I can't afford that amount. I've been on medical leave since May.",
+   "asr_confidence": 0.903,
+   "sentiment_score": -0.113,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "customer",
+   "start_sec": 51.77,
+   "end_sec": 55.33,
+   "text": "My husband is very sick right now.",
+   "asr_confidence": 0.777,
+   "sentiment_score": 0.545,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "agent",
+   "start_sec": 55.73,
+   "end_sec": 65.84,
+   "text": "I'm sorry to hear that. We have hardship options, like a reduced payment for three months. Would you like me to review that with you?",
+   "asr_confidence": 0.837,
+   "sentiment_score": 0.252,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "customer",
+   "start_sec": 66.7,
+   "end_sec": 68.87,
+   "text": "Yes, that would help.",
+   "asr_confidence": 0.859,
+   "sentiment_score": 0.275,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "agent",
+   "start_sec": 92.7,
+   "end_sec": 100.23,
+   "text": "To set that up need a quick look at your monthly budget. What are your main fixed expenses?",
+   "asr_confidence": 0.863,
+   "sentiment_score": 0.107,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "customer",
+   "start_sec": 101.07,
+   "end_sec": 103.97,
+   "text": "Mostly rent, groceries and the car.",
+   "asr_confidence": 0.743,
+   "sentiment_score": 0.311,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 17,
+   "speaker": "agent",
+   "start_sec": 104.55,
+   "end_sec": 109.91,
+   "text": "Okay, I've noted that. The hardship team will follow up with the details.",
+   "asr_confidence": 0.771,
+   "sentiment_score": 0.697,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 18,
+   "speaker": "customer",
+   "start_sec": 110.14,
+   "end_sec": 112.95,
+   "text": "I can pay 710 Sep 4.",
+   "asr_confidence": 0.829,
+   "sentiment_score": -0.227,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 19,
+   "speaker": "agent",
+   "start_sec": 113.65,
+   "end_sec": 120.27,
+   "text": "Just to confirm, a payment of $710.00 on September 4. I'll send you a payment link.",
+   "asr_confidence": 0.834,
+   "sentiment_score": 0.249,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 20,
+   "speaker": "agent",
+   "start_sec": 120.94,
+   "end_sec": 127.75,
+   "text": "Thank you for your time today. You'll receive a confirmation by text. Have a good evening.",
+   "asr_confidence": 0.902,
+   "sentiment_score": 0.516,
+   "redacted_spans": []
+  }
+ ]
+}

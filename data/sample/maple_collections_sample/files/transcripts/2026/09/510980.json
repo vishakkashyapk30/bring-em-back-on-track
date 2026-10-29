@@ -1,0 +1,53 @@
+{
+ "transcript_id": "510980",
+ "contact_id": "CT-0622922",
+ "call_recording_id": "REC-510980",
+ "voice_sample_id": "VS-510980",
+ "case_id": "CS-2026-147201",
+ "crm_customer_id": "CAH-1661",
+ "agent_id": "AG-2051",
+ "call_start_ts": "2026-09-22 10:03:00",
+ "call_end_ts": "2026-09-22 10:03:18",
+ "duration_sec": 18,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.881,
+ "wer_estimate": 0.087,
+ "diarization_confidence": 0.854,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.605,
+ "silence_ratio": 0.395,
+ "overtalk_count": 1,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/09/510980.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 2.74,
+   "end_sec": 6.26,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.879,
+   "sentiment_score": 0.091,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 6.51,
+   "end_sec": 17.4,
+   "text": "Hi, this message is for Carl. This is Jamie from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.882,
+   "sentiment_score": 0.949,
+   "redacted_spans": []
+  }
+ ]
+}

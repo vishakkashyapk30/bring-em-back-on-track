@@ -1,0 +1,114 @@
+"code_type","code","description_en","description_fr","attributes_json","active_flag","effective_from"
+"block_code","A","Fraud block",,,true,2019-01-01
+"block_code","B","Bankruptcy / insolvency block",,,true,2019-01-01
+"block_code","C","Collections block",,,true,2019-01-01
+"block_code","D","Deceased",,,true,2019-01-01
+"block_code","L","Lost or stolen",,,true,2019-01-01
+"block_code","Z","Delinquent authorisation block",,,true,2019-01-01
+"bureau_reason","R01","Serious delinquency",,,true,2023-01-01
+"bureau_reason","R02","Too many recent inquiries",,,true,2023-01-01
+"bureau_reason","R03","High revolving utilisation",,,true,2023-01-01
+"bureau_reason","R04","Short credit history",,,true,2023-01-01
+"bureau_reason","R05","Recent delinquency",,,true,2023-01-01
+"bureau_reason","R06","Number of accounts with delinquency",,,true,2023-01-01
+"bureau_reason","R07","Collection item on file",,,true,2023-01-01
+"bureau_reason","R08","Public record on file",,,true,2023-01-01
+"bureau_reason","R09","Too few accounts paid as agreed",,,true,2023-01-01
+"bureau_reason","R10","High balance relative to limits",,,true,2023-01-01
+"bureau_reason","R11","Length of time accounts open",,,true,2023-01-01
+"bureau_reason","R12","Recent new account",,,true,2023-01-01
+"bureau_reason","R13","Payday loan trade on file",,,true,2023-01-01
+"bureau_reason","R14","Serious delinquency (variant 14)",,,true,2023-01-01
+"bureau_reason","R15","Too many recent inquiries (variant 15)",,,true,2023-01-01
+"bureau_reason","R16","High revolving utilisation (variant 16)",,,true,2023-01-01
+"bureau_reason","R17","Short credit history (variant 17)",,,true,2023-01-01
+"bureau_reason","R18","Recent delinquency (variant 18)",,,true,2023-01-01
+"bureau_reason","R19","Number of accounts with delinquency (variant 19)",,,true,2023-01-01
+"bureau_reason","R20","Collection item on file (variant 20)",,,true,2023-01-01
+"bureau_reason","R21","Public record on file (variant 21)",,,true,2023-01-01
+"bureau_reason","R22","Too few accounts paid as agreed (variant 22)",,,true,2023-01-01
+"bureau_reason","R23","High balance relative to limits (variant 23)",,,true,2023-01-01
+"bureau_reason","R24","Length of time accounts open (variant 24)",,,true,2023-01-01
+"bureau_reason","R25","Recent new account (variant 25)",,,true,2023-01-01
+"bureau_reason","R26","Payday loan trade on file (variant 26)",,,true,2023-01-01
+"bureau_reason","R27","Serious delinquency (variant 27)",,,true,2023-01-01
+"bureau_reason","R28","Too many recent inquiries (variant 28)",,,true,2023-01-01
+"bureau_reason","R29","High revolving utilisation (variant 29)",,,true,2023-01-01
+"bureau_reason","R30","Short credit history (variant 30)",,,true,2023-01-01
+"bureau_reason","R31","Recent delinquency (variant 31)",,,true,2023-01-01
+"bureau_reason","R32","Number of accounts with delinquency (variant 32)",,,true,2023-01-01
+"bureau_reason","R33","Collection item on file (variant 33)",,,true,2023-01-01
+"bureau_reason","R34","Public record on file (variant 34)",,,true,2023-01-01
+"bureau_reason","R35","Too few accounts paid as agreed (variant 35)",,,true,2023-01-01
+"bureau_reason","R36","High balance relative to limits (variant 36)",,,true,2023-01-01
+"bureau_reason","R37","Length of time accounts open (variant 37)",,,true,2023-01-01
+"bureau_reason","R38","Recent new account (variant 38)",,,true,2023-01-01
+"bureau_reason","R39","Payday loan trade on file (variant 39)",,,true,2023-01-01
+"contact_rule_set","AB-STD-2026","Contact rules AB 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","BC-STD-2026","Contact rules BC 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","MB-STD-2026","Contact rules MB 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","NB-STD-2026","Contact rules NB 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","NL-STD-2026","Contact rules NL 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""none"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","NS-STD-2026","Contact rules NS 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""none"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","NT-STD-2026","Contact rules NT 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","NU-STD-2026","Contact rules NU 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","ON-STD-2026","Contact rules ON 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","PE-STD-2026","Contact rules PE 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""none"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","QC-STD-2026","Contact rules QC 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""none"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","SK-STD-2026","Contact rules SK 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"contact_rule_set","YT-STD-2026","Contact rules YT 2026",,"{""start"": ""07:00"", ""end"": ""21:00"", ""sunday"": ""13:00-17:00"", ""cap_7d"": 3}",true,2026-01-15
+"email_template","EM-REM-EN-01","Past-due reminder email",,,true,2025-06-01
+"email_template","EM-REM-FR-01","Past-due reminder email",,,true,2025-06-01
+"outcome_code","BKPT","Bankruptcy / proposal advised","Faillite / proposition signalée","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","CB","Callback requested","Rappel demandé","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","DECD","Deceased notification","Avis de décès","{""counts_as_rpc"": false}",true,2025-01-01
+"outcome_code","DISP","Dispute raised","Litige soulevé","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","DLVD","Delivered","Livré","{""counts_as_rpc"": false}",true,2025-01-01
+"outcome_code","HARD","Hardship disclosed","Difficulté financière déclarée","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","IVR","IVR session","Session RVI","{""counts_as_rpc"": false}",true,2025-01-01
+"outcome_code","LM","Left message","Message laissé","{""counts_as_rpc"": false}",true,2025-01-01
+"outcome_code","NA","No answer","Pas de réponse","{""counts_as_rpc"": false}",true,2025-01-01
+"outcome_code","PIF","Paid in full","Payé en entier","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","PP","Partial payment taken","Paiement partiel reçu","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","PTP","Promise to pay","Promesse de paiement","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","RPC-NP","Right party contact - no promise","Contact avec le client - sans promesse","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","RTP","Refused to pay","Refus de payer","{""counts_as_rpc"": true}",true,2025-01-01
+"outcome_code","SENT","Message sent","Message envoyé","{""counts_as_rpc"": false}",true,2025-01-01
+"outcome_code","SYS","System event","Événement système","{""counts_as_rpc"": false}",true,2025-01-01
+"outcome_code","WN","Wrong number","Mauvais numéro","{""counts_as_rpc"": false}",true,2025-01-01
+"product_code","CBV-CLASSIC","Visa classic card",,"{""annual_fee"": 0.0, ""purchase_apr"": 0.2099, ""rewards"": ""cash_back""}",true,2020-01-01
+"product_code","LRV-CLASSIC","Visa classic card",,"{""annual_fee"": 39.0, ""purchase_apr"": 0.1299, ""rewards"": ""none""}",true,2020-01-01
+"product_code","NFM-STD","Mastercard classic card",,"{""annual_fee"": 0.0, ""purchase_apr"": 0.2099, ""rewards"": ""none""}",true,2020-01-01
+"product_code","SCV-SECURED","Visa secured card",,"{""annual_fee"": 0.0, ""purchase_apr"": 0.1999, ""rewards"": ""none""}",true,2020-01-01
+"product_code","STM-STUDENT","Mastercard classic card",,"{""annual_fee"": 0.0, ""purchase_apr"": 0.1999, ""rewards"": ""cash_back""}",true,2020-01-01
+"product_code","TRV-INFINITE","Visa infinite card",,"{""annual_fee"": 139.0, ""purchase_apr"": 0.2099, ""rewards"": ""travel_points""}",true,2020-01-01
+"product_code","WEM-ELITE","Mastercard world_elite card",,"{""annual_fee"": 120.0, ""purchase_apr"": 0.2099, ""rewards"": ""travel_points""}",true,2020-01-01
+"routing_rule","RR-EARLY-01","Early stage default",,,true,2025-01-01
+"routing_rule","RR-EARLY-02","Early stage overflow",,,true,2025-01-01
+"routing_rule","RR-FR-01","French-speaking customer to Montréal",,,true,2025-01-01
+"routing_rule","RR-HARD-01","Hardship specialist",,,true,2025-01-01
+"routing_rule","RR-HARD-02","Hardship overflow",,,true,2025-01-01
+"routing_rule","RR-LATE-01","Late stage default",,,true,2025-01-01
+"routing_rule","RR-LATE-02","Late stage overflow",,,true,2025-01-01
+"routing_rule","RR-MID-01","Mid stage default",,,true,2025-01-01
+"routing_rule","RR-MID-02","Mid stage overflow",,,true,2025-01-01
+"routing_rule","RR-REC-01","Recoveries",,,true,2025-01-01
+"routing_rule","RR-REC-02","Recoveries overflow",,,true,2025-01-01
+"routing_rule","RR-VUL-01","Vulnerable customer to certified agent",,,true,2025-01-01
+"script","SCR-EARLY-STD-EN","Call script SCR-EARLY-STD-EN",,,true,2026-02-01
+"script","SCR-EARLY-STD-FR","Call script SCR-EARLY-STD-FR",,,true,2026-02-01
+"script","SCR-LATE-STD-EN","Call script SCR-LATE-STD-EN",,,true,2026-02-01
+"script","SCR-LATE-STD-FR","Call script SCR-LATE-STD-FR",,,true,2026-02-01
+"script","SCR-MID-STD-EN","Call script SCR-MID-STD-EN",,,true,2026-02-01
+"script","SCR-MID-STD-FR","Call script SCR-MID-STD-FR",,,true,2026-02-01
+"script","SCR-VUL-EN","Call script SCR-VUL-EN",,,true,2026-02-01
+"script","SCR-VUL-FR","Call script SCR-VUL-FR",,,true,2026-02-01
+"sms_template","SMS-REM-EN-02","Past-due reminder (EN)",,"{""text"": ""Reminder from Maple Bank: a payment on your {prod} ending {last4} is past due. Pay securely: mb.example/p/{link} Reply STOP to opt out""}",true,2025-06-01
+"sms_template","SMS-REM-FR-01","Past-due reminder (FR)","Rappel de retard","{""text"": ""Rappel de la Banque Maple : un paiement sur votre {prod} se terminant par {last4} est en retard. Payez en toute securite : mb.example/p/{link} Repondez ARRET pour vous desabonner""}",true,2025-06-01
+"strategy_code","EARLY-CALL-SMSLINK","Early Call Smslink",,,true,2024-01-01
+"strategy_code","EARLY-EMAIL-APP","Early Email App",,,true,2024-01-01
+"strategy_code","EARLY-SMS-ONLY","Early Sms Only",,,true,2024-01-01
+"strategy_code","LATE-AGENCY-READY","Late Agency Ready",,,true,2024-01-01
+"strategy_code","MID-CALL-HEAVY","Mid Call Heavy",,,true,2024-01-01
+"strategy_code","MID-HARDSHIP-FIRST","Mid Hardship First",,,true,2024-01-01
+"strategy_code","REC-DEBT-SALE","Rec Debt Sale",,,true,2024-01-01

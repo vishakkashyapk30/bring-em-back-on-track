@@ -1,0 +1,7 @@
+"event_id","event_type","system","start_ts","end_ts","severity","description","affected_tables","affected_customers_est","reference_doc_id"
+"DFI-0812","data_feed_issue","Bureau file load",2026-08-12 06:00:00,2026-08-12 09:00:00,"sev3","Fixed-width bureau file converted with a shifted column for some rows","[""external""]",10000,
+"ECO-0715","external_economic","Regional employer layoffs",2026-07-15 00:00:00,2026-09-28 00:00:00,"sev3","Auto-parts plant layoffs in Windsor-Essex; more reduced-hours and job-loss hardship","[""deposit_accounts"", ""collections_cases""]",4000,
+"INC-0914","app_outage","Mobile & online banking",2026-09-14 09:10:00,2026-09-14 15:40:00,"sev2","Payments made in app not posted until next day; late fees charged in error","[""card_statements"", ""collections_cases"", ""contact_history""]",1900,"IR-2026-0914"
+"INC-0923","dialer_outage","Predictive dialer",2026-09-23 08:00:00,2026-09-24 21:00:00,"sev2","Outbound dialer degraded; call capacity down about 60%","[""contact_history"", ""channel_capacity""]",35000,"IR-2026-0923"
+"POL-0301","policy_change","Collections policy",2026-03-01 00:00:00,2026-03-01 00:00:00,"sev3","Hardship policy v4.2: reduced-payment programme changed to 50% for 3 months; evidence rule relaxed","[""offers"", ""hardship_programs""]",0,"POL-COLL-004"
+"REL-0926","platform_release","Collections contact platform",2026-09-26 00:00:00,2026-09-26 02:00:00,"sev3","contact_history column channel renamed to channel_v2 upstream","[""contact_history""]",0,"REL-0926"

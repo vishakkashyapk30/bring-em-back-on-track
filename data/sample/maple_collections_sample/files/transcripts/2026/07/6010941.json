@@ -1,0 +1,53 @@
+{
+ "transcript_id": "6010941",
+ "contact_id": "CT-6086392",
+ "call_recording_id": "REC-6010941",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-657952",
+ "crm_customer_id": "ALP-2272",
+ "agent_id": "AG-7334",
+ "call_start_ts": "2026-07-18 13:41:59",
+ "call_end_ts": "2026-07-18 13:42:15",
+ "duration_sec": 16,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.96,
+ "wer_estimate": 0.058,
+ "diarization_confidence": 0.954,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.677,
+ "silence_ratio": 0.323,
+ "overtalk_count": 0,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/07/6010941.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 0.86,
+   "end_sec": 4.03,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.954,
+   "sentiment_score": 0.482,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 4.71,
+   "end_sec": 15.55,
+   "text": "Hi, this message is for Alex. This is Chris from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.967,
+   "sentiment_score": 0.023,
+   "redacted_spans": []
+  }
+ ]
+}

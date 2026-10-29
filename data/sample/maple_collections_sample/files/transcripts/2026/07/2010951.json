@@ -1,0 +1,53 @@
+{
+ "transcript_id": "2010951",
+ "contact_id": "CT-2081512",
+ "call_recording_id": "REC-2010951",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-890124",
+ "crm_customer_id": "NIS-5784",
+ "agent_id": "AG-2764",
+ "call_start_ts": "2026-07-04 16:11:04",
+ "call_end_ts": "2026-07-04 16:11:20",
+ "duration_sec": 16,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.879,
+ "wer_estimate": 0.122,
+ "diarization_confidence": 0.932,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.676,
+ "silence_ratio": 0.324,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/07/2010951.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 1.1,
+   "end_sec": 4.15,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.908,
+   "sentiment_score": -0.113,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 4.64,
+   "end_sec": 15.46,
+   "text": "Hi, this message is for Nikhil. This is Jamie from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.85,
+   "sentiment_score": 0.725,
+   "redacted_spans": []
+  }
+ ]
+}

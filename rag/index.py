@@ -74,7 +74,7 @@ def _split(doc_id: str, md: str, meta: dict) -> list[Section]:
 @lru_cache
 def load_sections() -> tuple[Section, ...]:
     s = get_settings()
-    root = s.raw_dir / "maple_collections_release" / "files"
+    root = s.release_dir / "files"
     con = duckdb.connect(str(s.warehouse_path), read_only=True)
     docs = con.sql("""SELECT doc_id, doc_type, version, language, file_path, applies_to_products, applies_to_provinces
                       FROM silver.reference_documents WHERE superseded_by IS NULL""").fetchall()

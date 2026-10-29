@@ -1,0 +1,239 @@
+{
+ "transcript_id": "2011183",
+ "contact_id": "CT-2075745",
+ "call_recording_id": "REC-2011183",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-720824",
+ "crm_customer_id": "RES-2144",
+ "agent_id": "AG-3230",
+ "call_start_ts": "2026-06-11 18:10:51",
+ "call_end_ts": "2026-06-11 18:12:27",
+ "duration_sec": 96,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.882,
+ "wer_estimate": 0.121,
+ "diarization_confidence": 0.95,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.25,
+ "agent_talk_ratio": 0.589,
+ "silence_ratio": 0.161,
+ "overtalk_count": 10,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/06/2011183.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 2.24,
+   "end_sec": 9.71,
+   "text": "Hi, this is Jordan calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.853,
+   "sentiment_score": 0.437,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 10.09,
+   "end_sec": 12.74,
+   "text": "May I speak with Renee Sweeney?",
+   "asr_confidence": 0.853,
+   "sentiment_score": -0.342,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 13.64,
+   "end_sec": 14.39,
+   "text": "Speaking.",
+   "asr_confidence": 0.933,
+   "sentiment_score": -0.033,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 15.13,
+   "end_sec": 20.0,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.868,
+   "sentiment_score": 0.182,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 21.09,
+   "end_sec": 22.97,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.868,
+   "sentiment_score": -0.33,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 23.45,
+   "end_sec": 27.63,
+   "text": "Thank you. And is your mailing address still the same?",
+   "asr_confidence": 0.855,
+   "sentiment_score": 0.803,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "customer",
+   "start_sec": 28.41,
+   "end_sec": 30.21,
+   "text": "Yes, same address.",
+   "asr_confidence": 0.902,
+   "sentiment_score": -0.716,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "agent",
+   "start_sec": 30.82,
+   "end_sec": 36.53,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.865,
+   "sentiment_score": -0.262,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 37.69,
+   "end_sec": 41.98,
+   "text": "Let me just pull up your account. One moment please.",
+   "asr_confidence": 0.919,
+   "sentiment_score": -0.587,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "customer",
+   "start_sec": 42.34,
+   "end_sec": 43.4,
+   "text": "Okay.",
+   "asr_confidence": 0.826,
+   "sentiment_score": -0.279,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "agent",
+   "start_sec": 43.71,
+   "end_sec": 46.82,
+   "text": "Thanks for waiting, I have it here.",
+   "asr_confidence": 0.924,
+   "sentiment_score": 0.646,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "agent",
+   "start_sec": 48.01,
+   "end_sec": 51.19,
+   "text": "The amount past due today is $30.61.",
+   "asr_confidence": 0.862,
+   "sentiment_score": 0.134,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "customer",
+   "start_sec": 51.8,
+   "end_sec": 59.22,
+   "text": "I'm not able to pay that right now. We were evacuated because of the wildfire in Apr.",
+   "asr_confidence": 0.855,
+   "sentiment_score": -1,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "customer",
+   "start_sec": 59.49,
+   "end_sec": 62.33,
+   "text": "Stop calling every day! This is",
+   "asr_confidence": 0.871,
+   "sentiment_score": -0.808,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "customer",
+   "start_sec": 62.63,
+   "end_sec": 67.02,
+   "text": "We had to leave our house because of the fire.",
+   "asr_confidence": 0.9,
+   "sentiment_score": -0.5,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "agent",
+   "start_sec": 67.38,
+   "end_sec": 73.5,
+   "text": "If you don't pay today we'll take you to court and garnish your wages.",
+   "asr_confidence": 0.883,
+   "sentiment_score": 0.263,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 17,
+   "speaker": "agent",
+   "start_sec": 74.03,
+   "end_sec": 84.06,
+   "text": "I'm sorry to hear that. We have hardship options, like a reduced payment for three months. Would you like me to review that with you?",
+   "asr_confidence": 0.916,
+   "sentiment_score": 0.045,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 18,
+   "speaker": "customer",
+   "start_sec": 84.93,
+   "end_sec": 86.83,
+   "text": "Yes, that would help.",
+   "asr_confidence": 0.88,
+   "sentiment_score": -0.441,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 19,
+   "speaker": "agent",
+   "start_sec": 87.74,
+   "end_sec": 92.66,
+   "text": "Before I transfer you, we can also set up a payment plan.",
+   "asr_confidence": 0.923,
+   "sentiment_score": 0.177,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 20,
+   "speaker": "customer",
+   "start_sec": 93.45,
+   "end_sec": 95.43,
+   "text": "I'm done with this.",
+   "asr_confidence": 0.89,
+   "sentiment_score": -1,
+   "redacted_spans": []
+  }
+ ]
+}

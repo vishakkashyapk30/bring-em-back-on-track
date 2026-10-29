@@ -1,0 +1,53 @@
+{
+ "transcript_id": "8011027",
+ "contact_id": "CT-8088295",
+ "call_recording_id": "REC-8011027",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-544116",
+ "crm_customer_id": "HUT-6096",
+ "agent_id": "AG-5944",
+ "call_start_ts": "2026-07-28 13:31:24",
+ "call_end_ts": "2026-07-28 13:31:39",
+ "duration_sec": 15,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.81,
+ "wer_estimate": 0.186,
+ "diarization_confidence": 0.962,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.503,
+ "silence_ratio": 0.497,
+ "overtalk_count": 1,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/07/8011027.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 2.87,
+   "end_sec": 6.02,
+   "text": "Veuillez laisser votre message après le bip.",
+   "asr_confidence": 0.771,
+   "sentiment_score": -0.183,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 7.2,
+   "end_sec": 14.75,
+   "text": "Bonjour, ce message est pour Hugues. Ici Julie de la Banque Maple. Veuillez nous rappeler au 1-800-555-0199. Merci.",
+   "asr_confidence": 0.85,
+   "sentiment_score": 0.529,
+   "redacted_spans": []
+  }
+ ]
+}

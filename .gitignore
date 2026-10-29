@@ -5,6 +5,7 @@ __pycache__/
 .ruff_cache/
 .env
 data/*
+!data/sample/
 !data/raw/
 data/raw/*
 !data/raw/.gitkeep
@@ -37,3 +38,6 @@ deliverables/video/
 docs/video/
 scripts/record_demo.py
 scripts/record_demo*
+
+# editor settings
+.vscode/

@@ -1,0 +1,53 @@
+{
+ "transcript_id": "5511039",
+ "contact_id": "CT-5617772",
+ "call_recording_id": "REC-5511039",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-212491",
+ "crm_customer_id": "MIS-3631",
+ "agent_id": "AG-8099",
+ "call_start_ts": "2026-09-15 12:01:50",
+ "call_end_ts": "2026-09-15 12:02:08",
+ "duration_sec": 18,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.912,
+ "wer_estimate": 0.073,
+ "diarization_confidence": 0.934,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.58,
+ "silence_ratio": 0.42,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/09/5511039.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 2.08,
+   "end_sec": 5.38,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.907,
+   "sentiment_score": 0.147,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 6.47,
+   "end_sec": 16.91,
+   "text": "Hi, this message is for Miranda. This is Chris from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.917,
+   "sentiment_score": -0.195,
+   "redacted_spans": []
+  }
+ ]
+}

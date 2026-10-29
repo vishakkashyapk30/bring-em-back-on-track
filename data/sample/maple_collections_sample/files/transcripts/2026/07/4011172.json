@@ -1,0 +1,199 @@
+{
+ "transcript_id": "4011172",
+ "contact_id": "CT-4081210",
+ "call_recording_id": "REC-4011172",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-506848",
+ "crm_customer_id": "VIS-8288",
+ "agent_id": "AG-9918",
+ "call_start_ts": "2026-07-04 19:59:03",
+ "call_end_ts": "2026-07-04 20:01:05",
+ "duration_sec": 122,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.855,
+ "wer_estimate": 0.156,
+ "diarization_confidence": 0.975,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.115,
+ "agent_talk_ratio": 0.348,
+ "silence_ratio": 0.537,
+ "overtalk_count": 10,
+ "hold_count": 1,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/07/4011172.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 1.06,
+   "end_sec": 8.84,
+   "text": "Hi, this is Taylor calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.847,
+   "sentiment_score": 0.516,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 9.78,
+   "end_sec": 12.43,
+   "text": "May I speak with Vicki Stafford?",
+   "asr_confidence": 0.907,
+   "sentiment_score": -0.392,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 13.46,
+   "end_sec": 14.24,
+   "text": "Speaking.",
+   "asr_confidence": 0.798,
+   "sentiment_score": -0.46,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 14.47,
+   "end_sec": 19.48,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.774,
+   "sentiment_score": 0.091,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 20.64,
+   "end_sec": 22.25,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.905,
+   "sentiment_score": -0.144,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 23.22,
+   "end_sec": 27.4,
+   "text": "Thanks. Is this still the best number to reach you?",
+   "asr_confidence": 0.9,
+   "sentiment_score": 0.139,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "customer",
+   "start_sec": 27.65,
+   "end_sec": 30.12,
+   "text": "Yes, this is my cell.",
+   "asr_confidence": 0.784,
+   "sentiment_score": -0.85,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "agent",
+   "start_sec": 30.92,
+   "end_sec": 37.2,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.91,
+   "sentiment_score": 0.357,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 37.8,
+   "end_sec": 42.25,
+   "text": "Let me just pull up your account. One moment please.",
+   "asr_confidence": 0.913,
+   "sentiment_score": 0.414,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "customer",
+   "start_sec": 43.19,
+   "end_sec": 44.26,
+   "text": "Okay.",
+   "asr_confidence": 0.807,
+   "sentiment_score": -0.439,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "agent",
+   "start_sec": 45.17,
+   "end_sec": 48.64,
+   "text": "Thanks for waiting, I have it here.",
+   "asr_confidence": 0.899,
+   "sentiment_score": 0.239,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "agent",
+   "start_sec": 48.89,
+   "end_sec": 51.97,
+   "text": "The amount past due today is $1,700.58.",
+   "asr_confidence": 0.824,
+   "sentiment_score": -0.022,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "customer",
+   "start_sec": 52.9,
+   "end_sec": 55.25,
+   "text": "I'll sort it out.",
+   "asr_confidence": 0.793,
+   "sentiment_score": -0.739,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "customer",
+   "start_sec": 56.34,
+   "end_sec": 59.85,
+   "text": "Stop calling me every day! This is harassment.",
+   "asr_confidence": 0.837,
+   "sentiment_score": -0.314,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "agent",
+   "start_sec": 112.74,
+   "end_sec": 118.24,
+   "text": "Before I transfer you, we can also set up a payment plan.",
+   "asr_confidence": 0.901,
+   "sentiment_score": 0.394,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "customer",
+   "start_sec": 118.54,
+   "end_sec": 120.79,
+   "text": "I'm done with this.",
+   "asr_confidence": 0.873,
+   "sentiment_score": -0.358,
+   "redacted_spans": []
+  }
+ ]
+}

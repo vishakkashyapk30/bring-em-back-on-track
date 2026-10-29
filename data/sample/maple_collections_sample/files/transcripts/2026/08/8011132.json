@@ -1,0 +1,53 @@
+{
+ "transcript_id": "8011132",
+ "contact_id": "CT-8091135",
+ "call_recording_id": "REC-8011132",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-379856",
+ "crm_customer_id": "TAS-1176",
+ "agent_id": "AG-3145",
+ "call_start_ts": "2026-08-04 20:39:24",
+ "call_end_ts": "2026-08-04 20:39:43",
+ "duration_sec": 19,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.948,
+ "wer_estimate": 0.053,
+ "diarization_confidence": 0.953,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.565,
+ "silence_ratio": 0.435,
+ "overtalk_count": 0,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/8011132.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 2.9,
+   "end_sec": 6.22,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.971,
+   "sentiment_score": 0.191,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 7.06,
+   "end_sec": 17.8,
+   "text": "Hi, this message is for Tao. This is Jordan from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.925,
+   "sentiment_score": -0.196,
+   "redacted_spans": []
+  }
+ ]
+}

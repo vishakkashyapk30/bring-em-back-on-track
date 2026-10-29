@@ -1,0 +1,53 @@
+{
+ "transcript_id": "2011130",
+ "contact_id": "CT-2076971",
+ "call_recording_id": "REC-2011130",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-892964",
+ "crm_customer_id": "NAD-4964",
+ "agent_id": "AG-3931",
+ "call_start_ts": "2026-06-17 08:56:19",
+ "call_end_ts": "2026-06-17 08:56:33",
+ "duration_sec": 14,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.9,
+ "wer_estimate": 0.107,
+ "diarization_confidence": 0.959,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.536,
+ "silence_ratio": 0.464,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/06/2011130.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 0.84,
+   "end_sec": 4.1,
+   "text": "Veuillez laisser votre message après le bip.",
+   "asr_confidence": 0.94,
+   "sentiment_score": 0.292,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 5.11,
+   "end_sec": 12.61,
+   "text": "Bonjour, ce message est pour Nathalie. Ici Marc de la Banque Maple. Veuillez nous rappeler au 1-800-555-0199. Merci.",
+   "asr_confidence": 0.861,
+   "sentiment_score": 0.19,
+   "redacted_spans": []
+  }
+ ]
+}

@@ -116,7 +116,7 @@ def available() -> bool:
 # ---------------------------------------------------------------- build
 
 def _files() -> Path:
-    return get_settings().raw_dir / "maple_collections_release" / "files"
+    return get_settings().release_dir / "files"
 
 
 def _transcript_frames() -> tuple[pd.DataFrame, pd.DataFrame]:

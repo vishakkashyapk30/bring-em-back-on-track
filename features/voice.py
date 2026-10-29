@@ -43,7 +43,7 @@ def assert_call_level(cols: list[str]) -> None:
 
 
 def voice_dir() -> Path:
-    return get_settings().raw_dir / "maple_collections_release" / "files" / "voice"
+    return get_settings().release_dir / "files" / "voice"
 
 
 def call_level_measures() -> pd.DataFrame:
@@ -156,7 +156,7 @@ def for_rules(turns: list[dict]) -> list[dict]:
 
 
 def _source_turns(transcript_id: str, file_path: str) -> list[dict]:
-    p = get_settings().raw_dir / "maple_collections_release" / "files" / file_path
+    p = get_settings().release_dir / "files" / file_path
     return json.loads(p.read_text())["turns"] if p.exists() else []
 
 

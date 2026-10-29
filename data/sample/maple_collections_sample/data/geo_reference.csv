@@ -1,0 +1,657 @@
+"fsa","province_code","city","cma_name","economic_region","common_region_name","broad_region","urban_rural","time_zone","area_codes","population_weight","fsa_income_index","majority_language","centroid_lat","centroid_lon"
+"A0B","NL","Clarenville",,"Notre Dame–Central Bonavista Bay","Rural Newfoundland","Rural Newfoundland and Labrador","rural","America/St_Johns","[""709"", ""879""]",0.000305,63.7,"EN",48.39576,-53.48028
+"A0C","NL","Bonavista",,"Notre Dame–Central Bonavista Bay","Rural Newfoundland","Rural Newfoundland and Labrador","rural","America/St_Johns","[""709"", ""879""]",0.000467,63.8,"EN",48.7467,-55.12535
+"A0G","NL","Gander",,"Notre Dame–Central Bonavista Bay","Rural Newfoundland","Rural Newfoundland and Labrador","rural","America/St_Johns","[""709"", ""879""]",0.000363,67.8,"EN",49.08105,-55.18433
+"A0H","NL","Clarenville",,"Notre Dame–Central Bonavista Bay","Rural Newfoundland","Rural Newfoundland and Labrador","rural","America/St_Johns","[""709"", ""879""]",0.000197,81.3,"EN",48.19193,-53.85041
+"A0J","NL","Gander",,"Notre Dame–Central Bonavista Bay","Rural Newfoundland","Rural Newfoundland and Labrador","rural","America/St_Johns","[""709"", ""879""]",0.000494,81.7,"EN",49.47377,-56.11983
+"A0X","NL","Carbonear",,"Notre Dame–Central Bonavista Bay","Rural Newfoundland","Rural Newfoundland and Labrador","rural","America/St_Johns","[""709"", ""879""]",0.000343,68.4,"EN",49.13055,-55.28619
+"A0Y","NL","Gander",,"Notre Dame–Central Bonavista Bay","Rural Newfoundland","Rural Newfoundland and Labrador","rural","America/St_Johns","[""709"", ""879""]",0.000753,54.8,"EN",46.75466,-54.4745
+"A1A","NL","St. John's","St. John's","Avalon Peninsula","St. John's","Avalon Peninsula","urban","America/St_Johns","[""709"", ""879""]",0.000807,110.5,"EN",47.54489,-52.71265
+"A1B","NL","St. John's","St. John's","Avalon Peninsula","St. John's","Avalon Peninsula","urban","America/St_Johns","[""709"", ""879""]",0.000241,106.3,"EN",47.45428,-52.79811
+"A1C","NL","St. John's","St. John's","Avalon Peninsula","St. John's","Avalon Peninsula","urban","America/St_Johns","[""709"", ""879""]",0.000166,126.9,"EN",47.49195,-52.73029
+"A1E","NL","St. John's","St. John's","Avalon Peninsula","St. John's","Avalon Peninsula","urban","America/St_Johns","[""709"", ""879""]",0.000226,102.9,"EN",47.65422,-52.57607
+"A1G","NL","St. John's","St. John's","Avalon Peninsula","St. John's","Avalon Peninsula","urban","America/St_Johns","[""709"", ""879""]",0.00048,81.3,"EN",47.5477,-52.79084
+"A1H","NL","St. John's","St. John's","Avalon Peninsula","St. John's","Avalon Peninsula","urban","America/St_Johns","[""709"", ""879""]",0.000402,118.5,"EN",47.58526,-52.69023
+"A1N","NL","St. John's","St. John's","Avalon Peninsula","St. John's","Avalon Peninsula","urban","America/St_Johns","[""709"", ""879""]",0.0003,134.2,"EN",47.58181,-52.76128
+"A2H","NL","Corner Brook","Corner Brook","West Coast–Northern Peninsula–Labrador","Corner Brook","Western Newfoundland","urban","America/St_Johns","[""709"", ""879""]",0.000585,82.4,"EN",48.99233,-57.88183
+"B0A","NS","Pictou",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.001705,102.1,"EN",45.56489,-64.84583
+"B0C","NS","Shelburne",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.000655,95.3,"EN",43.98854,-66.42518
+"B0G","NS","Antigonish",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.00102,95.4,"EN",45.673,-63.7964
+"B0K","NS","Shelburne",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.000351,66.5,"EN",44.23333,-65.22914
+"B0M","NS","Pictou",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.000171,61.9,"EN",44.48739,-63.67242
+"B0V","NS","Wolfville",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.003105,98.2,"EN",43.86142,-65.28146
+"B0W","NS","Digby",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.001962,101.4,"EN",45.15621,-65.98384
+"B0Z","NS","Antigonish",,"Annapolis Valley","Rural Nova Scotia","Rural Nova Scotia","rural","America/Halifax","[""902"", ""782""]",0.00153,84.4,"EN",44.47963,-63.39826
+"B1P","NS","Sydney","Cape Breton","Cape Breton","Cape Breton","Cape Breton","urban","America/Halifax","[""902"", ""782""]",0.000536,67.9,"EN",46.12196,-60.17601
+"B1R","NS","Sydney","Cape Breton","Cape Breton","Cape Breton","Cape Breton","urban","America/Halifax","[""902"", ""782""]",0.000791,89.3,"EN",46.08979,-60.15761
+"B1S","NS","Sydney","Cape Breton","Cape Breton","Cape Breton","Cape Breton","urban","America/Halifax","[""902"", ""782""]",0.000682,96.3,"EN",46.14359,-60.17829
+"B2N","NS","Truro","Truro","North Shore","Truro","Central Nova Scotia","urban","America/Halifax","[""902"", ""782""]",0.000978,89.2,"EN",45.48704,-63.23108
+"B3H","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000329,97,"EN",44.63208,-63.65189
+"B3J","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.001372,118.4,"EN",44.61574,-63.47341
+"B3K","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.001218,118,"EN",44.71907,-63.60837
+"B3L","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.001387,113.7,"EN",44.58621,-63.58283
+"B3M","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000711,118.7,"EN",44.58053,-63.67214
+"B3N","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000405,128,"EN",44.62131,-63.57335
+"B3P","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000715,94.9,"EN",44.65079,-63.57164
+"B3R","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000542,85.7,"EN",44.65834,-63.58297
+"B3S","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000444,106.6,"EN",44.60031,-63.5645
+"B4A","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000931,113,"EN",44.66271,-63.71003
+"B4B","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.001377,91.6,"EN",44.55821,-63.53389
+"B4C","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000299,102,"EN",44.67282,-63.54832
+"B4E","NS","Halifax","Halifax","Halifax","Halifax","Halifax Regional Municipality","urban","America/Halifax","[""902"", ""782""]",0.000844,89.7,"EN",44.58616,-63.52733
+"C0A","PE","Kensington",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000088,72.4,"EN",45.8803,-61.55177
+"C0C","PE","Souris",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000089,106.3,"EN",44.89029,-62.59032
+"C0G","PE","Souris",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000064,123.5,"EN",45.99878,-62.45272
+"C0J","PE","Alberton",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000067,79.6,"EN",45.70416,-64.32114
+"C0R","PE","Kensington",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000072,64.5,"EN",46.43224,-63.82436
+"C0V","PE","Kensington",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000032,67.5,"EN",45.96793,-62.08319
+"C0W","PE","Montague",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000061,109.4,"EN",46.94385,-63.94967
+"C0Y","PE","Alberton",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000091,85.7,"EN",46.04,-66.053
+"C0Z","PE","Montague",,"Prince Edward Island","Rural PEI","Rural PEI","rural","America/Halifax","[""902"", ""782""]",0.000062,64.6,"EN",45.90541,-62.45867
+"C1A","PE","Charlottetown","Charlottetown","Prince Edward Island","Charlottetown","Queens County","urban","America/Halifax","[""902"", ""782""]",0.000185,93.8,"EN",46.22387,-63.05209
+"C1B","PE","Charlottetown","Charlottetown","Prince Edward Island","Charlottetown","Queens County","urban","America/Halifax","[""902"", ""782""]",0.000268,98,"EN",46.34899,-63.16389
+"C1C","PE","Charlottetown","Charlottetown","Prince Edward Island","Charlottetown","Queens County","urban","America/Halifax","[""902"", ""782""]",0.000253,87.9,"EN",46.25281,-63.07106
+"C1E","PE","Charlottetown","Charlottetown","Prince Edward Island","Charlottetown","Queens County","urban","America/Halifax","[""902"", ""782""]",0.000394,63.5,"EN",46.18553,-63.20331
+"C1N","PE","Summerside","Summerside","Prince Edward Island","Summerside","Prince County","urban","America/Halifax","[""902"", ""782""]",0.000324,79.7,"EN",46.3537,-63.80979
+"E1A","NB","Moncton","Moncton","Moncton–Richibucto","Greater Moncton","Southeast New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000835,81.6,"bilingual",46.13313,-64.72512
+"E1C","NB","Moncton","Moncton","Moncton–Richibucto","Greater Moncton","Southeast New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000918,86.9,"bilingual",46.15615,-64.57555
+"E1E","NB","Moncton","Moncton","Moncton–Richibucto","Greater Moncton","Southeast New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000498,76.6,"bilingual",46.08446,-64.78495
+"E1G","NB","Moncton","Moncton","Moncton–Richibucto","Greater Moncton","Southeast New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.001639,100.6,"bilingual",46.12589,-64.88977
+"E1W","NB","Bathurst","Bathurst","Campbellton–Miramichi","Acadian Peninsula","Northeast New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.001752,85.7,"FR",47.67111,-65.64185
+"E1X","NB","Bathurst","Bathurst","Campbellton–Miramichi","Acadian Peninsula","Northeast New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.001428,69.9,"FR",47.6585,-65.63678
+"E2A","NB","Bathurst","Bathurst","Campbellton–Miramichi","Acadian Peninsula","Northeast New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000806,75.5,"FR",47.50416,-65.59457
+"E2H","NB","Saint John","Saint John","Saint John–St. Stephen","Saint John","Southern New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000208,74.2,"EN",45.26765,-65.99809
+"E2J","NB","Saint John","Saint John","Saint John–St. Stephen","Saint John","Southern New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000248,82,"EN",45.18577,-66.0457
+"E2K","NB","Saint John","Saint John","Saint John–St. Stephen","Saint John","Southern New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.00075,94.2,"EN",45.29523,-66.20853
+"E2L","NB","Saint John","Saint John","Saint John–St. Stephen","Saint John","Southern New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000913,101.4,"EN",45.17948,-66.07307
+"E2M","NB","Saint John","Saint John","Saint John–St. Stephen","Saint John","Southern New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000637,85.1,"EN",45.30665,-66.26341
+"E2N","NB","Saint John","Saint John","Saint John–St. Stephen","Saint John","Southern New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000349,131.1,"EN",45.27299,-65.89106
+"E3A","NB","Fredericton","Fredericton","Fredericton–Oromocto","Fredericton","Central New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000606,70.4,"EN",45.91534,-66.71372
+"E3B","NB","Fredericton","Fredericton","Fredericton–Oromocto","Fredericton","Central New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000387,94.5,"EN",46.01606,-66.65529
+"E3C","NB","Fredericton","Fredericton","Fredericton–Oromocto","Fredericton","Central New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.000423,74,"EN",46.03478,-66.75201
+"E3G","NB","Fredericton","Fredericton","Fredericton–Oromocto","Fredericton","Central New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.001569,64.8,"EN",46.00843,-66.73554
+"E3V","NB","Edmundston","Edmundston","Edmundston–Woodstock","Edmundston","Northwest New Brunswick","urban","America/Halifax","[""506"", ""428""]",0.001792,90.3,"FR",47.38598,-68.52531
+"G0B","QC","Baie-Saint-Paul",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.002641,81.6,"FR",46.69692,-72.27932
+"G0E","QC","Magog",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.003727,83.1,"FR",46.9553,-72.02579
+"G0H","QC","Mont-Laurier",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.001764,93.7,"FR",47.13102,-70.99965
+"G0M","QC","Roberval",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.004756,74.1,"FR",45.68456,-72.57689
+"G0N","QC","Baie-Saint-Paul",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.003976,75.7,"FR",47.83009,-71.0743
+"G0P","QC","Mont-Laurier",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.005025,109.1,"FR",47.44859,-71.72653
+"G0R","QC","Baie-Saint-Paul",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.002788,77.7,"FR",47.38497,-73.67042
+"G0V","QC","Saint-Lazare",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.006453,110.9,"FR",47.03184,-70.80054
+"G0Y","QC","Matane",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.001575,80.4,"FR",46.60355,-71.55546
+"G1H","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001046,113.1,"FR",46.84278,-71.32449
+"G1L","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001128,93,"FR",46.70728,-71.17495
+"G1M","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.002399,78.9,"FR",46.80762,-71.18921
+"G1R","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001637,89.8,"FR",46.80336,-71.23871
+"G1X","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000683,99.7,"FR",46.84869,-71.1582
+"G1Y","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001245,100.3,"FR",46.775,-71.21988
+"G1Z","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.00133,81.3,"FR",46.79807,-71.17703
+"G2G","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000712,87.8,"FR",46.70839,-71.26011
+"G2J","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001101,129.1,"FR",46.83705,-71.18711
+"G2K","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.002714,84.7,"FR",46.92019,-71.27266
+"G2N","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.002581,79.2,"FR",46.71372,-71.38754
+"G2R","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001668,59.2,"FR",46.7411,-71.01121
+"G2S","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001691,112.8,"FR",46.84479,-71.20646
+"G2T","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000817,69.3,"FR",46.71486,-71.29578
+"G2Y","QC","Québec","Québec","Capitale-Nationale","Québec City","Capitale-Nationale","urban","America/Toronto","[""418"", ""581"", ""367""]",0.001077,100.5,"FR",46.8227,-71.11345
+"G7B","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000496,110.3,"FR",48.50729,-71.00504
+"G7G","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000205,106.5,"FR",48.43713,-71.07599
+"G7H","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000431,168.3,"FR",48.56021,-70.92227
+"G7J","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000427,94.5,"FR",48.40062,-70.94849
+"G7K","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000325,106.3,"FR",48.38814,-71.14181
+"G7N","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000335,91.7,"FR",48.48757,-70.98529
+"G7S","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000473,75.6,"FR",48.38904,-71.11361
+"G7T","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000415,92.5,"FR",48.50675,-71.04262
+"G7X","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000384,119.3,"FR",48.59582,-70.95923
+"G7Y","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000592,62,"FR",48.39683,-71.06151
+"G7Z","QC","Saguenay","Saguenay","Saguenay–Lac-Saint-Jean","Saguenay","Saguenay–Lac-Saint-Jean","urban","America/Toronto","[""418"", ""581"", ""367""]",0.000301,102,"FR",48.56856,-71.13905
+"G8T","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000426,86.9,"FR",46.41415,-72.52091
+"G8V","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.00025,87.1,"FR",46.41741,-72.53166
+"G8W","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.00108,100.3,"FR",46.38459,-72.47519
+"G8Y","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000179,95.5,"FR",46.26972,-72.59736
+"G8Z","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.001324,93.9,"FR",46.32227,-72.64134
+"G9A","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.001296,97.7,"FR",46.25638,-72.59541
+"G9B","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000645,78,"FR",46.33864,-72.35455
+"G9C","QC","Trois-Rivières","Trois-Rivières","Mauricie","Mauricie","Mauricie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000324,74.4,"FR",46.30792,-72.51283
+"H1C","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.00751,94.4,"FR",45.47592,-73.48237
+"H1M","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002234,90.4,"FR",45.46024,-73.49793
+"H1P","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.004545,105.4,"FR",45.49538,-73.62487
+"H1S","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002317,81.1,"FR",45.52447,-73.59168
+"H1W","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001726,79.1,"FR",45.51169,-73.65433
+"H1X","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000736,98,"FR",45.51115,-73.60824
+"H1Y","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000787,106.3,"FR",45.51502,-73.49188
+"H1Z","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002399,115.1,"FR",45.54168,-73.58219
+"H2A","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001052,83.9,"FR",45.45967,-73.4743
+"H2B","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.003569,72.2,"FR",45.4908,-73.6315
+"H2H","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002592,80.1,"FR",45.61236,-73.52838
+"H2M","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001144,106.6,"FR",45.51415,-73.58806
+"H2T","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001666,110.8,"FR",45.43689,-73.68069
+"H2W","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001684,97.5,"FR",45.57108,-73.60743
+"H2Z","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001407,82.4,"FR",45.52742,-73.60139
+"H3C","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001016,99.3,"FR",45.46722,-73.48151
+"H3G","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001902,123.4,"FR",45.50209,-73.38692
+"H3J","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001946,120.1,"FR",45.53763,-73.45514
+"H3M","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001216,90.7,"FR",45.5557,-73.56466
+"H3N","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000814,136.8,"FR",45.49545,-73.49383
+"H3S","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001842,88.4,"FR",45.60152,-73.64627
+"H3T","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.003153,86.4,"FR",45.55076,-73.5144
+"H3Z","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.003737,87.5,"FR",45.49404,-73.75394
+"H4B","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.003461,101.5,"FR",45.58719,-73.42015
+"H4C","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000905,90.8,"FR",45.50554,-73.39942
+"H4E","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000853,128.3,"FR",45.49532,-73.50436
+"H4J","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002481,71.9,"FR",45.5193,-73.67432
+"H4K","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001995,92.7,"FR",45.54162,-73.43966
+"H4W","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.00081,73,"FR",45.57287,-73.58067
+"H4X","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000679,141.8,"FR",45.46898,-73.5505
+"H7A","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000868,100.7,"FR",45.64993,-73.7412
+"H7B","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000341,98.2,"FR",45.68029,-73.74432
+"H7C","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000453,95.8,"FR",45.68456,-73.70401
+"H7E","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000988,87,"FR",45.56458,-73.55281
+"H7G","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000374,110.4,"FR",45.65902,-73.74228
+"H7H","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000645,115.9,"FR",45.62801,-73.83294
+"H7J","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000925,75,"FR",45.58654,-73.7601
+"H7K","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000284,84.2,"FR",45.54611,-73.66955
+"H7L","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001111,68.5,"FR",45.64829,-73.79872
+"H7M","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000407,77.6,"FR",45.50996,-73.80495
+"H7N","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000414,126.2,"FR",45.62087,-73.73246
+"H7P","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000216,110.2,"FR",45.64345,-73.79003
+"H7R","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001002,70,"FR",45.54022,-73.72444
+"H7S","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000172,144.7,"FR",45.66888,-73.67997
+"H7T","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000271,118.3,"FR",45.5354,-73.73218
+"H7V","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000266,103.3,"FR",45.58761,-73.81214
+"H7W","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001194,91.4,"FR",45.6385,-73.58726
+"H7X","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000646,104.8,"FR",45.61206,-73.65476
+"H7Y","QC","Laval","Montréal","Laval","Laval","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000424,99.3,"FR",45.4714,-73.75039
+"H8B","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002323,68.1,"FR",45.49263,-73.55413
+"H8E","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000418,104.9,"FR",45.47158,-73.57187
+"H8H","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002313,98.5,"FR",45.34487,-73.52676
+"H8J","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002042,92.7,"FR",45.48908,-73.6755
+"H8M","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002506,62.1,"FR",45.56123,-73.54421
+"H8N","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002759,62.8,"FR",45.48111,-73.66892
+"H8R","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001561,125.6,"FR",45.41068,-73.4191
+"H8W","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000676,84.8,"FR",45.59474,-73.55776
+"H9E","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001399,103,"FR",45.49712,-73.4633
+"H9G","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.000947,109.5,"FR",45.4691,-73.65227
+"H9J","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001926,90.7,"FR",45.50186,-73.68646
+"H9R","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001227,104,"FR",45.58285,-73.49079
+"H9V","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001437,120.9,"FR",45.50013,-73.68496
+"H9W","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.001321,95,"FR",45.575,-73.57064
+"H9X","QC","Montréal","Montréal","Montréal","Montréal","Greater Montréal","urban","America/Toronto","[""514"", ""438"", ""263""]",0.002067,100,"FR",45.55642,-73.47226
+"J0A","QC","Sainte-Agathe-des-Monts",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.005618,56.8,"FR",48.09172,-71.30859
+"J0C","QC","Rivière-du-Loup",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.007484,89.2,"FR",47.33265,-70.68495
+"J0G","QC","Roberval",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.003911,85.1,"FR",46.25352,-69.80966
+"J0K","QC","Mont-Laurier",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.004531,107.1,"FR",45.74732,-70.83759
+"J0R","QC","Rimouski",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.002067,68.5,"FR",46.22453,-72.24797
+"J0S","QC","Mont-Laurier",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.003805,88.5,"FR",47.40621,-72.13248
+"J0T","QC","Sainte-Agathe-des-Monts",,"Chaudière-Appalaches","Rural Québec","Rural Québec","rural","America/Toronto","[""418"", ""450"", ""819"", ""581"", ""579"", ""873""]",0.001458,82.7,"FR",46.98329,-70.40046
+"J1E","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000112,79.1,"FR",45.37686,-71.88317
+"J1G","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.001249,64.6,"FR",45.33063,-71.69607
+"J1H","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000562,91.7,"FR",45.43898,-71.85225
+"J1J","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.001218,86,"FR",45.36635,-71.92989
+"J1K","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000564,105,"FR",45.4664,-71.8181
+"J1L","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.001304,89.6,"FR",45.41021,-71.80195
+"J1M","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000428,97.7,"FR",45.39032,-71.783
+"J1N","QC","Sherbrooke","Sherbrooke","Estrie","Estrie","Estrie","urban","America/Toronto","[""819"", ""873"", ""468""]",0.001392,62.5,"FR",45.44266,-71.8404
+"J4G","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000794,73.4,"FR",45.54878,-73.55004
+"J4H","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001589,96.1,"FR",45.49452,-73.47762
+"J4J","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001147,120,"FR",45.5103,-73.56992
+"J4K","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000461,103.8,"FR",45.44162,-73.57667
+"J4L","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001161,123.6,"FR",45.58834,-73.4621
+"J4M","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.00065,74.5,"FR",45.55175,-73.45024
+"J4N","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000186,107.3,"FR",45.42361,-73.60007
+"J4P","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000346,99.6,"FR",45.60862,-73.5581
+"J4R","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001394,99.2,"FR",45.52774,-73.56338
+"J4S","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.001686,115.9,"FR",45.49335,-73.53052
+"J4T","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000242,124.4,"FR",45.50512,-73.50382
+"J4V","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.00072,90.5,"FR",45.63446,-73.59932
+"J4W","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000351,77.9,"FR",45.67453,-73.6162
+"J4X","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000542,112,"FR",45.45322,-73.56788
+"J4Y","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000687,116.1,"FR",45.37143,-73.52917
+"J4Z","QC","Longueuil","Montréal","Montérégie","Rive-Sud","Greater Montréal","urban","America/Toronto","[""450"", ""579"", ""354""]",0.000819,82.9,"FR",45.56688,-73.51344
+"J8L","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000304,103.7,"FR",45.40501,-75.8032
+"J8M","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.001532,86.8,"FR",45.50969,-75.66524
+"J8P","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000389,85.2,"FR",45.47215,-75.72562
+"J8R","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000985,111.4,"FR",45.42187,-75.86219
+"J8T","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000872,100,"FR",45.49395,-75.81048
+"J8V","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000719,121.7,"FR",45.45405,-75.72915
+"J8X","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.00036,69.5,"FR",45.48815,-75.82611
+"J8Y","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000855,89.9,"FR",45.48127,-75.77928
+"J8Z","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000145,105.1,"FR",45.49262,-75.783
+"J9A","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.00139,74.3,"FR",45.5439,-75.64372
+"J9H","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000829,102.5,"FR",45.47172,-75.7052
+"J9J","QC","Gatineau","Ottawa - Gatineau","Outaouais","Outaouais","Outaouais","urban","America/Toronto","[""819"", ""873"", ""468""]",0.000325,81.3,"FR",45.43348,-75.61734
+"K0C","ON","Kingsville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002401,64.6,"EN",44.95292,-81.38651
+"K0E","ON","Huntsville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.001152,111.3,"EN",43.14304,-81.36975
+"K0G","ON","Shelburne",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002542,77.8,"EN",45.14664,-81.53818
+"K0L","ON","Elgin",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.00167,92.3,"EN",43.78985,-80.5635
+"K0N","ON","Wingham",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.001879,90.9,"EN",45.12648,-80.02146
+"K0W","ON","Shelburne",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002976,78.6,"EN",43.63405,-80.30826
+"K0Z","ON","Kemptville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002159,84.6,"EN",43.01221,-78.47111
+"K1B","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001623,126.6,"EN",45.47548,-75.70991
+"K1C","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.002183,121.9,"EN",45.45014,-75.71474
+"K1L","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001893,162.4,"EN",45.51424,-75.57492
+"K1N","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001371,130.8,"EN",45.3576,-75.71954
+"K1S","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001575,137.3,"EN",45.34331,-75.74286
+"K1W","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001482,114.4,"EN",45.41936,-75.71074
+"K1Z","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.004281,123,"EN",45.4122,-75.63257
+"K2A","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.003261,94.6,"EN",45.3401,-75.56066
+"K2C","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.005158,124.6,"EN",45.34357,-75.80768
+"K2E","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001623,89.2,"EN",45.40982,-75.70988
+"K2M","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.002621,151.5,"EN",45.39224,-75.67804
+"K2N","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.00205,112.7,"EN",45.39225,-75.67768
+"K2S","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001355,90.8,"EN",45.38604,-75.6278
+"K2T","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001748,119.1,"EN",45.44313,-75.71779
+"K2V","ON","Ottawa","Ottawa - Gatineau","Ottawa","Ottawa","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.000726,93.4,"EN",45.49609,-75.66056
+"K7K","ON","Kingston","Kingston","Kingston–Pembroke","Kingston","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001237,110.6,"EN",44.31605,-76.57496
+"K7L","ON","Kingston","Kingston","Kingston–Pembroke","Kingston","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001025,117.8,"EN",44.25008,-76.57102
+"K7M","ON","Kingston","Kingston","Kingston–Pembroke","Kingston","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001531,96.5,"EN",44.26283,-76.40222
+"K7N","ON","Kingston","Kingston","Kingston–Pembroke","Kingston","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.001361,102.6,"EN",44.2484,-76.62804
+"K7P","ON","Kingston","Kingston","Kingston–Pembroke","Kingston","Eastern Ontario","urban","America/Toronto","[""613"", ""343"", ""753""]",0.000654,107.7,"EN",44.32772,-76.424
+"L0C","ON","Hanover",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.001901,109.6,"EN",45.02907,-80.48937
+"L0H","ON","Stratford",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002069,75.9,"EN",45.95248,-82.33438
+"L0K","ON","Perth",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002732,89.8,"EN",42.47553,-80.00506
+"L0L","ON","Kemptville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002401,106.6,"EN",44.66666,-80.62669
+"L0V","ON","Kingsville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002154,89.4,"EN",44.21904,-79.18406
+"L0W","ON","Hanover",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002855,83.2,"EN",44.16741,-79.65326
+"L0Y","ON","Hanover",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002802,81.5,"EN",45.33727,-78.48685
+"L1G","ON","Oshawa","Oshawa","Toronto","Durham Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00134,86.4,"EN",44.02247,-78.71265
+"L1H","ON","Oshawa","Oshawa","Toronto","Durham Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002208,90.5,"EN",43.89152,-78.9007
+"L1J","ON","Oshawa","Oshawa","Toronto","Durham Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00454,88.3,"EN",43.79048,-78.66839
+"L1K","ON","Oshawa","Oshawa","Toronto","Durham Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001953,78.8,"EN",43.88344,-78.65759
+"L1L","ON","Oshawa","Oshawa","Toronto","Durham Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001657,88.9,"EN",43.90924,-78.81968
+"L2M","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001132,87.4,"EN",43.18269,-79.18443
+"L2N","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000651,72.6,"EN",43.10797,-79.36246
+"L2P","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00192,103.8,"EN",43.12937,-79.22494
+"L2R","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001744,111.4,"EN",43.15582,-79.10124
+"L2S","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001232,94,"EN",43.14114,-79.341
+"L2T","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002218,56,"EN",43.06012,-79.12253
+"L2V","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00123,84.8,"EN",43.08453,-79.2329
+"L2W","ON","St. Catharines","St. Catharines - Niagara","Hamilton–Niagara Peninsula","Niagara","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001804,81.4,"EN",43.17367,-79.08771
+"L4M","ON","Barrie","Barrie","Kitchener–Waterloo–Barrie","Simcoe County","Central Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.00349,114.8,"EN",44.351,-79.83929
+"L4N","ON","Barrie","Barrie","Kitchener–Waterloo–Barrie","Simcoe County","Central Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.00403,83.1,"EN",44.40847,-79.58707
+"L4T","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001489,97.9,"EN",43.62455,-79.7003
+"L4W","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002262,86,"EN",43.66998,-79.61629
+"L4X","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.0019,112.9,"EN",43.63052,-79.62351
+"L4Y","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001305,122.5,"EN",43.6168,-79.71951
+"L4Z","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00115,100.1,"EN",43.59116,-79.76354
+"L5A","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001218,95.1,"EN",43.43509,-79.58584
+"L5B","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002076,110.8,"EN",43.68115,-79.53161
+"L5C","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001068,140.2,"EN",43.54204,-79.64052
+"L5E","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002055,126.3,"EN",43.54648,-79.71632
+"L5G","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002536,125.3,"EN",43.57634,-79.58912
+"L5H","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001202,135.3,"EN",43.54476,-79.55478
+"L5J","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002555,107.7,"EN",43.60064,-79.53217
+"L5K","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00258,107,"EN",43.65302,-79.76744
+"L5L","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001646,96.9,"EN",43.6013,-79.71122
+"L5M","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.003089,82.4,"EN",43.60964,-79.58479
+"L5N","ON","Mississauga","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001528,123.4,"EN",43.56714,-79.5888
+"L6P","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001229,83,"EN",43.65829,-79.79294
+"L6R","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002025,113.3,"EN",43.66313,-79.88463
+"L6S","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.003096,88.7,"EN",43.84169,-79.66545
+"L6T","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002868,115.1,"EN",43.71013,-79.70239
+"L6V","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002067,90.3,"EN",43.72415,-79.7676
+"L6W","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001049,103.6,"EN",43.72623,-79.80163
+"L6X","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00591,122.8,"EN",43.71191,-79.69554
+"L6Y","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000839,80,"EN",43.62358,-79.78489
+"L6Z","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001915,103.3,"EN",43.81924,-79.76942
+"L7A","ON","Brampton","Toronto","Toronto","Peel Region","Greater Toronto Area","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001996,74.2,"EN",43.82277,-79.75056
+"L8E","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001084,140.2,"EN",43.26409,-79.81089
+"L8G","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.00163,93.3,"EN",43.27411,-79.83596
+"L8H","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001422,118.8,"EN",43.27052,-79.8794
+"L8J","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001682,79.8,"EN",43.19572,-79.87307
+"L8K","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000451,74.3,"EN",43.25794,-79.98272
+"L8L","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001998,93.1,"EN",43.25875,-79.81856
+"L8M","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000548,59,"EN",43.26866,-80.0092
+"L8N","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000425,98.5,"EN",43.22703,-79.94613
+"L8P","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001228,89.1,"EN",43.19161,-79.83249
+"L8R","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001582,74.9,"EN",43.24476,-79.9311
+"L8S","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000384,78.2,"EN",43.22961,-79.94015
+"L8T","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000796,67.7,"EN",43.24671,-79.85573
+"L8V","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001951,102.3,"EN",43.29097,-79.90667
+"L8W","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000556,87.7,"EN",43.21975,-79.99739
+"L9A","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.002033,89.6,"EN",43.25209,-79.80852
+"L9B","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000309,83.5,"EN",43.17351,-79.81714
+"L9C","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000864,121.2,"EN",43.25312,-79.90347
+"L9G","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.001002,80,"EN",43.17807,-79.93523
+"L9H","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000553,118.8,"EN",43.15328,-79.90219
+"L9K","ON","Hamilton","Hamilton","Hamilton–Niagara Peninsula","Hamilton","Golden Horseshoe","urban","America/Toronto","[""905"", ""289"", ""365""]",0.000659,108.3,"EN",43.2091,-79.81163
+"M1B","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002631,105,"EN",43.58739,-79.46788
+"M1G","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001536,92.9,"EN",43.67208,-79.3292
+"M1H","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001052,113.6,"EN",43.71828,-79.4151
+"M1L","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002252,96.5,"EN",43.72844,-79.54058
+"M1P","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001585,103.2,"EN",43.66332,-79.61315
+"M1R","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001116,114.4,"EN",43.66972,-79.34248
+"M1S","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001562,104.7,"EN",43.68903,-79.44533
+"M1V","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001605,119.4,"EN",43.65245,-79.35896
+"M1Z","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002182,90.3,"EN",43.55361,-79.30892
+"M2A","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.000996,87.4,"EN",43.6355,-79.28146
+"M2C","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.00346,122.7,"EN",43.65165,-79.43694
+"M2H","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.000216,85,"EN",43.59781,-79.309
+"M2J","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001473,91.7,"EN",43.71227,-79.33305
+"M2M","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001651,111.7,"EN",43.66207,-79.36738
+"M2N","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001015,100.9,"EN",43.72151,-79.42639
+"M2P","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002863,107.6,"EN",43.66764,-79.39643
+"M2S","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.00153,110.5,"EN",43.72645,-79.35443
+"M2W","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001906,102.1,"EN",43.69308,-79.42868
+"M3C","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001228,102.5,"EN",43.74918,-79.48455
+"M3G","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.003916,105.3,"EN",43.75139,-79.34163
+"M3J","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001657,105.7,"EN",43.63969,-79.31073
+"M3K","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.000955,101.9,"EN",43.53168,-79.44322
+"M3N","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002012,102.8,"EN",43.64927,-79.39685
+"M3T","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002684,109.4,"EN",43.6632,-79.37187
+"M3W","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001158,111.7,"EN",43.69319,-79.2962
+"M3X","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.003497,69.9,"EN",43.61998,-79.23475
+"M4J","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001005,118.2,"EN",43.56906,-79.24918
+"M4L","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001927,92.8,"EN",43.6315,-79.41212
+"M4N","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.00105,76.2,"EN",43.57403,-79.33984
+"M4V","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.00168,97.4,"EN",43.83373,-79.44432
+"M4W","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001955,121.1,"EN",43.69159,-79.52605
+"M4Y","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.003039,116.7,"EN",43.70018,-79.44358
+"M4Z","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001839,82.6,"EN",43.5322,-79.46925
+"M5A","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001323,93,"EN",43.70035,-79.36633
+"M5G","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001735,86.7,"EN",43.61082,-79.35445
+"M5R","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.000871,115.6,"EN",43.68903,-79.39291
+"M5T","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001984,107.3,"EN",43.75512,-79.33068
+"M5X","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001548,100.4,"EN",43.61538,-79.39229
+"M5Y","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002423,99.3,"EN",43.6955,-79.34623
+"M5Z","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001028,141.8,"EN",43.48966,-79.47797
+"M6C","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.000463,80.4,"EN",43.66105,-79.4109
+"M6G","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002539,114.9,"EN",43.73866,-79.44927
+"M6H","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.00328,108.7,"EN",43.62225,-79.48557
+"M6L","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001222,103.5,"EN",43.67849,-79.35223
+"M6T","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.003703,103.6,"EN",43.54619,-79.33245
+"M6W","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.003013,162.7,"EN",43.63549,-79.22347
+"M8C","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001375,116.3,"EN",43.6316,-79.25567
+"M8G","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.000327,103.9,"EN",43.64969,-79.2364
+"M8J","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002555,103.3,"EN",43.53744,-79.32431
+"M8L","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001154,113.6,"EN",43.69131,-79.44086
+"M8M","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.004213,115.4,"EN",43.72436,-79.52509
+"M8X","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.003717,121.9,"EN",43.60371,-79.41817
+"M8Y","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002433,98,"EN",43.56972,-79.34827
+"M9C","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002201,102.3,"EN",43.6133,-79.3084
+"M9E","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001425,115.1,"EN",43.60488,-79.31357
+"M9G","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002124,101.3,"EN",43.62867,-79.39868
+"M9M","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002031,98.9,"EN",43.71566,-79.1668
+"M9N","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.002303,107.1,"EN",43.75322,-79.45012
+"M9T","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.000834,90,"EN",43.60945,-79.39497
+"M9Y","ON","Toronto","Toronto","Toronto","Toronto","Greater Toronto Area","urban","America/Toronto","[""416"", ""647"", ""437""]",0.001093,91.5,"EN",43.66641,-79.44546
+"N0C","ON","Bracebridge",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.00371,74,"EN",45.20947,-80.76469
+"N0E","ON","Hanover",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002196,85.3,"EN",44.85322,-79.39321
+"N0H","ON","Perth",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.003248,71.8,"EN",42.9184,-81.78902
+"N0L","ON","Kingsville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.0041,84,"EN",45.70694,-80.133
+"N0P","ON","Wingham",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.00188,119.4,"EN",45.16171,-80.37834
+"N0W","ON","Kemptville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.004502,91.4,"EN",45.89436,-80.57684
+"N0Z","ON","Huntsville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.001191,124.8,"EN",44.09828,-79.93105
+"N2A","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.002593,98.4,"EN",43.39915,-80.52408
+"N2B","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001007,135.1,"EN",43.4434,-80.56026
+"N2C","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000415,99.5,"EN",43.4744,-80.44594
+"N2E","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00086,132.9,"EN",43.43608,-80.3326
+"N2G","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000945,83.4,"EN",43.49659,-80.37033
+"N2H","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000934,94.4,"EN",43.42933,-80.46306
+"N2J","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001154,110.6,"EN",43.49149,-80.36846
+"N2K","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00058,95.3,"EN",43.34873,-80.61461
+"N2L","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000622,63.8,"EN",43.41962,-80.70453
+"N2M","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001208,62.9,"EN",43.5157,-80.45094
+"N2N","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.0026,78.5,"EN",43.4497,-80.37427
+"N2P","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000857,107.9,"EN",43.46942,-80.53984
+"N2R","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001583,127.8,"EN",43.40144,-80.47468
+"N2T","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000329,99.4,"EN",43.4393,-80.51061
+"N2V","ON","Kitchener","Kitchener - Cambridge - Waterloo","Kitchener–Waterloo–Barrie","Waterloo Region","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001691,125.5,"EN",43.52305,-80.54384
+"N5V","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000872,86,"EN",43.02322,-81.34782
+"N5W","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000865,78.7,"EN",42.9797,-81.26457
+"N5X","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00045,104,"EN",42.94259,-81.1337
+"N5Y","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00094,101.3,"EN",42.96629,-81.3207
+"N5Z","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000624,110.5,"EN",43.0529,-81.14412
+"N6A","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000684,111.8,"EN",43.00615,-81.31603
+"N6B","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001851,62.3,"EN",42.95784,-81.36143
+"N6C","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001196,70.3,"EN",43.0516,-81.25661
+"N6E","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000776,70.6,"EN",42.98511,-81.22273
+"N6G","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000379,94,"EN",42.85667,-81.2737
+"N6H","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001044,90.7,"EN",43.05767,-81.24679
+"N6J","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.002055,111.3,"EN",42.98568,-81.29033
+"N6K","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000974,102.6,"EN",42.97221,-81.27522
+"N6L","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000331,121.6,"EN",42.80454,-81.30544
+"N6M","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.001155,85.2,"EN",42.93867,-81.1591
+"N6N","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000512,80.9,"EN",42.87276,-81.04848
+"N6P","ON","London","London","London","London","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00106,74.1,"EN",42.8561,-81.15388
+"N8N","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000704,94.3,"EN",42.25483,-83.21527
+"N8P","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000889,93.9,"EN",42.36529,-82.97171
+"N8R","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00098,75.3,"EN",42.36648,-82.97123
+"N8S","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000461,110,"EN",42.25063,-83.06935
+"N8T","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000625,93.8,"EN",42.22338,-82.93802
+"N8W","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00175,92.1,"EN",42.34689,-83.02691
+"N8X","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000476,83.1,"EN",42.32234,-83.03205
+"N8Y","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000426,121.1,"EN",42.32518,-83.09422
+"N9A","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000434,71.1,"EN",42.34036,-83.13566
+"N9B","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.00083,102.9,"EN",42.37232,-82.96474
+"N9C","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000873,108.8,"EN",42.36536,-83.1142
+"N9E","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000783,76.3,"EN",42.37481,-83.11416
+"N9G","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.002498,95.5,"EN",42.2809,-82.99484
+"N9H","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000546,99.2,"EN",42.34682,-82.93056
+"N9J","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000466,101.2,"EN",42.2572,-83.06514
+"N9K","ON","Windsor","Windsor","Windsor–Sarnia","Windsor-Essex","Southwestern Ontario","urban","America/Toronto","[""519"", ""226"", ""548""]",0.000726,75.7,"EN",42.30199,-82.98563
+"P0B","ON","Kingsville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002353,90.5,"EN",44.1796,-79.81711
+"P0C","ON","Port",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.001743,80.3,"EN",44.77736,-80.33881
+"P0E","ON","Bracebridge",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.000816,90.4,"EN",44.08184,-80.04428
+"P0M","ON","Wingham",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.002139,94.6,"EN",44.54027,-78.73237
+"P0N","ON","Gananoque",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.003708,98,"EN",46.76149,-82.19302
+"P0Y","ON","Huntsville",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.000705,97.5,"EN",44.55154,-79.1459
+"P0Z","ON","Wingham",,"Stratford–Bruce Peninsula","Rural Ontario","Rural Ontario","rural","America/Toronto","[""705"", ""519"", ""613"", ""249"", ""226"", ""343""]",0.003176,85.9,"EN",43.68532,-79.83707
+"P3A","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.000584,94,"EN",46.54272,-81.25917
+"P3B","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.00071,99.6,"EN",46.4664,-81.0348
+"P3C","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.000365,88.9,"EN",46.45797,-81.03334
+"P3E","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.001035,111.1,"EN",46.45867,-81.11663
+"P3G","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.000709,83.9,"EN",46.4027,-81.09953
+"P3L","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.000493,97.2,"EN",46.61535,-80.83579
+"P3N","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.000141,93.6,"EN",46.49412,-80.96248
+"P3P","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.000632,97.7,"EN",46.39046,-81.10312
+"P3Y","ON","Greater Sudbury","Greater Sudbury","Northeast","Sudbury","Northern Ontario","urban","America/Toronto","[""705"", ""249"", ""683""]",0.001135,96.4,"EN",46.51687,-81.07835
+"P7A","ON","Thunder Bay","Thunder Bay","Northwest","Thunder Bay","Northern Ontario","urban","America/Toronto","[""807""]",0.000541,89.6,"EN",48.29661,-89.13332
+"P7B","ON","Thunder Bay","Thunder Bay","Northwest","Thunder Bay","Northern Ontario","urban","America/Toronto","[""807""]",0.000422,82,"EN",48.29922,-89.16922
+"P7C","ON","Thunder Bay","Thunder Bay","Northwest","Thunder Bay","Northern Ontario","urban","America/Toronto","[""807""]",0.00085,87.7,"EN",48.45382,-89.3145
+"P7E","ON","Thunder Bay","Thunder Bay","Northwest","Thunder Bay","Northern Ontario","urban","America/Toronto","[""807""]",0.000679,106.1,"EN",48.34529,-89.1681
+"P7G","ON","Thunder Bay","Thunder Bay","Northwest","Thunder Bay","Northern Ontario","urban","America/Toronto","[""807""]",0.000195,75,"EN",48.31566,-89.23263
+"P7J","ON","Thunder Bay","Thunder Bay","Northwest","Thunder Bay","Northern Ontario","urban","America/Toronto","[""807""]",0.000709,83,"EN",48.44723,-89.36533
+"P7K","ON","Thunder Bay","Thunder Bay","Northwest","Thunder Bay","Northern Ontario","urban","America/Toronto","[""807""]",0.000588,67.9,"EN",48.44823,-89.20248
+"R0H","MB","Steinbach",,"Interlake","Rural Manitoba","Rural Manitoba","rural","America/Winnipeg","[""204"", ""431"", ""584""]",0.001173,87,"EN",51.10123,-96.18026
+"R0J","MB","Selkirk",,"Interlake","Rural Manitoba","Rural Manitoba","rural","America/Winnipeg","[""204"", ""431"", ""584""]",0.002063,77.1,"EN",51.51325,-99.1154
+"R0L","MB","Gimli",,"Interlake","Rural Manitoba","Rural Manitoba","rural","America/Winnipeg","[""204"", ""431"", ""584""]",0.001117,96.6,"EN",50.12894,-98.14494
+"R0T","MB","Carberry",,"Interlake","Rural Manitoba","Rural Manitoba","rural","America/Winnipeg","[""204"", ""431"", ""584""]",0.001601,91.1,"EN",50.98075,-95.2345
+"R0X","MB","Steinbach",,"Interlake","Rural Manitoba","Rural Manitoba","rural","America/Winnipeg","[""204"", ""431"", ""584""]",0.00124,90.8,"EN",50.70583,-97.66801
+"R0Z","MB","Steinbach",,"Interlake","Rural Manitoba","Rural Manitoba","rural","America/Winnipeg","[""204"", ""431"", ""584""]",0.004063,83.8,"EN",49.85978,-96.68937
+"R2A","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001344,100.2,"EN",49.95936,-97.11849
+"R2B","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001016,116,"EN",49.90541,-97.14458
+"R2C","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.000854,90.2,"EN",49.87171,-97.19681
+"R2H","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.000731,109.3,"EN",49.97101,-97.13851
+"R2M","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.000461,84.9,"EN",49.87451,-97.08531
+"R2N","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.00048,80.2,"EN",49.90096,-97.12574
+"R2S","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001572,97.5,"EN",49.85899,-97.19404
+"R2X","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001887,109.6,"EN",49.84216,-97.05023
+"R2Y","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.00091,93.6,"EN",49.94031,-97.18748
+"R3A","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.00154,82.1,"EN",49.90432,-97.07559
+"R3C","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.000437,76.5,"EN",50.00339,-97.25579
+"R3E","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001222,95.9,"EN",49.82965,-97.07553
+"R3H","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001576,82.5,"EN",49.90389,-97.10451
+"R3L","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001567,71.9,"EN",49.9254,-97.08193
+"R3R","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.001422,84.6,"EN",49.84283,-97.15483
+"R3Z","MB","Winnipeg","Winnipeg","Winnipeg","Winnipeg","Winnipeg Capital Region","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.002317,71,"EN",49.86735,-97.17374
+"R7A","MB","Brandon","Brandon","Southwest","Brandon","Westman","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.000541,113.9,"EN",49.80774,-99.87789
+"R7B","MB","Brandon","Brandon","Southwest","Brandon","Westman","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.00067,105.2,"EN",49.86991,-99.99603
+"R7C","MB","Brandon","Brandon","Southwest","Brandon","Westman","urban","America/Winnipeg","[""204"", ""431"", ""584""]",0.000391,89.9,"EN",49.91175,-99.96285
+"S0A","SK","Estevan",,"Swift Current–Moose Jaw","Rural Saskatchewan","Rural Saskatchewan","rural","America/Regina","[""306"", ""639"", ""474""]",0.001199,77.3,"EN",53.04572,-107.38469
+"S0C","SK","Humboldt",,"Swift Current–Moose Jaw","Rural Saskatchewan","Rural Saskatchewan","rural","America/Regina","[""306"", ""639"", ""474""]",0.000437,91.8,"EN",50.71584,-106.59745
+"S0M","SK","Lumsden",,"Swift Current–Moose Jaw","Rural Saskatchewan","Rural Saskatchewan","rural","America/Regina","[""306"", ""639"", ""474""]",0.002373,75,"EN",52.40157,-107.01564
+"S0R","SK","Weyburn",,"Swift Current–Moose Jaw","Rural Saskatchewan","Rural Saskatchewan","rural","America/Regina","[""306"", ""639"", ""474""]",0.001161,79.7,"EN",51.80681,-106.52231
+"S0T","SK","Weyburn",,"Swift Current–Moose Jaw","Rural Saskatchewan","Rural Saskatchewan","rural","America/Regina","[""306"", ""639"", ""474""]",0.001733,62.8,"EN",51.80434,-105.90505
+"S0X","SK","Estevan",,"Swift Current–Moose Jaw","Rural Saskatchewan","Rural Saskatchewan","rural","America/Regina","[""306"", ""639"", ""474""]",0.003372,96.3,"EN",52.3227,-105.54195
+"S4N","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000898,70.1,"EN",50.41699,-104.57146
+"S4P","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000593,94.4,"EN",50.46589,-104.7133
+"S4R","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000869,99.8,"EN",50.49113,-104.52074
+"S4S","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000864,94.4,"EN",50.53852,-104.5701
+"S4T","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000648,101.8,"EN",50.48979,-104.67215
+"S4V","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000564,129.5,"EN",50.51142,-104.51288
+"S4W","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000435,133.4,"EN",50.45734,-104.71995
+"S4X","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.00151,85.9,"EN",50.42483,-104.54796
+"S4Y","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000517,75.2,"EN",50.49918,-104.7019
+"S4Z","SK","Regina","Regina","Regina–Moose Mountain","Regina","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000534,85.2,"EN",50.34889,-104.61005
+"S6H","SK","Moose Jaw","Moose Jaw","Regina–Moose Mountain","Moose Jaw","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000453,96.2,"EN",50.3275,-105.65402
+"S6J","SK","Moose Jaw","Moose Jaw","Regina–Moose Mountain","Moose Jaw","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000114,92.2,"EN",50.37471,-105.56772
+"S6K","SK","Moose Jaw","Moose Jaw","Regina–Moose Mountain","Moose Jaw","Southern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000229,94.4,"EN",50.45676,-105.44244
+"S6V","SK","Prince Albert","Prince Albert","Prince Albert","Prince Albert","Northern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000464,58.9,"EN",53.22371,-105.77482
+"S6W","SK","Prince Albert","Prince Albert","Prince Albert","Prince Albert","Northern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000392,99,"EN",53.20815,-105.78391
+"S6X","SK","Prince Albert","Prince Albert","Prince Albert","Prince Albert","Northern Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.00027,103.9,"EN",53.28438,-105.76453
+"S7H","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000444,109.9,"EN",52.10072,-106.71239
+"S7J","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000219,85.8,"EN",52.14434,-106.68615
+"S7K","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000669,72.5,"EN",52.17216,-106.52251
+"S7L","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000804,132.2,"EN",52.15255,-106.58654
+"S7M","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000916,101.4,"EN",52.05705,-106.80465
+"S7N","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.001044,82.9,"EN",52.21247,-106.5907
+"S7P","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000615,121.2,"EN",52.11212,-106.71594
+"S7R","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000828,90.8,"EN",52.12012,-106.58998
+"S7S","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000416,86.3,"EN",52.05091,-106.67341
+"S7T","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000529,171.4,"EN",52.07716,-106.70303
+"S7V","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.000429,89.5,"EN",52.08117,-106.80252
+"S7W","SK","Saskatoon","Saskatoon","Saskatoon–Biggar","Saskatoon","Central Saskatchewan","urban","America/Regina","[""306"", ""639"", ""474""]",0.001183,114.3,"EN",52.21978,-106.56625
+"T0C","AB","Camrose",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.004579,118.7,"EN",51.15673,-114.12992
+"T0J","AB","Cochrane",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.001589,90.3,"EN",52.6386,-112.2064
+"T0K","AB","Canmore",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.002102,69.6,"EN",53.00631,-112.952
+"T0L","AB","Cochrane",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.00198,130.9,"EN",52.7287,-115.4128
+"T0P","AB","Hinton",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.002828,119.8,"EN",52.2459,-112.93501
+"T0S","AB","Cochrane",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.000976,126.8,"EN",51.62438,-112.63977
+"T0T","AB","Brooks",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.002393,120.7,"EN",51.62139,-114.56327
+"T0W","AB","Lacombe",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.002993,85.4,"EN",52.08298,-113.08029
+"T0Y","AB","Olds",,"Camrose–Drumheller","Rural Alberta","Rural Alberta","rural","America/Edmonton","[""403"", ""780"", ""587"", ""825""]",0.001832,149.5,"EN",51.30961,-113.1181
+"T1H","AB","Lethbridge","Lethbridge","Lethbridge–Medicine Hat","Lethbridge","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.001484,121.7,"EN",49.55791,-112.90045
+"T1J","AB","Lethbridge","Lethbridge","Lethbridge–Medicine Hat","Lethbridge","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.002138,75,"EN",49.75568,-112.89041
+"T1K","AB","Lethbridge","Lethbridge","Lethbridge–Medicine Hat","Lethbridge","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.000782,81.2,"EN",49.69175,-112.90144
+"T2H","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.004032,85.4,"EN",51.07627,-114.02269
+"T2K","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.002757,122,"EN",51.03506,-114.10319
+"T2L","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.004124,146.2,"EN",51.01586,-114.12076
+"T2N","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.005056,105.3,"EN",51.0297,-113.92656
+"T2T","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.002341,104.6,"EN",51.18099,-114.11229
+"T2Y","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.005236,129.2,"EN",50.96071,-114.09082
+"T3B","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.002634,120.3,"EN",51.0213,-114.0469
+"T3C","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.005097,224.8,"EN",51.00729,-114.13212
+"T3E","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.003141,165.1,"EN",51.15661,-114.21209
+"T3G","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.003145,84.3,"EN",51.03059,-114.1032
+"T3H","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.005865,85.9,"EN",51.0311,-114.05735
+"T3S","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.002795,100.4,"EN",51.07489,-114.07408
+"T3V","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.003154,162.6,"EN",51.03465,-113.9886
+"T3Y","AB","Calgary","Calgary","Calgary","Calgary","Southern Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.001976,156.7,"EN",51.08167,-114.11884
+"T4N","AB","Red Deer","Red Deer","Red Deer","Red Deer","Central Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.002069,91.3,"EN",52.26929,-113.92542
+"T4P","AB","Red Deer","Red Deer","Red Deer","Red Deer","Central Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.001478,82.2,"EN",52.25516,-113.75482
+"T4R","AB","Red Deer","Red Deer","Red Deer","Red Deer","Central Alberta","urban","America/Edmonton","[""403"", ""587"", ""825"", ""368""]",0.000634,101.5,"EN",52.24233,-113.84406
+"T5E","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.002868,91,"EN",53.54036,-113.55341
+"T5G","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.001843,140.1,"EN",53.45542,-113.42095
+"T5H","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.000946,107.6,"EN",53.52736,-113.55494
+"T5L","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.003396,100.4,"EN",53.52259,-113.37084
+"T5P","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.001436,114.5,"EN",53.56414,-113.54804
+"T5R","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.001954,107.9,"EN",53.54903,-113.58353
+"T5S","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.005655,159.2,"EN",53.53857,-113.45945
+"T5X","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.001628,100.2,"EN",53.4832,-113.54568
+"T6A","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.001532,153.4,"EN",53.55741,-113.40931
+"T6J","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.003803,171.3,"EN",53.53514,-113.55589
+"T6K","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.003018,126.1,"EN",53.49348,-113.51797
+"T6L","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.011505,122.2,"EN",53.49023,-113.4968
+"T6S","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.004225,81.9,"EN",53.35663,-113.43978
+"T6V","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.001372,112.8,"EN",53.62745,-113.5571
+"T6X","AB","Edmonton","Edmonton","Edmonton","Edmonton","Central Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.000866,122.8,"EN",53.57533,-113.46568
+"T9H","AB","Fort McMurray","Wood Buffalo","Wood Buffalo–Cold Lake","Fort McMurray","Northern Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.000605,161.6,"EN",56.69998,-111.42089
+"T9J","AB","Fort McMurray","Wood Buffalo","Wood Buffalo–Cold Lake","Fort McMurray","Northern Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.000846,114.7,"EN",56.76836,-111.52002
+"T9K","AB","Fort McMurray","Wood Buffalo","Wood Buffalo–Cold Lake","Fort McMurray","Northern Alberta","urban","America/Edmonton","[""780"", ""587"", ""825"", ""368""]",0.001142,144.3,"EN",56.74711,-111.44189
+"V0B","BC","Hope",,"Kootenay","Rural BC","Rural BC","rural","America/Vancouver","[""250"", ""778"", ""236""]",0.007001,92.2,"EN",50.64739,-120.48217
+"V0C","BC","Nelson",,"Kootenay","Rural BC","Rural BC","rural","America/Vancouver","[""250"", ""778"", ""236""]",0.008869,69,"EN",51.79009,-121.79603
+"V0K","BC","Squamish",,"Kootenay","Rural BC","Rural BC","rural","America/Vancouver","[""250"", ""778"", ""236""]",0.004726,90.3,"EN",51.98394,-120.44257
+"V0N","BC","Squamish",,"Kootenay","Rural BC","Rural BC","rural","America/Vancouver","[""250"", ""778"", ""236""]",0.003065,86.6,"EN",50.85504,-120.55582
+"V0S","BC","Hope",,"Kootenay","Rural BC","Rural BC","rural","America/Vancouver","[""250"", ""778"", ""236""]",0.004207,117,"EN",49.35912,-123.03451
+"V0V","BC","Squamish",,"Kootenay","Rural BC","Rural BC","rural","America/Vancouver","[""250"", ""778"", ""236""]",0.003827,89.4,"EN",49.88125,-120.34285
+"V0Z","BC","Nelson",,"Kootenay","Rural BC","Rural BC","rural","America/Vancouver","[""250"", ""778"", ""236""]",0.007097,78,"EN",51.59461,-121.23117
+"V1V","BC","Kelowna","Kelowna","Thompson–Okanagan","Okanagan","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001379,80.6,"EN",49.86556,-119.37882
+"V1W","BC","Kelowna","Kelowna","Thompson–Okanagan","Okanagan","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.003103,104.4,"EN",49.90383,-119.5229
+"V1X","BC","Kelowna","Kelowna","Thompson–Okanagan","Okanagan","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.002176,98.5,"EN",49.90018,-119.5415
+"V1Y","BC","Kelowna","Kelowna","Thompson–Okanagan","Okanagan","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000858,119.8,"EN",49.98008,-119.46481
+"V1Z","BC","Kelowna","Kelowna","Thompson–Okanagan","Okanagan","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000769,110,"EN",49.88913,-119.68602
+"V2B","BC","Kamloops","Kamloops","Thompson–Okanagan","Kamloops","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001248,81,"EN",50.70712,-120.2298
+"V2C","BC","Kamloops","Kamloops","Thompson–Okanagan","Kamloops","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000722,71.6,"EN",50.6691,-120.45772
+"V2E","BC","Kamloops","Kamloops","Thompson–Okanagan","Kamloops","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001298,81.6,"EN",50.57442,-120.46918
+"V2H","BC","Kamloops","Kamloops","Thompson–Okanagan","Kamloops","Interior BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001171,82.3,"EN",50.66139,-120.38772
+"V2K","BC","Prince George","Prince George","Cariboo","Prince George","Northern BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001376,116.6,"EN",53.96659,-122.69818
+"V2L","BC","Prince George","Prince George","Cariboo","Prince George","Northern BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000414,97.8,"EN",53.85267,-122.61976
+"V2M","BC","Prince George","Prince George","Cariboo","Prince George","Northern BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000686,94.5,"EN",53.90309,-122.72437
+"V2N","BC","Prince George","Prince George","Cariboo","Prince George","Northern BC","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000632,120.5,"EN",53.91708,-122.66453
+"V2S","BC","Abbotsford","Abbotsford - Mission","Lower Mainland–Southwest","Fraser Valley","Fraser Valley","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001298,79.1,"EN",49.00743,-122.26293
+"V2T","BC","Abbotsford","Abbotsford - Mission","Lower Mainland–Southwest","Fraser Valley","Fraser Valley","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002909,93.4,"EN",49.08071,-122.33538
+"V3R","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.003766,111.1,"EN",49.20685,-122.88146
+"V3S","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001431,103.2,"EN",49.2778,-122.78954
+"V3T","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001358,94.3,"EN",49.16858,-122.79283
+"V3V","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.004228,112.7,"EN",49.1081,-122.94201
+"V3W","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002921,82.5,"EN",49.20618,-122.88702
+"V3X","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002401,116.3,"EN",49.26479,-122.82192
+"V3Z","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001084,101.3,"EN",49.18312,-122.82588
+"V4A","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001073,112.1,"EN",49.20024,-122.78818
+"V4N","BC","Surrey","Vancouver","Lower Mainland–Southwest","Surrey","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.003066,92.4,"EN",49.17525,-122.7477
+"V4X","BC","Abbotsford","Abbotsford - Mission","Lower Mainland–Southwest","Fraser Valley","Fraser Valley","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002625,94,"EN",49.07617,-122.26705
+"V5A","BC","Burnaby","Vancouver","Lower Mainland–Southwest","Burnaby","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001882,93.9,"EN",49.27961,-122.92985
+"V5B","BC","Burnaby","Vancouver","Lower Mainland–Southwest","Burnaby","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.00181,103.3,"EN",49.27928,-123.05615
+"V5C","BC","Burnaby","Vancouver","Lower Mainland–Southwest","Burnaby","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000899,114.9,"EN",49.18402,-123.02318
+"V5E","BC","Burnaby","Vancouver","Lower Mainland–Southwest","Burnaby","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002948,95.1,"EN",49.20234,-122.84028
+"V5G","BC","Burnaby","Vancouver","Lower Mainland–Southwest","Burnaby","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001099,79.7,"EN",49.30449,-123.01624
+"V5H","BC","Burnaby","Vancouver","Lower Mainland–Southwest","Burnaby","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001906,153.6,"EN",49.18489,-123.02121
+"V5J","BC","Burnaby","Vancouver","Lower Mainland–Southwest","Burnaby","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000891,90.6,"EN",49.29734,-122.96005
+"V5K","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.00074,85.6,"EN",49.25402,-122.94861
+"V5L","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001666,107.1,"EN",49.21072,-123.03831
+"V5M","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001178,132.2,"EN",49.34226,-123.19825
+"V5N","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001503,128.2,"EN",49.37394,-123.10237
+"V5P","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002098,127.3,"EN",49.31215,-123.00363
+"V5R","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001601,100.8,"EN",49.24215,-123.12164
+"V5S","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001528,103.4,"EN",49.24176,-123.04897
+"V5T","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001301,82.5,"EN",49.29661,-123.01311
+"V5V","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001207,103.6,"EN",49.31552,-123.20565
+"V5W","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001071,99.6,"EN",49.21596,-123.03077
+"V5X","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001376,109.8,"EN",49.27082,-123.10241
+"V5Y","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000647,95,"EN",49.11242,-123.05413
+"V5Z","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000955,93.1,"EN",49.2578,-123.22528
+"V6A","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000864,114.8,"EN",49.34269,-123.03712
+"V6B","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.00164,114.2,"EN",49.26949,-123.09336
+"V6C","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002306,75.7,"EN",49.12998,-123.05533
+"V6E","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.003577,93.1,"EN",49.17975,-123.11074
+"V6G","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000249,121.5,"EN",49.18261,-123.08086
+"V6H","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001959,90.6,"EN",49.29238,-123.1335
+"V6J","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001273,100.4,"EN",49.19729,-123.14171
+"V6K","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000619,113.2,"EN",49.21859,-123.05597
+"V6L","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001639,142.6,"EN",49.29922,-123.00008
+"V6M","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.002519,93.7,"EN",49.24059,-123.10247
+"V6N","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001715,91.5,"EN",49.35258,-123.13831
+"V6P","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001476,99.2,"EN",49.28593,-123.10077
+"V6R","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001051,149.8,"EN",49.31515,-123.08115
+"V6S","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000912,102.3,"EN",49.23026,-123.20232
+"V6V","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000811,110.5,"EN",49.09682,-123.11461
+"V6W","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.00149,137.2,"EN",49.19506,-123.0329
+"V6X","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000723,116.4,"EN",49.18483,-123.26751
+"V6Y","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.00096,96,"EN",49.1627,-123.09421
+"V6Z","BC","Vancouver","Vancouver","Lower Mainland–Southwest","Vancouver","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.004005,93.2,"EN",49.3667,-122.94197
+"V7A","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000815,92.4,"EN",49.10042,-122.99114
+"V7B","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001243,104.2,"EN",49.06768,-123.16332
+"V7C","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.000813,88.4,"EN",49.21859,-123.2327
+"V7E","BC","Richmond","Vancouver","Lower Mainland–Southwest","Richmond","Metro Vancouver","urban","America/Vancouver","[""604"", ""778"", ""236"", ""672""]",0.001563,78.5,"EN",49.24269,-123.0174
+"V8N","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001617,77.4,"EN",48.4177,-123.51194
+"V8P","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000601,101.8,"EN",48.45863,-123.31014
+"V8R","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.002127,97.7,"EN",48.28361,-123.47145
+"V8S","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.002063,154,"EN",48.47508,-123.34938
+"V8T","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001382,123.8,"EN",48.43365,-123.37552
+"V8V","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001278,92.1,"EN",48.42741,-123.49227
+"V8W","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000971,89.5,"EN",48.63493,-123.34817
+"V8X","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.00041,99.6,"EN",48.44516,-123.21805
+"V8Y","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.001443,88.1,"EN",48.38393,-123.34491
+"V8Z","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000512,94.9,"EN",48.4682,-123.35962
+"V9A","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000579,112.4,"EN",48.36686,-123.25097
+"V9B","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000647,126.5,"EN",48.43784,-123.39086
+"V9C","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000799,87.2,"EN",48.31007,-123.41011
+"V9E","BC","Victoria","Victoria","Vancouver Island and Coast","Greater Victoria","Vancouver Island","urban","America/Vancouver","[""250"", ""778"", ""236""]",0.000377,126.4,"EN",48.46281,-123.37878
+"X0A","NU","Iqaluit","Iqaluit","Nunavut","Iqaluit","Nunavut","rural","America/Iqaluit","[""867""]",0.000506,73.4,"EN",63.71227,-69.63477
+"X0E","NT","Inuvik",,"Northwest Territories","Rural NWT","Northwest Territories","rural","America/Yellowknife","[""867""]",0.000116,107.6,"EN",62.90023,-119.12699
+"X0G","NT","Inuvik",,"Northwest Territories","Rural NWT","Northwest Territories","rural","America/Yellowknife","[""867""]",0.00016,72.5,"EN",63.06122,-118.97274
+"X1A","NT","Yellowknife","Yellowknife","Northwest Territories","Yellowknife","Northwest Territories","urban","America/Yellowknife","[""867""]",0.000494,134.6,"EN",62.43584,-114.41114
+"Y0B","YT","Haines Junction",,"Yukon","Rural Yukon","Yukon","rural","America/Whitehorse","[""867""]",0.000151,102.2,"EN",61.21538,-134.13885
+"Y1A","YT","Whitehorse","Whitehorse","Yukon","Whitehorse","Yukon","urban","America/Whitehorse","[""867""]",0.000534,119.4,"EN",60.79488,-135.04159

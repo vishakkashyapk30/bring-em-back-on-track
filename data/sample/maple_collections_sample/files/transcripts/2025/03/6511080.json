@@ -1,0 +1,53 @@
+{
+ "transcript_id": "6511080",
+ "contact_id": "CT-6542511",
+ "call_recording_id": "REC-6511080",
+ "voice_sample_id": null,
+ "case_id": "CS-2024-123973",
+ "crm_customer_id": "LOB-3853",
+ "agent_id": "AG-9464",
+ "call_start_ts": "2025-03-07 08:30:37",
+ "call_end_ts": "2025-03-07 08:30:52",
+ "duration_sec": 15,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.83,
+ "wer_estimate": 0.163,
+ "diarization_confidence": 0.961,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.498,
+ "silence_ratio": 0.502,
+ "overtalk_count": 2,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2025/03/6511080.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 1.37,
+   "end_sec": 4.73,
+   "text": "Veuillez laisser votre message après le bip.",
+   "asr_confidence": 0.808,
+   "sentiment_score": 0.234,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 5.87,
+   "end_sec": 13.34,
+   "text": "Bonjour, ce message est pour Louise. Ici Sophie de la Banque Maple. Veuillez nous rappeler au 1-800-555-0199. Merci.",
+   "asr_confidence": 0.851,
+   "sentiment_score": 0.598,
+   "redacted_spans": []
+  }
+ ]
+}

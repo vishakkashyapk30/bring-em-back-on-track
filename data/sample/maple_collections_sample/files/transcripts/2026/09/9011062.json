@@ -1,0 +1,53 @@
+{
+ "transcript_id": "9011062",
+ "contact_id": "CT-9113856",
+ "call_recording_id": "REC-9011062",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-331378",
+ "crm_customer_id": "DED-9978",
+ "agent_id": "AG-2684",
+ "call_start_ts": "2026-09-10 11:46:14",
+ "call_end_ts": "2026-09-10 11:46:29",
+ "duration_sec": 15,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.768,
+ "wer_estimate": 0.182,
+ "diarization_confidence": 0.928,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.521,
+ "silence_ratio": 0.479,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/09/9011062.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 2.61,
+   "end_sec": 5.82,
+   "text": "Veuillez laisser votre message après le bip.",
+   "asr_confidence": 0.749,
+   "sentiment_score": 0.186,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 6.04,
+   "end_sec": 13.85,
+   "text": "Bonjour, ce message est pour Denis. Ici Julie de la Banque Maple. Veuillez nous rappeler au 1-800-555-0199. Merci.",
+   "asr_confidence": 0.788,
+   "sentiment_score": 0.414,
+   "redacted_spans": []
+  }
+ ]
+}

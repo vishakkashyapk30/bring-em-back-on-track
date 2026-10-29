@@ -16,7 +16,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PATH=/opt/venv/bin:$PATH \
     HF_HOME=/app/.cache/models \
     FASTEMBED_CACHE_PATH=/app/.cache/models
-RUN useradd --create-home --uid 1000 app && mkdir -p /app && chown app:app /app
+# libgomp1: the OpenMP runtime LightGBM needs (the slim image lacks it, so training and scoring failed to import)
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm -rf /var/lib/apt/lists/* \
+ && useradd --create-home --uid 1000 app && mkdir -p /app && chown app:app /app
 WORKDIR /app
 
 # ---- api deps: core + ml + rag + llm (no dbt/Splink) ------------------------------------------

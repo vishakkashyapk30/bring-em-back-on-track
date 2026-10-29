@@ -1,0 +1,33 @@
+-- DuckDB: run from the package root, e.g.  duckdb maple.duckdb < schema/load_duckdb.sql
+
+CREATE OR REPLACE VIEW customers AS SELECT * FROM read_csv('data/customers.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW card_accounts AS SELECT * FROM read_csv('data/card_accounts.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW loan_accounts AS SELECT * FROM read_csv('data/loan_accounts.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW deposit_accounts AS SELECT * FROM read_csv('data/deposit_accounts.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW collections_cases AS SELECT * FROM read_csv('data/collections_cases.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW contact_history AS SELECT * FROM read_csv('data/contact_history.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW promises_to_pay AS SELECT * FROM read_csv('data/promises_to_pay.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW agent_notes AS SELECT * FROM read_csv('data/agent_notes.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW call_transcripts AS SELECT * FROM read_csv('data/call_transcripts.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW voice_samples AS SELECT * FROM read_csv('data/voice_samples.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW external AS SELECT * FROM read_csv('data/external.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW loan_instalments AS SELECT * EXCLUDE (year) FROM read_parquet('data/loan_instalments/*/*.parquet', hive_partitioning = true);
+CREATE OR REPLACE VIEW transactions AS SELECT * EXCLUDE (year) FROM read_parquet('data/transactions/*/*.parquet', hive_partitioning = true);
+CREATE OR REPLACE VIEW card_statements AS SELECT * EXCLUDE (year) FROM read_parquet('data/card_statements/*/*.parquet', hive_partitioning = true);
+CREATE OR REPLACE VIEW account_monthly_snapshot AS SELECT * EXCLUDE (year) FROM read_parquet('data/account_monthly_snapshot/*/*.parquet', hive_partitioning = true);
+CREATE OR REPLACE VIEW bureau_history AS SELECT * EXCLUDE (year) FROM read_parquet('data/bureau_history/*/*.parquet', hive_partitioning = true);
+CREATE OR REPLACE VIEW salary_credit_history AS SELECT * EXCLUDE (year) FROM read_parquet('data/salary_credit_history/*/*.parquet', hive_partitioning = true);
+CREATE OR REPLACE VIEW model_scores AS SELECT * FROM read_csv('data/model_scores.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW offers AS SELECT * FROM read_csv('data/offers.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW metric_definitions AS SELECT * FROM read_csv('data/metric_definitions.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW benchmark_questions AS SELECT * FROM read_csv('data/benchmark_questions.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW reference_documents AS SELECT * FROM read_csv('data/reference_documents.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW hardship_programs AS SELECT * FROM read_csv('data/hardship_programs.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW qa_checklist AS SELECT * FROM read_csv('data/qa_checklist.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW agents AS SELECT * FROM read_csv('data/agents.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW case_assignment_history AS SELECT * FROM read_csv('data/case_assignment_history.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW agent_shifts AS SELECT * FROM read_csv('data/agent_shifts.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW channel_capacity AS SELECT * FROM read_csv('data/channel_capacity.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW ops_events AS SELECT * FROM read_csv('data/ops_events.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW geo_reference AS SELECT * FROM read_csv('data/geo_reference.csv', header = true, sample_size = -1);
+CREATE OR REPLACE VIEW code_lookups AS SELECT * FROM read_csv('data/code_lookups.csv', header = true, sample_size = -1);

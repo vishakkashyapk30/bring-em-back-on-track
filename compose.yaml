@@ -4,6 +4,8 @@
 #     1. bootstrap: downloads the dataset into ./data/raw if it isn't there, builds the warehouse on the first run
 #        (about 5 minutes), then exits; later runs find both and exit in seconds
 #     2. api starts once bootstrap succeeds; web starts once the api is healthy
+#   DATA_SOURCE=sample docker compose up --build  -> no download: builds from the small sample committed in data/sample
+#     (about 5,500 CRM records, about 2 minutes; everything goes under data/sample_build; `make up-sample` does the same)
 #   REBUILD=1 docker compose up --build   -> rebuild the warehouse from scratch
 #   make nightly                          -> docker compose run --rm jobs nightly (manual rebuild)
 name: collections360
@@ -20,6 +22,7 @@ services:
     image: collections360/api:dev
     environment:
       USE_FIXTURES: ${USE_FIXTURES:-true}
+      DATA_SOURCE: ${DATA_SOURCE:-}            # sample = the committed sample in data/sample (no download)
       CORS_ORIGINS: http://localhost:8080
       # Optional language model for Ask (default offline = rules only). `ollama` reaches the Ollama running on the host.
       LLM_PROVIDER: ${LLM_PROVIDER:-offline}
@@ -66,6 +69,7 @@ services:
     environment:
       C360_DUCKDB_MEMORY: ${C360_DUCKDB_MEMORY:-8GB}
       REBUILD: ${REBUILD:-0}
+      DATA_SOURCE: ${DATA_SOURCE:-}
     volumes:
       - ./data:/app/data                     # dataset is downloaded into ./data/raw if missing; warehouse built here
       - c360-artefacts:/app/models/ptp_break/artefacts
@@ -78,6 +82,7 @@ services:
     profiles: [jobs]
     environment:
       C360_DUCKDB_MEMORY: ${C360_DUCKDB_MEMORY:-8GB}
+      DATA_SOURCE: ${DATA_SOURCE:-}
     volumes:
       - ./data:/app/data
       - c360-artefacts:/app/models/ptp_break/artefacts

@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """`make api` -> uvicorn api.main:app --reload. All routes live under /api."""
 
 from __future__ import annotations

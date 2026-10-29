@@ -1,0 +1,53 @@
+{
+ "transcript_id": "9011097",
+ "contact_id": "CT-9041322",
+ "call_recording_id": "REC-9011097",
+ "voice_sample_id": null,
+ "case_id": "CS-2025-701458",
+ "crm_customer_id": "TRU-5098",
+ "agent_id": "AG-3187",
+ "call_start_ts": "2025-02-28 15:56:45",
+ "call_end_ts": "2025-02-28 15:56:59",
+ "duration_sec": 14,
+ "direction": "outbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.818,
+ "wer_estimate": 0.232,
+ "diarization_confidence": 0.933,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.519,
+ "silence_ratio": 0.481,
+ "overtalk_count": 1,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2025/02/9011097.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 1.17,
+   "end_sec": 4.44,
+   "text": "Veuillez laisser votre message après le bip.",
+   "asr_confidence": 0.822,
+   "sentiment_score": 0.237,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 5.53,
+   "end_sec": 12.79,
+   "text": "Bonjour, ce message est pour Tricia. Ici Luc de la Banque Maple. Veuillez nous rappeler au 1-800-555-0199. Merci.",
+   "asr_confidence": 0.814,
+   "sentiment_score": -0.226,
+   "redacted_spans": []
+  }
+ ]
+}

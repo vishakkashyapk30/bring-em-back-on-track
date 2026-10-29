@@ -11,7 +11,7 @@ from datetime import date
 from common.config import get_settings
 from features.text_rules import extract, summary
 
-R = get_settings().raw_dir / "maple_collections_release"
+R = get_settings().release_dir
 
 
 def load_ptps() -> dict[str, dict]:

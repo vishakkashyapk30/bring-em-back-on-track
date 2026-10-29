@@ -1,0 +1,179 @@
+{
+ "transcript_id": "2010117",
+ "contact_id": "CT-2057606",
+ "call_recording_id": "REC-2010117",
+ "voice_sample_id": null,
+ "case_id": "CS-2025-200604",
+ "crm_customer_id": "RAL-2884",
+ "agent_id": "AG-8109",
+ "call_start_ts": "2025-12-06 08:45:28",
+ "call_end_ts": "2025-12-06 08:47:21",
+ "duration_sec": 113,
+ "direction": "inbound",
+ "language": "fr-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.849,
+ "wer_estimate": 0.147,
+ "diarization_confidence": 0.942,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.108,
+ "agent_talk_ratio": 0.326,
+ "silence_ratio": 0.566,
+ "overtalk_count": 0,
+ "hold_count": 1,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2025/12/2010117.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 2.13,
+   "end_sec": 9.3,
+   "text": "Bonjour, ici Julie de la Banque Maple. Cet appel peut être enregistré à des fins de qualité.",
+   "asr_confidence": 0.803,
+   "sentiment_score": -0.068,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 10.1,
+   "end_sec": 12.83,
+   "text": "Puis-je parler à Raphaël Larouche?",
+   "asr_confidence": 0.833,
+   "sentiment_score": 0.22,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 13.21,
+   "end_sec": 14.86,
+   "text": "C'est moi.",
+   "asr_confidence": 0.788,
+   "sentiment_score": -0.067,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 15.13,
+   "end_sec": 19.38,
+   "text": "Avant de continuer, pouvez-vous confirmer votre date de naissance?",
+   "asr_confidence": 0.869,
+   "sentiment_score": 0.672,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 19.8,
+   "end_sec": 21.59,
+   "text": "Oui, c'est [PII].",
+   "asr_confidence": 0.858,
+   "sentiment_score": -0.443,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 22.37,
+   "end_sec": 28.52,
+   "text": "Merci. J'appelle au sujet de votre compte à la Banque Maple, qui est en retard.",
+   "asr_confidence": 0.888,
+   "sentiment_score": 0.273,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "agent",
+   "start_sec": 82.92,
+   "end_sec": 86.9,
+   "text": "Je regarde votre dossier, un instant vous plaît.",
+   "asr_confidence": 0.872,
+   "sentiment_score": -0.132,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "customer",
+   "start_sec": 87.4,
+   "end_sec": 88.45,
+   "text": "D'accord.",
+   "asr_confidence": 0.839,
+   "sentiment_score": -0.305,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 88.84,
+   "end_sec": 91.47,
+   "text": "Merci de patienter, je l'ai ici.",
+   "asr_confidence": 0.786,
+   "sentiment_score": -0.185,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "agent",
+   "start_sec": 92.23,
+   "end_sec": 96.58,
+   "text": "Le montant en souffrance aujourd'hui est de 637.89 $.",
+   "asr_confidence": 0.919,
+   "sentiment_score": 0.394,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "customer",
+   "start_sec": 97.08,
+   "end_sec": 101.78,
+   "text": "Il y a eu un problème avec mon virement bancaire.",
+   "asr_confidence": 0.837,
+   "sentiment_score": 0.358,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "customer",
+   "start_sec": 102.46,
+   "end_sec": 105.46,
+   "text": "Je peux payer 638 $ le 19.",
+   "asr_confidence": 0.88,
+   "sentiment_score": 0.251,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "agent",
+   "start_sec": 106.09,
+   "end_sec": 110.36,
+   "text": "Pour confirmer, un paiement de 637.89 $ le 19 déc..",
+   "asr_confidence": 0.839,
+   "sentiment_score": 0.754,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "agent",
+   "start_sec": 111.25,
+   "end_sec": 112.6,
+   "text": "OK. Bye.",
+   "asr_confidence": 0.877,
+   "sentiment_score": 0.367,
+   "redacted_spans": []
+  }
+ ]
+}

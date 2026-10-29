@@ -45,6 +45,10 @@ def measures(contact_id: str, s=Depends(require(VIEWERS))) -> dict:
         r = _row(contact_id)
     except HTTPException:
         return {"available": False}
+    from features.voice import voice_dir
+
+    if not (voice_dir() / f"{r['voice_sample_id']}.wav").exists():  # the voice pack is optional (not in the sample)
+        return {"available": False}
     return {"available": True, "contact_id": contact_id, "voice_sample_id": r["voice_sample_id"],
             "audio_url": f"/api/voice/{contact_id}/audio", "stereo": r["channels"] == 2,
             "measures": {k: r[k] for k in ("duration_sec", "dead_air_sec", "hold_music_sec", "snr_db", "packet_loss_pct",

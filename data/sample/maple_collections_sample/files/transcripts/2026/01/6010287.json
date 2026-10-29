@@ -1,0 +1,169 @@
+{
+ "transcript_id": "6010287",
+ "contact_id": "CT-6060758",
+ "call_recording_id": "REC-6010287",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-939992",
+ "crm_customer_id": "CUF-2772",
+ "agent_id": "AG-6881",
+ "call_start_ts": "2026-01-16 08:27:44",
+ "call_end_ts": "2026-01-16 08:29:35",
+ "duration_sec": 111,
+ "direction": "inbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.857,
+ "wer_estimate": 0.144,
+ "diarization_confidence": 0.966,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.113,
+ "agent_talk_ratio": 0.363,
+ "silence_ratio": 0.524,
+ "overtalk_count": 3,
+ "hold_count": 1,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/01/6010287.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 2.97,
+   "end_sec": 10.6,
+   "text": "Hi, this is Chris calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.811,
+   "sentiment_score": 0.251,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 11.79,
+   "end_sec": 14.04,
+   "text": "I speak with Curtis Flowers?",
+   "asr_confidence": 0.803,
+   "sentiment_score": 0.196,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 14.37,
+   "end_sec": 15.46,
+   "text": "Speaking.",
+   "asr_confidence": 0.847,
+   "sentiment_score": 0.137,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 16.17,
+   "end_sec": 21.02,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.908,
+   "sentiment_score": 0.355,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 66.5,
+   "end_sec": 68.2,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.858,
+   "sentiment_score": -0.094,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 69.31,
+   "end_sec": 75.16,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.883,
+   "sentiment_score": 0.862,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "agent",
+   "start_sec": 75.98,
+   "end_sec": 79.23,
+   "text": "The amount past due today is $23.64.",
+   "asr_confidence": 0.82,
+   "sentiment_score": 0.86,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "customer",
+   "start_sec": 80.04,
+   "end_sec": 83.97,
+   "text": "There was a problem with my bank transfer.",
+   "asr_confidence": 0.811,
+   "sentiment_score": 0.308,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "customer",
+   "start_sec": 84.71,
+   "end_sec": 88.03,
+   "text": "I'll try to pay $17 Jan 17.",
+   "asr_confidence": 0.872,
+   "sentiment_score": 0.553,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "agent",
+   "start_sec": 88.97,
+   "end_sec": 95.49,
+   "text": "Just to confirm, a payment of $16.72 on January 17. I'll send you a payment link.",
+   "asr_confidence": 0.796,
+   "sentiment_score": -0.093,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "agent",
+   "start_sec": 96.28,
+   "end_sec": 99.52,
+   "text": "you have any other questions for me?",
+   "asr_confidence": 0.924,
+   "sentiment_score": -0.487,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "customer",
+   "start_sec": 99.82,
+   "end_sec": 102.27,
+   "text": "No, I think that's it.",
+   "asr_confidence": 0.892,
+   "sentiment_score": 0.485,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "agent",
+   "start_sec": 103.28,
+   "end_sec": 110.01,
+   "text": "Thank you for your time today. You'll receive a confirmation by text. Have a good evening.",
+   "asr_confidence": 0.911,
+   "sentiment_score": 0.256,
+   "redacted_spans": []
+  }
+ ]
+}

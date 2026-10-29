@@ -1,0 +1,53 @@
+{
+ "transcript_id": "4511017",
+ "contact_id": "CT-4560411",
+ "call_recording_id": "REC-4511017",
+ "voice_sample_id": null,
+ "case_id": "CS-2025-911509",
+ "crm_customer_id": "LOW-8049",
+ "agent_id": "AG-7437",
+ "call_start_ts": "2026-01-19 12:52:14",
+ "call_end_ts": "2026-01-19 12:52:30",
+ "duration_sec": 16,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.902,
+ "wer_estimate": 0.098,
+ "diarization_confidence": 0.883,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.677,
+ "silence_ratio": 0.323,
+ "overtalk_count": 1,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/01/4511017.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 0.77,
+   "end_sec": 3.82,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.901,
+   "sentiment_score": 0.248,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 4.94,
+   "end_sec": 15.77,
+   "text": "Hi, this message is for Lorraine. This is Morgan from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.903,
+   "sentiment_score": 0.544,
+   "redacted_spans": []
+  }
+ ]
+}

@@ -1,0 +1,229 @@
+{
+ "transcript_id": "9010880",
+ "contact_id": "CT-9103795",
+ "call_recording_id": "REC-9010880",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-546238",
+ "crm_customer_id": "NOK-5798",
+ "agent_id": "AG-1466",
+ "call_start_ts": "2026-08-25 18:17:38",
+ "call_end_ts": "2026-08-25 18:19:21",
+ "duration_sec": 103,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.799,
+ "wer_estimate": 0.196,
+ "diarization_confidence": 0.953,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.224,
+ "agent_talk_ratio": 0.605,
+ "silence_ratio": 0.171,
+ "overtalk_count": 1,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/9010880.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 1.78,
+   "end_sec": 9.12,
+   "text": "Hi, this is Chris calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.876,
+   "sentiment_score": 0.196,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 10.19,
+   "end_sec": 13.23,
+   "text": "May I speak with Noah Kuzyk?",
+   "asr_confidence": 0.749,
+   "sentiment_score": 0.067,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 13.95,
+   "end_sec": 15.19,
+   "text": "Speaking.",
+   "asr_confidence": 0.743,
+   "sentiment_score": 0.566,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 16.27,
+   "end_sec": 21.38,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.711,
+   "sentiment_score": 0.558,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 22.12,
+   "end_sec": 23.94,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.74,
+   "sentiment_score": 0.484,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 24.28,
+   "end_sec": 28.38,
+   "text": "Is this still the best number to reach you?",
+   "asr_confidence": 0.854,
+   "sentiment_score": 0.452,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "customer",
+   "start_sec": 29.32,
+   "end_sec": 31.31,
+   "text": "Yes, this my cell.",
+   "asr_confidence": 0.84,
+   "sentiment_score": 0.636,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "agent",
+   "start_sec": 32.42,
+   "end_sec": 38.5,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.732,
+   "sentiment_score": 0.571,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "agent",
+   "start_sec": 39.44,
+   "end_sec": 42.73,
+   "text": "The amount past due today is $641.52.",
+   "asr_confidence": 0.88,
+   "sentiment_score": 0.473,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "customer",
+   "start_sec": 43.74,
+   "end_sec": 49.73,
+   "text": "Honestly, I can't afford that amount. My hours at work were reduced in May.",
+   "asr_confidence": 0.734,
+   "sentiment_score": -0.214,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "customer",
+   "start_sec": 50.51,
+   "end_sec": 54.67,
+   "text": "I'm only bringing home about $2090 a month now.",
+   "asr_confidence": 0.851,
+   "sentiment_score": 0.24,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "agent",
+   "start_sec": 55.41,
+   "end_sec": 65.57,
+   "text": "I'm sorry to hear that. We have hardship options, like a reduced payment for three months. Would you like me to review that with you?",
+   "asr_confidence": 0.78,
+   "sentiment_score": -0.053,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "customer",
+   "start_sec": 66.4,
+   "end_sec": 68.61,
+   "text": "Yes, that would help.",
+   "asr_confidence": 0.86,
+   "sentiment_score": 0.032,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 14,
+   "speaker": "agent",
+   "start_sec": 69.09,
+   "end_sec": 76.32,
+   "text": "To set that up I'll need a quick look at your monthly budget. are your main fixed expenses?",
+   "asr_confidence": 0.749,
+   "sentiment_score": 0.299,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 15,
+   "speaker": "customer",
+   "start_sec": 77.08,
+   "end_sec": 79.93,
+   "text": "Mostly rent, groceries and the car.",
+   "asr_confidence": 0.784,
+   "sentiment_score": -0.037,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 16,
+   "speaker": "agent",
+   "start_sec": 81.03,
+   "end_sec": 86.47,
+   "text": "Okay, I've noted that. The hardship team will follow up with the details.",
+   "asr_confidence": 0.857,
+   "sentiment_score": 0.185,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 17,
+   "speaker": "agent",
+   "start_sec": 87.18,
+   "end_sec": 91.09,
+   "text": "Do you have any other questions for me?",
+   "asr_confidence": 0.893,
+   "sentiment_score": 0.356,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 18,
+   "speaker": "customer",
+   "start_sec": 92.06,
+   "end_sec": 94.85,
+   "text": "No, I think that's it.",
+   "asr_confidence": 0.744,
+   "sentiment_score": 0.329,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 19,
+   "speaker": "agent",
+   "start_sec": 95.93,
+   "end_sec": 102.52,
+   "text": "Thank you for your time today. You'll receive a confirmation by text. Have a good evening.",
+   "asr_confidence": 0.81,
+   "sentiment_score": -0.055,
+   "redacted_spans": []
+  }
+ ]
+}

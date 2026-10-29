@@ -113,6 +113,28 @@ def build_dataset() -> pd.DataFrame:
     df["split"] = "train"
     df.loc[ts >= TRAIN_END, "split"] = "calib"
     df.loc[ts >= CALIB_END, "split"] = "test"
+    return _sample_resplit(df, ts)
+
+
+SAMPLE_MIN_SPLIT = 100  # sample mode only: smallest split that still gives a usable fit, calibration or test
+
+
+def _sample_resplit(df: pd.DataFrame, ts: pd.Series) -> pd.DataFrame:
+    """Sample mode only (DATA_SOURCE=sample). On the small sample a split can be too small or have one outcome, which
+    breaks AUC and isotonic calibration. If so, split by time quantiles (60/20/20) instead and say so. Never runs on
+    the full data, where the fixed date split above is the specification."""
+    if not get_settings().is_sample:
+        return df
+    sizes = df.groupby("split").label_broken.agg(["size", "nunique"]).reindex(["train", "calib", "test"]).fillna(0)
+    if (sizes["size"] >= SAMPLE_MIN_SPLIT).all() and (sizes["nunique"] == 2).all():
+        return df
+    print(f"NOTE (sample data): the date split gave train/calib/test = {sizes['size'].astype(int).tolist()} promises, "
+          "too few or one-sided to fit; using a 60/20/20 split by promise date instead. "
+          "Full data keeps the fixed dates.")
+    rank = ts.rank(method="first") / len(ts)
+    df["split"] = "train"
+    df.loc[rank > 0.6, "split"] = "calib"
+    df.loc[rank > 0.8, "split"] = "test"
     return df
 
 

@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """Row-level access: which customers, cases and calls a signed-in person may open.
 
 Agents work only the cases assigned to them (assigned_agent_id), team leads the cases of their team. Hardship

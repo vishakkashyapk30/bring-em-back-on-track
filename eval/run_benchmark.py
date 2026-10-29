@@ -22,7 +22,7 @@ from common.config import get_settings
 from nlq.pipeline import ask
 
 ROOT = Path(__file__).resolve().parents[1]
-REL = get_settings().raw_dir / "maple_collections_release"
+REL = get_settings().release_dir
 
 
 def _as_of(q: dict) -> date | None:
@@ -124,7 +124,7 @@ def main(extra: str | None = None) -> None:
             rec["ours"] = a.answer[:300]
         report.append(rec)
         print(f"{q['question_id']} {a.kind:12s} {ms:5d} ms  score={rec.get('score', '-')}")
-    out = ROOT / "deliverables" / "benchmark_answers.csv"
+    out = get_settings().deliverables_dir / "benchmark_answers.csv"
     out.parent.mkdir(exist_ok=True)
     with out.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["question_id", "answer", "sql_or_sources", "refused"])

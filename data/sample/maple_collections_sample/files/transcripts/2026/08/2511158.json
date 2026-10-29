@@ -1,0 +1,53 @@
+{
+ "transcript_id": "2511158",
+ "contact_id": "CT-2598052",
+ "call_recording_id": "REC-2511158",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-597225",
+ "crm_customer_id": "EMW-6765",
+ "agent_id": "AG-7334",
+ "call_start_ts": "2026-08-14 11:45:33",
+ "call_end_ts": "2026-08-14 11:45:50",
+ "duration_sec": 17,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.844,
+ "wer_estimate": 0.148,
+ "diarization_confidence": 0.883,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.629,
+ "silence_ratio": 0.371,
+ "overtalk_count": 0,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/2511158.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 1.6,
+   "end_sec": 5.02,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.802,
+   "sentiment_score": 0.025,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 6.09,
+   "end_sec": 16.78,
+   "text": "Hi, this message is for Emily. This is Jordan from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.886,
+   "sentiment_score": -0.084,
+   "redacted_spans": []
+  }
+ ]
+}

@@ -1,0 +1,53 @@
+{
+ "transcript_id": "5011080",
+ "contact_id": "CT-5029453",
+ "call_recording_id": "REC-5011080",
+ "voice_sample_id": null,
+ "case_id": "CS-2023-786710",
+ "crm_customer_id": "LAS-3050",
+ "agent_id": "AG-1717",
+ "call_start_ts": "2024-02-12 16:06:48",
+ "call_end_ts": "2024-02-12 16:07:06",
+ "duration_sec": 18,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.925,
+ "wer_estimate": 0.069,
+ "diarization_confidence": 0.893,
+ "speaker_count": 1,
+ "customer_talk_ratio": 0.0,
+ "agent_talk_ratio": 0.597,
+ "silence_ratio": 0.403,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2024/02/5011080.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "ivr",
+   "start_sec": 2.71,
+   "end_sec": 5.89,
+   "text": "Please leave your message after the tone.",
+   "asr_confidence": 0.902,
+   "sentiment_score": 0.441,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 6.48,
+   "end_sec": 17.22,
+   "text": "Hi, this message is for Lacey. This is Morgan from Maple Bank. Please call us back at 1-800-555-0199 between 8 AM and 9 PM. Thank you.",
+   "asr_confidence": 0.948,
+   "sentiment_score": 0.125,
+   "redacted_spans": []
+  }
+ ]
+}

@@ -51,7 +51,7 @@ def main() -> None:
     s.bronze_dir.mkdir(parents=True, exist_ok=True)
     con = duckdb.connect()
     for table, fmt in TABLES.items():
-        files = find_source(s.raw_dir, table, fmt)
+        files = find_source(s.release_dir, table, fmt)
         if not files:
             log.warning("missing source for %s (%s)", table, fmt)
             continue

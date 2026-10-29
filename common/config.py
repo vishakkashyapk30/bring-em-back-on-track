@@ -6,6 +6,7 @@ from datetime import date
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -13,6 +14,18 @@ ROOT = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT / ".env", extra="ignore")
+
+    # Data source: `full` = the 13 GB release in data/raw, `sample` = the ~5,000 customer sample committed under
+    # data/sample (tools/make_sample.py), `auto` = full when a full warehouse exists, else a built sample warehouse,
+    # else the raw release if it is on disk, else the sample. A sample run writes everything under `sample_build_dir`
+    # so it can never overwrite a full-data build.
+    data_source: str = "auto"  # auto | full | sample (resolved to full | sample after validation)
+    sample_dir: Path = ROOT / "data" / "sample" / "maple_collections_sample"
+    sample_build_dir: Path = ROOT / "data" / "sample_build"
+    release_dir: Path | None = None  # the folder with data/, files/, labels/, schema/ (derived from data_source)
+    artefacts_dir: Path | None = None  # trained promise-break model (derived)
+    deliverables_dir: Path | None = None  # benchmark_answers.csv (derived)
+    quality_report_md: Path | None = None  # docs/data_quality_report.md (derived)
 
     # Paths
     data_dir: Path = ROOT / "data"
@@ -55,6 +68,44 @@ class Settings(BaseSettings):
     force_fixtures: bool = False  # serve fixtures even when a warehouse exists (offline demos, tests)
     session_secret: str = "dev-only-change-me"
     cors_origins: str = "http://localhost:5173"
+
+    @property
+    def is_sample(self) -> bool:
+        return self.data_source == "sample"
+
+    @model_validator(mode="after")
+    def _resolve_source(self) -> Settings:
+        self.data_source = (self.data_source or "auto").strip().lower()  # an empty DATA_SOURCE (compose default) = auto
+        if self.data_source not in ("auto", "full", "sample"):
+            raise ValueError(f"DATA_SOURCE must be auto, full or sample, not {self.data_source!r}")
+        full_release = self.raw_dir / "maple_collections_release"
+        if self.data_source == "auto":
+            if self.warehouse_path.exists():
+                self.data_source = "full"
+            elif (self.sample_build_dir / "warehouse.duckdb").exists():
+                self.data_source = "sample"
+            else:
+                self.data_source = "full" if (full_release / "README.md").exists() else "sample"
+        if self.is_sample:
+            b = self.sample_build_dir
+            derived = {"data_dir": b, "bronze_dir": b / "bronze", "silver_dir": b / "silver",
+                       "features_dir": b / "features", "warehouse_path": b / "warehouse.duckdb",
+                       "ops_db_path": b / "ops.db", "lancedb_dir": b / "lancedb", "llm_cache_dir": b / "llm_cache",
+                       "reports_dir": b / "reports"}
+            for k, v in derived.items():
+                if k not in self.model_fields_set:
+                    setattr(self, k, v)
+        if self.release_dir is None:
+            self.release_dir = self.sample_dir if self.is_sample else full_release
+        if self.artefacts_dir is None:
+            self.artefacts_dir = (self.sample_build_dir / "artefacts" if self.is_sample
+                                  else ROOT / "models" / "ptp_break" / "artefacts")
+        if self.deliverables_dir is None:
+            self.deliverables_dir = self.sample_build_dir / "deliverables" if self.is_sample else ROOT / "deliverables"
+        if self.quality_report_md is None:
+            self.quality_report_md = (self.sample_build_dir / "data_quality_report.md" if self.is_sample
+                                      else ROOT / "docs" / "data_quality_report.md")
+        return self
 
 
 @lru_cache

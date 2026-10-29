@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """Ask authorisation per persona (see common/ask_scope.py). Decided from the session, before any question is run."""
 
 from __future__ import annotations

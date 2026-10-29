@@ -1,0 +1,169 @@
+{
+ "transcript_id": "5510564",
+ "contact_id": "CT-5607563",
+ "call_recording_id": "REC-5510564",
+ "voice_sample_id": null,
+ "case_id": "CS-2026-879551",
+ "crm_customer_id": "MAL-3571",
+ "agent_id": "AG-8582",
+ "call_start_ts": "2026-08-31 11:02:07",
+ "call_end_ts": "2026-08-31 11:03:06",
+ "duration_sec": 59,
+ "direction": "outbound",
+ "language": "en-CA",
+ "code_switch_flag": false,
+ "asr_engine": "asr-telephony",
+ "asr_model_version": "v5.1",
+ "asr_confidence_avg": 0.834,
+ "wer_estimate": 0.178,
+ "diarization_confidence": 0.85,
+ "speaker_count": 2,
+ "customer_talk_ratio": 0.252,
+ "agent_talk_ratio": 0.608,
+ "silence_ratio": 0.14,
+ "overtalk_count": 3,
+ "hold_count": 0,
+ "pci_redaction_applied": true,
+ "pii_redaction_applied": true,
+ "src_system": "SPEECH",
+ "batch_id": "ST_20260928",
+ "file_path": "transcripts/2026/08/5510564.json",
+ "turns": [
+  {
+   "turn_index": 1,
+   "speaker": "agent",
+   "start_sec": 0.89,
+   "end_sec": 8.54,
+   "text": "Hi, this is Chris calling from Maple Bank. This call may be recorded for quality and training purposes.",
+   "asr_confidence": 0.886,
+   "sentiment_score": 0.106,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 2,
+   "speaker": "agent",
+   "start_sec": 8.85,
+   "end_sec": 11.67,
+   "text": "May I speak Max Lin?",
+   "asr_confidence": 0.8,
+   "sentiment_score": 0.002,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 3,
+   "speaker": "customer",
+   "start_sec": 12.62,
+   "end_sec": 13.59,
+   "text": "Speaking.",
+   "asr_confidence": 0.757,
+   "sentiment_score": -0.714,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 4,
+   "speaker": "agent",
+   "start_sec": 13.82,
+   "end_sec": 18.46,
+   "text": "Before we continue, can you please confirm your date of birth?",
+   "asr_confidence": 0.804,
+   "sentiment_score": 0.166,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 5,
+   "speaker": "customer",
+   "start_sec": 18.75,
+   "end_sec": 20.44,
+   "text": "Sure, it's [PII].",
+   "asr_confidence": 0.746,
+   "sentiment_score": -0.286,
+   "redacted_spans": [
+    {
+     "start": 11,
+     "end": 16,
+     "type": "PII"
+    }
+   ]
+  },
+  {
+   "turn_index": 6,
+   "speaker": "agent",
+   "start_sec": 21.17,
+   "end_sec": 27.45,
+   "text": "Thank you. I'm calling about your account with Maple Bank, which is past due.",
+   "asr_confidence": 0.825,
+   "sentiment_score": 0.454,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 7,
+   "speaker": "agent",
+   "start_sec": 28.59,
+   "end_sec": 31.63,
+   "text": "The amount past due today is $76.79.",
+   "asr_confidence": 0.875,
+   "sentiment_score": 0.125,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 8,
+   "speaker": "customer",
+   "start_sec": 31.96,
+   "end_sec": 34.72,
+   "text": "I don't agree with that charge.",
+   "asr_confidence": 0.895,
+   "sentiment_score": -0.103,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 9,
+   "speaker": "customer",
+   "start_sec": 35.48,
+   "end_sec": 39.55,
+   "text": "My statement is wrong, those amounts don't add up.",
+   "asr_confidence": 0.826,
+   "sentiment_score": -0.751,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 10,
+   "speaker": "agent",
+   "start_sec": 40.21,
+   "end_sec": 44.9,
+   "text": "I understand. I'll note that on the file have it reviewed.",
+   "asr_confidence": 0.896,
+   "sentiment_score": -0.075,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 11,
+   "speaker": "customer",
+   "start_sec": 45.41,
+   "end_sec": 50.78,
+   "text": "I want to make a complaint about how many times you call.",
+   "asr_confidence": 0.88,
+   "sentiment_score": -0.758,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 12,
+   "speaker": "agent",
+   "start_sec": 51.11,
+   "end_sec": 56.44,
+   "text": "Before I transfer you, we can also set up a payment plan.",
+   "asr_confidence": 0.835,
+   "sentiment_score": 0.164,
+   "redacted_spans": []
+  },
+  {
+   "turn_index": 13,
+   "speaker": "agent",
+   "start_sec": 56.66,
+   "end_sec": 58.08,
+   "text": "Okay. Bye.",
+   "asr_confidence": 0.822,
+   "sentiment_score": -0.262,
+   "redacted_spans": []
+  }
+ ]
+}
