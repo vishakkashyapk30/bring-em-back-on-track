@@ -1,5 +1,7 @@
 # back-on-track.ai
 
+[![CI](https://github.com/vishakkashyapk30/bring-em-back-on-track/actions/workflows/ci.yml/badge.svg)](https://github.com/vishakkashyapk30/bring-em-back-on-track/actions/workflows/ci.yml)
+
 **A collections platform that gives every customer one record, answers questions in plain English, and proposes a safe next step that a person approves.**
 
 Collections teams work with a partial picture. A customer's story is spread across cards, loans, deposits, the CRM, collections cases, call notes and recordings, and each system has its own customer key. Hardship is found late, promises to pay are set up to break, and nobody can say why the system suggested a particular call. back-on-track.ai joins those sources into one trusted customer record and builds a decision workflow on top of it where every suggestion has a plain-English reason, hardship always wins over pressure, and a human decides.
